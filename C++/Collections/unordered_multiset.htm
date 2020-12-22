@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			unordered_multiset
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Allow different elements having equivalent values</li>
+				<li>Keys are immutable, cannot be modified, but can be inserted and removed</li>
+				<li>Store elements in no particular order</li>
+				<li>Elements are organized into buckets depending on their <span style = "color:red">hash</span> values</li>
+				<li>Implemented as hash table</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<p style="text-align:center;"><img src = "img/Hash.png" width=50% /></p>
+		</div>
+		<div class = "subtitle">Element Organization</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;unordered_set&gt;
+
+int main(int argc, char *argv[])
+{
+	std::unordered_multiset&lt;int&gt; s = {1, 2, 3, 4, 4};
+
+	for(int i = 0; i &lt; s.bucket_count(); i++)
+	{
+		std::cout&lt;&lt;"Bucket "&lt;&lt;i&lt;&lt;": ";
+		for(auto it = s.begin(i); it != s.end(i); ++it)
+			std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::cout&lt;&lt;std::endl;
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Operations</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;unordered_set&gt;
+
+int main(int argc, char *argv[])
+{
+	std::unordered_multiset&lt;int&gt; s = {1, 2, 3, 4, 4};
+
+	std::cout&lt;&lt;"Size: "&lt;&lt;s.size()&lt;&lt;std::endl;//5
+
+	s.insert(3);// 1 2 3 3 4 4
+
+	auto it = s.find(3);
+	s.erase(it);// 1 2 3 4 4
+	s.erase(4);//1 2 3
+
+	for(int i = 0; i &lt; s.bucket_count(); i++)
+	{
+		std::cout&lt;&lt;"Bucket "&lt;&lt;i&lt;&lt;": ";
+		for(auto it = s.begin(i); it != s.end(i); ++it)
+			std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::cout&lt;&lt;std::endl;
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Hash and Comparison</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle(){}
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const;
+		double getLength() const;
+		double getArea() const;
+
+		//mutator
+		void setWidth(double w);
+		void setLength(double l);
+};
+#endif
+
+//Rectangle.cpp
+#include "Rectangle.h"
+
+double Rectangle::getWidth() const
+{
+	return width;
+}
+
+double Rectangle::getLength() const
+{
+	return length;
+}
+
+double Rectangle::getArea() const
+{
+	return width*length;
+}
+
+void Rectangle::setWidth(double w)
+{
+	width = w;
+}
+
+void Rectangle::setLength(double l)
+{
+	length = l;
+}
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;unordered_set&gt;
+#include "Rectangle.h"
+
+struct comp{
+	bool operator()(const Rectangle &a, const Rectangle &b) const
+	{
+		return (a.getArea() == b.getArea());
+	}
+};
+
+struct RectangleHash
+{
+	size_t operator()(const Rectangle &r) const
+	{
+		std::hash&lt;double&gt; h;
+		return (h(r.getWidth()) ^ h(r.getLength()));
+	}
+};
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;getArea()&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::unordered_multiset&lt;Rectangle, RectangleHash, comp&gt; s;
+	s.insert(Rectangle(1, 2));
+	s.insert(Rectangle(2, 3));
+	s.insert(Rectangle(3, 4));
+	s.insert(Rectangle(4, 5));
+	s.insert(Rectangle(1, 2));
+
+	std::cout&lt;&lt;"Size: "&lt;&lt;s.size()&lt;&lt;std::endl;
+
+	for(int i = 0; i &lt; s.bucket_count(); i++)
+	{
+		std::cout&lt;&lt;"Bucket "&lt;&lt;i&lt;&lt;": ";
+		for(auto it = s.begin(i); it != s.end(i); ++it)
+			std::cout&lt;&lt;it-&gt;getArea()&lt;&lt;" ";
+		std::cout&lt;&lt;std::endl;
+	}
+
+	display(s.begin(), s.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/unordered_set/unordered_multiset/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

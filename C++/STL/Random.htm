@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Random
+		</div>
+
+		<div class = "subtitle">Linear_congruential_engine</div>
+		<div class = "block">
+		<ul>
+			x = (a*x+c) mod m
+		</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+#include &lt;random&gt;
+
+int main(int argc, char *argv[])
+{
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	//minstd_rand0
+	std::minstd_rand0 g;
+
+	//seed
+	g.seed(seed);//set up random seed
+
+	//min
+	std::cout&lt;&lt;"Min: "&lt;&lt;g.min()&lt;&lt;std::endl;
+	//max
+	std::cout&lt;&lt;"Max: "&lt;&lt;g.max()&lt;&lt;std::endl;
+
+	//discard
+	for(int i = 0; i &lt; 10; i++)
+	{
+		std::cout&lt;&lt;g()&lt;&lt;std::endl;
+		g.discard(1);
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+#include &lt;random&gt;
+
+int main(int argc, char *argv[])
+{
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	//generator
+	std::linear_congruential_engine&lt;std::uint_fast32_t, 13, 0, 1000&gt; g;//a = 13, c = 0, m = 1000
+
+	//seed
+	std::cout&lt;&lt;"Seed: "&lt;&lt;seed&lt;&lt;std::endl;
+	g.seed(seed);//set up random seed
+
+	//min
+	std::cout&lt;&lt;"Min: "&lt;&lt;g.min()&lt;&lt;std::endl;
+	//max
+	std::cout&lt;&lt;"Max: "&lt;&lt;g.max()&lt;&lt;std::endl;
+
+	//discard
+	for(int i = 0; i &lt; 100; i++)
+	{
+		std::cout&lt;&lt;g()&lt;&lt;std::endl;
+		//g.discard(1);
+	}
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "subtitle">Mersenne_twister_engine</div>
+		<div class = "block">
+		<ul>
+			<li>Compute large series of numbers, such as Monte Carlo</li>
+			<li>Almost <span style = "color:red">uniform</span> distribution</li>
+		</ul>
+	</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+#include &lt;random&gt;
+
+int main(int argc, char *argv[])
+{
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	//minstd_rand0
+	std::mt19937 g;
+
+	//seed
+	g.seed(seed);//set up random seed
+
+	//min
+	std::cout&lt;&lt;"Min: "&lt;&lt;g.min()&lt;&lt;std::endl;
+	//max
+	std::cout&lt;&lt;"Max: "&lt;&lt;g.max()&lt;&lt;std::endl;
+
+	//discard
+	for(int i = 0; i &lt; 10; i++)
+	{
+		std::cout&lt;&lt;g()&lt;&lt;std::endl;
+		g.discard(1);
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Subtract_with_carray_engine</div>
+		<div class = "block">
+		<ul>
+			<li>A lagged fibonacci generator</li>
+		</ul>
+	</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+#include &lt;random&gt;
+
+int main(int argc, char *argv[])
+{
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	//ranlux24_base
+	std::ranlux24_base g;
+
+	//seed
+	g.seed(seed);//set up random seed
+
+	//min
+	std::cout&lt;&lt;"Min: "&lt;&lt;g.min()&lt;&lt;std::endl;
+	//max
+	std::cout&lt;&lt;"Max: "&lt;&lt;g.max()&lt;&lt;std::endl;
+	//word_size
+	std::cout&lt;&lt;"word_size: "&lt;&lt;g.word_size&lt;&lt;std::endl;
+	//default_seed
+	std::cout&lt;&lt;"default_seed: "&lt;&lt;g.default_seed&lt;&lt;std::endl;
+
+	//discard
+	for(int i = 0; i &lt; 10; i++)
+	{
+		std::cout&lt;&lt;g()&lt;&lt;std::endl;
+		g.discard(1);
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Random_device</div>
+		<div class = "block">
+		<ul>
+			<li>Produces non-deterministic random numbers, <span style = "color:red">no seeds needed</span></li>
+		</ul>
+	</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;random&gt;
+
+int main(int argc, char *argv[])
+{
+	std::random_device rd;
+
+	//min
+	std::cout&lt;&lt;rd.min()&lt;&lt;std::endl;
+
+	//max
+	std::cout&lt;&lt;rd.max()&lt;&lt;std::endl;
+
+	//entropy
+	std::cout&lt;&lt;rd.entropy()&lt;&lt;std::endl;
+
+	for(int i = 0; i &lt; 10; i++)
+		std::cout&lt;&lt;"Random value: "&lt;&lt;rd()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Uniform_int_distribution</div>
+		<div class = "block">
+		<ul>
+			<li>Generate an uniform distributed integer in the range [a, b]</li>
+		</ul>
+	</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+#include &lt;vector&gt;
+#include &lt;random&gt;
+
+void displayLine(int i)
+{
+	int n = i/10;
+	for(int i = 0; i &lt; n; i++)
+		std::cout&lt;&lt;"-";
+	std::cout&lt;&lt;std::endl;
+}
+
+void display(const std::vector&lt;int&gt; &c)
+{
+	for(int i = 0; i &lt; c.size(); i++)
+		displayLine(c[i]);
+}
+
+int main(int argc, char *argv[])
+{
+	std::cout&lt;&lt;"Default Random Engine: "&lt;&lt;std::endl;
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::default_random_engine g(seed);
+	std::vector&lt;int&gt; c(10, 0);
+	for(int i = 0; i &lt; 1000; i++)
+		c[g()%10] += 1;
+
+	display(c);
+
+	std::cout&lt;&lt;"Uniform Distribution: "&lt;&lt;std::endl;
+	std::uniform_int_distribution&lt;int&gt; r(1, 10);
+	std::vector&lt;int&gt; c2(10, 0);
+
+	for(int i = 0; i &lt; 1000; i++)
+		c2[r(g)-1] += 1;
+
+	display(c2);
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Uniform_real_distribution</div>
+		<div class = "block">
+		<ul>
+			<li>Generate an uniform distributed real in the range [a, b)</li>
+		</ul>
+	</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+#include &lt;random&gt;
+
+int main(int argc, char *argv[])
+{
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::default_random_engine g(seed);
+
+	std::uniform_real_distribution&lt;double&gt; r(0, 1);
+
+	for(int i = 0; i &lt; 10; i++)
+		std::cout&lt;&lt;r(g)&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Bernoulli_distribution</div>
+		<div class = "block">
+		<ul>
+			<li>Produce true value with the probability p, false with (1-p)</li>
+		</ul>
+	</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+#include &lt;random&gt;
+
+int main(int argc, char *argv[])
+{
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::default_random_engine g(seed);
+
+	std::bernoulli_distribution r(0.5);
+
+	for(int i = 0; i &lt; 10; i++)
+	{
+		std::cout&lt;&lt;(r(g)?"True":"No")&lt;&lt;std::endl;
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+	</body>
+</html>

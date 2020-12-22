@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Beautifulsoup 4
+		</div>
+
+		<div class = "subtitle">Parsing a Page</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import bs4 as bs
+import urllib.request
+
+source = urllib.request.urlopen('https://lin-chen-va.github.io/') # request webpage
+content = source.read() # read response
+
+soup = bs.BeautifulSoup(content, 'html.parser') # parse page
+
+print(soup.prettify())
+		</pre>
+		</div>
+		<div class = "subtitle">Search Children</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import bs4 as bs
+import urllib.request
+
+source = urllib.request.urlopen('https://lin-chen-va.github.io/')
+content = source.read()
+
+soup = bs.BeautifulSoup(content, 'html.parser')
+
+html = soup.find_all('html') # find html tag
+html_children = list(html[0].children)
+
+print(html_children[1]) # header
+print(html_children[3]) # body
+		</pre>
+		</div>
+		<div class = "subtitle">Finding all instances of a tag</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import bs4 as bs
+import urllib.request
+
+source = urllib.request.urlopen('https://lin-chen-va.github.io/')
+content = source.read()
+
+soup = bs.BeautifulSoup(content, 'html.parser')
+
+sections = soup.find_all('section') # find html tag
+
+print(sections[0])
+		</pre>
+		</div>
+		<div class = "subtitle">Searching for tags by class</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import bs4 as bs
+import urllib.request
+
+source = urllib.request.urlopen('https://lin-chen-va.github.io/')
+content = source.read()
+
+soup = bs.BeautifulSoup(content, 'html.parser')
+
+majors = soup.find_all(class_='major') # find html tag by class name
+
+for major in majors:
+    print(major)
+		</pre>
+		</div>
+		<div class = "subtitle">Searching for tag by id</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import bs4 as bs
+import urllib.request
+
+source = urllib.request.urlopen('https://lin-chen-va.github.io/')
+content = source.read()
+
+soup = bs.BeautifulSoup(content, 'html.parser')
+
+teaching = soup.find_all(id='teaching') # find html tag by class name
+
+print(teaching[0])
+		</pre>
+		</div>
+		<div class = "subtitle">Searching for tag by attributes</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+scripts = item.find_all(attrs={"type" : "application/ld+json"})
+		</pre>
+		</div>
+		<div class = "subtitle">Searching Using CSS Selectors</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import bs4 as bs
+import urllib.request
+
+source = urllib.request.urlopen('https://lin-chen-va.github.io/')
+content = source.read()
+
+soup = bs.BeautifulSoup(content, 'html.parser')
+
+ps = soup.select('section p') # Using CSS Selector
+
+for p in ps:
+    print(p)
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.dataquest.io/blog/web-scraping-tutorial-python/">Tutorial</a></li>
+		</div>
+	</body>
+</html>

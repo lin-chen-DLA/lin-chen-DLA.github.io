@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Exception
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import java.io.FileReader
+import java.io.FileNotFoundException
+import java.io.IOException
+
+object Demo {
+   def main(args: Array[String]) {
+      try {
+         val f = new FileReader("input.txt")
+      } catch {
+         case ex: FileNotFoundException =&gt; println("Missing file exception")
+         case ex: IOException =&gt; println("IO Exception")
+      } finally {
+         println("Exiting finally...")
+      }
+
+      println("End of the program ...");
+   }
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import java.io._
+
+object Demo {
+   def div(a : Int, b : Int) : Float =
+   {
+     if(b == 0)
+       throw new IllegalArgumentException("x should be non-zero")
+     return a.toFloat/b
+   }
+
+   def main(args: Array[String]) {
+      try {
+        println(div(1, 0))
+      } catch {
+        case ex: IllegalArgumentException =&gt; println(ex)
+      }
+
+      println("End of the program ...");
+   }
+}
+		</pre>
+		</div>
+	</body>
+</html>

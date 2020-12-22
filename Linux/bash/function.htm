@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Linux</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Function
+		</div>
+
+		<div class = "subtitle">Creating functions</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+function hello(){
+	echo "Hello World!"
+}
+
+hello
+			</pre>
+		</div>
+		<div class = "subtitle">Pass parameters</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+function hello(){
+	echo "Name: $1, Age: $2"
+}
+
+hello Lin 39
+			</pre>
+		</div>
+		<div class = "subtitle">Return</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+function getName(){
+	return 10
+}
+
+getName
+
+echo $?
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+function getName(){
+	name="Yanhua"
+}
+
+name="Lin"
+getName
+
+echo $name
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+function getName(){
+	echo "Yanhua"
+}
+
+name=$(getName)
+
+echo $name
+			</pre>
+		</div>
+		<div class = "subtitle">Call function in function</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+function f1()
+{
+	echo "Call f2 from f1 ..."
+	f2
+}
+
+function f2()
+{
+	echo "f2 ..."
+}
+
+f1
+			</pre>
+		</div>
+		<div class = "subtitle">Function Call from Prompt</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# f6.sh
+#!/bin/bash
+
+function f1()
+{
+	echo "Call f2 from f1 ..."
+	f2
+}
+
+function f2()
+{
+	echo "f2 ..."
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+. f6.sh # source f6.sh
+f1 # call function f1 from prompt
+
+unset -f f1 # unset a function
+			</pre>
+		</div>
+		<div class = "subtitle">Call function define in another script</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# f6.sh
+#!/bin/bash
+
+function f1()
+{
+	echo "Call f2 from f1 ..."
+	f2
+}
+
+function f2()
+{
+	echo "f2 ..."
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+# f7.sh
+#!/bin/bash
+
+source f6.sh # import functions defined in f6.sh
+f1 # call function f1
+			</pre>
+		</div>
+		<div class = "subtitle">Recursion</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+function factorial () { 
+    if (($1 == 1))
+    then
+        echo 1
+        return
+    else
+        echo $(( $( factorial $(($1 - 1)) ) * $1 ))
+    fi
+}
+
+factorial 10
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://linuxhint.com/return-string-bash-functions/">How to Return a String from Bash Functions</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

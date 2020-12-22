@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			SASS
+		</div>
+
+		<div class = "subtitle">Transpile</div>
+		<div class = "block">
+			<li>Sass is a CSS pre-processor</li>
+		<pre class = "prettyprint linenums">
+//s1.scss
+/* define variables for the primary colors */
+$primary_1: #a2b9bc;
+$primary_2: #b2ad7f;
+$primary_3: #878f99;
+
+/* use the variables */
+.main-header {
+  background-color: $primary_1;
+}
+
+.menu-left {
+  background-color: $primary_2;
+}
+
+.menu-right {
+  background-color: $primary_3;
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+sass s1.scss s1.css // transpile scss to css
+		</pre>
+		<pre class = "prettyprint linenums">
+//s1.css
+/* define variables for the primary colors */
+/* use the variables */
+.main-header {
+  background-color: #a2b9bc;
+}
+
+.menu-left {
+  background-color: #b2ad7f;
+}
+
+.menu-right {
+  background-color: #878f99;
+}
+
+/*# sourceMappingURL=s1.css.map */
+		</pre>
+		</div>
+	</body>
+</html>

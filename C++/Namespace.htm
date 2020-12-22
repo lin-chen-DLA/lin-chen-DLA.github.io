@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Namespace
+		</div>
+		<div class = "block">
+			<ul>
+				<li>A namespace defines an area of code in which all identifiers are unique</li>
+				<li>Global variables and normal functions are defined in <span style = "color:red">the global namespace</span></li>
+			</ul>
+		</div>
+
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Foo.h
+#ifndef FOO_H
+#define FOO_H
+#include &lt;iostream&gt;
+
+namespace Foo
+{
+	void display()
+	{
+		std::cout&lt;&lt;"display() in Foo ..."&lt;&lt;std::endl;
+	}
+}
+#endif
+
+//Util.h
+#ifndef UTIL_H
+#define UTIL_H
+#include &lt;iostream&gt;
+
+namespace Foo
+{
+	void info()
+	{
+		std::cout&lt;&lt;"info() in Foo ..."&lt;&lt;std::endl;
+	}
+}
+#endif
+
+//Goo.h
+#ifndef GOO_H
+#define GOO_H
+#include &lt;iostream&gt;
+
+namespace Goo
+{
+	void display()
+	{
+		std::cout&lt;&lt;"display() in Goo ..."&lt;&lt;std::endl;
+	}
+}
+#endif
+
+//main.cpp
+#include &lt;iostream&gt;
+#include "Foo.h"
+#include "Goo.h"
+#include "Util.h"
+
+int main(int argc, char *argv[])
+{
+	Foo::display();
+	Goo::display();
+
+	Foo::info();
+
+	return 0;
+}
+			</pre>
+		</div>
+		
+		<div class = "subtitle">Nested Namespace</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Foo.h
+#ifndef FOO_H
+#define FOO_H
+#include &lt;iostream&gt;
+
+namespace Foo
+{
+	namespace Goo
+	{
+		void display()
+		{
+			std::cout&lt;&lt;"display() in Foo ..."&lt;&lt;std::endl;
+		}
+	}
+}
+#endif
+
+//main.cpp
+#include &lt;iostream&gt;
+#include "Foo.h"
+
+int main(int argc, char *argv[])
+{
+	Foo::Goo::display();
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Search Path</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Foo.h
+#ifndef FOO_H
+#define FOO_H
+#include &lt;iostream&gt;
+#include "Goo.h"
+#include "Util.h"
+
+namespace Foo
+{
+	void display()
+	{
+		std::cout&lt;&lt;"display() in Foo ..."&lt;&lt;std::endl;
+	}
+
+	void callInfo()
+	{
+		info();
+		Foo::info();
+		Goo::info();
+	}
+}
+#endif
+
+//Util.h
+#ifndef UTIL_H
+#define UTIL_H
+#include &lt;iostream&gt;
+
+namespace Foo
+{
+	void info()
+	{
+		std::cout&lt;&lt;"info() in Foo ..."&lt;&lt;std::endl;
+	}
+}
+#endif
+
+//Goo.h
+#ifndef GOO_H
+#define GOO_H
+#include &lt;iostream&gt;
+
+namespace Goo
+{
+	void display()
+	{
+		std::cout&lt;&lt;"display() in Goo ..."&lt;&lt;std::endl;
+	}
+
+	void info()
+	{
+		std::cout&lt;&lt;"info() in Goo ..."&lt;&lt;std::endl;
+	}
+}
+#endif
+
+//main.cpp
+#include &lt;iostream&gt;
+#include "Foo.h"
+#include "Goo.h"
+#include "Util.h"
+
+int main(int argc, char *argv[])
+{
+	Foo::callInfo();
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<span style = "color:red">Default search namespace is the current namespace</span>
+			</ul>
+		</div>
+		<div class = "subtitle">Class in Namespace</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Vehicle.h
+#ifndef VEHICLE_H
+#define VEHICLE_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+namespace Foo
+{
+	class Vehicle
+	{
+		private:
+			std::string producer;
+		public:
+			//constructor
+			Vehicle(std::string s);
+
+			std::string getProducer() const {return producer;}
+			void setProducer(std::string producer);
+
+			virtual std::string toString();
+
+			virtual ~Vehicle();
+	};
+}
+#endif
+
+//Vehicle.cpp
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+
+//constructor
+Foo::Vehicle::Vehicle(std::string s):producer(s)
+{
+	std::cout&lt;&lt;"Vehicle Constructor ..."&lt;&lt;std::endl;
+}
+
+void Foo::Vehicle::setProducer(std::string producer)
+{
+	this-&gt;producer = producer;
+}
+
+std::string Foo::Vehicle::toString()
+{
+	std::string temp;
+	temp = "Vehicle Producer: "+producer;
+	return temp;
+}
+
+Foo::Vehicle::~Vehicle()
+{
+	std::cout&lt;&lt;"Vehicle Destructor ..."&lt;&lt;std::endl;
+}
+
+//Car.h
+#ifndef CAR_H
+#define CAR_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+
+namespace Foo
+{
+	class Car : public Vehicle
+	{
+		private:
+			std::string model;
+		public:
+			//constructor
+			Car(std::string p, std::string m);
+
+			std::string getModel() const {return model;}
+			void setModel(std::string model);
+
+			std::string toString();
+
+			~Car();
+	};
+}
+#endif
+
+//Car.cpp
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+#include "Car.h"
+
+namespace Foo
+{
+	//constructor
+	Car::Car(std::string p, std::string m):Vehicle(p), model(m)
+	{
+		std::cout&lt;&lt;"Car Constructor ..."&lt;&lt;std::endl;
+	}
+
+	void Car::setModel(std::string model)
+	{
+		this-&gt;model = model;
+	}
+
+	std::string Car::toString()
+	{
+		std::string temp;
+		temp = "Car Producer: "+getProducer()+" Model: "+model;
+		return temp;
+	}
+
+	Car::~Car()
+	{
+		std::cout&lt;&lt;"Car Destructor ..."&lt;&lt;std::endl;
+	}
+}
+
+//main.cpp
+#include &lt;iostream&gt;
+#include "Vehicle.h"
+#include "Car.h"
+
+int main(int argc, char *argv[])
+{
+	Foo::Vehicle v("Buick");
+	std::cout&lt;&lt;v.toString()&lt;&lt;std::endl;
+
+	Foo::Car c("Honda", "Accord");
+	std::cout&lt;&lt;c.toString()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Class in Namespace</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.learncpp.com/cpp-tutorial/4-3b-namespaces/">learncpp.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

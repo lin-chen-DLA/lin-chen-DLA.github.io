@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Function
+		</div>
+
+		<div class = "subtitle">Pass by reference</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# pass by reference
+def f2(m, im):
+    print '----------------Inside function-------------'
+    print id(m), m; # 13977378998840, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,]
+    print id(im), im; # 38097024, 10
+    m.append(100);
+    im = 100;
+    print id(m), m # 13977378998840, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100]
+    print id(im), im # 38098848, 100
+    print '---------------Leave function--------------'
+
+a = 10; # 38097024 10
+b = range(10) # 13977378998840, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,]
+print id(a), a
+print id(b), b
+f2(b, a);
+print id(a), a # 38097024, 10
+print id(b), b # 13977378998840, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100]
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>All parameters (arguments) in the Python language are passed by reference</li>
+				<li>Mutable parameters, can be modified by function</li>
+				<li>Immutable parameters, cannot be modified by function</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Default arguments</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# default arguments
+def f1(p1, p2 = 10):
+    print p1, p2
+
+f1(1)
+			</pre>
+		</div>
+
+		<div class = "subtitle">Keyword arguments</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# keyword arguments
+def f3(p1 = 1, p2 = 2):
+    print p1, p2
+
+f3(p2 = 10)
+			</pre>
+		</div>
+
+		<div class = "subtitle">Variable-length arguments</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# variabel-length arguments
+def f4(*vartuple):
+    print len(vartuple);
+    print vartuple; # vartuple is a tuple
+    for i in vartuple:
+        print i
+
+f4(1, 2, 3, 'end')
+			</pre>
+		</div>
+
+		<div class = "subtitle">* in Function Calls</div>
+		<div class = "block">
+			<li>expands list or tuple into separate elements</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# pass by reference
+def f(a, b):
+    print a, b;
+
+l = [10, 20]; # singularize list or tuple
+f(*l); # 10 20
+			</pre>
+		</div>
+
+		<div class = "subtitle">Arbitary Key Parameters</div>
+		<div class = "block">
+			<li>pass parameters and their values as a dict to function</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def f(**args):
+    print args;
+    for k in args.keys():
+        print k, args[k];
+
+f(inFile = 'input', outFile = 'output');
+			</pre>
+		</div>
+
+		<div class = "subtitle">** in Function Calls</div>
+		<div class = "block">
+			<li>pass keyworded variables as a dict to function</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def f(**args):
+    print args;
+    for k in args.keys():
+        print k, args[k];
+
+d = {'inFile':'input', 'outFile':'output'}; # singularize dict
+f(**d);
+			</pre>
+		</div>
+
+		<div class = "subtitle">Lambda</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+#lambda
+sum = lambda arg1, arg2: arg1+arg2;
+
+print sum(10, 20); #30
+
+#map
+def t(arg):
+    return arg*10;
+
+l = [1, 2, 3, 4];
+print map(t, l); #[10, 20, 30, 40], use function
+print map(lambda x: x*10, l); #[10, 20, 30, 40], using lambda
+
+#filter
+print filter(lambda x: x%2 == 0, l); #[2, 4]
+
+#reduce
+print reduce(lambda x, y: x+y, l); #10
+			</pre>
+		</div>
+
+		<div class = "subtitle">Return</div>
+		<div class = "block">
+			<li>return multiple values, which are saved in a tuple</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def getNums():
+    return 1, 2
+
+a, b = getNums()
+print a, b # 1, 2
+
+_, b = getNums() # use _ to hold a place
+print b # 2
+
+t = getNums()
+print t # (1, 2), t is a tuple
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def getNum_1():
+    return 1 # return an integer
+
+def getNum_2():
+    return # return nothing
+
+def getNum_3():
+    return None # return None
+
+def getNum_4():
+    pass # no return will return None
+
+def main():
+    if getNum_1() is None:
+        print getNum_1() # not print
+    if getNum_2() is None:
+        print getNum_2() # None
+    if getNum_3() is None:
+        print getNum_3() # None
+    if getNum_4() is None:
+        print getNum_4() # None
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+
+		<div class = "subtitle">Recursive</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def factorial(n):
+    '''factorial
+    Args:
+        n (int), integer number
+    Return:
+        int, factorial number
+    '''
+    if n == 0:
+        return 1;
+    else:
+        return n*factorial(n-1);
+
+def main():
+    print factorial(10);
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://www.pythoncentral.io/python-null-equivalent-none/">Python’s null equivalent: None</a></li>
+				<li><a href = "https://www.tutorialspoint.com/python/python_functions.htm">Tutorialspoint.com</a></li>
+				<li><a href = "http://www.python-course.eu/recursive_functions.php">Recursive</a> at Python Course</li>
+				<li><a href = "http://www.python-course.eu/lambda.php">Lambda</a> at Python Course</li>
+				<li><a href = "http://www.python-course.eu/passing_arguments.php">Parameter Passing</a> at Python Course</li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Function
+		</div>
+
+		<div class = "subtitle">Pass by value</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+void doubleNum(int n)
+{
+	printf("In fuction: %d, %p\n", n, &n);
+	n *= 2;
+	printf("In fuction: %d, %p\n", n, &n);
+}
+
+int main()
+{
+	int a = 10;
+
+	printf("Value: %d, Address: %p\n", a, &a);
+
+	doubleNum(a);
+
+	printf("After calling function: %d, %p\n", a, &a);
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Pass by reference</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+void doubleNum(int *n)
+{
+	printf("In fuction: %d, %p\n", *n, n);
+	*n *= 2;
+	printf("In fuction: %d, %p\n", *n, n);
+}
+
+int main()
+{
+	int a = 10;
+
+	printf("Value: %d, Address: %p\n", a, &a);
+
+	doubleNum(&a);
+
+	printf("After calling function: %d, %p\n", a, &a);
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Layout in single file</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;time.h&gt;
+#include &lt;stdlib.h&gt;
+
+int doubleNum(int n)
+{
+	int num;
+	num = 2*n;
+
+	return num;
+}
+
+int main()
+{
+	srand(time(NULL)); // take a random seed
+	int r = rand()%100; // generate a random number within [0, 100)
+
+	printf("Value: %d\n", doubleNum(r));
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;time.h&gt;
+#include &lt;stdlib.h&gt;
+
+int doubleNum(int);
+
+int main()
+{
+	srand(time(NULL)); // take a random seed
+	int r = rand()%100; // generate a random number within [0, 100)
+
+	printf("Value: %d\n", doubleNum(r));
+}
+
+int doubleNum(int n)
+{
+	int num;
+	num = 2*n;
+
+	return num;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Layout in multiple files</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// f3.c
+#include &lt;stdio.h&gt;
+#include &lt;time.h&gt;
+#include &lt;stdlib.h&gt;
+#include "util.h"
+
+int main()
+{
+	srand(time(NULL)); // take a random seed
+	int r = rand()%100; // generate a random number within [0, 100)
+
+	printf("Value: %d\n", doubleNum(r));
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+// util.c
+#include "util.h"
+
+int doubleNum(int n)
+{
+	int num;
+	num = 2*n;
+
+	return num;
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+// util.h
+#ifndef UTIL_H
+#define UTIL_H
+int doubleNum(int);
+#endif
+		</pre>
+		</div>
+		<div class = "subtitle">Recursion</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int factorial(int n)
+{
+	if(n &lt;= 1) // basis step
+		return 1;
+	else // recursive step
+		return n*factorial(n-1);
+}
+
+int main()
+{
+	printf("%d\n", factorial(10));
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void factorial(int *p, int n)
+{
+	if(n &lt;= 1) // basis step
+	{
+		*p *= 1;
+	}
+	else // recursive step
+	{
+		*p *= n;
+		factorial(p, n-1);
+	}
+}
+
+int main()
+{
+	int *ptr;
+	ptr = (int *) malloc(sizeof(int));
+
+	*ptr = 1;
+
+	factorial(ptr, 10);
+
+	printf("%d\n", *ptr);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Static Variable</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+void count()
+{
+	static int num = 0;
+	num++;
+	printf("%d\n", num);
+}
+
+int main()
+{
+	count(); // 1
+	count(); // 2
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Global Variable</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// main.c
+#include &lt;stdio.h&gt;
+#include "util.h"
+
+extern int count;
+
+int main()
+{
+	increase();
+	increase();
+
+	printf("%d\n", count);
+
+	return 0;
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+// util.h
+#ifndef UTIL_H
+#define UTIL_H
+
+void increase();
+
+#endif
+		</pre>
+		<pre class = "prettyprint linenums">
+// util.c
+#include "util.h"
+
+int count = 0; // global variable
+
+void increase()
+{
+	count++;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Static Global Variable</div>
+		<div class = "block">
+			<li>A static global variable is a global variable that can only be accessed by functions in the same C program file as the variable</li>
+		<pre class = "prettyprint linenums">
+// main.c
+#include &lt;stdio.h&gt;
+#include "util.h"
+
+int main()
+{
+	increase();
+
+	printf("%d\n", increase()); // 2
+
+	return 0;
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+// util.h
+#ifndef UTIL_H
+#define UTIL_H
+
+int increase();
+
+#endif
+		</pre>
+		<pre class = "prettyprint linenums">
+// util.c
+#include "util.h"
+
+static int count = 0; // global static variable
+
+int increase()
+{
+	count++;
+
+	return count;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Static Function</div>
+		<div class = "block">
+			<li>A static function is a function that can only be accessed by functions in the same C program file</li>
+		<pre class = "prettyprint linenums">
+// main.c
+#include &lt;stdio.h&gt;
+#include "util.h"
+
+int main()
+{
+	display();
+
+	return 0;
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+// util.h
+#ifndef UTIL_H
+#define UTIL_H
+
+static int getNum();
+void display();
+
+#endif
+		</pre>
+		<pre class = "prettyprint linenums">
+// util.c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include "util.h"
+
+static int getNum()
+{
+	return rand()%10;
+}
+
+void display()
+{
+	printf("%d\n", getNum());
+}
+		</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Final
+		</div>
+
+		<div class = "subtitle">Final Variable</div>
+		<div class = "block">
+			<ul>
+				<li>Can be initialized when it is declared, in constructor or in static block</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class F
+{
+	private final String NAME = "Lin";
+	private final int year;
+
+	public F(int y)
+	{
+		year = y;
+	}
+
+	public String toString()
+	{
+		return NAME+": "+year;
+	}
+
+	public static void main(String args[])
+	{
+		final int SIZE = 10;
+
+		//SIZE = 20;//not able to be changed
+
+		F f = new F(2017);
+
+		System.out.println(f);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Final Class</div>
+		<div class = "block">
+			<ul>
+				<li>final classes cannot be extended</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public final class F
+{
+	private String name;
+
+	public String toString()
+	{
+		return name;
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Create Immutable Class
+					<ul>
+						<li>Class must be declared as final (So that child classes can’t be created)</li>
+						<li>Data members in the class must be declared as final (So that we can’t change the value of it after object creation)</li>
+						<li>A parameterized constructor</li>
+						<li>Getter method for all the variables in it</li>
+						<li>No setters(To not have option to change the value of the instance variable)</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public final class Car
+{
+	private final String maker;
+	private final String color;
+
+	public Car(String m, String c)
+	{
+		maker = m;
+		color = c;
+	}
+
+	public String getMaker()
+	{
+		return maker;
+	}
+
+	public String getColor()
+	{
+		return color;
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Final Method</div>
+		<div class = "block">
+			<ul>
+				<li>Final method cannot be overridden</li>
+				<li>Methods that are declared private are implicitly final</li>
+				<li>Methods that are declared static are also implicitly final</li>
+			</ul>
+		</div>
+	</body>
+</html>

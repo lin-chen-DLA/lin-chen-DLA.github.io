@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			MPI
+		</div>
+
+		<div class = "subtitle">Install mpi4py</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+downlowd openmpi
+tar -zxf openmpi-X.X.X tar.gz
+cd openmpi-X.X.X
+./configure --prefix=/usr/local/openmpi
+make all
+make install
+easy_install mpi4py
+		</pre>
+		</div>
+
+		<div class = "subtitle">Overview</div>
+		<div class = "block">
+			<li>MPI.Comm, base class of communicators</li>
+			<li>MPI.COMM_SELF, MPI.COMM_WORLD</li>
+			<li>MPI.Comm.Get_size(), the number of processes in a communicator</li>
+			<li>MPI.Comm.Get_rank(), the calling process rank</li>
+			<li>MPI.Comm.Get_group(), returns an instance of the MPI.Group class</li>
+			<li>Point-to-Point Communications
+				<ul>
+					<li>MPI provides a set of send and receive functions allowing the communication of typed data with an associated tag</li>
+				</ul>
+			</li>
+			<li>Blocking Communications
+				<ul>
+					<li>MPI provides basic send and receive functions that are blocking</li>
+					<li>MPI.Comm.Send(), MPI.Comm.Recv() and MPI.Comm.Sendrecv()</li>
+					<li>MPI.Comm.send(), MPI.Comm.recv() and MPI.Comm.sendrecv(), communicate general Python objects</li>
+				</ul>
+			</li>
+			<li>Nonblocking Communications
+				<ul>
+					<li>MPI provides nonblocking send and receive function</li>
+					<li>MPI.Comm.Isend() and MPI.Comm.Irecv(), initiate send and receive operations, returns MPI.Request</li>
+					<li>MPI.Request.Test(), MPI.Request.Wait() and MPI.Request.Cancel(), manage completion</li>
+				</ul>
+			</li>
+			<li>Persistent Communications
+				<ul>
+					<li>MPI.Comm.Send_init() and MPI.Comm.Recv_init(), create persistent requests for a send and receive operation, respectively, returns MPI.Prequest</li>
+					<li>MPI.Prequest.Start(), start the actual communication</li>
+				</ul>
+			</li>
+			<li>Collective Communications
+				<ul>
+					<li>Barrier synchronization across all group members</li>
+					<li>Global communication functions
+						<ul>
+							<li>Broadcast data from one member to all members of a group</li>
+							<li>Gather data from all members to one member of a group</li>
+							<li>Scatter data from one member to all members of a group</li>
+							<li>MPI.Comm.Bcast(), MPI.Comm.Scatter(), MPI.Comm.Gather(), MPI.Comm.Allgather(), and MPI.Comm.Alltoall() MPI.Comm.Alltoallw(), collective communications of memory buffers</li>
+							<li>MPI.Comm.bcast(), MPI.Comm.scatter(), MPI.Comm.gather(), MPI.Comm.allgather() and MPI.Comm.alltoall(), communicate general Python objects</li>
+						</ul>
+					</li>
+					<li>Global reduction operations such as sum, maximum, minimum, etc.
+						<ul>
+							<li>MPI.Comm.Reduce(), MPI.Comm.Reduce_scatter, MPI.Comm.Allreduce(), MPI.Intracomm.Scan() and MPI.Intracomm.Exscan(), communicate on memory buffers</li>
+							<li>MPI.Comm.reduce(), MPI.Comm.allreduce(), MPI.Intracomm.scan() and MPI.Intracomm.exscan(), communicate general Python objects</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>Dynamic Process Management
+				<ul>
+					<li>MPI.Intracomm.Spawn(), returns an MPI.Intercomm instance, MPI.Comm.Get_parent(), retrieve the matching intercommunicator</li>
+					<li>Server, MPI.Open_port(), MPI.Publish_name(), MPI.Intracomm.Accept(), MPI.Unpublish_name(), MPI.Close_port()</li>
+					<li>Client, MPI.Lookup_name(), MPI.Intracomm.Connect(), return an MPI.Intercomm instance, MPI.Comm.Disconnect()</li>
+				</ul>
+			</li>
+			<li>Parallel Input/Output
+				<ul>
+					<li>MPI.File, MPI.File.Open(), MPI.File.Close()</li>
+				</ul>
+			</li>
+			<li>Timers
+				<ul>
+					<li>MPI.Wtime(), MPI.Wtick()</li>
+				</ul>
+			</li>
+		</div>
+
+		<div class = "subtitle">Tutorials</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from mpi4py import MPI
+
+comm = MPI.COMM_WORLD
+rank = comm.Get_rank()
+
+if rank == 0:
+    print('%d of %d, Create data ...' % (rank, comm.Get_size()))
+    data = {'a':7, 'b':3.14}
+    comm.send(data, dest=1, tag=11)
+elif rank == 1:
+    data = comm.recv(source=0, tag=11)
+    print('%d of %d, Received data ...' % (rank, comm.Get_size()))
+    print(data, type(data))
+else:
+    print('%d of %d, Not use ...' % (rank, comm.Get_size()))
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from mpi4py import MPI
+
+comm = MPI.COMM_WORLD
+rank = comm.Get_rank()
+size = comm.Get_size()
+
+if rank == 0:
+    # initial data
+    data = {'a':7, 'b':3.14}
+    comm.send(data, dest=rank+1, tag=11)
+elif rank == size-1:
+    # print out data in the last thread
+    data = comm.recv(source=rank-1, tag=11)
+    print('%d of %d, Received data ...' % (rank, comm.Get_size()))
+    print(data, type(data))
+else:
+    # relay data
+    data = comm.recv(source=rank-1, tag=11)
+    comm.send(data, dest=rank+1, tag=11)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from mpi4py import MPI
+import numpy
+
+comm = MPI.COMM_WORLD
+rank = comm.Get_rank()
+
+if rank == 0:
+    data = numpy.arange(100, dtype=numpy.float64)
+    comm.Send(data, dest=1, tag=13)
+    print(data)
+elif rank == 1:
+    data = numpy.empty(100, dtype=numpy.float64)
+    comm.Recv(data, source=0, tag=13)
+    print('%d of %d, Received data ...' % (rank, comm.Get_size()))
+    print(data)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from mpi4py import MPI
+
+comm = MPI.COMM_WORLD
+rank = comm.Get_rank()
+
+if rank == 0:
+    print('%d of %d, Create data ...' % (rank, comm.Get_size()))
+    data = {'a':7, 'b':3.14}
+else:
+    data = None
+
+data = comm.bcast(data, root=0)
+print('%d of %d, Received data ...' % (rank, comm.Get_size()))
+print(data, type(data))
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://pythonprogramming.net/mpi-broadcast-tutorial-mpi4py/">MPI broadcasting tutorial with Python, mpi4py, and bcast</a></li>
+			<li><a href = "https://mpi4py.readthedocs.io/en/stable/index.html">MPI for Python Documentation</a></li>
+		</div>
+	</body>
+</html>

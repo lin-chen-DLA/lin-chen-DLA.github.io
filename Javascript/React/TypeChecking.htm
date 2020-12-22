@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Typechecking
+		</div>
+
+		<div class = "subtitle">Property Validation</div>
+		<div class = "block">
+			<li>PropTypes.array</li>
+			<li>PropTypes.bool</li>
+			<li>PropTypes.func</li>
+			<li>PropTypes.number</li>
+			<li>PropTypes.object</li>
+			<li>PropTypes.string</li>
+		</div>
+		<div class = "block">
+			<li>propTypes is only checked in development mode</li>
+		<pre class = "prettyprint linenums">
+npm install --save prop-types
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+
+class Greeting extends React.Component {
+  render() {
+    return (
+      &lt;h1&gt;Hello, {this.props.name}, {this.props.age}, {this.props.address}&lt;/h1&gt;
+    );
+  }
+}
+
+// default props values
+Greeting.defaultProps = {
+  address: '40'
+};
+
+// type checking
+Greeting.propTypes = {
+  name: PropTypes.string,
+  age: PropTypes.string.isRequired
+};
+
+let names = ['Lin', 'Chen'];
+ReactDOM.render(&lt;Greeting name = {names}
+               address="Valdosta, GA"/&gt;, document.getElementById('root'));
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+Warning: Failed prop type: Invalid prop `name` of type `array` supplied to `Greeting`, expected `string`.
+Warning: Failed prop type: The prop `age` is marked as required in `Greeting`, but its value is `undefined`.
+		</pre>
+		</div>
+	</body>
+</html>

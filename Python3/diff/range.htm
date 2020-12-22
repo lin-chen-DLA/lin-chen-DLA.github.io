@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			range&xrange
+		</div>
+
+		<div class = "subtitle">Python 2</div>
+		<div class = "block">
+			<li>range() returns a list</li>
+			<li>xrange(), returns a iterable</li>
+		<pre class = "prettyprint linenums">
+l = range(4)
+print(type(l)) # list
+print(l) # [0, 1, 2, 3]
+
+for e in l:
+    print(e)
+
+x = xrange(4)
+print(type(x)) # xrange
+print(list(x)) # [0, 1, 2, 3]
+
+for e in x:
+    print(e)
+		</pre>
+		</div>
+		<div class = "subtitle">Python 3</div>
+		<div class = "block">
+			<li>range() returns a range, which is a iteration and can be converted to list by calling list(), it is more like xrange() in Python 2</li>
+			<li>xrange() has been removed in Python 3</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+r = range(0, 10, 1)
+print(type(r)) # range
+print(len(r)) # 10
+print(list(r)) # convert a range to list, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+for e in r:
+    print(e, end=' ')
+print()
+		</pre>
+		</div>
+	</body>
+</html>

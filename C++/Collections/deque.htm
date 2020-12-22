@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			deque
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Deque is double-ended queue</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Initialization</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;deque&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	for(; it != end; ++it)
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::deque&lt;int&gt; a = {1, 2, 3, 4};
+
+	std::deque&lt;int&gt; b(10);
+
+	std::deque&lt;int&gt; c(10, 100);
+
+	std::deque&lt;int&gt; d(c.begin(), c.end());
+
+	std::deque&lt;int&gt; e(d);
+
+	int array[] = {10, 20, 30, 40, 50};
+	std::deque&lt;int&gt; f(array, array+sizeof(array)/sizeof(int));
+
+	//operator =
+	a = f;
+	display(a.begin(), a.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Retrieve Deque</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;deque&gt;
+
+int main(int argc, char *argv[])
+{
+	std::deque&lt;int&gt; a = {1, 2, 3, 4};
+
+	std::cout&lt;&lt;a[1]&lt;&lt;std::endl;
+	std::cout&lt;&lt;a.at(1)&lt;&lt;std::endl;
+	std::cout&lt;&lt;a.front()&lt;&lt;std::endl;
+	std::cout&lt;&lt;a.back()&lt;&lt;std::endl;
+
+	std::cout&lt;&lt;*(a.begin()+3)&lt;&lt;std::endl;
+	std::cout&lt;&lt;a.begin()[2]&lt;&lt;std::endl;//might not be safe
+
+	auto it = a.begin();
+	std::advance(it, 2);
+	std::cout&lt;&lt;*it&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Insert and Delete</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;deque&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	for(; it != end; ++it)
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::deque&lt;int&gt; a = {1, 2, 3, 4};
+
+	//push_back
+	a.push_back(10);
+	//push_front
+	a.push_front(20);
+
+	//insert, insert new elements before the elements at the specified position
+	a.insert(a.begin()+1, 10);
+
+	//erase
+	a.erase(a.begin()+1);
+
+	//pop_back
+	a.pop_back();
+	//pop_front
+	a.pop_front();
+
+	//clear
+	a.clear();
+	display(a.begin(), a.end());
+
+	return 0;
+} 
+			</pre>
+		</div>
+		<div class = "subtitle">Capacity</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;deque&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	for(; it != end; ++it)
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::deque&lt;int&gt; a = {1, 2, 3, 4};
+
+	a.pop_back();
+	a.resize(2);
+
+	a.shrink_to_fit();
+
+	std::cout&lt;&lt;"Size: "&lt;&lt;a.size()&lt;&lt;std::endl;
+	std::cout&lt;&lt;"Max_size: "&lt;&lt;a.max_size()&lt;&lt;std::endl;
+
+	display(a.begin(), a.end());
+
+	return 0;
+} 
+			</pre>
+		</div>
+		<div class = "subtitle">Memory</div>
+		<div class = "block">
+			<ul>
+				<li>deque does not use contiguous memory</li>
+				<li><a href = "https://stackoverflow.com/questions/6292332/what-really-is-a-deque-in-stl">Deque Structure</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://www.codeproject.com/Articles/5425/An-In-Depth-Study-of-the-STL-Deque-Container">Deque v.s. Vector</a></li>
+				<li><a href = "http://www.cplusplus.com/reference/deque/deque/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

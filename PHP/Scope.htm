@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>PHP</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Scope
+		</div>
+
+		<div class = "subtitle">Local scope</div>
+		<div class = "block">
+			<li>A variable declared in a function</li>
+			<li>it is visible only to code in that function</li>
+			<pre class = "prettyprint linenums">
+&lt;?php
+	function updateCounter() {
+		$counter = 100;
+		echo "Inside function: $counter\n";
+	}
+
+	$counter = 10;
+	updateCounter();
+	echo "Outside function: $counter\n";
+?&gt;
+			</pre>
+		</div>
+	</body>
+</html>

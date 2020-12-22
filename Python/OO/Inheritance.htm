@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Inheritance
+		</div>
+
+		<div class = "subtitle">Single inheritance</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Vehicle.h
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+ 
+    def __init__(self, brand, year):
+        self._brand = brand;
+	self._year = year;
+ 
+    @property
+    def brand(self):
+        return self._brand
+ 
+    @brand.setter
+    def brand(self, b):
+        self._brand = b;
+ 
+    @brand.deleter
+    def brand(self):
+        del self._brand
+ 
+    @property
+    def year(self):
+        return self._year
+ 
+    @year.setter
+    def year(self, y):
+        self._year = y
+ 
+    @year.deleter
+    def year(self):
+        del self._year
+ 
+    def __str__(self):
+        return self._brand+' '+str(self._year)
+ 
+    def __getattr__(self, attr): # intercept that inexistent attribute
+        return '~'
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Car.py
+from Vehicle import Vehicle;
+
+class Car(Vehicle):
+	"""Define class Car, which is inherit from class Vehicle"""
+	def __init__(self, brand, year, model):
+	    """Construct"""
+	    print "Create Car Object ..."; 
+	    super(Car, self).__init__(brand, year);
+	    #Vehicle.__init__(self, brand, year);
+	    self.__model = model;
+
+        @property
+        def model(self):
+            return self.__model
+
+        @model.setter
+        def model(self, value):
+            self.__model = value
+
+        @model.deleter
+        def model(self):
+            del self.__model
+
+        # override __str__ in Vehicle
+	def __str__(self):
+            #return super(Car, self).__str__() + " " + self.model
+            return Vehicle.__str__(self) + " " + self.model
+
+def main():
+	v = Vehicle("Buick", 1998)
+        print(v)
+
+	c = Car("Lincoln", 1998, "Continental");
+        print(c)
+
+        print(issubclass(Car, Vehicle)) # True
+        print(isinstance(c, Car)) # True
+
+if __name__ == '__main__':
+	main();
+
+		</pre>
+		</div>
+
+		<div class = "subtitle">Abstract class</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    """Abstract base class Vehicle"""
+ 
+    def __init__(self, brand, year):
+        if self.__class__ == Vehicle:
+            raise NotImplementedError('Cannot create Vehicle instance ...')
+
+        self._brand = brand;
+	self._year = year;
+ 
+    @property
+    def brand(self):
+        return self._brand
+ 
+    @brand.setter
+    def brand(self, b):
+        self._brand = b;
+ 
+    @brand.deleter
+    def brand(self):
+        del self._brand
+ 
+    @property
+    def year(self):
+        return self._year
+ 
+    @year.setter
+    def year(self, y):
+        self._year = y
+ 
+    @year.deleter
+    def year(self):
+        del self._year
+ 
+    def __str__(self):
+        return self._brand+' '+str(self._year)
+ 
+    def __getattr__(self, attr): # intercept that inexistent attribute
+        return '~'
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from Vehicle import Vehicle;
+
+class Car(Vehicle):
+	"""Define class Car, which is inherit from class Vehicle"""
+	def __init__(self, brand, year, model):
+	    """Construct"""
+	    print "Create Car Object ..."; 
+	    super(Car, self).__init__(brand, year);
+	    #Vehicle.__init__(self, brand, year);
+	    self.__model = model;
+
+        @property
+        def model(self):
+            return self.__model
+
+        @model.setter
+        def model(self, value):
+            self.__model = value
+
+        @model.deleter
+        def model(self):
+            del self.__model
+
+        # override __str__ in Vehicle
+	def __str__(self):
+            #return super(Car, self).__str__() + " " + self.model
+            return Vehicle.__str__(self) + " " + self.model
+
+def main():
+        try:
+            v = Vehicle("Buick", 1998) # Vehicle is an abstract class, can not be used to create instance
+        except Exception, err:
+            print(err)
+
+	c = Car("Lincoln", 1998, "Continental");
+        print(c)
+
+if __name__ == '__main__':
+	main();
+
+		</pre>
+		</div>
+	</body>
+</html>

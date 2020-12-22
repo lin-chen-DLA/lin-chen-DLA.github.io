@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Priority Queue</div>
+
+		<div class = "subtitle">Heap Tree</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+/* Define a Max-Heap
+ * @author Lin Chen
+ * @since 10.02.2017
+ */
+public class P
+{
+	private int array [];
+	private int size;
+	private int length;
+
+	/* Initialize array with the array in CLRS
+	 */
+	public P()
+	{
+		array = getArray();
+		size = array.length;
+		length = size;
+		buildMaxHeap(array);
+
+		System.out.println(this);
+	}
+
+	/* Get the front element
+	 * @return front
+	 */
+	// O(1)
+	public int peek()
+	{
+		if(size &lt; 1)
+			return -1;
+
+		return array[0];
+	}
+
+	/* Dequeue
+	 * @return front
+	 */
+	// O(lgn)
+	public int poll()
+	{
+		if(size &lt; 1)
+			return -1;
+		int max = array[0];
+		array[0] = array[size-1];
+		size--;
+		maxHeapify(array, 0, size-1);
+
+		return max;
+	}
+
+	/* Increase the specific element
+	 * @param i index of the element
+	 * @param key value that change to
+	 */
+	// O(lgn)
+	public void increase(int i, int key)
+	{
+		if(key &lt; array[i])
+			return;
+		array[i] = key;
+		while(i &gt; 0 && array[getParent(i)] &lt; array[i])
+		{
+			int temp = array[getParent(i)];
+			array[getParent(i)] = array[i];
+			array[i] = temp;
+			i = getParent(i);
+		}
+	}
+
+	/* Insert an element
+	 * @param key insert value
+	 */
+	// O(lgn)
+	public void insert(int key)
+	{
+		if(size &gt;= length)
+		{
+			int [] array2 = new int[size*2];
+			for(int i = 0; i &lt; size; i++)
+				array2[i] = array[i];
+			array = array2;
+			length *= length;
+		}
+		array[size] = key;
+		size++;
+		increase(size-1, key);
+	}
+
+	/* Check whether or not has next element
+	 * @return true if has more element; false otherwise
+	 */
+	public boolean hasNext()
+	{
+		return (size &gt; 0);
+	}
+
+	/* Get the size of queue
+	 * @return queue size
+	 */
+	public int size()
+	{
+		return size;
+	}
+
+	/* Get the example in CLRS
+	 * @return an intger array
+	 */
+	public static int [] getArray()
+	{
+		int array [] = {16, 14, 10, 8, 7, 9, 3, 2, 4, 1};
+
+		return array;
+	}
+
+	/* Get the left child
+	 * @param i index of current node
+	 * @return index of left child
+	 */
+	public static int getLeft(int i)
+	{
+		return i*2+1;
+	}
+
+	/* Get the right child
+	 * @param i index of current node
+	 * @return index of right child
+	 */
+	public static int getRight(int i)
+	{
+		return i*2+2;
+	}
+
+	public static int getParent(int i)
+	{
+		return (i-1)/2;
+	}
+
+	/* Maintin the max-heap property of a subtree rooted at index i
+	 * @param array an integer array
+	 * @param i index of current node
+	 * @param n index of last node of the subtree
+	 */
+	// O(lgn)
+	public static void maxHeapify(int [] array, int i, int n)
+	{
+		int l = getLeft(i);//get left child
+		int r = getRight(i);//get right child
+
+		int largest = i;
+
+		if(l &lt;= n && array[l] &gt; array[i])
+			largest = l;
+
+		if(r &lt;= n && array[r] &gt; array[largest])
+			largest = r;
+
+		if(largest != i)
+		{
+			int temp = array[i];
+			array[i] = array[largest];
+			array[largest] = temp;
+			maxHeapify(array, largest, n);
+		}
+	}
+
+	/* Create the heap tree for input array
+	 * @param array an integer array
+	 */
+	// O(nlgn)
+	public static void buildMaxHeap(int [] array)
+	{
+		for(int i = (array.length/2-1); i &gt;= 0; i--)
+		{
+			maxHeapify(array, i, array.length-1);
+		}
+	}
+
+	/* Override toString function
+	 */
+	@Override
+	public String toString()
+	{
+		String str = "";
+		for(int i = 0; i &lt; size; i++)
+			str = str + " " + array[i];
+
+		return str;
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>

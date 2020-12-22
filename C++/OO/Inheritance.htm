@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Inheritance
+		</div>
+
+		<div class = "block">
+			<ul>
+				Inheritance allows a new class to be based on an existing class. The new class inherits all the member variables and functions, except for <span style = "color:red">the constructors and destructor</span>.
+			</ul>
+		</div>
+		<div class = "subtitle">"Is a" Relationship</div>
+<div class = "block">
+		<p style="text-align:center;"><img src = "img/Vehicle.png" width = 50%></p>
+	</div>
+	<div class = "subtitle">Constructor and Destructor</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Vehicle.h
+#ifndef VEHICLE_H
+#define VEHICLE_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Vehicle
+{
+	private:
+		std::string producer;
+	public:
+		//constructor
+		Vehicle(std::string s);
+
+		std::string getProducer() const {return producer;}
+		void setProducer(std::string producer);
+
+		std::string toString();
+
+		~Vehicle();
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+//Vehicle.cpp
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+
+//constructor
+Vehicle::Vehicle(std::string s):producer(s)
+{
+	std::cout&lt;&lt;"Vehicle Constructor ..."&lt;&lt;std::endl;
+}
+
+void Vehicle::setProducer(std::string producer)
+{
+	this-&gt;producer = producer;
+}
+
+std::string Vehicle::toString()
+{
+	std::string temp;
+	temp = "Vehicle Producer: "+producer;
+	return temp;
+}
+
+Vehicle::~Vehicle()
+{
+	std::cout&lt;&lt;"Vehicle Destructor ..."&lt;&lt;std::endl;
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//Car.h
+#ifndef CAR_H
+#define CAR_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+
+class Car : public Vehicle
+{
+	private:
+		std::string model;
+	public:
+		//constructor
+		Car(std::string p, std::string m);
+
+		std::string getModel() const {return model;}
+		void setModel(std::string model);
+
+		std::string toString();
+
+		~Car();
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+//Car.cpp
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+#include "Car.h"
+
+//constructor
+Car::Car(std::string p, std::string m):Vehicle(p), model(m)
+{
+	std::cout&lt;&lt;"Car Constructor ..."&lt;&lt;std::endl;
+}
+
+void Car::setModel(std::string model)
+{
+	this-&gt;model = model;
+}
+
+std::string Car::toString()
+{
+	std::string temp;
+	temp = "Car Producer: "+getProducer()+" Model: "+model;
+	return temp;
+}
+
+Car::~Car()
+{
+	std::cout&lt;&lt;"Car Destructor ..."&lt;&lt;std::endl;
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//Bicycle.h
+#ifndef BICYCLE_H
+#define BICYCLE_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+
+class Bicycle : public Vehicle
+{
+	private:
+		int size;
+	public:
+		//constructor
+		Bicycle(std::string p, int s);
+
+		int getSize() const {return size;}
+		void setSize(int s);
+
+		std::string toString();
+
+		~Bicycle();
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+//Bicycle.cpp
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+#include "Bicycle.h"
+
+//constructor
+Bicycle::Bicycle(std::string p, int s) : Vehicle(p), size(s)
+{
+	std::cout&lt;&lt;"Bicycle Constructor ..."&lt;&lt;std::endl;
+}
+
+void Bicycle::setSize(int s)
+{
+	size = s;
+}
+
+std::string Bicycle::toString()
+{
+	std::string temp;
+	temp = "Bicycle Producer: "+getProducer()+" Size: "+std::to_string(size);
+	return temp;
+}
+
+Bicycle::~Bicycle()
+{
+	std::cout&lt;&lt;"Bicycle Destructor ..."&lt;&lt;std::endl;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Although the private members are inherited, they are invisible to child. They can be accessed by the member functions of the parent class</li>
+				<li>Inheritance does not work in reverse. It is impossible for a parent class to call a member funciton of a child class</li>
+				<li>Pass arguments to the parent class by calling the constructor of the parent</li>
+				<li style = "color:red">Car(std::string p, std::string m):Vehicle(std::string p), in the definition of a constructor, not in a prototype</li>
+				<li>Creating a child object, the constructor of parent will be called first, then the constructor of child will be called; when the object is deleted, the destructor of child will be called first, then the destructor of parent will be called</li>
+			</ul>
+		</div>
+		<div class = "block">
+		<p style="text-align:center;"><img src = "img/Inheritance.png" width = 50%></p>
+	</div>
+	<div class = "subtitle">Class Access Specification</div>
+		<div class = "block">
+			<p style="text-align:center;"><img src = "img/Protected.png" width = 50%></p>
+		</div>
+		<div class = "block">
+			<ul>
+				The default access specification is private, class Parent : Grand equals to class Parent : private Grand
+			</ul>
+		</div>
+		<div class = "subtitle">Redefine Functions</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Grand.h
+#ifndef GRAND_H
+#define GRAND_H
+#include &lt;iostream&gt;
+class Grand
+{
+	private: 
+		int gx;
+	protected:
+		int gy;
+	public:
+		int gz;
+
+		Grand()
+		{
+			gx = 1;
+			gy = 2;
+			gz = 3;
+		}
+
+		int getX() const {return gx;}
+		int getY() const {return gy;}
+		int getZ() const {return gz;}
+
+		void display()
+		{
+			std::cout&lt;&lt;gx&lt;&lt;" "&lt;&lt;gy&lt;&lt;" "&lt;&lt;gz&lt;&lt;std::endl;
+		}
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+//Parent.h
+#ifndef PARENT_H
+#define PARENT_H
+#include &lt;iostream&gt;
+#include "Grand.h"
+
+class Parent : public Grand
+{
+	private: 
+		int px;
+	protected:
+		int py;
+	public:
+		int pz;
+
+		Parent() : Grand()
+		{
+			px = 10;
+			py = 20;
+			pz = 30;
+		}
+
+		int getX() const {return px;}
+		int getY() const {return py;}
+		int getZ() const {return pz;}
+
+		void display()
+		{
+			std::cout&lt;&lt;px&lt;&lt;" "&lt;&lt;py&lt;&lt;" "&lt;&lt;pz&lt;&lt;std::endl;
+			std::cout&lt;&lt;Grand::getX()&lt;&lt;" "&lt;&lt;gy&lt;&lt;" "&lt;&lt;gz&lt;&lt;std::endl;
+		}
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+//Child.h
+#ifndef CHILD_H
+#define CHILD_H
+#include &lt;iostream&gt;
+#include "Grand.h"
+#include "Parent.h"
+
+class Child : public Parent
+{
+	private: 
+		int cx;
+	protected:
+		int cy;
+	public:
+		int cz;
+
+		Child() : Parent()
+		{
+			cx = 100;
+			cy = 200;
+			cz = 300;
+		}
+
+		int getX() const {return cx;}
+		int getY() const {return cy;}
+		int getZ() const {return cz;}
+
+		void display()
+		{
+			std::cout&lt;&lt;cx&lt;&lt;" "&lt;&lt;cy&lt;&lt;" "&lt;&lt;cz&lt;&lt;std::endl;
+			std::cout&lt;&lt;Parent::getX()&lt;&lt;" "&lt;&lt;py&lt;&lt;" "&lt;&lt;pz&lt;&lt;std::endl;
+			std::cout&lt;&lt;Grand::getX()&lt;&lt;" "&lt;&lt;gy&lt;&lt;" "&lt;&lt;gz&lt;&lt;std::endl;
+		}
+};
+#endif
+			</pre>
+		</div>
+		<div class = "block">
+			<p style="text-align:center;"><img src = "img/Child.png" width = 30%></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Protected members of a base class can be accessed by functions in a derived class</li>
+				<li>Call Grand::getX() from Parent</li>
+				<li>Call Grand::getX() and Parent::getX() from Child</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Multiple Inheritance</div>
+		<div class = "block">
+			<p style="text-align:center;"><img src = "img/Multiple.png" width = 30%></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Faculty.h
+#ifndef FACULTY_H
+#define FACULTY_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Faculty
+{
+	private:
+		std::string title;
+	public:
+		Faculty(std::string t):title(t)
+		{
+			std::cout&lt;&lt;"Faculty Constructor ..."&lt;&lt;std::endl;
+		}
+
+		std::string getTitle() const {return title;}
+
+		std::string toString()
+		{
+			std::string temp;
+			temp = "Faculty Title: "+title;
+			return temp;
+		}
+
+		~Faculty()
+		{
+			std::cout&lt;&lt;"Faculty Destructor ..."&lt;&lt;std::endl;
+		}
+};
+#endif
+			</pre>
+
+			<pre class = "prettyprint linenums">
+//Student.h
+#ifndef STUDENT_H
+#define STUDENT_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Student
+{
+	private:
+		std::string major;
+	public:
+		Student(std::string m)
+		{
+			major = m;
+			std::cout&lt;&lt;"Student Constructor ..."&lt;&lt;std::endl;
+		}
+
+		std::string getMajor() const {return major;}
+
+		std::string toString()
+		{
+			std::string temp;
+			temp = "Student Major: "+major;
+			return temp;
+		}
+
+		~Student()
+		{
+			std::cout&lt;&lt;"Student Destructor ..."&lt;&lt;std::endl;
+		}
+};
+#endif
+			</pre>
+
+			<pre class = "prettyprint linenums">
+//TA.h
+#ifndef TA_H
+#define TA_H
+#include &lt;iostream&gt;
+#include "Faculty.h"
+#include "Student.h"
+
+class TA : public Faculty, Student
+{
+	private:
+		std::string course;
+	public:
+		TA(std::string t, std::string m, std::string c):Faculty(t), Student(m), course(c)
+		{
+			std::cout&lt;&lt;"TA Constructor ..."&lt;&lt;std::endl;
+		}
+
+		std::string getCourse() const {return course;}
+
+		std::string toString()
+		{
+			std::string temp;
+			temp = "TA Title: "+getTitle()+" Major: "+getMajor()+" Course: "+course;
+			return temp;
+		}
+
+		~TA()
+		{
+			std::cout&lt;&lt;"TA Destructor ..."&lt;&lt;std::endl;
+		}
+};
+#endif
+			</pre>
+
+			<pre class = "prettyprint linenums">
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "TA.h"
+
+int main(int argc, char *argv[])
+{
+	TA ta("GA", "CS", "CSC115");
+
+	std::cout&lt;&lt;ta.toString()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<a href = "http://www.geeksforgeeks.org/multiple-inheritance-in-c/">The diamond problem</a>
+			</ul>
+		</div>
+		<div class = "subtitle">Constructor, Copy Constructor, Move Constructor, Copy Assignment, Move Assignment, Destructor</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//V.h
+#ifndef V_H
+#define V_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		//constructor
+		V(int s):size(s)
+		{
+			std::cout&lt;&lt;"Constructor ..."&lt;&lt;std::endl;
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+			std::cout&lt;&lt;"----End Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//copy constructor
+		V(const V &right):size(right.size), array(size?new int [size]:nullptr)
+		{
+			std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+			std::cout&lt;&lt;"----End Copy Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//move constructor
+		V(V && right):size(0), array(nullptr)
+		{
+			std::cout&lt;&lt;"Move Constructor ..."&lt;&lt;std::endl;
+			size = right.size;
+			array = right.array;
+			right.size = 0;
+			right.array =  nullptr;
+			std::cout&lt;&lt;"----End Move Constructor ..."&lt;&lt;std::endl;
+		}
+
+		int *getAddress() const {return array;}
+		int getSize() const {return size;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		std::string toString() const
+		{
+			std::string str = "V: ";
+			for(int i = 0; i &lt; size; i++)
+				str += std::to_string(array[i])+" ";
+			return str;
+		}
+
+		V & time(int n)
+		{
+			for(int i = 0; i &lt; size; i++)
+				array[i] *= n;
+			return *this;
+		}
+
+		//copy assignment
+		const V& operator=(const V &right)
+		{
+			std::cout&lt;&lt;"Copy Assignment ..."&lt;&lt;size&lt;&lt;std::endl;
+			if(this != &right)
+			{
+				V temp(right);
+				//std::swap(size, temp.size);
+				//std::swap(array, temp.array);
+				std::swap(*this, temp);
+			}
+			std::cout&lt;&lt;"----End Assignment ..."&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		//move assignment
+		V & operator=(V&& right)
+		{
+			std::cout&lt;&lt;"Move Assignment ..."&lt;&lt;std::endl;
+			if(this != &right)
+			{
+				delete [] array;
+				array = 0;
+				size = 0;
+
+				size = right.size;
+				array = right.array;
+
+				right.size = 0;
+				right.array = nullptr;
+			}
+			std::cout&lt;&lt;"----End Move Assignment ..."&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		~V()
+		{
+			std::cout&lt;&lt;"Destructor ..."&lt;&lt;size&lt;&lt;std::endl;
+			delete array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+
+//VV.h
+#ifndef VV_H
+#define VV_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "V.h"
+
+class VV : public V
+{
+	private:
+		int  type;
+	public:
+		//constructor inheritance
+		VV(int t, int s):type(t), V(s)
+		{
+			std::cout&lt;&lt;"WW Constructor ..."&lt;&lt;std::endl;
+			std::cout&lt;&lt;"----End WW Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//copy constructor inheritance
+		VV(const VV &right):type(right.type), V(right)
+		{
+			std::cout&lt;&lt;"VV Copy Constructor ..."&lt;&lt;std::endl;
+			std::cout&lt;&lt;"----End VV Copy Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//move constructor
+		VV(VV && right):type(right.type), V(std::move(right))
+		{
+			std::cout&lt;&lt;"VV Move Constructor ..."&lt;&lt;std::endl;
+			std::cout&lt;&lt;"----End VV Move Constructor ..."&lt;&lt;std::endl;
+		}
+
+		void display() const
+		{
+			std::cout&lt;&lt;"Type: "&lt;&lt;type&lt;&lt;" -- ";
+			V::display();
+		}
+
+		//copy assignment
+		const VV& operator=(const VV &right)
+		{
+			std::cout&lt;&lt;"VV Copy Assignment ..."&lt;&lt;std::endl;
+			type = right.type;
+			V::operator=(right);
+			std::cout&lt;&lt;"----End VV Assignment ..."&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		//move assignment
+		VV & operator=(VV&& right)
+		{
+			std::cout&lt;&lt;"VV Move Assignment ..."&lt;&lt;std::endl;
+			type = right.type;
+			V::operator=(std::move(right));
+			std::cout&lt;&lt;"----End VV Move Assignment ..."&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		~VV()
+		{
+			std::cout&lt;&lt;"VV Destructor ..."&lt;&lt;std::endl;
+		}
+};
+#endif
+
+//main.cpp
+#include &lt;iostream&gt;
+#include "VV.h"
+
+int main(int argc, char *argv[])
+{
+	//V constructor
+	//VV constructor
+	VV vv(1, 2);
+	vv.display();//0 10
+
+	//V copy constructor
+	//VV copy constructor
+	VV vv2(vv);
+	vv.display();//0 10
+	vv2.display();//0 10
+
+	//V move constructor
+	//VV move constructor
+	VV vv3(std::move(vv));
+	vv.display();//empty
+	vv3.display();//0 10
+
+	//VV copy assignment
+	//V copy assignment
+	//V copy constructor, temp(right)
+	//V move assignment, swap
+	//V move assignment
+	//V move assignment
+	VV vv4(2, 4);
+	vv4.display();//0 10 20 30
+	vv4 = vv3;
+	vv3.display();//0 10
+	vv4.display();//0 10
+
+	//VV move assignment
+	//V move assignment
+	VV vv5(3, 8);
+	vv5.display();//0 10 20 30 40 50 60 70
+	vv4 = std::move(vv5);
+	vv5.display();//empty
+	vv4.display();//0 10 20 30 40 50 60 70
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Starting out with C++, Tony Gaddis</li>
+				<li><a href = "https://isocpp.org/wiki/faq/basics-of-inheritance">isocpp.org</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

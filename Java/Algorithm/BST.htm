@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Binary Search Tree</div>
+		<div class = "subtitle">Tree</div>
+		<div class = "block">
+			<ul>
+				<li>A tree is a non-linear structure</li>
+				<li>A tree is great to represent hierarchical information</li>
+				<li>Tree is a direted graph</li>
+				<li>At the top of the tree, a special node called root. Root is the only node that does not have incoming edges</li>
+				<li>All other nodes have exactly 1 incoming edge</li>
+				<li>Each node can have an arbitrary number of outgoing edges</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>If n is a node and it is connected to n<sub>1</sub>, n<sub>2</sub>, ..., n<sub>k</sub> via outgoing edges, then n<sub>1</sub>, n<sub>2</sub>, ..., n<sub>k</sub> are all children of n, and n is called the parent</li>
+				<li>Nodes which do not have any outgoing edges are called leaves</li>
+				<li>A node which is neither a root nor a leaf is called internal</li>
+				<li>Internal nodes are those nodes that have a parent and at least 1 child</li>
+				<li>Nodes in a tree can be arranged by levels, root is at level 0, level 1 contains all children of root, ...</li>
+				<li>There is exactly 1 path from the root to any given node</li>
+				<li>The children of a given node are ordered from left to right: first child, second child, third child, ...</li>
+				<li>Given a node n, the set of nodes which have n as ancestor represents a tree structure called subtree rooted at n</li>
+				<li>The degree of a tree is the maximum number of children that each node is allowed to have</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Binary Search Tree</div>
+		<div class = "block">
+			<ul>
+				<li>Binary tree is a tree with a degree of 2</li>
+				<li>Each node can have at most 2 children</li>
+				<li>First child of a node is called the left child</li>
+				<li>Second child of a node is called the right child</li>
+				<li>A binary tree where each node has 2 children except for the leaves is called complete binary tree</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/BST.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>All the nodes to the left of a node n have a less value then the value at node n</li>
+				<li>All the nodes to the right of a node n have a greater value than the value at node n</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Node</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Node
+{
+	private int data;
+	private Node left;
+	private Node right;
+	private Node parent;
+
+	public Node()
+	{
+		data = 0;
+		left = null;
+		right = null;
+		parent = null;
+	}
+
+	public Node(int e)
+	{
+		data = e;
+		left = null;
+		right = null;
+		parent = null;
+	}
+
+	public int getData()
+	{
+		return data;
+	}
+
+	public Node getLeft()
+	{
+		return left;
+	}
+
+	public Node getRight()
+	{
+		return right;
+	}
+
+	public Node getParent()
+	{
+		return parent;
+	}
+
+	public void setData(int d)
+	{
+		data = d;
+	}
+
+	public void setLeft(Node l)
+	{
+		left = l;
+	}
+
+	public void setRight(Node r)
+	{
+		right = r;
+	}
+
+	public void setParent(Node p)
+	{
+		parent = p;
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">BST</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class BST
+{
+	private Node root;
+
+	/** Initialize a tree
+	 */
+	public BST()
+	{
+		root = null;
+	}
+
+	/** Return the root of the tree
+	 * @return {@code Node}, root of tree
+	 */
+	// O(1)
+	public Node getRoot()
+	{
+		return root;
+	}
+
+	/** Set a node for root
+	 * @param Node, node
+	 * @return none
+	 */
+	// O(1)
+	public void setRoot(Node n)
+	{
+		root = n;
+	}
+
+	/** Check if the tree is an empty tree
+	 * @return {@code bool}, tree if tree is empty; false otherwise
+	 */
+	// O(1)
+	public boolean isEmpty()
+	{
+		return (root == null);
+	}
+
+	/** Get the size of the tree
+	 * @return {@code int}, number of elements in tree
+	 */
+	// O(n)
+	public int size()
+	{
+		return getSize(root);
+	}
+
+	public int getSize(Node n)
+	{
+		if(n == null) return 0;
+		return 1+getSize(n.getLeft())+getSize(n.getRight());
+	}
+
+	/** Check if two trees are same
+	 * @param BST a binary search tree
+	 * @return {@code bool}, tree if two trees are same; false otherwise
+	 */
+	// O(n)
+	public boolean equals(BST t)
+	{
+		if(size() != t.size()) return false;
+		return nodeEquals(root, t.root);
+	}
+
+	public boolean nodeEquals(Node n1, Node n2)
+	{
+		if(n1 == null && n2 == null) return true;
+		if(n1 == null && n2 != null) return false;
+		if(n1 != null & n2 == null) return false;
+		if(n1.getData() != n2.getData()) return false;
+		return nodeEquals(n1.getLeft(), n2.getLeft()) && nodeEquals(n1.getRight(), n2.getRight());
+	}
+
+	/** Print elements in ascending ord
+	 */
+	// O(n)
+	public void inorderWalk()
+	{
+		if(root != null) printLDR(root);
+		System.out.println();
+	}
+
+	public void printLDR(Node n)
+	{
+		if(n == null) return;
+		printLDR(n.getLeft());
+		System.out.printf("%5d", n.getData());
+		printLDR(n.getRight());
+	}
+
+	/** Print element in pre-order
+	 */
+	// O(n)
+	public void preorderWalk()
+	{
+		if(root != null) printDLR(root);
+		System.out.println();
+	}
+
+	public void printDLR(Node n)
+	{
+		if(n == null) return;
+		System.out.printf("%5d", n.getData());
+		printDLR(n.getLeft());
+		printDLR(n.getRight());
+	}
+
+	/** Print elements in post-order
+	 */
+	// O(n)
+	public void postorderWalk()
+	{
+		if(root != null) printLRD(root);
+		System.out.println();
+	}
+
+	public void printLRD(Node n)
+	{
+		if(n == null) return;
+		printLRD(n.getLeft());
+		printLRD(n.getRight());
+		System.out.printf("%5d", n.getData());
+	}
+
+	/** Insert an element into the tree with the algorithm in CLRS
+	 * @param, int value of inserting element
+	 */
+	// O(lgn)
+	public void insert(int e)
+	{
+		if(search(e)) return;
+
+		Node parent = null;
+		Node current = root;
+
+		while(current != null)
+		{
+			parent = current;
+			current = (e &lt; current.getData())?parent.getLeft():parent.getRight();
+		}
+
+		Node temp = new Node(e);
+		temp.setParent(parent);
+		if(parent == null)
+			root = temp;
+		else
+		{
+			if (e &lt; parent.getData())
+				parent.setLeft(temp);
+			else
+				parent.setRight(temp);
+		}
+	}
+
+	/** Replace a subtree with other subtree
+	 * @param u target subtree
+	 * @param v replace subtree
+	 */
+	// O(1)
+	public void transplant(Node u, Node v)
+	{
+		if(u.getParent() == null)
+			root = v;
+		else if(u == u.getParent().getLeft())
+			u.getParent().setLeft(v);
+		else
+			u.getParent().setRight(v);
+		if(v != null)
+			v.setParent(u.getParent());
+	}
+
+	/** Delete an element in tree
+	 * @param int value of an element
+	 */
+	// O(lgn)
+	public void delete(int e)
+	{
+		if(!search(e)) return;
+
+		Node z = searchNode(root, e);
+
+		//z has no child or only one child
+		if(z.getLeft() == null)
+			transplant(z, z.getRight());
+		else if(z.getRight() == null)
+			transplant(z, z.getLeft());
+		//z has two children
+		else
+		{
+			Node y = getMin(z.getRight());
+			if(y.getParent() != z)//y is not z's child
+			{
+				transplant(y, y.getRight());
+				y.setRight(z.getRight());
+				y.getRight().setParent(y);
+			}
+			transplant(z, y);
+			y.setLeft(z.getLeft());
+			y.getLeft().setParent(y);
+		}
+	}
+
+	/** Get the successor of an element in tree
+	 * @param int value of the element
+	 * @return {@code int}, value of successor
+	 */
+	// O(lgn)
+	public int successor(int e)
+	{
+		Node n = getSuccessor(root, e);
+		if (n == null) return -1;
+
+		return n.getData();
+	}
+
+	public Node getSuccessor(Node n, int e)
+	{
+		if(!search(e))
+			return null;
+		Node target = searchNode(n, e);
+
+		//if the right subtree of node is nonempty
+		if(target.getRight() != null)
+			return getMin(target.getRight());
+
+		Node p = target.getParent();
+
+		//if node is leave, the right subtree is empty
+		while (p != null && target == p.getRight()) {
+            		target = p;
+            		p = p.getParent();
+        	}
+		return p;
+	}
+
+	/** Get the predecessor of an element in tree
+	 * @param int value of the element
+	 * @return {@code int}, value of predecessor
+	 */
+	// O(lgn)
+	public int predecessor(int e)
+	{
+		Node n = getPredecessor(root, e);
+		if (n == null) return -1;
+
+		return n.getData();
+	}
+
+	public Node getPredecessor(Node n, int e)
+	{
+		if(!search(e))
+			return null;
+		Node target = searchNode(n, e);
+
+		//if the left subtree of node is nonempty
+		if(target.getLeft() != null)
+			return getMax(target.getLeft());
+
+		Node p = target.getParent();
+
+		//if node is leave, the left subtree is empty
+		while(p != null && target == p.getLeft()){
+			target = p;
+			p = p.getParent();
+		}
+		return p;
+	}
+
+	/** Get the height of the tree
+	 */
+	// O(lgn)
+	public int height()
+	{
+		return getHeight(root);
+	}
+
+	public int getHeight(Node n)
+	{
+		if(n == null) return 0;
+		if(n.getLeft() == null && n.getRight() == null)
+			return 1;
+
+		int l = getHeight(n.getLeft());
+		int r = getHeight(n.getRight());
+
+		return (l&gt;r)?(1+l):(1+r);
+	}
+
+	/** Search an element in tree
+	 * @param int, the value of an element
+	 * @return {@code boolean}, true if the tree contains the element and false otherwise
+	 */
+	// O(lgn)
+	public boolean search(int e)
+	{
+		return searchNode(root, e) != null;
+	}
+
+	public Node searchNode(Node n, int e)
+	{
+		if(n == null) return null;
+		if(n.getData() == e) return n;
+		if(e &lt; n.getData())
+			return searchNode(n.getLeft(), e);
+		else
+			return searchNode(n.getRight(), e);
+	}
+
+	/** Get the minimum element in tree
+	 * @param none
+	 * @return {@code int}, value of the minimum element in tree
+	 */
+	// O(lgn)
+	public int min()
+	{
+		Node n = getMin(root);
+		return n.getData();
+	}
+
+	public Node getMin(Node n)
+	{
+		if(n.getLeft() == null)
+			return n;
+		return getMin(n.getLeft());
+	}
+
+	/** Get the maximum element in tree
+	 * @param none
+	 * @return int, value of the maximum element in tree
+	 */
+	// O(lgn)
+	public int max()
+	{
+		Node n = getMax(root);
+		return n.getData();
+	}
+
+	public Node getMax(Node n)
+	{
+		if(n.getRight() == null)
+			return n;
+		return getMax(n.getRight());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Successor</div>
+		<div class = "block">
+			<li>Node has right child</li>
+			<p style = "text-align:center;"><img src = "img/BSTS1.png" width = "30%"></p>
+			<li>Node has no right child</li>
+			<p style = "text-align:center;"><img src = "img/BSTS2.png" width = "30%"></p>
+		</div>
+		<div class = "subtitle">Predecessor</div>
+		<div class = "block">
+			<li>Node has left child</li>
+			<li>Node has no left child</li>
+		</div>
+		<div class = "subtitle">Transplant</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/BSTT.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle">Delete</div>
+		<div class = "block">
+			<li>Node has only right child</li>
+			<p style = "text-align:center;"><img src = "img/BSTD1.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<li>Node has only left child</li>
+			<p style = "text-align:center;"><img src = "img/BSTD2.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<li>Node has two children</li>
+			<p style = "text-align:center;"><img src = "img/BSTD3.png" width = "50%"></p>
+			<p style = "text-align:center;"><img src = "img/BSTD4.png" width = "75%"></p>
+		</div>
+		<div class = "subtitle">BSTTest</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class BSTTest
+{
+	public static void main(String args[])
+	{
+		BST t = new BST();
+
+		// Create tree
+		t.insert(8);
+		t.insert(3);
+		t.insert(10);
+		t.insert(1);
+		t.insert(6);
+		t.insert(14);
+		t.insert(4);
+		t.insert(7);
+		t.insert(13);
+		t.insert(15);
+
+		// Display tree
+		t.inorderWalk();
+
+		// Search
+		System.out.println(t.search(7));//true
+		System.out.println(t.search(20));//false
+
+		// Min
+		System.out.println("Min: "+t.min());//1
+
+		// Max
+		System.out.println("Max: "+t.max());//15
+
+		// Height
+		System.out.println("Height: "+t.height());//4
+
+		// Successor
+		System.out.println("Successor: "+t.successor(3));//4
+		System.out.println("Successor: "+t.successor(7));//8
+		System.out.println("Successor: "+t.successor(8));//10
+		System.out.println("Successor: "+t.successor(15));//-1
+
+		// Predecessor
+		System.out.println("Predecessor: "+t.predecessor(13));//10
+		System.out.println("Predecessor: "+t.predecessor(10));//8
+		System.out.println("Predecessor: "+t.predecessor(8));//7
+		System.out.println("Predecessor: "+t.predecessor(1));//-1
+
+		//delete
+		t.delete(3);
+		t.inorderWalk();
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li>CLRS</li>
+				<li><a href = "http://www.geeksforgeeks.org/binary-search-tree-data-structure/">Geeksforgeeks</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

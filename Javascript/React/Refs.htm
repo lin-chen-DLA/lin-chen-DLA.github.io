@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Refs and the DOM
+		</div>
+
+		<div class = "subtitle">Refs</div>
+		<div class = "block">
+			<li>A ref is an identifier that React uses to reference DOM elements</li>
+		</div>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+
+import { Component } from 'react'
+class AddColorForm extends Component {
+	constructor(props) {
+    		super(props)
+    		this.submit = this.submit.bind(this)
+  	}
+
+	submit(e) {
+    		const { _title, _color } = this.refs
+    		e.preventDefault();
+    		alert(`New Color: ${_title.value} ${_color.value}`)
+    		_title.value = '';
+    		_color.value = '#000000';
+    		_title.focus();
+	}
+
+	render() {
+		return (
+			&lt;form onSubmit={this.submit}&gt;
+              			&lt;input ref="_title" type="text"
+                     			placeholder="color title..." required/&gt;
+              			&lt;input ref="_color" type="color" required/&gt;
+              			&lt;button&gt;ADD&lt;/button&gt;
+          		&lt;/form&gt;
+		) }
+}
+
+ReactDOM.render(&lt;AddColorForm /&gt;, document.getElementById('root'));
+		</pre>
+		</div>
+		<div class = "subtitle">React.createRef</div>
+		<div class = "block">
+			<li>When the ref attribute is used on an HTML element, the ref created in the constructor with React.createRef() receives the underlying <span>DOM element</span> as its current property</li>
+			<li>When the ref attribute is used on a custom class component, the ref object receives the mounted <span>instance of the component</span> as its current</li>
+			<li>Not use the ref attribute on <span>function components</span> because they don’t have instances</li>
+		</div>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+
+import { Component } from 'react'
+class AddColorForm extends Component {
+	constructor(props) {
+    		super(props)
+    		this.submit = this.submit.bind(this)
+		this._title = React.createRef();
+		this._color = React.createRef();
+  	}
+
+	submit(e) {
+		const _title = this._title.current;
+		const _color = this._color.current;
+    		e.preventDefault();
+    		alert(`New Color: ${_title.value} ${_color.value}`)
+    		_title.value = '';
+    		_color.value = '#000000';
+    		_title.focus();
+	}
+
+	render() {
+		return (
+			&lt;form onSubmit={this.submit}&gt;
+              			&lt;input ref={this._title} type="text"
+                     			placeholder="color title..." required/&gt;
+              			&lt;input ref={this._color} type="color" required/&gt;
+              			&lt;button&gt;ADD&lt;/button&gt;
+          		&lt;/form&gt;
+		) }
+}
+
+ReactDOM.render(&lt;AddColorForm /&gt;, document.getElementById('root'));
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+class CustomTextInput extends React.Component {
+  constructor(props) {
+    super(props);
+    // create a ref to store the textInput DOM element
+    this.textInput = React.createRef();
+    this.focusTextInput = this.focusTextInput.bind(this);
+  }
+
+  focusTextInput() {
+    // Explicitly focus the text input using the raw DOM API
+    // Note: we're accessing "current" to get the DOM node
+    this.textInput.current.focus();
+  }
+
+  render() {
+    // tell React that we want to associate the &lt;input&gt; ref
+    // with the `textInput` that we created in the constructor
+    return (
+      &lt;div&gt;
+        &lt;input
+          type="text"
+          ref={this.textInput} /&gt;
+
+        &lt;input
+          type="button"
+          value="Focus the text input"
+          onClick={this.focusTextInput}
+        /&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+class AutoFocusTextInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.text = React.createRef();
+  }
+
+  componentDidMount() {
+    this.text.current.focusTextInput();
+  }
+
+  render() {
+    return (
+      &lt;CustomTextInput ref={this.text} /&gt;
+    );
+  }
+}
+
+ReactDOM.render(&lt;AutoFocusTextInput /&gt;, document.getElementById('root'));
+		</pre>
+		</div>
+		<div class = "subtitle">Forwarding Refs</div>
+		<div class = "block">
+			<li>Not access to a child’s DOM node from a parent component, it breaks component encapsulation</li>
+			<li>Ref forwarding lets components opt into exposing any child component’s ref as their own</li>
+		</div>
+		</div>
+		<div class = "block">
+			<ol>
+				<li>Create a React ref by calling React.createRef and assign it to a ref variable</li>
+				<li>Pass ref down to &lt;Button ref={ref}&gt; by specifying it as a JSX attribute</li>
+				<li>React passes the ref to the (props, ref) =&gt; ... function inside forwardRef as a second argument</li>
+				<li>Forward this ref argument down to &lt;button ref={ref}&gt; by specifying it as a JSX attribute</li>
+				<li>When the ref is attached, ref.current will point to the &lt;button&gt; DOM node</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+class ButtonGroup extends React.Component {
+  constructor(props) {
+    super(props);
+    this.textValue = React.createRef();
+  }
+
+  componentDidMount() {
+    console.log(this.textValue.current.innerHTML);
+  }
+
+  render() {
+    return (
+      &lt;div&gt;
+	    &lt;Button ref = {this.textValue} /&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+const Button = React.forwardRef((props, ref) =&gt; (
+	&lt;button ref={ref}&gt;Submit&lt;/button&gt;
+))
+
+ReactDOM.render(&lt;ButtonGroup /&gt;, document.getElementById('root'));
+		</pre>
+		</div>
+	</body>
+</html>

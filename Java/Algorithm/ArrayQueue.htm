@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Array Queue</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Queue
+{
+	private int count;//element number of queue
+	private int head;//index of header
+	private int tail;//index  of tail
+	private int MAXSIZE = 10;//capacity
+	private int space [];
+
+	//Constructor
+	public Queue()
+	{
+		count = 0;
+		head = tail = -1;
+		space = new int[MAXSIZE];
+	}
+
+	//Inspector
+	public boolean isEmpty()
+	{
+		return (count == 0);
+	}
+
+	public int front()
+	{
+		if(count == 0) return -1;
+		return space[head];
+	}
+
+	public int rear()
+	{
+		if(count == 0) return -1;
+		return space[tail];
+	}
+
+	public String toString()
+	{
+		String str = "[";
+		int j = head;
+		for(int i = 0; i &lt; count; i++)
+		{
+			str = str+" "+space[j];
+			j = (j+1)%MAXSIZE;
+		}
+
+		return str + "]";
+	}
+
+	//Modifier
+	public void enqueue(int e)
+	{
+		if(count == MAXSIZE)
+		{
+			int [] space2 = new int[MAXSIZE*2];
+			int j = head;
+			int k = 0;
+			for(int i = 0; i &lt; MAXSIZE; i++)
+			{
+				space2[k] = space[j];
+				j = (j+1)%MAXSIZE;
+				k++;
+			}
+			space = space2;
+			head = 0;
+			tail = MAXSIZE-1;
+			space[tail+1] = e;
+			MAXSIZE = MAXSIZE*2;
+			count++;
+			tail++;
+		}
+		else{
+			space[(tail+1)%MAXSIZE] = e;
+			count++;
+			tail = (tail+1)%MAXSIZE;
+			if(count == 1)
+				head = tail;
+		}
+	}
+
+	public boolean dequeue()
+	{
+		if(count == 0) return false;
+		if(count == 1)
+		{
+			head = tail = -1;
+			count = 0;
+			return true;
+		}
+		head = (head+1)%MAXSIZE;
+		count--;
+		return true;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class QueueTest
+{
+	public static void main(String args[])
+	{
+		Queue q = new Queue();
+
+		for(int i = 0; i &lt; 11; i++)
+			q.enqueue(i);
+
+		System.out.println(q);
+
+		q.dequeue();
+		q.enqueue(11);
+
+		System.out.println(q);
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>

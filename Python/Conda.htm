@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Conda
+		</div>
+
+		<div class = "block">
+			<li>Conda is an open source package management system and environment management system
+				<ul>
+					<li>Query and search the Anaconda package index and current Anaconda installation</li>
+					<li>Create new conda environments</li>
+					<li>Install and update packages into existing conda environments</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Package management</div>
+		<div class = "block">
+			<li>conda list, list installed packages
+				<ul>
+					<li>conda list [packagename], search the installed version of a package</li>
+				</ul>
+			</li>
+			<li>conda search [packagename], search availabe package from repository</li>
+			<li>conda --version, check conda version</li>
+			<li>conda install
+				<ul>
+			<li>conda install [packagename], install a specific package</li>
+			<li>conda install scipy=0.15.0, install a specific version of scipy</li>
+			<li>conda install scipy=0.15.0 curl=7.26.0 -n py34_env, install packages for a specific python version</li>
+			<li>conda install [packagename] -c [channelname], install a package from a specific channel</li>
+				</ul>
+			</li>
+			<li>conda remove
+				<ul>
+					<li>conda remove [packagename], remove a package in the current environment</li>
+					<li>conda remove -n [environmentname] [packagename], remove a package in a specific environment</li>
+				</ul>
+			</li>
+			<li>conda repository
+				<ul>
+					<li>conda list --explicit, list the reposiotories including the installed packages</l>
+					<li>conda config --add channels conda-forge, add a repository</li>
+				</ul>
+			</li>
+			<li>conda update [packagename], update a package to the current version</li>
+			<li>conda clean, remove all unused packages in a conda virtual environment</li>
+		</div>
+		<div class = "subtitle">Environment management</div>
+		<div class = "block">
+			<li>conda create
+				<ul>
+			<li>conda create --name [environmentname] [packagename], create an environment and install specific package</li>
+			<li>conda create --name [environmentname] anaconda=1.4.0 python=2.7 numpy=1.6, manage python version, anaconda version, and package version</li>
+			<li>conda create --name [environmentname] python=2.7, create an empty conda environment</li>
+				</ul>
+			</li>
+			<li>conda env remove --name [environmentname], remove an environment</li>
+			<li>source activate [environmentname], active a specific environment on Mac and Linux
+				<ul>
+					<li>activate [environmentname], on Windows</li>
+				</ul>
+			</li>
+			<li>source deactivate, deactivate the current environment on Mac and Linux
+				<ul>
+					<li>deactivate, on Windows</li>
+				</ul>
+			</li>
+			<li>conda info --envs (conda env list), list all the environments</li>
+			<li>conda env export --file SOME_FILE, export the environment to a file</li>
+			<li>conda env create -n [environmentname] -f=[SOME_FILE], create an environment based on an environment file</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://conda.io/docs/commands.html#conda-vs-pip-vs-virtualenv-commands">Conda vs pip vs virtualenv</a></li>
+			<li><a href = "https://conda.io/docs/index.html">Conda</a></li>
+			<li><a href = "https://conda.io/docs/commands.html">Command reference</a></li>
+		</div>
+	</body>
+</html>

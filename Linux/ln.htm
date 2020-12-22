@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Link</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Link</div>
+		<div class = "subtitle">Soft Link</div>
+		<div class = "block">
+			<li>ln -s file link</li>
+		</div>
+		<div class = "subtitle">Hard link</div>
+		<div class = "block">
+			<li>ln file link</li>
+			<li>A hard link is merely an additional name for an existing <span class = "red">file</span></li>
+			<li>Cannot be created for directories, and they cannot cross filesystem boundaries or span across partitions</li>
+			<li>Linux does not distinct the hard links and the original copy, they are pointing to the same inode, remove a link or copy does not affect other links</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.howtoforge.com/linux-ln-command/">Linux ln Command Tutorial for Beginners</a></li>
+			<li><a href = "http://www.linfo.org/hard_link.html">Hard Link Definition</a></li>
+		</div>
+	</body>
+</html>

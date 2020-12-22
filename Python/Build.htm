@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Build
+		</div>
+
+		<div class = "subtitle">Benefits of packaging</div>
+		<div class = "block">
+			<li><span>Dependency management</span>, a package management system can automatically resolve dependencies and make your installation pain free and quick</li>
+			<li><span>Accounting</span>, package managers can maintain lists of things installed and other metadata like the version installed etc.</li>
+			<li><span>Uninstall</span>, push button ways of removing a package from your environment</li>
+			<li><span>Search</span>, find packages by searching a package index for specific terminology</li>
+		</div>
+
+		<div class = "subtitle">distutils & PyPI</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/py_2.png" width = "60%"></p>
+		</div>
+		<div class = "block">
+			<ol>
+				<li>Edit setup.py</li>
+				<li>Edit MANIFEST.in</li>
+				<li>python setup.py sdist, create .tar.gz archive file under /dist folder</li>
+				<li>python setup.py sdist upload (optional), upload the archive file to PyPI with your username and password</li>
+				<li>Installation
+					<ul>
+						<li>python setup.py install, user download the code and install on their own computer</li>
+						<li>pip install project, install package from PyPI repository if the archive file has be deposited to PyPI</li>
+					</ul>
+				</li>
+			</ol>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/py_1.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			<span>README</span>
+		<pre class = "prettyprint linenums">
+This is a simple example package. You can use
+[Github-flavored Markdown](https://guides.github.com/features/mastering-markdown/)
+to write your content.
+		</pre>
+		</div>
+		<div class = "block">
+			<span>LICENSE</span>, choose a license at <a href = "https://choosealicense.com/">Choose an open source license</a>
+		<pre class = "prettyprint linenums">
+Copyright (c) 2018 The Python Packaging Authority
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+		</pre>
+		</div>
+		<div class = "block">
+			<span>setup.py</span>
+		<pre class = "prettyprint linenums">
+from distutils.core import setup
+
+setup(
+    name='ECSUProject_1', # a unique name for PyPI
+    version='0.1',
+    description='Demo for building a Python project',
+    author='Lin Chen',
+    author_email='lchen@ecsu.edu',
+    url='http://lin-chen-va.github.io', # http://location or https://location
+    packages=['myFormat', 'myFormat/sub', ], # packages and subpackages containing .py files
+    package_data={'myFormat':['other/*']}, # other needed files will be installed for user
+    py_modules=[], # individual modules
+    scripts=['convert',], # the executable files will be installed for user
+    license='Creative Commons Attribution-Noncommercial-Share Alike license',
+    long_description=open('README').read(),
+    # more meta-data for repository
+    classifiers=[
+      'Development Status :: 4 - Beta',
+      'Environment :: X11 Applications :: GTK',
+      'Intended Audience :: End Users/Desktop',
+      'Intended Audience :: Developers',
+      'License :: OSI Approved :: GNU General Public License (GPL)',
+      'Operating System :: POSIX :: Linux',
+      'Programming Language :: Python',
+      'Topic :: Desktop Environment',
+      'Topic :: Text Processing :: Fonts'
+      ],
+)
+		</pre>
+		</div>
+		<div class = "block">
+			By default, Distutils does not include all files in your project’s directory. Only the following files will be included by default
+			<ul>
+				<li>all Python source files implied by the <span>py_modules</span> and <span>packages</span> options</li>
+				<li>all C source files mentioned in the <span>ext_modules</span> or <span>libraries</span> options</li>
+				<li>scripts identified by the <span>scripts</span> option</li>
+				<li>anything that looks like a test script: <span>test/test*.py</span></li>
+				<li>Top level files named: <span>README.txt, README, setup.py, or setup.cfg</span></li>
+			</li>
+		</div>
+		<div class = "block">
+			<span>MANIFEST.in</span>, add other files that will be included in the archive file
+		<pre class = "prettyprint linenums">
+include README LICENSE
+recursive-include doc/_build/html *
+		</pre>
+		</div>
+		<div class = "block">
+			<span>python setup.py sdist</span>, build an archive file (.tar.gz)
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/py_3.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			<span>Content in the archive file (.tar.gz)</span>
+			<p style = "text-align:center;"><img src = "img/py_4.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+			<span>Installation</span>
+			<li>Download the archive file (.tar.gz) and unpack it</li>
+			<li>python setup.py install
+				<ul>
+					<li>anaconda/lib/python2.7/site-packages/myFormat, the location of the package installed</li>
+					<li>anaconda/bin/convert, the location of the executable script installed</li>
+				</ul>
+			</li>
+			<li><span>import myFormat</span>, import the installed package</li>
+			<li><span>convert</span>, run the executable script</li>
+		</div>
+		<div class = "block">
+			<span>Deposite the archive file to PyPI</span>
+			<li><a href = "https://pypi.org/account/register/">Register</a> an account at pypi.org</li>
+			<li>Add a .pypirc file under $HOME directory
+		<pre class = "prettyprint linenums">
+[distutils]
+index-servers =
+    pypi
+
+[pypi]
+repository: https://upload.pypi.org/legacy/
+username: yourUserName
+password: yourPassword
+		</pre>
+			</li>
+			<li>python setup.py sdist upload, deposite the archive file to PyPI repository</li>
+			<li>pip install packageName, install the package from the PyPI repository</li>
+		</div>
+		<div class = "subtitle">Options of distutils</div>
+		<div class = "block">
+			<li>python setup.py sdist, generate project.1.0.tar.gz for Mac and Linux</li>
+			<li>python setup.py bdist_wininst, generat project.1.0.exe for Windows</li>
+			<li>python setup.py bdist_rpm, generate a rpm distribution</li>
+			<li>python setup.py install, install a package</li>
+			<li>python setup.py develop, installs your package using a symlink to your development code</li>
+		</div>
+		<div class = "subtitle">Different Layout</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/py_5.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<span>setup.py</span>
+		<pre class = "prettyprint linenums">
+from distutils.core import setup
+
+setup(
+    name='ECSUProject_1',
+    version='0.1',
+    description='Demo for building a Python project',
+    author='Lin Chen',
+    author_email='lchen@ecsu.edu',
+    url='http://lin-chen-va.github.io',
+    packages=['myFormat', 'myFormat/sub', ],
+    package_dir={'':'src'}, # set "src" as the root package
+    package_data={'myFormat':['other/*']},
+    scripts=['src/convert',],
+    license='Creative Commons Attribution-Noncommercial-Share Alike license',
+    long_description=open('README').read(),
+    classifiers=[
+      'Development Status :: 4 - Beta',
+      'Environment :: X11 Applications :: GTK',
+      'Intended Audience :: End Users/Desktop',
+      'Intended Audience :: Developers',
+      'License :: OSI Approved :: GNU General Public License (GPL)',
+      'Operating System :: POSIX :: Linux',
+      'Programming Language :: Python',
+      'Topic :: Desktop Environment',
+      'Topic :: Text Processing :: Fonts'
+      ],
+)
+		</pre>
+		</div>
+		<div class = "subtitle">setuptools and PyPI</div>
+		<div class = "block">
+			<li>distutils does not support dependencies well, even requires is an option of setup function</li>
+			<li>python setup.py install, the dependent modules will be installed</li>
+		</div>
+		<div class = "block">
+			<span>setup.py</span>
+		<pre class = "prettyprint linenums">
+from setuptools import setup
+
+setup(
+    name='ECSUProject_2',
+    version='0.1',
+    description='Demo for building a Python project',
+    author='Lin Chen',
+    author_email='lchen@ecsu.edu',
+    url='http://lin-chen-va.github.io',
+    install_requires=['numpy&gt;=1.14.0', 'biopython&gt;=1.60'], # add the dependencies
+    packages=['myFormat', 'myFormat/sub', ],
+    package_dir={'':'src'},
+    package_data={'myFormat':['other/*']},
+    scripts=['src/convert',],
+    license='Creative Commons Attribution-Noncommercial-Share Alike license',
+    long_description=open('README').read(),
+    classifiers=[
+      'Development Status :: 4 - Beta',
+      'Environment :: X11 Applications :: GTK',
+      'Intended Audience :: End Users/Desktop',
+      'Intended Audience :: Developers',
+      'License :: OSI Approved :: GNU General Public License (GPL)',
+      'Operating System :: POSIX :: Linux',
+      'Programming Language :: Python',
+      'Topic :: Desktop Environment',
+      'Topic :: Text Processing :: Fonts'
+      ],
+)
+		</pre>
+		</div>
+		<div class = "subtitle">setup.py and requirements</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/py_5.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			<li>pip freeze &gt; requirements.txt, create a simple list of all the packages in the current environment</li>
+			<span>setup.py</span>
+		<pre class = "prettyprint linenums">
+from setuptools import setup
+
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
+
+setup(
+    name='ECSUProject_2',
+    version='0.1',
+    description='Demo for building a Python project',
+    author='Lin Chen',
+    author_email='lchen@ecsu.edu',
+    url='http://lin-chen-va.github.io',
+    install_requires=requirements,
+    packages=['myFormat', 'myFormat/sub', ],
+    package_dir={'':'src'},
+    package_data={'myFormat':['other/*']},
+    scripts=['src/convert',],
+    license='Creative Commons Attribution-Noncommercial-Share Alike license',
+    long_description=open('README').read(),
+    classifiers=[
+      'Development Status :: 4 - Beta',
+      'Environment :: X11 Applications :: GTK',
+      'Intended Audience :: End Users/Desktop',
+      'Intended Audience :: Developers',
+      'License :: OSI Approved :: GNU General Public License (GPL)',
+      'Operating System :: POSIX :: Linux',
+      'Programming Language :: Python',
+      'Topic :: Desktop Environment',
+      'Topic :: Text Processing :: Fonts'
+      ],
+)
+		</pre>
+			<span>MANIFEST.in</span>
+		<pre class = "prettyprint linenums">
+include README LICENSE requirements.txt
+recursive-include doc/_build/html *
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>python setup.py test</span>, implement test code</li>
+			<li><span>python setup.py install</span>, install modules and executable script</li>
+		</div>
+		<div class = "subtitle">pyinstaller</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/py_7.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+			<li>Integrated needed external packages within the stand-alone executables</li>
+			<li>pyinstaller --onefile convert.py
+				<ul>
+					<li>generate a executable "convert" under "dist" folder</li>
+					<li>generate package infor under "build" folder</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.pyinstaller.org/">pyinstaller</a></li>
+			<li><a href = "https://pythonhosted.org/an_example_pypi_project/setuptools.html">setuptools tutorial</a></li>
+			<li><a href = "https://docs.python.org/2/distutils/introduction.html">An Introduction to Distutils</a></li>
+			<li><a href = "https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html#lay-out-your-project">The Hitchhiker's Guide</a></li>
+			<li><a href = "https://wiki.python.org/moin/Distutils/Tutorial">Introduction to distutils</a></li>
+			<li><a href = "https://docs.python.org/2/distutils/packageindex.html">PyPI Documentation for Python 2</a></li>
+			<li><a href = "https://packaging.python.org/tutorials/packaging-projects/">PyPI tutorial for Python 3</a></li>
+		</div>
+	</body>
+</html>

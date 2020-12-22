@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Class
+		</div>
+
+		<div class = "subtitle">Object</div>
+		<div class = "block">
+			<li>singleton object, a class that can have only one instance using the keyword <span>object</span> instead of class keyword</li>
+			<li>Cannot instantiate a singleton object, cannot pass parameters to the primary constructor</li>
+		<pre class = "prettyprint linenums">
+object Demo {
+     def hello()
+     {
+       println("Hello");
+     }
+
+     def world()
+     {
+       println("World");
+     }
+
+     def main(args: Array[String]) {
+       hello();
+       world();
+   }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Class</div>
+		<div class = "block">
+			<li>The class name works as a class primary constructor</li>
+		<pre class = "prettyprint linenums">
+class Car(val m : String) // immutable paramters
+{
+  var maker : String = m; // mutable field
+
+  def getMaker() : String = {return maker;}
+}
+
+object Demo
+{
+  def main(args: Array[String])
+  {
+    val c = new Car("Buick"); // immutable reference
+    println(c.getMaker());
+
+    c.maker = "Honda";
+    println(c.maker);
+  }
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Car(var maker : String)
+{
+  def getMaker() : String = {return maker;}
+}
+
+object Demo
+{
+  def main(args: Array[String])
+  {
+    val c = new Car("Buick"); // immutable reference
+    println(c.getMaker());
+
+    c.maker = "Honda";
+    println(c.maker);
+  }
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Car(var maker : String, var year : Int)
+{
+  // second constructor
+  def this(m: String)
+  {
+    this(m, 0);
+  }
+
+  def getMaker() : String = {return maker;}
+
+  override def toString : String = {return "Maker: %10s; Year: %10d".format(maker, year)}
+}
+
+object Demo
+{
+  def main(args: Array[String])
+  {
+    val c = new Car("Buick", 1998); // immutable reference
+    println(c); // Buick, 1998
+
+    val c2 = new Car("Honda");
+    println(c2); // Honda, 0
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Inheritance</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Vehicle(val m : String) // immutable parameters
+{
+  var maker : String = m; // mutable fields
+
+  def disp() {println("Maker: "+maker)}
+
+  // override toString
+  override def toString : String = {return "Maker: %10s;".format(maker)}
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+class Car(override val m : String, var year : Int) extends Vehicle(m) // override parameter in the parent
+{
+  // override the function defined in the parent
+  override def disp()
+  {
+    super.disp(); // call the function defined in the parent
+    println("Year: "+year)
+  }
+
+  // override toString
+  override def toString : String = {return "Maker: %10s; Year: %10d".format(maker, year)}
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def main(args: Array[String])
+  {
+    val c = new Car("Buick", 1998); // immutable reference
+    println(c); // Buick, 1998
+
+    c.disp();
+  }
+}
+		</pre>
+		</div>
+	</body>
+</html>

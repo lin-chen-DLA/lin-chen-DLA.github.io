@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Package
+		</div>
+
+		<div class = "subtitle">Create Package</div>
+		<div class = "block">
+			<ul>
+				<li>Package creates a namespace, different packages can have classes with same package</li>
+				<li>Allow types within the package to have unrestricted access to one another yet still restrict access for types outside the package</li>
+			</ul>
+		</div>
+
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Package.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Car.java
+package edu.ecsu.cs;
+
+public class Car
+{
+	private String maker;
+
+	public Car(String m)
+	{
+		maker = m;
+	}
+
+	public String toString()
+	{
+		return maker;
+	}
+
+	public static void main(String args[])
+	{
+		Car c = new Car("Buick");
+
+		System.out.println(c);
+
+		Bike b = new Bike("Phenix");
+
+		System.out.println(b);
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//Bike.java
+package edu.ecsu.cs;
+
+class Bike
+{
+	private String maker;
+
+	public Bike(String m)
+	{
+		maker = m;
+	}
+
+	public String toString()
+	{
+		return maker;
+	}
+
+	public static void main(String args[])
+	{
+		Car c = new Car("Buick");
+
+		System.out.println(c);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Compile Package</div>
+		<div class = "block">
+			<ul>
+				<li>javac -d [outputPat] [*.java]</li>
+				<li>javac -d . Car.java</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Use Package</div>
+		<div class = "block">
+			<ul>
+				<li>Refer to the member by its fully qualified name</li>
+				<li>Import the package member</li>
+				<li>Import the member's entire package</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//CarUse.java
+import edu.ecsu.cs.*;
+
+public class CarUse
+{
+	public static void main(String args[])
+	{
+		Car c = new Car("Honda");
+
+		System.out.println(c);
+		
+		//not able to use Bike since it is not a public class
+		//Bike b = new Bike("Phenix");
+
+		//System.out.println(b);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Classpath</div>
+		<div class = "block">
+			<ul>
+				<li>Order of searching classes
+					<ul>
+						<li>Runtime classes (basically, rt.jar in $JRE_HOME/lib`)</li>
+						<li>Extension classes (some JARs in $JRE_HOME/lib/ext`)</li>
+						<li>Classpath, in order. There are four possibilities for specifying classpath:
+							<ul>
+								<li>If -jar was specified, then that JAR is in the classpath. Whatever classpath is declared as classpath in META-INF/MANIFEST.MF is also considered</li>
+								<li>Else, if -cp was specified, that is the classpath</li>
+								<li>Else, if $CLASSPATH is set, that is the classpath</li>
+								<li>Else, the current directory from which java has been launched is the classpath</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>% CLASSPATH=/home/george/java/classes; export CLASSPATH</li>
+				<li>javac *.java -classpath path_1:path_2, figure out class path, containing a list of directories or archive files, separated by <span style = "color:red">:</span>
+					<ul>
+						<li>javac -cp "../P.jar:./" CarUse</li>
+					</ul>
+				</li>
+				<li>java -classpath path_1:path_2 CarUse, add pathes containing all classes needed
+					<ul>
+						<li>java -cp "../P.jar:./" CarUse</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://stackoverflow.com/questions/8934780/how-jvm-starts-looking-for-classes">How JVM starts looking for classes?</a></li>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/java/package/packages.html">Oracle Tutorial</a></li>
+				<li>Java How to Program</li>
+			</ul>
+		</div>
+	</body>
+</html>

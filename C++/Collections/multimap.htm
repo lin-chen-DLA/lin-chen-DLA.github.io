@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			multimap
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Multiple elements can have equivalent keys</li>
+				<li>Elements are sorted by its key following a specific order indicated by its comparison object</li>
+				<li>Implemented as a balanced binary search tree</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Initialization</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;first&lt;&lt;" "&lt;&lt;it-&gt;second&lt;&lt;std::endl;
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::multimap&lt;std::string, std::string&gt; m;
+	m.insert(std::make_pair("Buick", "Centry"));
+	m.insert(std::make_pair("Buick", "Rendezvous"));
+
+	display(m.begin(), m.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Access Elements</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;first&lt;&lt;" "&lt;&lt;it-&gt;second&lt;&lt;std::endl;
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::multimap&lt;std::string, std::string&gt; m;
+	m.insert(std::make_pair("Buick", "Centry"));
+	m.insert(std::make_pair("Buick", "Rendezvous"));
+	m.insert(std::make_pair("Honda", "CRV"));
+	m.insert(std::make_pair("Honda", "Accord"));
+
+	//equal_range
+	auto ret = m.equal_range("Honda");
+	for(auto it = ret.first; it != ret.second; ++it)
+		std::cout&lt;&lt;it-&gt;second&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Find and Erase</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;first&lt;&lt;" "&lt;&lt;it-&gt;second&lt;&lt;std::endl;
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::multimap&lt;std::string, std::string&gt; m;
+	m.insert(std::make_pair("Buick", "Centry"));
+	m.insert(std::make_pair("Buick", "Rendezvous"));
+	m.insert(std::make_pair("Honda", "CRV"));
+	m.insert(std::make_pair("Honda", "Accord"));
+
+	//find
+	auto it = m.find("Honda");
+	std::cout&lt;&lt;it-&gt;first&lt;&lt;" "&lt;&lt;it-&gt;second&lt;&lt;std::endl;//Honda CRV
+
+	//erase
+	m.erase(it);
+
+	display(m.begin(), m.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Multimap with Objects</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include "Rectangle.h"
+
+struct comp{
+	bool operator()(const Rectangle &a, const Rectangle &b)
+	{
+		return (a.getArea() &lt; b.getArea());
+	}
+};
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;first.getArea()&lt;&lt;std::endl;
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::multimap&lt;Rectangle, int, comp&gt; m;
+	Rectangle r1(1, 2);
+	Rectangle r2(1, 2);
+	Rectangle r3(2, 3);
+	Rectangle r4(2, 4);
+
+	m.insert(std::make_pair(r1, 1));
+	m.insert(std::make_pair(r2, 2));
+	m.insert(std::make_pair(r3, 3));
+	m.insert(std::make_pair(r4, 4));
+
+	Rectangle r5(1, 2);
+	auto it = m.find(r5);
+	std::cout&lt;&lt;it-&gt;first.getArea()&lt;&lt;std::endl;//2
+
+	display(m.begin(), m.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/map/multimap/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

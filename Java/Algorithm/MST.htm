@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Minimum Spanning Tree</div>
+		<div class = "block">
+			<ul>
+				<li>For a undirected graph, fina an acylic tree spanning the graph with minimum total edge weight</li>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/MST.png" width = "40%"></p>
+		</div>
+		<div class = "subtitle">Kruskal's Algorithm</div>
+		<div class = "block">
+			<ul>
+				<li>Set s1 = {a, b, c}, Set s2 = {d, e, f}, disjoint set</li>
+				<li>Find-Set(x), find a set which contain element x</li>
+				<li>Union(s1, s2), merge two sets</li>
+				<li>O(ElgV)</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Create a set for each node</li>
+				<li>Sort the edges by edge weights by nondecreasing order</li>
+				<li>For each edge (u, v), if u and v are not in the same set, merge them, set the edge as tree edge of minimum spanning tree</li>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/Kruskal.png" width = "60%"></p>
+		</div>
+		<div class = "subtitle">Prim's Algorithm</div>
+		<div class = "block">
+			<ul>
+				<li>Each node has a key, which is the minimum weight of any edge connecting to it, the value is set as infinite initially</li>
+				<li>Set up the key of the start node to be zero</li>
+				<li>Each node has a pointer pointing to its parent in MST</li>
+				<li>Push all nodes into a min-priority queue</li>
+				<li>For each popped node, check all its neighbors and update its key value and parent, until the queue is empty</li>
+				<li>O(ElgV)</li>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/Prim.png" width = "70%"></p>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li>CLRS Chapter 23</li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CSS</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Grid
+		</div>
+
+		<div class = "block">
+			<li>A grid layout consists of a parent element, with one or more child elements</li>
+			<li><span>display</span> property is set to <span>grid</span> or <span>inline-grid</span></li>
+			<li>All direct children of the grid container automatically become grid items</li>
+		</div>
+		<div class = "subtitle">Grid Area</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		.item1 {grid-area: header; border: 1px solid blue;}
+		.item2 {grid-area: nav; border: 1px solid blue;}
+		.item3 {grid-area: article; border: 1px solid blue;}
+		.item4 {grid-area: footer; border: 1px solid blue;}
+
+		.grid-container {
+			display: grid; 
+			grid-template-areas: 
+			'header'
+			'nav'
+			'article'
+			'footer';
+			grid-gap: 10px;
+			background-color: silver;
+		}
+
+		@media (min-width: 600px) {
+			.grid-container {
+			display: grid; 
+			grid-template-areas: 
+			'header header header header'
+			'nav article article article'
+			'footer footer footer footer';
+			grid-gap: 10px;
+			background-color: silver;
+		}}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class = "grid-container"&gt;
+		&lt;div class = "item1"&gt;Header&lt;/div&gt;
+		&lt;div class = "item2"&gt;Nav&lt;/div&gt;
+		&lt;div class = "item3"&gt;Article&lt;/div&gt;
+		&lt;div class = "item4"&gt;Footer&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+	</body>
+</html>

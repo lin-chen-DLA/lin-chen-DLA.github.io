@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Key
+		</div>
+
+		<div class = "block">
+			<li>Help React to update only the necessary elements instead of re-rendering the entire list when something changes</li>
+			<li>Do not pass to the assigned component</li>
+			<li>When the component list is updated, the reconciler will look at the <span>key</span>, and the component <span>properties</span> in the updated component list, and then look through its previous list of components to see if it matches any previous combinations
+				<ul>
+					<li>If any differences are detected between certain <span>properties</span>, it will redraw the components</li>
+					<li>If any differences are detected between <span>keys</span>, it will create and insert the new component</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+class App extends React.Component{
+	  constructor(props) {
+		    super(props)
+		    this.state = {
+			      list: [{id: 1,val: 'aa'}, {id: 2, val: 'bb'}, {id: 3, val: 'cc'}]
+		    }
+	  }
+
+	  click() {
+		  this.state.list = [{id: 1,val: 'aa'}, {id: 2, val: 'bb'}, {id: 6, val: 'ee'}]
+		    //this.state.list.reverse()
+		    this.setState({list: [...this.state.list, {id: 4, val: 'dd'}]})
+	  }
+
+	  render() {
+		    return (
+            &lt;ul&gt;
+                &lt;div onClick={this.click.bind(this)}&gt;Update&lt;/div&gt;
+                {
+                	this.state.list.map(function(item, index) {
+                		return (
+                            &lt;Li key={item.id} val={item.val}&gt;&lt;/Li&gt;
+                		)
+                	}.bind(this))
+                }
+            &lt;/ul&gt;
+		    )
+	  }
+}
+
+class Li extends React.Component{
+	  constructor(props) {
+		    super(props)
+	  }
+	  componentDidMount() {
+		    console.log('===Did Mount===');
+		    console.log(this.props);
+	  }
+	  componentWillUpdate(nextProps, nextState) {
+		    console.log('===Will Update====');
+		    console.log(nextProps);
+		    console.log(nextState);
+	  }
+	  componentDidUpdate(prevProps, prevState) {
+		  console.log('===Did Update===');
+		  console.log(prevProps);
+		  console.log(prevState);
+	  }
+	  render() {
+		    return (
+            &lt;li&gt;
+                {this.props.val}
+            &lt;/li&gt;
+		    )
+	  }
+}
+
+ReactDOM.render(&lt;App /&gt;, document.getElementById('root'));
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://dev.to/jtonzing/the-significance-of-react-keys---a-visual-explanation--56l7">The significance of React keys - a visual explanation</a></li>
+	</body>
+</html>

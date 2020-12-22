@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Output
+		</div>
+
+		<div class = "subtitle">Change HTML Content</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;button type="button" onclick="document.getElementById('demo').innerHTML = Date()"&gt;
+Click me to display Date and Time.&lt;/button&gt;
+
+&lt;p id="demo"&gt;&lt;/p&gt;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;div id = "demo"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+	document.getElementById("demo").innerHTML = "Hello Javascript";
+&lt;/script&gt;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Change HTML Attribute Values</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;img id="myImage" src="https://lin-chen-va.github.io/images/profile.jpg" style="width:100px"&gt;
+
+&lt;button id = "myButton" type = "button" onclick="myFunction()"&gt;Click&lt;/button&gt;
+
+&lt;script&gt;
+	function myFunction() {
+		document.getElementById("myImage").src = "https://lin-chen-va.github.io/images/Blazers.png"
+		document.getElementById("myButton").innerHTML = "Changed"
+	}
+&lt;/script&gt;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Change HTML Styles</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;p id="demo"&gt;JavaScript can change the style of an HTML element.&lt;/p&gt;
+
+&lt;button type="button" onclick="document.getElementById('demo').style.fontSize='35px'"&gt;Click Me!&lt;/button&gt;
+		</pre>
+		</div>
+
+		<div class = "subtitle">External JavaScript</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//myScript.js
+function myFunction()
+{
+	document.getElementById("demo").innerHTML = "Hello Javascript ...";
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;p id = "demo"&gt;&lt;/p&gt;
+&lt;button type="button" onclick="myFunction()"&gt;Try it&lt;/button&gt;
+
+&lt;script src = "myScript.js"&gt;&lt;/script&gt;
+		</pre>
+		</div>
+	</body>
+</html>

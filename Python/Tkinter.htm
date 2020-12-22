@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color:red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Tktiner
+		</div>
+
+		<div class = "subtitle">Basics</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/tk_1.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bint/python
+
+import tkinter as tk
+
+class myGUI(object):
+
+    def __init__(self):
+        self.main_window = tk.Tk() # create root window
+        self.main_window.pack_propagate(0)
+        self.main_window.geometry("500x500")
+        self.main_window.configure(bg = "#AAA5A4")
+
+        self.frame1 = tk.Frame(self.main_window, bg = "blue", bd = 5, relief = "groove") # create frame 1
+        self.frame2 = tk.Frame(self.main_window, bg = "yellow", bd = 5, relief = "groove") # create frame 2
+
+        # add components into frame1
+        self.label1 = tk.Label(self.frame1, text = "US Liquid Gallon:", bd = 5, relief = "ridge")
+        v = tk.StringVar(self.frame1, value='10')
+        self.entry = tk.Entry(self.frame1, textvariable = v, bd = 5, relief = "sunken", justify = "center")
+
+        self.label1.place(relx = 0, rely = 0.1, relheight = 0.8, relwidth = 0.5, anchor = "nw")
+        self.entry.place(relx = 0.5, rely = 0.1, relheight = 0.8, relwidth = 0.5, anchor = "nw")
+        self.frame1.place(relx = 0, rely = 0.02, anchor="nw", relheight = 0.3, relwidth = 1)
+
+        # add components into frame2
+        self.label2 = tk.Label(self.frame2, text = "Liters:", bd = 5, relief = "ridge")
+        self.label3 = tk.Label(self.frame2, text = "37.8541", bd = 5, relief = "sunken")
+
+        self.label2.place(relx = 0, rely = 0.1, relheight = 0.8, relwidth = 0.5, anchor = "nw")
+        self.label3.place(relx = 0.5, rely = 0.1, relheight = 0.8, relwidth = 0.5, anchor = "nw")
+
+        self.frame2.place(relx = 0, rely = 0.34, anchor = "nw", relheight = 0.3, relwidth = 1)
+
+        # add components into frame3
+        self.frame3 = tk.Frame(self.main_window, bg = "red", bd = 5, relief = "groove")
+        self.button = tk.Button(self.frame3, text = "Convert", bd = 20, relief = "raised", bg = "green", command =self.convert)
+
+        self.button.bind("&lt;Button-1&gt;", self.mouseclick)
+        self.button.bind("&lt;ButtonRelease-1&gt;", self.mouserelease)
+        self.button.pack(side = "left", expand = True, fill = "both")
+
+        self.frame3.place(relx = 0, rely = 0.66, anchor = "nw", relheight = 0.3, relwidth = 1)
+
+        tk.mainloop()
+
+    def convert(self):
+        value = self.entry.get()
+        self.label3.config(text = str(float(value)*3.78541))
+
+    def mouseclick(self, event):
+        self.frame3.config(bg = "#395497", relief = "sunken")
+        self.button.config(activebackground="blue") # button color is supported in Mac
+
+    def mouserelease(self, event):
+        self.frame3.config(bg = "red", relief = "groove")
+
+def main():
+    gui = myGUI()
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">Layout</div>
+		<div class = "block">
+			<li>pack(), organizes widgets in blocks in parent widget
+				<ul>
+					<li><span>expand</span>, allow widget to fill any space in the parent widget</li>
+					<li><span>fill</span>, expand direction, "x", "y", "none", "both"</li>
+					<li><span>side</span>, figure out the location in parent widget, "top", "left", "right", "bottom"</li>
+				</ul>
+			</li>
+			<li>grid(), organizes widgets in a table-like structure in parent widget
+				<ul>
+					<li><span>row</span>, the row to put widget in</li>
+					<li><span>column</span>, the column to put widget in</li>
+				</ul>
+			</li>
+			<li>place(), organizes widgets by placing them in a specific position in the parent widget
+				<ul>
+					<li><span>anchor</span>, The exact spot in parent widget, "nw", "n", "e", "s", "w", "ne", "se", "sw"</li>
+					<li><span>height</span>, width, height and width in pixels</li>
+					<li><span>relheight</span>, <span>relwidth</span>, height and width as a fraction of the height and width of the parent widget</li>
+					<li><span>x</span>, <span>y</span>, horizontal and vertical offset in pixels</li>
+					<li><span>relx</span>, <span>rely</span>, horizontal and vertical offset as a fraction of the height and width of the parent widget</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Events</div>
+		<div class = "block">
+			<li>&lt;Button-1&gt;, events that mouse button has been pressed while the mouse cursor is positioned over the widge, Button 1 is the left mouse button, Button 3 is the right, and Button 2 the middle button</li>
+			<li>&lt;ButtonRelease-1&gt;, indicates that the left button has been released</li>
+			<li>&lt;Enter&gt;, &lt;Leave&gt;, the mouse curson has entered or left the widget</li>
+			<li>&lt;Key&gt;, key on the keyboard was pressed
+				<ul>
+					<li>&lt;Return&gt;, the enter key is pressed</li>
+				</ul>
+			</li>
+			<li>&lt;Configure&gt;, the widget has changed size.</li>
+		</div>
+		<div class = "subtitle">Scrolling</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import Tkinter as tk
+
+class myGUI(object):
+
+    def __init__(self):
+        self.window = tk.Tk()
+        self.window.geometry("200x100")
+        self.window.resizable(0, 0)
+
+        self.frame = tk.LabelFrame(self.window, text = "Scrolling", bd = 2, relief = "sunken")
+        self.frame.place(x = 10, y = 10, height = 80, width = 180, anchor = "nw")
+
+        self.scrollbar = tk.Scrollbar(self.frame)
+        self.scrollbar.place(x = 160, y = 0, height = 80, width = 10, anchor = "nw")
+
+        self.listbox = tk.Listbox(self.frame, bg = "blue", bd= 0, yscrollcommand=self.scrollbar.set)
+        self.listbox.place(x = 0, y = 0, height = 80, width = 160, anchor = "nw")
+        self.scrollbar.config(command=self.listbox.yview)
+
+        for i in range(100):
+            self.listbox.insert(i, i)
+
+        tk.mainloop()
+
+def main():
+    gui = myGUI()
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.tutorialspoint.com/python/python_gui_programming.htm">Tutorialspoint</a></li>
+			<li><a href = "http://staff.washington.edu/rowen/TkinterSummary.html">Tkinter Summary</a></li>
+			<li><a href = "http://effbot.org/tkinterbook/tkinter-index.htm#introduction">An Introduction To Tkinter</a></li>
+			<li><a href = "http://epydoc.sourceforge.net/stdlib/Tkinter-module.html">Documentation</a></li>
+			<li><a href = "https://infohost.nmt.edu/tcc/help/pubs/tkinter/web/index.html">Reference</a></li>
+			<li><a href = "http://www.science.smith.edu/dftwiki/index.php/Color_Charts_for_TKinter">Color Charts for TKinter</a></li>
+			<li><a href = "https://docs.python.org/2.7/library/tkinter.html">Python STL Library</a></li>
+			<li><a href = "https://wiki.python.org/moin/TkInter">Wiki</a></li>
+		</div>
+	</body>
+</html>

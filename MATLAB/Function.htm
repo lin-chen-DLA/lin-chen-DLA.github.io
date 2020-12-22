@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MATLAB</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Function
+		</div>
+
+		<div class = "subtitle">Define Function</div>
+		<div class = "block">
+		<ul>
+			<li>Variables in functions within <span style = "color:red">local workspace</span>, which is separated from <span style = "color:red">base workspace</span></li>
+			<li>Performance is more like pass by value</li>
+			<li>A function file contains one primary function and several sub-functions, primary functions can be called from outside, sub-functions are visible only to the functions inside the function file that defines them</li>
+			<li>Private functions are saved in "private" folder; all private functions are only visible to the functions in the parent folder</li>
+		</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+function [a, b] = change(a, b)
+    nargin % number of input parameters
+    a = a+1;
+    b = b+1;
+    nargout % number of output parameters
+end
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function test()
+    a = 1; b = 10;
+    [c, d] = change(a, b);
+    a
+    b
+    c
+    d
+end
+		</pre>
+	</div>
+	<div class = "subtitle">Anonymous Functions</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+power = @(x, n) x.^n
+a = 1:10
+b = power(a, 2)
+		</pre>
+	</div>
+	<div class = "subtitle">Reference</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "https://www.tutorialspoint.com/matlab/matlab_functions.htm">tutorialspoint.com</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Counting Sort</div>
+
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Counting.png" width = "70%"></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Assume the elements in the array are in a small range</li>
+				<li>O(n+k), memory complexity O(n+k), n is the number of elements, range 0 to k is the range of elements</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Counting
+{
+	public static void countingSort(int [] A, int [] B, int k)
+	{
+		int [] C = new int[k+1];
+
+		for(int i = 0, len = A.length; i &lt; len; i++)
+			C[A[i]] += 1;
+
+		for(int i = 1; i &lt;= k; i++)
+			C[i] = C[i] + C[i-1];
+
+		for(int i = A.length-1; i &gt;= 0; i--)
+		{
+			B[C[A[i]]-1] = A[i];
+			C[A[i]] -= 1;
+		}
+
+		display(C);
+		display(B);
+	}
+
+	public static void display(int [] array)
+	{
+		for(int e : array)
+			System.out.printf("%5d", e);
+		System.out.println();
+	}
+
+	public static void main(String args[])
+	{
+		int [] A = {2, 5, 3, 0, 2, 3, 0, 3};
+		int [] B = new int[A.length];
+
+		countingSort(A, B, 5);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li>CLRS Chapter 8</li>
+			</ul>
+		</div>
+	</body>
+</html>

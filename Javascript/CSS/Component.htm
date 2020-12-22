@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CSS</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Component
+		</div>
+
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/CSS_1.png" width=40% /></p>
+		</div>
+		<div class = "subtitle">Position</div>
+		<div class = "block">
+			<li><span>position: static</span> is always positioned according to the normal flow of the page</li>
+			<li>Static positioned elements are not affected by the top, bottom, left, and right properties, default</li>
+			<li><span>position: relative</span> is positioned relative to its normal position</li>
+			<li><span>position: fixed</span> is positioned relative to the viewport, it always stays in the same place even if the page is scrolled</li>
+			<li><span>position: absolute</span> is positioned relative to the nearest positioned ancestor</li>
+			<li><span>position: sticky</span> toggles between relative and fixed, depending on the scroll position</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		div.container {
+			width: 60%;
+			min-height: 200px;
+			border: 1px solid red;
+		}
+		div.static {position: static; background-color: silver; color: red; border: 1px solid blue;}
+		div.relative {position: relative; left: 100px; border: 1px solid blue;}
+		div.fixed {position: fixed; left: 100px; top: 100px; border: 1px solid blue;}
+		div.absolute {position: absolute; left: 200px; top: 100px; border: 1px solid blue;}
+		div.sticky {position: sticky; top: 100px; border: 1px solid blue;}
+		div.overlap {position: absolute; left: 200px; top: 110px; z-index: -1; border: 1px solid blue;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class = "container"&gt;
+		&lt;div class = "static"&gt;static&lt;/div&gt;
+	&lt;/div&gt;
+		&lt;div class = "container"&gt;
+		&lt;div class = "sticky"&gt;sticky&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class = "container"&gt;
+		&lt;div class = "relative"&gt;relative&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class = "container"&gt;
+		&lt;div class = "fixed"&gt;fixed&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class = "container" style = "position: relative; left: 100px"&gt;
+		&lt;div class = "absolute"&gt;absolute&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class = "container" style = "position: relative;"&gt;
+		&lt;div class = "absolute"&gt;absolute&lt;/div&gt;
+		&lt;div class = "overlap"&gt;overlap&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Border, Margin, Padding, Height, Width</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		div.container {
+			width: 60%;
+			min-height: 200px;
+			border: 1px solid red;
+			position: relative;
+			min-width: 600px;
+		}
+		div.component {
+			position: absolute; 
+			left: 0px; 
+			background-color: silver; 
+			color: red; 
+			border: 6px solid blue;
+			margin: 10px 10px 10px 10px;
+			padding: 10px 10px 10px 10px;
+			height: 100px;
+		}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class = "container"&gt;
+		&lt;div class = "component"&gt;component&lt;/div&gt;
+	&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Overflow</div>
+		<div class = "block">
+			<li><span>visible</span>, the overflow is not clipped, the content renders outside the element's box</li>
+			<li><span>hidden</span>, the overflow is clipped, and the rest of the content will be invisible</li>
+			<li><span>scroll</span>, the overflow is clipped, and a scrollbar is added to see the rest of the content</li>
+			<li><span>auto</span>, similar to scroll, but it adds scrollbars only when necessary</li>
+			<li><span>overflow-x</span> and <span>overflow-y</span>, specify whether to change the overflow of content just horizontally or vertically</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		.container {width: 100px; height: 20px; border: 1px solid red;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class = "container" style = "overflow: visible;"&gt;
+		Hello World! Lin Chen
+	&lt;/div&gt;
+	&lt;br&gt;
+	&lt;div class = "container" style = "overflow: hidden;"&gt;
+		Hello World! Lin Chen
+	&lt;/div&gt;
+	&lt;div class = "container" style = "overflow: scroll;"&gt;
+		Hello World! Lin Chen
+	&lt;/div&gt;
+	&lt;div class = "container" style = "overflow: auto;"&gt;
+		Hello World! Lin Chen
+	&lt;/div&gt;
+	&lt;div class = "container" style = "overflow-x: hidden; overflow-y: scroll;"&gt;
+		Hello World! Lin Chen&lt;br&gt;
+		Hello World!
+	&lt;/div&gt;	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+	</body>
+</html>

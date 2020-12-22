@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Browser Object Mode (BOM)
+		</div>
+
+		<div class = "subtitle">Window Object</div>
+		<div class = "block">
+			<li>Represents the browser's window</li>
+			<li>All global JavaScript objects, functions, and variables automatically become members of the window object</li>
+			<li><span>Window.screen</span> object contains information about the user's screen</li>
+			<li><span>Window.location</span> object can be used to get the current page address (URL) and to redirect the browser to a new page</li>
+			<li><span>Window.history</span> object contains the browsers history</li>
+			<li><span>Window.navigator</span> object contains information about the visitor's browser</li>
+			<li>Popup Boxes
+				<ul>
+					<li>Alert box</li>
+					<li>Confirm box</li>
+					<li>Prompt box</li>
+				</ul>
+			</li>
+			<li>Timing Events
+				<ul>
+					<li>setTimeout(function, milliseconds), executes a function, after waiting a specified number of milliseconds</li>
+					<li>setInterval(function, milliseconds), repeats the execution of the function continuously</li>
+					<li>clearTimeout(), stops the execution of the function specified in setTimeout()</li>
+					<li>clearInterval(), stops the executions of the function specified in the setInterval() method</li>
+				</ul>
+			</li>
+		</div>
+	</body>
+</html>

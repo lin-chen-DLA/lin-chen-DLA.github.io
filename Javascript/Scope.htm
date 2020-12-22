@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Scope
+		</div>
+
+		<div class = "subtitle">Local Variable and Global Variable</div>
+		<div class = "block">
+			<li>Local variables are deleted when the function is completed</li>
+			<li>Global variables are deleted when you close the browser window or tab</li>
+		<pre class = "prettyprint linenums">
+var a = 10; // global variable
+
+function f()
+{
+	var b = 100; // local variable b
+	console.log(a); // access global variable a
+}
+
+f();
+
+// console.log(b); // cannot access the local variable defined in f()
+		</pre>
+		</div>
+		<div class = "subtitle">Define Global Variables</div>
+		<div class = "block">
+			<li>All global variables belong to the <span>window</span> object</li>
+			<li>Do <span>NOT</span> create global variables unless you intend to, your global variables or functions can overwrite window variables or functions</li>
+		<pre class = "prettyprint linenums">
+a = 10; // undeclared variable is referenced, a new variable gets created in the global object
+
+// a and window.a are the same object
+console.log(a) // 10
+console.log(window.a) // 10, global object window
+
+var c = 1;
+
+console.log(c); // 1
+console.log(window.c); // 1
+
+function f()
+{
+	b = 100;
+}
+
+f();
+
+console.log(b); // 100
+console.log(window.b); // 100, b is not removed after calling function f
+		</pre>
+		</div>
+		<div class = "subtitle">Variables in Google Chrome Console</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+for(var b in window) { 
+  	if(window.hasOwnProperty(b)) console.log(b); 
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Function Arguments</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function f(a)
+{
+	a++;
+	console.log(a);
+}
+
+// console.log(a); // not defined
+		</pre>
+		</div>
+		<div class = "subtitle">Block Scope</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+{
+	var a = 100; // global scope
+}
+
+console.log(a);
+console.log(window.a);
+
+{
+	let b = 100; // block scope
+}
+
+// console.log(b); // b is undefined
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var a = 10;
+
+{
+	var a = 100; // overwrite a outside block
+	console.log(a); // 100
+}
+
+console.log(a); // 100
+
+var b = 10;
+
+{
+	let b = 100; // screen b outside block
+	console.log(b); // 100
+}
+
+console.log(b); // 10
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+let b = 10; // b is not a attribute of window object
+
+console.log(b); // 10
+console.log(window.b); // undefined
+		</pre>
+		</div>
+
+		<div class = "subtitle">Loop Scope</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var i = 5;
+for (var i = 0; i &lt; 10; i++) {
+  	// some statements
+}
+		
+console.log(i); // Here i is 10
+
+let j = 5;
+for (let j = 0; j &lt; 10; j++) {
+  	// some statements
+}
+		
+console.log(j); // Here j is 5
+		</pre>
+		</div>
+
+		<div class = "subtitle">Const</div>
+		<div class = "block">
+			<li>Const behaves like let, except they cannot be reassigned</li>
+			<li>Const defines a constant <span>reference</span> to a value, cannot change constant primitive values, but we can change the properties of constant objects</li>
+		<pre class = "prettyprint linenums">
+const PI = 3.141592653589793;
+//PI = 3.14;      // This will give an error
+//PI = PI + 10;   // This will also give an error
+
+// block scope
+var a = 10;
+
+{
+	const a = 100;
+}
+
+console.log(a); // 10
+
+const person = {name: 'Lin', age: 39};
+
+//person_1 = {}; // not allowed
+
+person.name = 'Yanhua';
+
+console.log(person); // can change the properties
+
+const cars = ['Buick', 'Acura', 'Lincoln', 'Honda'];
+
+// cars = []; // not allowed
+
+cars[3] = 'Toyota';
+cars.push('Audi');
+
+console.log(cars); // constant array can change
+		</pre>
+		</div>
+		<div class = "subtitle">Nested Functions</div>
+		<div class = "block">
+			<li>All functions have access to the scope "above" them</li>
+		<pre class = "prettyprint linenums">
+function add() {
+  var counter = 0;
+  function plus() {counter += 1;}
+  plus();    
+  return counter; 
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://blog.sessionstack.com/how-javascript-works-memory-management-how-to-handle-4-common-memory-leaks-3f28b94cfbec">Memory Management</a></li>
+		</div>
+	</body>
+</html>

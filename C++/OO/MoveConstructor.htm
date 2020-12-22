@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Move Assignment & Move Constructor 
+		</div>
+
+		<div class = "subtitle">When Move Constructor are Called</div>
+		<div class = "block">
+			<ul>
+				<li>When an object initializer is std::move(something)</li>
+				<li>When an object initializer is std::forward&lt;T&gt;(something) and T is not a lvalue reference type</li>
+				<li>When an object initializer is a temporary and the compiler doesn't eliminate the copy/mvoe entirely</li>
+				<li>When returning a function-local class object by value and the compiler doesn't eliminate the copy/move entirely, <span style = "color:red">may not true, copy constructor will be called to create function-local object and assign it to object variable in caller, which is faster than calling move constructor</span></li>
+				<li>When throwing a functon-local class object and the compiler doesn't eliminate the copy/move entirely</li>
+			</ul>
+		</div>
+		<div class = "block">
+			The Rule of The Big Four (and a half)
+			<ul>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef V_H
+#define V_H
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		//constructor
+		V(int s):size(s)
+		{
+			std::cout&lt;&lt;"Constructor ..."&lt;&lt;std::endl;
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+			std::cout&lt;&lt;"----End Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//copy constructor
+		V(const V &right):size(right.size), array(size?new int [size]:nullptr)
+		{
+			std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+			std::cout&lt;&lt;"----End Copy Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//move constructor
+		V(V && right):size(0), array(nullptr)
+		{
+			std::cout&lt;&lt;"Move Constructor ..."&lt;&lt;std::endl;
+			size = right.size;
+			array = right.array;
+			right.size = 0;
+			right.array =  nullptr;
+			std::cout&lt;&lt;"----End Move Constructor ..."&lt;&lt;std::endl;
+		}
+
+		int *getAddress() const {return array;}
+		int getSize() const {return size;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		//copy assignment
+		const V& operator=(const V &right)
+		{
+			std::cout&lt;&lt;"Copy Assignment ..."&lt;&lt;size&lt;&lt;std::endl;
+			V temp(right);
+			std::swap(size, temp.size);
+			std::swap(array, temp.array);
+			std::cout&lt;&lt;"----End Assignment ..."&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		//move assignment
+		V & operator=(V&& right)
+		{
+			std::cout&lt;&lt;"Move Assignment ..."&lt;&lt;std::endl;
+			if(this != &right)
+			{
+				delete [] array;
+				array = 0;
+				size = 0;
+
+				size = right.size;
+				array = right.array;
+
+				right.size = 0;
+				right.array = nullptr;
+			}
+			std::cout&lt;&lt;"----End Move Assignment ..."&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		~V()
+		{
+			std::cout&lt;&lt;"Destructor ..."&lt;&lt;size&lt;&lt;std::endl;
+			delete array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+
+V getObject()
+{
+	std::cout&lt;&lt;"Inside function ..."&lt;&lt;std::endl;
+	//call constructor
+	V v(10);
+
+	std::cout&lt;&lt;"Return from function ..."&lt;&lt;std::endl;
+	return v;
+}
+
+int main(int argc, char *argv[])
+{
+	//call constructor
+	std::cout&lt;&lt;"---------------Call Constructor-----------"&lt;&lt;std::endl;
+	V v1(20);
+
+	//call copy constructor
+	std::cout&lt;&lt;"---------------Call Copy Constructor--------"&lt;&lt;std::endl;
+	V v2(v1);
+	//V v2 = v1;
+
+	//call assignment constructor
+	std::cout&lt;&lt;"---------------Call Assignment Constructor---------"&lt;&lt;std::endl;
+	V v3(40);
+	v3 = v1;
+
+	//call assignment
+	//if no move assignment, assignment constructor will be called
+	std::cout&lt;&lt;"-------------Call Move Assignment--------------"&lt;&lt;std::endl;
+	v2 = getObject();
+	//v2 = std::move(v3);
+
+	std::cout&lt;&lt;"-------------Call Move Constructor---------------"&lt;&lt;std::endl;
+	V v4(std::move(getObject()));
+	//V v5(getObject());//object created by getObject() will be assigned to v5 directly, no move constructor will be called
+	//V v5 = getObject();
+	V v6(std::move(v1));//v1 is empty
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Move String</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+int main(int argc, char *argv[])
+{
+	std::string str = "Hello";
+
+	//call move assignment
+	std::string str2;
+	str2 = std::move(str);
+
+	//call move constructor
+	//std::string str2 = std::move(str);
+
+	std::cout&lt;&lt;"Str 1: "&lt;&lt;str&lt;&lt;std::endl;//str is empty
+	std::cout&lt;&lt;"Str 2: "&lt;&lt;str2&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://blog.smartbear.com/c-plus-plus/c11-tutorial-introducing-the-move-constructor-and-the-move-assignment-operator/">smartbear.com</a></li>
+				<li><a href = "http://stackoverflow.com/questions/13125632/when-does-move-constructor-get-called">stackoverflow.com</a></li>
+				<li><a href = "http://stackoverflow.com/questions/255612/dynamically-allocating-an-array-of-objects/255744#255744">stackoverflow.com</a></li>
+				<li><a href = "http://info.prelert.com/blog/move-copy-and-swap-for-stdstring">prelert.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

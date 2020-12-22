@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>Database</title>
+       <meta http-equiv="Page-Enter" contect="revealTrans(duration=10,transtion= 50)">
+       <style>
+	       span {color: red;}
+	</style>
+    </head>
+    <body bgcolor = white text = #4E6AAA link = silver alink = silver vlink = silver>
+	    <li><span>database</span>, a collection of related data and a data base management system (DBMS) to be the software that manages and controls access to the database</li>
+	    <li><span>meta data</span>, a complete definition or descripton of the database structure and constrains</li>
+	    <li><span>entity</span>, a distinct object in the organization that is to be represented in the database</li>
+	    <li><span>attribute</span>, a property that describes some aspect of the object</li>
+	    <li><span>relationship</span>, an association between entities</li>
+	    <li><span>DBMS</span>, a software system that enables users to define, create, maintain, and control access to the database
+		    <ul>
+			    <li>security system</li>
+			    <li>integrity system</li>
+			    <li>concurrency control system</li>
+			    <li>recovery control system</li>
+			    <li>user-accessible catalog</li>
+		    </ul>
+	    </li>
+	    <li><span>Data Definition Language (DDL)</span>, specify the data types and structures and the contraints on the data to be stored in the database</li>
+	    <li><span>Data Manipulation Language (DML)</span>, insert, update, delete, and retrieve data from the database</li>
+	    <li><span>Structured Query Language (SQL)</span>, the formal standard language for relational DBMSs</li>
+	    <li><span>application programs</span>, a computer program that interacts with the database by issuing an appropriate request to the DBMS</li>
+	    <li><span>view</span>, dynamic result of one or more relational operations operating on base relations to produce another relation, allows each user to have his or her own view of the database
+		    <ul>
+			    <li>a virtual relation that does not necessarily actually exist in the database but is produced upon request, at time of request</li>
+			    <li>are defined as a query on one or more base relations</li>
+			    <li>changes made to base relations that affect view attributes are immediately reflected in the view</li>
+			    <li>provides a level of security</li>
+			    <li>provides a mechanism to customize the appearance of the database</li>
+			    <li>present a consistent, unchanging picture of the structure of the database</li>
+			    <li>simplify the complex operations on base relations</li>
+			    <li>all updates to a base relation should be immediately reflected in all views that reference that base relation</li>
+			    <li>if view is updated, underlying base relation should reflect change
+				    <ul>
+					    <li>Updates are allowed if query involves a single base relation and contains a candidate key of base relation</li>
+					    <li>Updates are not allowed involving multiple base relations</li>
+					    <li>Updates are not allowed involving aggregation or grouping operations</li>
+				    </ul>
+			    </li>
+		    </ul>
+	    </li>
+	    <li><span>schema</span>, the structure of the database</li>
+	    <li><span>data warehouses</span>, store data drawn from several data sources</li>
+	    <li><span>database integrity</span>, the validity and consistency of stored data</li>
+	    <li>Advantage of database
+		    <ul>
+			    <li>control of data redundancy</li>
+			    <li>data consistency</li>
+			    <li>more information from the same amount of data</li>
+			    <li>sharing of data</li>
+			    <li>improved data integrity</li>
+			    <li>improved security</li>
+			    <li>enforcement of standards</li>
+			    <li>economy of scale</li>
+			    <li>balance of conflicting requirements</li>
+			    <li>improved data accessibility and responsiveness</li>
+			    <li>increase productivity</li>
+			    <li>improved mantenance through data independence</li>
+			    <li>increased concurrency</li>
+			    <li>improved backup and recovery services</li>
+		    </ul>
+	    </li>
+	    <li>Disadvantages of database
+		    <ul>
+			    <li>complexity</li>
+			    <li>size</li>
+			    <li>cost of DBMSs</li>
+			    <li>additional hardware costs</li>
+			    <li>cost of conversion</li>
+			    <li>performance</li>
+			    <li>greater impact of a failure</li>
+		    </ul>
+	    </li>
+	    <li>Three-level architecture
+		    <ul>
+			    <li>external level, the way users perceive the data, describe that part of the database that is relevant to each user</li>
+			    <li>conceptual level, describe what data is stored in the database and the relationships among the data
+				    <ul>
+					    <li>all entities, attributes, relationships</li>
+					    <li>constraints</li>
+					    <li>semantic information about the data</li>
+					    <li>security and integrity information</li>
+				    </ul>
+			    </li>
+			    <li>internal level, describe how the data is physically stored in the database
+				    <ul>
+					    <li>storage space allocation for data and indexes</li>
+					    <li>record descriptions for storage</li>
+					    <li>record placement</li>
+					    <li>data compression and data encryption techniques</li>
+				    </ul>
+			    </li>
+		    </ul>
+	    </li>
+	    <ul>
+		    <li>isolation, each transaction appears to execute in isolation</li>
+		    <li>atomicity, all the database operations in a transaction are executed or none are</li>
+	    </ul>
+	    </li>
+	    <li><span>procedural DML</span>, a language that allows the user to tell the system what data is needed and exactly how to retrieve the data</li>
+	    <li><span>nonprocedural DML</span>, a language that allows the user to state what data is needed rather than how it is to be retrieved</li>
+	    <li><span>data model</span>, an integrated collection of concepts for describing and manipulating data, relationships between data, and constraints on the data in an organization
+		    <ul>
+			    <li>structural part, consisting of a set of rules according to which databases can be constructed</li>
+			    <li>manipulative part, defining the types of operation that are allowed on the data</li>
+			    <li>a set of integrity constraints, ensures that the data is accurate</li>
+		    </ul>
+	    </li>
+	    <li>Functions of a DBMS
+		    <ul>
+			    <li>Data Storage, Retrieval, and Update</li>
+			    <li>A User-Accessible Catalog</li>
+			    <li><span>transaction</span>, an executing program or process including one or more database access</li>
+			    <li>Concurrency Control Services</li>
+			    <li>Recovery Services</li>
+			    <li>Authorization Services</li>
+			    <li>Support for Data Communication</li>
+			    <li>Integrity Services</li>
+			    <li>Services to Promote Data Independence</li>
+			    <li>Utility Services</li>
+		    </ul>
+	    </li>
+	    <li><span>relations</span>. tables</li>
+	    <ul>
+		    <li>Relation name is distinct from all other relation names in relational schema</li>
+		    <li>Each cell of relation contains exactly one atomic (single) value</li>
+		    <li>Each attribute has a distinct name</li>
+		    <li>Values of an attribute are all from the same domain</li>
+		    <li>Each tuple is distinct; there are no duplicate tuples</li>
+		    <li>Order of attributes has no significance</li>
+		    <li>Order of tuples has no significance, theoretically</li>
+	    </ul>
+	    </li>
+	    <li><span>attributes</span>, columns</li>
+	    <li><span>domain</span>, the set of allowed values for one or more attributes</li>
+	    <li><span>degree</span>, the number of attributes in a relation</li>
+	    <li><span>cardinality</span>, the number of tuples in a relation</li>
+	    <li><span>tuple</span>, row, tuples in a relation do not have any particular order</li>
+	    <li><span>NULL</span>, value unknown, value exists but is not available, or attribute does not apply to this tuple</li>
+	    <li><span>relational Database</span>, a collection of normalized relations with distinct relation names</li>
+	    <li><span>key</span>, identify each entity uniquely
+	    <ul>
+		    <li><span>super key</span>, a set of attributes that keep a tuple unique, every relation has at least one default superkey - the set of all its attributes</li>
+		    <li><span>key</span>, minimal superkey, two distinct tuples cannot have identical values for the atrributes in the key</li>
+		    <li><span>candidate key</span>, there may have more than one key, each of the keys is called a candidate key</li>
+		    <li><span>primary key</span>, set one of candidate keys as the primary key</li>
+		    <li><span>alternate keys</span>, candidate keys that are not selected to be primary key</li>
+		    <li><span>foreign key</span>, attributes in R<sub>1</sub> reference the primary key of R<sub>2</sub></li>
+	    </ul>
+	    </li>
+	    <li><span>Integrity constraints</span>
+		    <ul>
+			    <li>Entity integrity, no attribute of a primary key can be null</li>
+			    <li>Referential integrity, if foreign key exists in a relation, either foreign key value must match a candidate key value of some tuple in its home relation or foreign key value must be wholly null</li>
+			    <li>General constraints, additional rules specified by users or database administrators that define or constrain some aspect of the enterprise</li>
+		    </ul>
+	    </li>
+	    <li>Relational algebra, how to retrieve it
+		    <ul>
+			    <li>Selection, =, &lt;, &le;, &gt;, &ge;, &ne;, connected by and, or, not</li>
+			    <li>Projection</li>
+			    <li>Union, two relations must be union-compatible</li>
+			    <li>Set difference, two relations must be union-compatible</li>
+			    <li>Intersection, two relations must be union-compatible</li>
+			    <li>Cartesian product</li>
+			    <li>Join
+				    <ul>
+					    <li>&theta; join</li>
+					    <li>Natural join</li>
+					    <li>Out join
+						    <ul>
+							    <li>Left out join</li>
+							    <li>Right out join</li>
+						    </ul>
+					    </li>
+					    <li>Semi join</li>
+				    </ul>
+			    </li>
+			    <li>Aggregate operations
+				    <ul>
+					    <li>COUNT</li>
+					    <li>SUM</li>
+					    <li>AVG</li>
+					    <li>MIN</li>
+					    <li>MAX</li>
+				    </ul>
+			    </li>
+			    <li>Grouping operations</li>
+		    </ul>
+	    </li>
+	    <li>Relational calculus, what to retrieve</li>
+	    <li>SQL operations
+	    <ul>
+		    <li>create database and relation structures
+			    <ul>
+				    <li><span>CREATE SCHEMA</span></li>
+				    <li><span>CREATE TABLE</span> tableName (<br>fieldName fieldType constrain <span>DEFAULT</span> defaultValue <span>CHECK</span> condition, <br>..., <br><span>CONSTRAINT</span> constrainName<br><span>PRIMARY KEY</span> (fieldName ...), <br><span>CONSTRAINT</span> constrainName <br><span>FOREIGN KEY</span> (fieldName) <span>REFERENCES</span> tableName(fieldName) <span>ON DELETE</span> set ... <span>ON UPDATE</span> CASCADE, <br><span>CONSTRAINT</span> constrainName <br><span>UNIQUE</span>(fieldName))</li>
+				    <li><span>CREATE ASSERTION</span> constrainName <br><span>CHECK</span>(conditions ...)</li>
+				    <li><span>CREATE VIEW</span> viewName <br><span>AS</span> ...</li>
+				    <li><span>CREATE INDEX</span></li>
+				    <li>drop
+					    <ul>
+						    <li><span>DROP SCHEMA</span> schemaName <span>CASCADE</span>, drop a database</li>
+						    <li><span>DROP TABLE</span> tableName <span>CASCADE</span>, drop a table</li>
+					    </ul>
+				    </li>
+				    <li>alter
+					    <ul>
+						    <li><span>ALTER TABLE</span> tableName <span>ADD COLUMN</span> fieldName fieldType</li>
+						    <li><span>ALTER TABLE</span> tableName <span>DROP COLUMN</span> fieldName CASCADE</li>
+						    <li><span>ALTER TABLE</span> tableName <span>ALTER COLUMN</span> operation ...</li>
+					    </ul>
+				    </li>
+				    <li>data types
+					    <ul>
+						    <li>Numeric
+							    <ul>
+								    <li>INTEGER, INT, and SMALLINT</li>
+								    <li>FLAOT, REAL, and DOUBLE PRECISION</li>
+								    <li>DECIMAL(i, j), NUMERIC(i, j)</li>
+							    </ul>
+						    </li>
+						    <li>Character-string
+							    <ul>
+								    <li>CHAR(n), VARCHAR(n)</li>
+							    </ul>
+						    </li>
+						    <li>Bit-string
+							    <ul>
+								    <li>BIT(n), BIT VARYING(n)</li>
+							    </ul>
+						    </li>
+						    <li>Boolean</li>
+						    <li>DATE, TIME</li>
+						    <li>timestamp</li>
+						    <li>INTERVAL</li>
+						    <li>Large objects
+							    <ul>
+								    <li>BLOB, a binary string that does not have a character set or collation association</li>
+								    <li>CLOB, NCLOB, character strings</li>
+							    </ul>
+						    </li>
+					    </ul>
+				    </li>
+			    </ul>
+		    </li>
+		    <li>perform insertion, modification, deletion of data from relations</li>
+		    <ul>
+				    <li><span>INSERT INTO</span> tableName <span>VALUES</span> (value, ...)</li>
+				    <li><span>UPDATE</span> tableName <br><span>SET</span> setup <br><span>WHERE</span> condition</li>
+				    <li><span>DELETE</span> tableName <br><span>WHERE</span> condition</li>
+		    </ul>
+		    <li>perform simple and complex queries</li>
+		    <ul>
+			    <li><span>SELECT</span> fieldName ...<br><span>FROM</span> tableName <br><span>WHERE</span> conditions <br><span>GROUP BY</span> fieldName ... <br><span>HAVING</span> condition ... <br><span>ORDER BY</span> fieldName <span>DESC</span>, fieldName <span>ASC</span></span> fieldName ...</li>
+			    <li>DISTINCT, remove duplicates</li>
+			    <li>AS, rename field name</li>
+			    <li>BETWEEN, range search</li>
+			    <li>IN, list</li>
+			    <li>LIKE
+				    <ul>
+					    <li>%, replaces an arbitrary number of zero or more characters</li>
+					    <li>_, replaces a single character</li>
+				    </ul>
+			    </li>
+			    <li>IS NULL, IS NOT NULL</li>
+			    <li>ANY, ALL</li>
+			    <li>join
+				    <ul>
+					    <li>=</li>
+					    <li>LEFT JOIN, RIGHT JOIN, FULL JOIN</li>
+				    </ul>
+			    </li>
+			    <li>EXIST and NOT EXIST, are for use only with subqueries</li>
+			    <li>UNION, EXCEPT, INTERSECT</li>
+		    </ul>
+	    </ul>
+	    </li>
+	    <li>SQL data
+		    <ul>
+			    <li>Required data, NOT NULL</li>
+			    <li>Domain constraints, CHECK</li>
+			    <li>Entity, PRIMARY KEY</li>
+			    <li>Referential integrity, FOREIGN KEY ... REFERENCES</li>
+			    <li>General constraints
+				    <ul>
+					    <li><span>CREATE ASSERTION</span>, contraintName <br><span>CHECK</span> searchCondition</li>
+				    </ul>
+			    </li>
+			    <li>environment &gt; catalogs &gt; schemas &gt; objects</li>
+		    </ul>
+	    </li>
+	    <li>Privileges
+		    <ul>
+			    <li><span>GRANT</span>, privilegeList<br><span>ON</span> objectName<br><span>TO</span> authorizationIDList<br><span>WITH GRANT OPTION</span></li>
+			    <li>privilege list
+				    <ul>
+					    <li>SELECT</li>
+					    <li>DELETE</li>
+					    <li>INSERT</li>
+					    <li>UPDATE</li>
+					    <li>REFERENCES</li>
+					    <li>USAGE</li>
+				    </ul>
+			    </li>
+			    <li>WITH GRANT OPTION allows privileges to be passed on</li>
+			    <li><span>REVOKE</span> <span>GRANT OPTION FOR</span> privilegeList<br><span>ON</span> objectName<br><span>FROM</span> authorizationIDLIst</li>
+			    <li>GRANT OPTION FOR allows privileges passed on via WITH GRANT OPTION of GRANT to be revoked separately from the privileges themselves</li>
+		    </ul>
+	    </li>
+	    <li>SQL programming language
+		    <ul>
+			    <li>Declarations
+				    <ul>
+			    		<li>%TYPE, variable same type as a column</li>
+			    		<li>%ROWTYPE, variable same type as an entire row</li>
+					<li>variableName type</li>
+				    </ul>
+			    </li>
+			    <li>Assignments
+				    <ul>
+					    <li>:=</li>
+				    </ul>
+			    </li>
+			    <li>Control statements
+				    <ul>
+					    <li><span>IF</span> ... <span>THEN</span> ... <span>END IF</span></li>
+					    <li><span>LOOP</span> ... <span>END LOOP</span></li>
+					    <li><span>WHILE</span> condition <span>DO</span> ... <span>END WHILE</span></li>
+					    <li><span>FOR</span> indexVariable <span>AS</span> ... <span>DO</span> ... <span>END FOR</span></li>
+				    </ul>
+			    </li>
+		    </ul>
+	    </li>
+	    <li>Trigger
+		    <ul>
+			    <li><span>CREATE TRIGGER</span> triggerName <br><span>BEFORE | AFTER | INSTEAD OF | INSERT | DELETE | UPDATE OF</span> triggerColumnList <br><span>ON</span> tableName <br><span>REFERENCING OLD|NEW AS</span> new <br><span>FOR EACH ROW|STATEMENT</span> <br><span>BEGIN</span> ... <span>END</span></li>
+		    </ul>
+	    </li>
+	    <li>Database System Development Lifecycle
+		    <ul>
+			    <li>Database planning</li>
+			    <li>System definition</li>
+			    <li>Requirements collection and analysis</li>
+			    <li>Database design</li>
+			    <li>DBMS selection</li>
+			    <li>Application design</li>
+			    <li>Prototyping</li>
+			    <li>Implementation</li>
+			    <li>Data conversion and loading</li>
+			    <li>Testing</li>
+			    <li>Operational maintenance</li>
+		    </ul>
+	    </li>
+	    <li>Fact-finding techniques
+		    <ul>
+			    <li>The formal process of using techniques such as interviews and questionnaires to collect facts about systems, requirements, and preferences</li>
+			    <li>techniques
+				    <ul>
+					    <li>examining documentation</li>
+					    <li>interviewing</li>
+					    <li>observing the organization in operation</li>
+					    <li>research</li>
+					    <li>questionnaires</li>
+				    </ul>
+			    </li>
+		    </ul>
+	    </li>
+	    <li>ER model
+		    <ul>
+			    <li>entity type, group of objects with same properties,  identified by enterprise as having an independent existence
+				    <ul>
+					    <li>strong entity type, entity type that is not existence-dependent on some other entity type</li>
+					    <li>weak entity type, entity type has no key, that is existence-dependent on some other entity type</li>
+				    </ul>
+			    </li>
+			    <li>relationship type, set of meaningful associations among entity types
+				    <ul>
+					    <li>degree, number of participating entities in  relationship</li>
+					    <li>cardinality ratio
+						    <ul>
+							    <li>1:1</li>
+							    <li>1:N</li>
+							    <li>N:1</li>
+							    <li>M:N</li>
+						    </ul>
+					    </li>
+				    </ul>
+			    </li>
+			    <li>attribute, property of an entity or a relationship type
+				    <ul>
+					    <li>single attributes, compose of a single component with an independent existence</li>
+					    <li>composite attributes, compose of multiple components, each with an independent existence</li>
+					    <li>single-valued attributes, hold a single value for each occurrence of an entity type</li>
+					    <li>multi-valued attributes, hold multiple values for each occurrence of an entity type</li>
+					    <li>stored attributes, pysically stored values</li>
+					    <li>derived attributes, represent the values that is derivable from value of a related attribute, or set of attributes, not necessarily in the same entity type</li>
+				    </ul>
+			    </li>
+			    <li>connection traps
+				    <ul>
+					    <li><span>fan traps</span>, where a model represents a relationship between entity types, but pathway between certain entity occurrences is ambiguous, exist two or more 1:N relathionships fan out from the same entity</li>
+					    <li><span>chasm traps</span>, where a model suggests the existence of a relationship between entity types, but pathway does not exist between certain entity occurrences, one or more relationships with a minimum multiplicity of zero</li>
+				    </ul>
+			    </li>
+		    </ul>
+	    </li>
+	    <li>Enhanced Entity-Relationship (EER) model
+		    <ul>
+			    <li>specialization / generalization
+				    <ul>
+					    <li>Superclass, an entity type that includes one or more distinct subgroupings of its occurrences</li>
+					    <li>Subclass, a distinct subgrouping of occurrences of an entity type</li>
+					    <li>Specialization, process of maximizing differences between members of an entity by identifying their distinguishing characteristics</li>
+					    <li>Generalization, process of minimizing differences between entities by identifying their common characteristics</li>
+					    <li>Constraints
+						    <ul>
+							    <li>Participation constraint, determines whether every member in superclass must participate as a member of a subclass, mandatory or optional</li>
+							    <li>Disjoint constraint, describes relationship between members of the subclasses and indicates whether member of a superclass can be a member of one, or more than one, subclass, disjoint or nondisjoint</li>
+						    </ul>
+					    </li>
+				    </ul>
+			    </li>
+		    </ul>
+	    </li>
+	    <li><a href = "create.htm">ER-to-Relational Mapping</a></li>
+	    <li><a href = "NF.htm">Normalization</a>, a technique for producing a set of suitable relations that support the data requirements of an enterprise
+		    <ul>
+			    <li>benefits
+				    <ul>
+					    <li>easier for the user to access and maintain the data</li>
+					    <li>take up minimal storage space on the computer</li>
+				    </ul>
+			    </li>
+			    <li>update anomalies
+				    <ul>
+					    <li>insertion</li>
+					    <li>deletion</li>
+					    <li>modification</li>
+				    </ul>
+			    </li>
+			    <li>Functional dependencies
+				    <ul>
+					    <li>X &rarr; Y, Y depends on X</li>
+					    <li>X &supe; Y, then X &rarr; Y, reflexive rule</li>
+					    <li>X &rarr; Y, then XZ &rarr; XZ, augmentation rule</li>
+					    <li>X &rarr; Y, Y &rarr; Z, then X &rarr; Z, transitive rule</li>
+					    <li>X &rarr; YZ, then X &rarr; Y, decoposition rule</li>
+					    <li>X &rarr; Y, X &rarr; Z, then X &rarr; YZ, union rule</li>
+					    <li>X &rarr; Y, WY &rarr; Z, then WX &rarr; Z, pseudotransitive rule</li>
+				    </ul>
+			    </li>
+			    <li>normalization is a formal technique based on the primary key and the functional dependencies</li>
+			    <li>First Normal Form (1NF) is critical for relational data model, to avoid the update anomalies, we proceed to at least Third Normal Form (3NF)</li>
+			    <li>Unnormalized Form (UNF), a table that contains one or more repeating groups</li>
+			    <li>1NF, a relation in which the intersection of each row an dcolumn contains one and only one value</li>
+			    <li>2NF, a relation that is in 1NF and every non-primary-key attribute is fully functionally dependent on the primary key</li>
+			    <li>3NF, a relation that is in 1NF and 2NF and in which no non-primary-key attribute is transitively dependent on the primary key</li>
+		    </ul>
+	    </li>
+	    <li>Methodology
+		    <ul>
+			    <li>Conceptual datbase design
+				    <ul>
+					    <li>Step 1.1  Identify entity types</li>
+					    <li>Step 1.2  Identify relationship types</li>
+					    <li>Step 1.3  Identify and associate attributes with entity or relationship types</li>
+					    <li>Step 1.4  Determine attribute domains</li>
+					    <li>Step 1.5  Determine candidate, primary, and alternate key attributes</li>
+					    <li>Step 1.6  Consider use of enhanced modeling concepts</li>
+					    <li>Step 1.7   Check model for redundancy
+						    <ul>
+							    <li>Re-examine one-toone (1:1) relationships</li>
+							    <li>Remove redundant relationships</li>
+							    <li>Consider time dimension</li>
+						    </ul>
+					    </li> 
+					    <li>Step 1.8   Validate conceptual model against user transactions</li>
+					    <li>Step 1.9   Review conceptual data model with user</li>
+				    </ul>
+			    </li>
+			    <li>Build and validate logical data model
+				    <ul>
+					    <li>Step 2.1  Derive relations for logical data model</li>
+					    <li>Step 2.2  Validate relations using normalization</li>
+					    <li>Step 2.3  Validate relations against user transactions</li>
+					    <li>Step 2.4  Define integrity constraints
+						    <ul>
+							    <li>Required data, some attributes must always contain a valid value</li> 
+							    <li>Attribute domain constraints, every attribute has a domain, a set of values that are legal</li>
+							    <li>Multiplicity, represents the constraints that are placed on relationships between data in the database</li>
+							    <li>Entity integrity</li>
+							    <li>Referential integrity</li>
+							    <li>General constraints</li>
+						    </ul>
+					    </li>
+					    <li>Step 2.5  Review logical data model with user</li>
+					    <li>Step 2.6  Merge logical data models into global model (optional step)</li>
+					    <li>Step 2.7  Check for future growth
+					    </li>
+				    </ul>
+			    </li>
+			    <li>Translate logical data model for target DBMS
+				    <ul>
+					    <li>Step 3.1  Design base relations</li>
+					    <li>Step 3.2  Design representation of derived data</li>
+					    <li>Step 3.3  Design general constraints</li>
+				    </ul>
+			    </li>
+			    <li>Design file organizations and indexes
+				    <ul>
+					    <li>Step 4.1  Analyze transactions</li>
+					    <li>Step 4.2  Choose file organization</li>
+					    <li>Step 4.3  Choose indexes
+						    <ul>
+							    <li>the attribute that is used most often for join operations</li>
+							    <li>the attribute that is used most often to access the tuples in a relation in order of that attribute</li>
+							    <li>if the ordering attribute chosen is a key of the relation, the index is a primary index; if the ordering attribute is not a key, the index will be a clustering index</li>
+							    <li>Specifying indexes
+								    <ul>
+									    <li><span>CREATE UNIQUE INDEX</span> indexName <span>ON</span> relation</li>
+									    <li><span>CREATE INDEX</span> indexName <span>ON</span> relation <span>CLUSTER</span></li>
+								    </ul>
+							    </li>
+						    </ul>
+					    </li>
+					    <li>Step 4.4  Estimate disk space requirements</li>
+				    </ul>
+			    </li>
+			    <li>Step 5  Design user views</li>
+			    <li>Step 6  Design security mechanisms</li>
+			    <li>Step 7  Consider the introduction of controlled redundancy
+				    <ul>
+					    <li>normalization is a logical database design that has minimal redundancy</li>
+					    <li>denormalization may improve efficiency</li>
+				    </ul>
+			    </li> 
+			    <li>Step 8  Monitor and tune the operational system
+				    <ul>
+					    <li>Transaction throughput:  number of transactions processed in given time interval</li>
+					    <li>Response time:  elapsed time for completion of a single transaction</li>
+					    <li>Disk storage:  amount of disk space required to store database files</li>
+				    </ul>
+			     </li>
+		    </ul>
+	    </li>
+	    <li>Transaction management
+		    <ul>
+			    <li>Transaction, Action, or series of actions, carried out by user or application, which reads or updates contents of database
+				    <ul>
+					    <li>success, transaction commits and database reaches a new consistent state</li>
+					    <li>failure, transaction aborts, and database must be restored to consistent state before it started, such a transaction is rolled back or undone</li>
+				    </ul>
+			    </li>
+			    <li>Committed transaction cannot be aborted</li>
+			    <li>Aborted transaction that is rolled back can be restarted later</li>
+			    <li>Properties
+				    <ul>
+					    <li>Atomicity</li>
+					    <li>Consistency</li>
+					    <li>Isolation</li>
+					    <li>Durability</li>
+				    </ul>
+			    </li>
+			    <li>Concurrency control
+				    <ul>
+					    <li>Process of managing simultaneous operations on the database without having them interfere with one another</li>
+					    <li>Potential problems
+						    <ul>
+							    <li>Lost update problem</li>
+							    <li>Uncommitted dependency problem</li>
+							    <li>Inconsistent analysis problem</li>
+						    </ul>
+					    </li>
+					    <li>Techniques
+						    <ul>
+							    <li>Lock
+								    <ul>
+									    <li>Two-phase locking
+										    <ul>
+											    <li>growing phase</li>
+											    <li>shrinking phase</li>
+										    </ul>
+									    </li>
+									    <li>Deadlock
+										    <ul>
+											    <li>Timeouts</li>
+											    <li>Deadlock prevention</li>
+											    <li>Deadlock detection and recovery</li>
+										    </ul>
+									    </li>
+								    </ul>
+							    </li>
+							    <li>Timestamping
+								    <ul>
+									    <li>A unique identifier created by DBMS that indicates relative starting time of a transaction</li>
+								    </ul>
+							    </li>
+							    <li>Optimistic</li>
+						    </ul>
+					    </li>
+				    </ul>
+			    </li>
+			    <li>serializable, find nonserial schedules that are equivalent to some serial schedule</li>
+		    </ul>
+	    </li>
+	    <li>Data warehouse
+		    <ul>
+			    <li>A subject-oriented, integrated, time-variant, and non-volatile collection of data in support of management’s decision-making process</li>
+		    </ul>
+	    </li>
+    </body>
+    </html>

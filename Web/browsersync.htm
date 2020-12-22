@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Browsersync</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Browsersync
+		</div>
+
+		<div class = "subtitle">What is Browsersync?</div>
+		<div class = "block">
+			<li>Browsersync watches for changes you make to a web page and automatically updates the browser</li>
+			<li>Browsersync also works across multiple devices</li>
+		</div>
+
+		<div class = "subtitle">Installation</div>
+		<div class = "block">
+			<li>Install NodeJS
+				<ul>
+			<pre class = "prettyprint linenums">
+sudo apt-get install nodejs npm
+			</pre>
+				</ul>
+			</li>
+			<li>Install browser-sync
+				<ul>
+			<pre class = "prettyprint linenums">
+npm install -g browser-sync
+			</pre>
+				</ul>
+			</li>
+		</div>
+
+		<div class = "subtitle">Static Webpages</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+browser-sync start --server --directory --files "*" //check all files in the directory
+		</div>
+
+		<div class = "subtitle">Localhost</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+			<li>browser-sync start --proxy "localhost" --files "*"</li>
+		</div>
+
+		<div class = "subtitle">Browsersync UI</div>
+		<div class = "block">
+<p style = "text-align:center;"><img src = "img/browsersync_1.png" width = "50%"></p>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.browsersync.io/docs/command-line">Command Line</a></li>
+			<li><a href = "https://scotch.io/tutorials/how-to-use-browsersync-for-faster-development">How to Use BrowserSync for Faster Development</a></li>
+		</div>
+	</body>
+</html>

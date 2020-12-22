@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Learn React
+		</div>
+
+		<div class = "subtitle">Component Lifecycles</div>
+		<div class = "block">
+			<ol>
+				<li>methods that are invoked in series when a com‐ ponent is mounted or updated</li>
+				<li><span>Mounting lifecycle</span> consists of methods that are invoked when a component is mounted or unmounted
+					<ul>
+						<li><span>constructor(props),</span> the constructor is where the state is initialized</li>
+						<li><span>componentWillMount(),</span> is invoked before the DOM is rendered and can be used to initialize third-party libraries, start animations, request data, or perform any additional setup that may be required before a component is rendered</li>
+						<li>render()</li>
+						<li><span>componentDidMount(),</span> is invoked just after the component has rendered, is another good place to make API requests, initialize any third-party JavaScript that requires a DOM, start background processes like inter‐ vals or timers</li>
+						<li><span>componentWillUnmount(),</span> is invoked just before the component is unmounted, any processes started in componentDidMount or componentWillMount can be cleaned up</li>
+					</ul>
+				</li>
+				<li><span>Updating lifecycle</span> is a series of methods that are invoked when a component’s state changes or when new properties are received from the parent, updating lifecycle kicks off every time <span>setState</span> is called
+					<ul>
+						<li><span>componentWillReceiveProps(nextProps),</span> new properties have been passed to the component, is the only method where setState can be called</li>
+						<li><span>shouldComponentUpdate(nextProps, nextState),</span> a predicate that can call off the update</li>
+						<li><span>componentWillUpdate(nextProps, nextState),</span> invoked just before the component updates</li>
+						<li><span>componentDidUpdate(prevProps, prevState),</span> invoked just after the update takes place, after the call to render</li>
+					</ul>
+				</li>
+			</ol>
+		</div>
+		<div class = "subtitle">Higher-Order Components</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import React from 'react';
+import ReactDOM from 'react-dom';
+import fetch from 'isomorphic-fetch'
+
+class PeopleList extends React.Component {
+	constructor(props) { 
+		super(props)
+		this.state = { data: [],
+		loaded: true,
+		loading: false }
+	}
+
+	componentDidMount() { 
+		//this.setState({loading:true}) 
+		fetch('https://randomuser.me/api/?results=100')
+			.then(response =&gt; response.json()) 
+			.then(obj =&gt; obj.results) 
+			.then(data =&gt; this.setState({
+				loaded: true, 
+				loading: false, data
+		})) }
+
+	render() {
+		const { data, loading } = this.state 
+		return (loading) ?
+        		&lt;div&gt;Loading...&lt;/div&gt; :
+        		&lt;ol className="people-list"&gt;
+				{data.map((person, i) =&gt; {
+					const {first, last} = person.name 
+					return &lt;li key={i}&gt;{first} {last}&lt;/li&gt;
+				})}
+			&lt;/ol&gt; 
+	}
+}
+
+ReactDOM.render(&lt;PeopleList /&gt;, document.getElementById('root'));
+		</pre>
+		</div>
+	</body>
+</html>

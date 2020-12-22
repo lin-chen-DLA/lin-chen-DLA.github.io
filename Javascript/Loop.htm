@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Loop
+		</div>
+
+		<div class = "subtitle">for</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var cars = ["BMW", "Volvo", "Saab", "Ford", "Fiat", "Audi"];
+
+for(var i = 0; i &lt; cars.length; i++)
+	console.log(cars[i])
+		</pre>
+		</div>
+		<div class = "subtitle">for/in</div>
+		<div class = "block">
+			<li>get the index of the array or object</li>
+		<pre class = "prettyprint linenums">
+var cars = ["BMW", "Volvo", "Saab", "Ford", "Fiat", "Audi"];
+
+for (i in cars)
+	console.log(cars[i]);
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var person = {fname:"John", lname:"Doe", age:25};
+
+for (i in person)
+	console.log(i, person[i]);
+		</pre>
+		</div>
+		<div class = "subtitle">for/of</div>
+		<div class = "block">
+			<li>get the element of the iterable such as Arrays, Strings, Maps, NodeLists, and more</li>
+		<pre class = "prettyprint linenums">
+var cars = ['BMW', 'Volvo', 'Mini'];
+
+for (var i of cars)
+	console.log(i);
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var txt = 'JavaScript';
+
+for (var x of txt) {
+  	document.write(x + "<br >");
+	}
+		</pre>
+		</div>
+		<div class = "subtitle">while</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var i = 0;
+
+while (i &lt; 10)
+{
+	console.log(i);
+	i++;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">do/while</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var i = 0;
+
+do {
+	console.log(i);
+	i++;
+}
+while (i &lt; 10);
+		</pre>
+		</div>
+		<div class = "subtitle">break</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var cars = ['BMW', 'Volvo', 'Mini'];
+
+for (var i in cars)
+{
+	if (i == 1) break;
+	console.log(i, cars[i]);
+}
+		</pre>
+		</div>
+		<div class = "subtitle">continue</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var cars = ['BMW', 'Volvo', 'Mini'];
+
+for (var i in cars)
+{
+	if (i == 1) continue;
+	console.log(i, cars[i]);
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Label</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+outloop:
+
+for (let i = 0; i &lt; 3; i++)
+{
+	innerloop:
+
+	for (let j = 0; j &lt; 3; j++)
+	{
+		console.log(i, j);
+		if(i == 1) break innerloop;
+		if(i == 2) break outloop;
+	}
+}
+
+console.log("After loop ...");
+
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+outloop:
+
+for (let i = 0; i &lt; 3; i++)
+{
+	innerloop:
+
+	for (let j = 0; j &lt; 3; j++)
+	{
+		console.log(i, j);
+		if(i == 1) break innerloop;
+		if(i == 2) break outloop;
+	}
+}
+
+console.log("After loop ...");
+
+		</pre>
+		</div>
+	</body>
+</html>

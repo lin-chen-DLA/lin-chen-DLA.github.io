@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CSS</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Selector
+		</div>
+
+		<div class = "block">
+			<li>CSS selectors are used to "find" (or select) the HTML elements</li>
+		</div>
+
+		<div class = "subtitle">Simple selectors</div>
+		<div class = "block">
+			<li>select elements based on <span>name, id, class</span></li>
+			<li>The <span>id</span> attribute specifies a unique id for an HTML element</li>
+			<li>a <span>class</span> name can be used by multiple elements</li>
+		</div>
+		<div class = "block">
+			<li>select by element name</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		p {color: red; text-align: center;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;p&gt;Hello World!&lt;/p&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>select by id</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		#content {color: red; text-align: center;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;p id = "content"&gt;Hello World!&lt;/p&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>select by class</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		.content {color: red; text-align: center;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;p class = "content"&gt;Hello World!&lt;/p&gt;
+	&lt;p&gt;Lin Chen&lt;/p&gt;
+	&lt;p class = "content"&gt;Office: 2205 Nevis Hall&lt;/p&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>select by name and class</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		p.content {color: red; text-align: center;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;p class = "content"&gt;Hello World!&lt;/p&gt; &lt;!-- apply style --&gt;
+	&lt;p&gt;Lin Chen&lt;/p&gt;
+	&lt;h1 class = "content"&gt;Office: 2205 Nevis Hall&lt;/h1&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>select by name and id</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		p#content {color: red; text-align: center;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;p id= "content"&gt;Hello World!&lt;/p&gt; &lt;!-- apply style --&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>use more than one class</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		.s1 {color: red;}
+		.s2 {text-align: center;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;p class = "s1 s2"&gt;Hello World!&lt;/p&gt; &lt;!-- apply style --&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>grouping selector selects all the HTML elements with the same style definitions</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		p, h1 {color: red; text-align: center;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;p&gt;Hello World!&lt;/p&gt;
+	&lt;h1&gt;Office: 2205 Nevis Hall&lt;/h1&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">CSS Combinators</div>
+		<div class = "block">
+			<li>descendant selector (space), matches all elements that are descendants of a specified element</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		div p {color: red; text-align: center;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div&gt;
+		&lt;p&gt;Hello World!&lt;/p&gt;
+		&lt;section&gt;&lt;p&gt;Lin Chen&lt;/p&gt;&lt;/section&gt;
+	&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Child Selector (&gt;), selects all elements that are the children of a specified element</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		div &gt; p {color: red; text-align: center;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div&gt;
+		&lt;p&gt;Hello World!&lt;/p&gt; &lt;!-- Apply Style --&gt;
+		&lt;section&gt;&lt;p&gt;Lin Chen&lt;/p&gt;&lt;/section&gt; &lt;!-- Not Apply Style --&gt;
+	&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Adjacent Sibling Selector (+), selects all elements that are the adjacent siblings of a specified element</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+div + p {
+  background-color: yellow;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;p&gt;Paragraph 4. Not in a div.&lt;/p&gt;
+
+&lt;div&gt;
+  &lt;p&gt;Paragraph 1 in the div.&lt;/p&gt;
+  &lt;p&gt;Paragraph 2 in the div.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Paragraph 3. Not in a div.&lt;/p&gt; &lt;!-- Apply Style --&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>General Sibling Selector (~), selects all elements that are siblings of a specified element</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+div ~ p {
+  background-color: yellow;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;p&gt;Paragraph 1.&lt;/p&gt;
+
+&lt;div&gt;
+  &lt;p&gt;Paragraph 2.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Paragraph 3.&lt;/p&gt; &lt;!-- Apply Style --&gt;
+&lt;p&gt;Paragraph 4.&lt;/p&gt; &lt;!-- Apply Style --&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Pseudo-classes</div>
+		<div class = "block">
+			<li>:link, style unvisited link</li>
+			<li>:visited, style visited link</li>
+			<li>:hover, style an element when a user mouses over it</li>
+			<li>:active, style an element when it gets focus</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		/* unvisited link */
+		a:link { color: blue;}
+
+		/* visited link */
+		a:visited { color: gray;}
+
+		/* mouse over link */
+		a:hover { color: red;}
+
+		/* selected link */
+		a:active {color: yellow;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;a href = "https://www.google.com"&gt;Google&lt;/a&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Pseudo-classes and CSS Classes</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		.content:hover {color: red; text-align: center;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;p class = "content"&gt;Hello World!&lt;/p&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>:first-child</span> pseudo-class matches a specified element that is the first child of another element</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		p:first-child {color: red; text-align: center;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;p&gt;Hello World!&lt;/p&gt; &lt;!-- Apply Style --&gt;
+	&lt;p&gt;Lin Chen&lt;/p&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Pseudo-elements</div>
+		<div class = "block">
+			<li>is used to style specified parts of an element</li>
+			<li>Style the first letter, or line, of an element</li>
+			<li>Insert content before, or after, the content of an element</li>
+		</div>
+		<div class = "block">
+			<li><span>::first-line</span> pseudo-element is used to add a special style to the first line of a text</li>
+			<li>::first-line pseudo-element can only be applied to block-level elements</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+p::first-line {
+  color: #ff0000;
+  font-variant: small-caps;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;p&gt;You can use the ::first-line pseudo-element to add a special effect to the first line of a text. Some more text. And even more, and more, and more, and more, and more, and more, and more, and more, and more, and more, and more, and more.&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>::first-letter</span> pseudo-element is used to add a special style to the first letter of a text</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+p::first-letter {
+  color: #ff0000;
+  font-size: xx-large;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;p&gt;You can use the ::first-letter pseudo-element to add a special effect to the first character of a text!&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>::before</span> pseudo-element can be used to insert some content before the content of an element</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+h1::before {
+  content: "Hello World!";
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;This is a heading&lt;/h1&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>::after</span> pseudo-element can be used to insert some content after the content of an element</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+h1::after {
+  content: "Hello World!";
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;This is a heading&lt;/h1&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Attribute Selectors</div>
+		<div class = "block">
+			<li><span>[attribute]</span> selector is used to select elements with a specified attribute</li>
+			<li><span>[attribute="value"]</span> selector is used to select elements with a specified attribute and value</li>
+			<li><span>[attribute~="value"]</span> selector is used to select elements with an attribute value containing a specified word</li>
+			<li><span>[attribute|="value"]</span> selector is used to select elements with the specified attribute starting with the specified value</li>
+			<li><span>[attribute^="value"]</span> selector is used to select elements whose attribute value begins with a specified value</li>
+			<li><span>[attribute$="value"]</span> selector is used to select elements whose attribute value ends with a specified value</li>
+			<li><span>[attribute*="value"]</span> selector is used to select elements whose attribute value contains a specified value</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		[name] {background-color: silver;}
+		[name = "content"] {color: red;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div name = "header"&gt;Header&lt;/div&gt;
+	&lt;div name = "menu"&gt;Menu&lt;/div&gt;
+	&lt;div name = "content"&gt;Content&lt;/div&gt;
+	&lt;div name = "footer"&gt;Footer&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.w3schools.com/css/css_pseudo_classes.asp">All CSS Pseudo Classes</a></li>
+			<li><a href = "https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes">Index of standard pseudo-classes</a></li>
+		</div>
+	</body>
+</html>

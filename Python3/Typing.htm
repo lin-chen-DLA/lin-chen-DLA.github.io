@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Typing
+		</div>
+
+		<div class = "subtitle">Type Check</div>
+		<div class = "block">
+			<li>Python does not implement type checking, use mypy to implement check</li>
+			<li>run it as part of your unit tests</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from typing import List
+
+# declare variable type
+# variable : type
+numbers: List[int] = list(range(4))
+
+# numbers2: List[str] = list(range(4)) # error by mypy
+
+print(numbers)
+
+# decleare function input and output types
+# def function_name(parameter1: type) -&gt; return_type:
+def get_info(m: str) -&gt; str:
+    return 'Info: ' + m
+
+def get_info2(m: int) -&gt; str:
+    return 'Info: ' + str(m)
+
+print(get_info2('Hello')) # error by mypy
+		</pre>
+		</div>
+
+		<div class = "subtitle">Multiple Types</div>
+		<div class = "block">
+			<li>@overload-decorated definitions are for the benefit of the type checker only, they are not called at runtime</li>
+			<li>non-@overload-decorated definition will be called at runtime</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import typing
+
+@typing.overload
+def get_info(m: str) -&gt; str:
+    print('Call str type ...')
+    return 'Info: ' + str(m)
+
+@typing.overload
+def get_info(m: int) -&gt; str:
+    print('Call int type ...')
+    return 'Info: ' + str(m)
+
+def get_info(m):
+    print('Call general function ...')
+    return 'Info: ' + str(m)
+
+# general function will be call at run time
+print(get_info(100))
+print(get_info('Hello'))
+print(get_info(3.14)) # error by type checker
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Use Union to define either type contained in Union[]</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import typing
+
+def get_info(m : typing.Union[int, str]) -&gt; str:
+    print('Call general function ...')
+    return 'Info: ' + str(m)
+
+print(get_info(100))
+print(get_info('Hello'))
+print(get_info(3.14)) # error by type checker
+		</pre>
+		</div>
+
+		<div class = "subtitle">Typing types</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from typing import List, Tuple, Dict, Set
+
+l: List[int] = list(range(4))
+t: Tuple[int, int] = (1, 2)
+d: Dict[str, int] = {'Age': 38}
+s: Set[int] = set([3, 2, 5, 6])
+
+l_d: List[Dict[str, int]] = [{'Age': 39}, {'ID': 1}]
+		</pre>
+		</div>
+
+		<div class = "subtitle">Any</div>
+		<div class = "block">
+			<li>Take any data type</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import typing
+
+def get_info(m : typing.Any) -&gt; str:
+    return 'Info: ' + str(m)
+
+print(get_info(100))
+print(get_info('Hello'))
+print(get_info(3.14))
+		</pre>
+		</div>
+
+		<div class = "subtitle">None</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import typing
+
+def get_info(m : typing.Any) -&gt; None:
+    print('Info: ' + str(m))
+    return 'Done' # error by type checker
+
+get_info(100)
+		</pre>
+		</div>
+
+		<div class = "subtitle">Type Aliase</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import typing
+
+Lint = typing.List[int]
+
+def get_info(m : Lint) -&gt; None:
+    print('Info: ' + str(m))
+
+get_info([1, 2, 3, 4])
+get_info(100) # error by type checker
+		</pre>
+		</div>
+
+		<div class = "subtitle">Generics</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import typing
+
+T = typing.TypeVar('T', str, int)
+
+def get_info(m : T, n : T) -&gt; str:
+    return str(m) + str(n)
+
+print(get_info('Hello', 'World!'))
+print(get_info(1, 2))
+print(get_info(1, 'Hello')) # error by type checker
+print(get_info(1, 3.14)) # error by type checker
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.python.org/3/library/typing.html">Python STL Library</a></li>
+			<li><a href = "https://www.upwork.com/hiring/for-clients/static-types-python-mypy/">A BRIEF INTRODUCTION TO MYPY</a></li>
+			<li><a href = "https://mypy.readthedocs.io/en/latest/existing_code.html#start-small">mpy</a></li>
+			<li><a href = "https://medium.com/@ageitgey/learn-how-to-use-static-type-checking-in-python-3-6-in-10-minutes-12c86d72677b">How to Use Static Type Checking in Python 3.6</a></li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Initialization
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+class C
+{
+	private:
+		int a = 0, b = 0;//C++11
+	public:
+		C(int i, int j):a(i), b(j){}
+};
+
+int main(int argc, char *argv[])
+{
+	//C++
+	std::string s("Hello");
+	//std::string s = "Hello";
+	int m = int();
+	//int x = 5;
+	//C c(1, 2);
+	int arr[4] = {0, 1, 2, 3};
+
+	//C++11
+	C c{1, 2};//C++11
+	int *a = new int[3] {1, 2, 0};//C++11
+	std::vector&lt;std::string&gt; v = {"first", "second"};
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "subtitle">Reference</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "https://blog.smartbear.com/c-plus-plus/the-biggest-changes-in-c11-and-why-you-should-care/">smartbear.com</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

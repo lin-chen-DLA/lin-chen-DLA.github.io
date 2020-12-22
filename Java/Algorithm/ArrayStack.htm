@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Array Stack</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Stack
+{
+	private int count;//element number in stack
+	private int top;//top element
+	private int MAXSIZE = 10;//capacity
+	private int space [];//array
+
+	public Stack()
+	{
+		space = new int[MAXSIZE];
+		count = 0;
+		top = -1;
+	}
+
+	//inspectors
+	public boolean isEmpty()
+	{
+		return (count &lt;= 0);
+	}
+
+	public int getSize()
+	{
+		return count;
+	}
+
+	public int stackTop()
+	{
+		return top;
+	}
+
+	public boolean equals(Stack s)
+	{
+		if(count == s.count) return false;
+		for(int i = 0; i &lt; count; i++)
+			if(space[i] != s.space[i])
+				return false;
+		return true;
+	}
+
+	public String toString()
+	{
+		String str = "[";
+		for(int i = 0; i &lt; count; i++)
+			str = str + " "+space[i];
+		str = str + "]";
+
+		return str;
+	}
+
+	//Modifiers
+	/*public void push(int e)
+	{
+		space[count] = e;
+		top = e;
+		count++;
+	}*/
+	public void push(int e)
+	{
+		if(count == MAXSIZE)
+		{
+			int [] space2 = new int[MAXSIZE*2];
+			for(int i = 0; i &lt; count; i++)
+				space2[i] = space[i];
+			MAXSIZE = MAXSIZE*2;
+			space = space2;
+		}
+		space[count] = e;
+		top = e;
+		count++;
+	}
+
+	public boolean pop()
+	{
+		if(count &lt;= 0) return false;
+		count--;
+		if(count == 0)
+			top = -1;
+		else
+			top = space[count-1];
+		return true;
+	}
+
+	public Stack copyStack()
+	{
+		Stack cp = new Stack();
+		if(isEmpty()) return cp;
+
+		for(int i = 0; i &lt; count; i++)
+			cp.push(space[i]);
+
+		return cp;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class StackTest
+{
+	public static void main(String args[])
+	{
+		Stack s = new Stack();
+
+		for(int i = 0; i &lt; 11; i++)
+			s.push(i);
+
+		System.out.println(s);
+
+		while(!s.isEmpty())
+		{
+			s.pop();
+			System.out.println(s);
+		}
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>

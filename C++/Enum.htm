@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Enum
+		</div>
+
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+enum Day {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
+
+int main(int argc, char *argv[])
+{
+	for(int i = Monday; i &lt;= Sunday; i++)
+		std::cout&lt;&lt;static_cast&lt;Day&gt;(i)&lt;&lt;std::endl;
+
+	for(Day d = Monday; d &lt;= Sunday; d = static_cast&lt;Day&gt;(d+1))
+		std::cout&lt;&lt;d&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Cast integer to Day, static_cast&lt;Day&gt;(3)</li>
+				<li>Cast Day to integer, int i = Thursday</li>
+				<li>Math operation, day2 = static_cast&lt;Day&gt;(day1+1);</li>
+				<li>++ operator cannot be used with an enum variable</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Specify Integer Value for Enumerators</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+enum Day {Monday = 1, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
+
+int main(int argc, char *argv[])
+{
+	for(int i = Monday; i &lt;= Sunday; i++)
+		std::cout&lt;&lt;static_cast&lt;Day&gt;(i)&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			<li>An enumerator name can't be used in multiple enumerations within the same namespace</li>
+			<li>Define the enumeration in a header, #include that header wherever needed if the enumeration is needed in mmultiple files</li>
+		</ul>
+	</div>
+	<div class = "subtitle">Compare Enumerator Values</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+enum Day {Monday = 1, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
+
+int main(int argc, char *argv[])
+{
+	if(1 == Monday)
+		std::cout&lt;&lt;"Compare integer with Day ..."&lt;&lt;std::endl;
+
+	if (Monday &lt; Thursday)
+		std::cout&lt;&lt;"Monday is earlier than Thursday ..."&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Enum Class<sup style = "color:red">C++11</sup></div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	enum Color {Blue, Red};
+	enum Fruit {Banana, Orange};
+
+	//enum types are implicitly converted to integer, then they are compared
+	if (Blue == Banana)
+		std::cout&lt;&lt;"Blue equals to Banana ..."&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	enum class Color {Blue, Red};
+	enum class Fruit {Banana, Orange};
+
+	//enum class types are not implicitly converted to integer
+	//if (Color::Blue == Fruit::Banana)//compile error
+		//std::cout&lt;&lt;"Blue equals to Banana ..."&lt;&lt;std::endl;
+	Color c = Color::Blue;
+	Fruit f = Fruit::Banana;
+
+	std::cout&lt;&lt;static_cast&lt;int&gt;(c)&lt;&lt;std::endl;
+	std::cout&lt;&lt;static_cast&lt;int&gt;(f)&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>enum type will be implicitly converted to integer</li>
+				<li>enum class type will not be implicitly converted to integer</li>
+			</ul>
+		</div>
+	<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.learncpp.com/cpp-tutorial/45-enumerated-types/">learncpp.com</a></li>
+				<li>Starting Out with C++, Tony Gaddis</li>
+			</ul>
+		</div>
+	</body>
+</html>

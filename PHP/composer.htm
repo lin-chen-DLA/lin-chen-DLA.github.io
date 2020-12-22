@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>PHP</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Composer
+		</div>
+
+		<div class = "subtitle">Install</div>
+		<div class = "block">
+			<li>Installation will generate a composer.phar file, save it in ./bin folder</li>
+			<pre class = "prettyprint linenums">
+curl -sS https://getcomposer.org/installer --output installer
+php installer # download composer.phar
+			</pre>
+			<pre class = "prettyprint linenums">
+sudo mv composer.phar /usr/local/bin/composer
+			</pre>
+		</div>
+		<div class = "subtitle">Installing Packages</div>
+		<div class = "block">
+			<ol>
+				<p style = "text-align:center;"><img src = "img/composer.png" width = "40%"></p>
+			<li>Add "vendor" to .gitignore to instruct Git to ignore all the vendor folder</li>
+			<li>Search required libraries at <span>Packagist</span></li>
+			<li>Edit composer.json</li>
+			<pre class = "prettyprint linenums">
+{
+    "require": {
+        "monolog/monolog": "1.0.*", 
+	"facebook/php-sdk": "3.2.3"
+    }
+}
+			</pre>
+			<li>composer install --no-dev, install those dependencies from lock file</li>
+			<li>If add new libraries in composer.json, run "php bin/composer.phar update" to install those libraries</li>
+			<li><span>require_once 'vendor/autoload.php'</span>, add it to your code</li>
+			<li>Check for known security issues by uploading composer.lock file to <a href = "https://security.sensiolabs.org/">sensiolabs</a></li>
+			<li>Build with <a href = "https://bower.io/docs/tools/">Grunt and Gulp</a></li>
+			</ol>
+		</div>
+		<div class = "subtitle">General</div>
+		<div class = "block">
+			<li>composer.lock, store the library versioin information</li>
+			<li>add your own code to the autoloader
+				<ol>
+				<p style = "text-align:center;"><img src = "img/composer_2.png" width = "40%"></p>
+					<li>Add your code to /src folder</li>
+			<pre class = "prettyprint linenums">
+&lt;?php
+namespace Acme;
+
+class Foo
+{
+    public static function world()
+    {
+        return 'Hello World, Composer!';
+    }
+}
+?&gt;
+
+			</pre>
+			<li>Add autoload field to composer.json</li>
+			<pre class = "prettyprint linenums">
+{
+    "require": {
+        "monolog/monolog": "1.0.*", 
+	"facebook/php-sdk": "3.2.3",
+	"facebook/webdriver": "1.6.0",
+	"facebook/php-sdk-v4": "5.5.0"
+    },
+
+    "autoload": {
+        "psr-4": {"Acme\\": "src/"}
+    }
+}
+			</pre>
+			<li>composer install, create new autoload.php</li>
+			<li>Use your own library</li>
+			<pre class = "prettyprint linenums">
+&lt;?php
+require __DIR__ . '/vendor/autoload.php';
+
+use Acme\Foo;
+echo Foo::world();
+?&gt;
+			</pre>
+				</ol>
+			</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.codementor.io/jadjoubran/php-tutorial-getting-started-with-composer-8sbn6fb6t">PHP Tutorial: Getting Started with Composer</a></li>
+			<li><a href = "https://getcomposer.org/">Dependency Manager for PHP</a></li>
+			<li><a href = "https://blog.jgrossi.com/2013/creating-your-first-composer-packagist-package/">Creating your first Composer/Packagist package</a></li>
+			<li><a href = "https://packagist.org/">Packagist</a></li>
+			<li><a href = "http://symfony.com/">Symfony</a></li>
+			<li><a href = "https://laravel.com/">Laravel</a></li>
+		</div>
+	</body>
+</html>

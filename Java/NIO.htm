@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			NIO
+		</div>
+
+		<div class = "subtitle">NIO and IO</div>
+		<div class = "block">
+			<ul>
+				<li>IO works with byte streams and character streams</li>
+				<li>NIO works with channels and buffers, data is always read from a channel into a buffer, or written from a buffer to a channel</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Paths</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.nio.file.*;
+
+public class P
+{
+	public static void main(String args[])
+	{
+		Path path = Paths.get("./");
+
+		//toAbsolutePath
+		Path p = path.toAbsolutePath();
+		//normalize
+		System.out.println(p.normalize());
+		//getFileName
+		System.out.println(p.getFileName());
+		//getFileSystem
+		System.out.println(p.getFileSystem());
+
+		Path f = Paths.get("./P.java");
+
+		System.out.println(f.toAbsolutePath().normalize());
+		//getFileName
+		System.out.println(f.getFileName());
+		//getFileSystem
+		System.out.println(f.getFileSystem());
+
+		//getNameCount
+		System.out.println(f.getNameCount());
+		//getName
+		for(int i = 0; i &lt; f.getNameCount(); i++)
+			System.out.println(f.getName(i));
+
+		//getParent
+		System.out.println(f.getParent());
+		//getRoot
+		System.out.println(f.getRoot());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Files</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.io.*;
+import java.nio.file.*;
+import java.nio.file.attribute.*;
+
+public class P
+{
+	public static void main(String args[]) throws Exception
+	{
+		Path p = Paths.get("./temp.java");
+
+		//exists
+		if(Files.exists(p, new LinkOption[]{ LinkOption.NOFOLLOW_LINKS}))
+		{
+			System.out.println(p.toString()+" exist ...");
+		}
+
+		//createDirectory
+		try
+		{
+			Files.createDirectory(Paths.get("./dir"));
+		}
+		catch (FileAlreadyExistsException e)
+		{
+			System.out.println(e);
+		}
+
+		//copy
+		try
+		{
+			Files.copy(p, Paths.get(Paths.get("./dir").toString(), "temp2.java"), StandardCopyOption.REPLACE_EXISTING);
+		}
+		catch (FileAlreadyExistsException e)
+		{
+			System.out.println(e);
+		}
+
+		//move
+		try
+		{
+			Files.move(Paths.get("dir/temp2.java"), Paths.get("backup.java"), StandardCopyOption.REPLACE_EXISTING);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+
+		//delete
+		try
+		{
+			Files.delete(Paths.get("dir"));
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+
+		//walkFileTree
+		Files.walkFileTree(Paths.get("temp"), new FileVisitor<Path>() {
+ 		 @Override
+  		public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+    			System.out.println("pre visit dir:" + dir);
+    			return FileVisitResult.CONTINUE;
+  		}
+
+  		@Override
+  		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+    			System.out.println("visit file: " + file);
+    			return FileVisitResult.CONTINUE;
+  		}
+
+  		@Override
+  		public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+    			System.out.println("visit file failed: " + file);
+    			return FileVisitResult.CONTINUE;
+  		}
+
+  		@Override
+  		public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+    			System.out.println("post visit directory: " + dir);
+    			return FileVisitResult.CONTINUE;
+  		}
+});
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">NIO</div>
+		<div class = "block">
+			<ul>
+				<li>Channel
+					<ul>
+						<li>FileChannel, reads data from and to files</li>
+						<li>DatagramChannel, read and write data over the network via UDP</li>
+						<li>SocketChannel, read and write data over the network via TCP</li>
+						<li>ServerSocketChannel, listen for incoming TCP connections, like a web server does</li>
+					</ul>
+				</li>
+				<li>Buffer
+					<ul>
+						<li>ByteBuffer</li>
+						<li>CharBuffer</li>
+						<li>DoubleBuffer</li>
+						<li>FloatBuffer</li>
+						<li>IntBuffer</li>
+						<li>LongBuffer</li>
+						<li>ShortBuffer</li>
+					</ul>
+					<ul>
+						<li>Capacity, buffer size</li>
+						<li>Position, current position</li>
+						<li>Limit, the limit of how much data that is able to write into the buffer</li>
+						<li>Allocate buffer, call allocate()</li>
+						<li>Write to buffer
+							<ul>
+								<li>Write data from channel to buffer by channel.read()</li>
+								<li>Write data to buffer directly by put()</li>
+							</ul>
+						</li>
+						<li>fip, switch buffer from writing mode to reading mode</li>
+						<li>Read from buffer
+							<ul>
+								<li>Read data from buffer to channel by channel.write()</li>
+								<li>Read data from buffer directly by get()</li>
+							</ul>
+						</li>
+						<li>rewind, set position back to 0, is able to recall all the data in buffer</li>
+						<li>clear, clear up buffer and switch to writing mode</li>
+						<li>compact, copy unread data to the beginning of buffer and switch to writing mode</li>
+						<li>mark and reset, mark a position in buffer and reset back to the marked position later on</li>
+					</ul>
+				</li>
+				<li>Selector, allows a single thread to handle multiple channels</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.io.*;
+import java.nio.*;
+import java.nio.file.*;
+import java.nio.channels.*;
+
+public class C
+{
+	public static void main(String args[]) throws IOException
+	{
+		RandomAccessFile aFile = new RandomAccessFile("temp.txt", "rw");
+	    	FileChannel inChannel = aFile.getChannel();
+
+	    	ByteBuffer buf = ByteBuffer.allocate(10);//allocate 10 bytes buffer
+
+	    	int bytesRead;
+	    	while ((bytesRead = inChannel.read(buf)) != -1) {
+
+		  	System.out.println("Read " + bytesRead);
+		  	buf.flip();//switch buffer from put to get
+
+		  	while(buf.hasRemaining()){
+		      		System.out.print((char) buf.get());
+		  	}
+
+		  	buf.clear();//switch buffer from get to put
+			System.out.println();
+	    	}
+	    	aFile.close();
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.io.*;
+import java.nio.*;
+import java.nio.file.*;
+import java.nio.channels.*;
+
+public class C
+{
+	public static void bufferInfo(Buffer buf)
+	{
+		System.out.println("Position: "+buf.position()+" Limit: "+buf.limit()+" Capacity: "+buf.capacity());
+	}
+
+	public static void main(String args[]) throws IOException
+	{
+		RandomAccessFile aFile = new RandomAccessFile("temp.txt", "rw");
+	    	FileChannel inChannel = aFile.getChannel();
+
+	    	ByteBuffer buf = ByteBuffer.allocate(5);//allocate 10 bytes buffer
+
+		bufferInfo(buf);
+
+		int bytesRead;
+
+		bytesRead = inChannel.read(buf);//read data from channel to buffer
+
+		System.out.println("Read "+bytesRead+" bytes ...");
+
+		bufferInfo(buf);
+
+		buf.flip();//switch from writing mode to reading mode
+
+		System.out.println("Read: "+(char)buf.get());//read one byte from buffer
+
+		bufferInfo(buf);
+
+		buf.rewind();//set position back to 0
+
+		System.out.println("Read: "+(char)buf.get());//read one byte from buffer
+
+	    	aFile.close();
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Scatter and Gather</div>
+		<div class = "block">
+			<ul>
+				<li>Scatter, read data into more than one buffers</li>
+				<li>Gather, output data into more than one channels</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.io.*;
+import java.nio.*;
+import java.nio.channels.*;
+
+public class S
+{
+	public static void buffInfo(Buffer buf)
+	{
+		System.out.println("Position: "+buf.position()+" Limit: "+buf.limit()+" Capacity: "+buf.capacity());
+	}
+
+	public static void main(String args[]) throws IOException
+	{
+		ByteBuffer header = ByteBuffer.allocate(5);
+		ByteBuffer body   = ByteBuffer.allocate(5);
+
+		ByteBuffer[] bufferArray = { header, body };
+
+		//read
+		FileChannel channel = (new RandomAccessFile("temp.txt", "rw")).getChannel();
+
+		channel.read(bufferArray);
+
+		buffInfo(header);
+		buffInfo(body);
+
+		header.flip();
+		body.flip();
+
+		//write
+		FileChannel output = (new RandomAccessFile("temp2.txt", "rw").getChannel());
+
+		output.write(bufferArray);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Channel to Channel Transfer</div>
+		<div class = "block">
+			<ul>
+				<li>Scatter, read data into more than one buffers</li>
+				<li>Gather, output data into more than one channels</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.io.*;
+import java.nio.*;
+import java.nio.channels.*;
+
+public class T
+{
+	public static void main(String args[]) throws IOException
+	{
+		FileChannel from = (new RandomAccessFile("temp.txt", "rw")).getChannel();
+		FileChannel to = (new RandomAccessFile("temp2.txt", "rw")).getChannel();
+
+		to.transferFrom(from, 0, from.size());
+
+		from.close();
+		to.close();
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Selector</div>
+		<div class = "block">
+			<ul>
+				<li>examine one or more NIO Channel's, and determine which channels are ready for e.g. reading or writing</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://tutorials.jenkov.com/java-nio/index.html">Jenkov's Tutorial</a></li>
+				<li><a href = "https://www.javatpoint.com/java-nio">javaTPoint</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

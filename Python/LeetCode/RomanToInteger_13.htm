@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>LeetCode</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">13. Roman To Integer</div>
+		<div class = "block">
+			<li><a href = "https://leetcode.com/problems/roman-to-integer/description/">Description</a></li>
+		</div>
+		<div class = "block">
+			O(n)
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def romanToInt(s):
+    d = {'I':1, 'V':5, 'X':10, 'L':50, 'C':100, 'D':500, 'M':1000, 'IV':4, \
+            'IX':9, 'XL':40, 'XC':90, 'CD':400, 'CM':900}
+
+    n = 0
+    i = 0
+    while i &lt; len(s)-1:
+        if d[s[i]] &gt;= d[s[i+1]]:
+            n += d[s[i]]
+            i += 1
+        else:
+            n += d[s[i]+s[i+1]]
+            i += 2
+
+    if i < len(s):
+        n += d[s[i]]
+
+    return n
+
+if __name__ == '__main__':
+    print romanToInt('III')
+    print romanToInt('IV')
+    print romanToInt('IX')
+    print romanToInt('LVIII')
+    print romanToInt('MCMXCIV')
+			</pre>
+		</div>
+	</body>
+</html>

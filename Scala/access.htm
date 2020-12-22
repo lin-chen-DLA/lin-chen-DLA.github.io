@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Access
+		</div>
+
+		<div class = "subtitle">Private</div>
+		<div class = "block">
+			<li>A private member is visible only inside the class or object that contains the member definition</li>
+		<pre class = "prettyprint linenums">
+class Car(val m : String) // immutable paramters
+{
+  private var maker : String = m;
+
+  override def toString : String = {return "Maker: %10s".format(maker)}
+}
+
+object Demo
+{
+  def main(args: Array[String])
+  {
+    val c = new Car("Buick"); // immutable reference
+    println(c); // Buick
+
+    //c.maker = "Honda"; // error
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Protected</div>
+		<div class = "block">
+			<li>A protected member is only accessible from subclasses of the class in which the member is defined</li>
+		<pre class = "prettyprint linenums">
+class Vehicle(val m : String)
+{
+  protected var maker : String = m;
+
+  def disp() {println("Maker: "+maker)}
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+class Car(override val m : String, var year : Int) extends Vehicle(m)
+{
+  override def disp()
+  {
+    println("Maker: "+maker+" Year: "+year)
+  }
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def main(args: Array[String])
+  {
+    val c = new Car("Buick", 1998); // immutable reference
+
+    c.disp();
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Public</div>
+		<div class = "block">
+			<li>default, not required to specify Public keyword for Public members, such members can be accessed from anywhere</li>
+		<pre class = "prettyprint linenums">
+class Car(val m : String) // immutable paramters
+{
+  var maker : String = m;
+
+  override def toString : String = {return "Maker: %10s".format(maker)}
+}
+
+object Demo
+{
+  def main(args: Array[String])
+  {
+    val c = new Car("Buick"); // immutable reference
+    println(c); // Buick
+
+    c.maker = "Honda";
+    println(c); // Honda
+  }
+}
+		</pre>
+		</div>
+	</body>
+</html>

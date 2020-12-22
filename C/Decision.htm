@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Basic Syntax</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Decision
+		</div>
+
+		<div class = "subtitle">Boolean</div>
+		<div class = "block">
+			<li>By default, C takes <span>0</span> as False, <span>none 0</span> as True</li>
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	if (1)
+		printf("True\n"); // print out
+	else
+		printf("Flase\n");
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<li>C99 introduces the bool type to C, define true/false in stdbool.h</li>
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+
+int main()
+{
+	bool b = true;
+
+	if (b)
+		printf("True\n");
+	else
+		printf("False\n");
+
+	b = (10%2 == 0);
+
+	if (b)
+		printf("Even\n");
+	else
+		printf("Odd\n");
+
+	return 0;
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">If</div>
+		<div class = "block">
+			<li>Braces { and } are used to group declarations and statements together into a compound statement, or block, so that they are syntactically equivalent to a single statement</li>
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int age = 20;
+
+	if (age &gt;= 21)
+	{//start block
+		printf("You are allowed to drink ...");
+	}//end block
+	else
+	{
+		printf("You are not allowed to drink ...");
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<li>If there is only one line of code, the curly braces can be ignored</li>
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int age = 20;
+
+	if (age &gt;= 21)
+		printf("You are allowed to drink ...");
+	else
+		printf("You are not allowed to drink ...");
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<li>else sentence is not necessary</li>
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int age = 20;
+
+	if (age &gt;= 21)
+		printf("You are allowed to drink ...\n");
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<li>if ... else if ... else</li>
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int num = 20;
+
+	if (num &lt; 0)
+		printf("Negative Number ...\n");
+	else if (num &gt;= 0)
+		printf("Non-negative Number ...\n");
+	else
+		printf("Unknown Number ...\n");
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<li>Nested if ... else ...</li>
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int num = 20;
+
+	if (num &gt;= 0)
+	{
+		if (num &gt; 0)
+			printf("Natural Number ...\n");
+		else
+			printf("Zero ...\n");
+	}
+	else
+		printf("Negative Number ...\n");
+
+	return 0;
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Relational Operators</div>
+		<div class = "block">
+			<li>==, !=, &gt;, &lt; &gt;=, &lt;=</li>
+		</div>
+		<div class = "subtitle">Logical Operators</div>
+		<div class = "block">
+			<li>&amp;&amp;, and</li>
+			<li>||, or</li>
+			<li>!</li>
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int num = 20;
+
+	// and
+	if (num &gt;= 0 &amp;&amp; num%2 == 0)
+		printf("Qualified Number ...\n");
+
+	if ((num &gt;= 0) &amp;&amp; (num%2 == 0))
+		printf("Qualified Number ...\n");
+
+	// or
+	if (num &gt;= 0 || num%2 == 0)
+		printf("Qualified Number ...\n");
+
+	if ((num &gt;= 0) || (num%2 == 0))
+		printf("Qualified Number ...\n");
+
+	// not
+	if (!(num%2 == 1))
+		printf("Qualified Number ...\n");
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Relational Operators</div>
+		<div class = "block">
+			<li>!</li>
+			<li>&lt;, &lt;=, &gt; &gt;=</li>
+			<li>&amp;&amp;</li>
+			<li>||</li>
+		</div>
+		<div class = "subtitle">Switch</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int option;
+
+	printf("Enter an option (1-3):\n");
+	scanf("%d", &amp;option);
+
+	switch(option)
+	{
+		case 1:
+			printf("Install Software ...\n");
+			break;
+		case 2:
+			printf("Unstall Software ...\n");
+			break;
+		case 3:
+			printf("Readme\n");
+			break;
+		default:
+			printf("Exit ...\n");
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.tutorialspoint.com/cprogramming/c_operators_precedence.htm">Operators Precedence in C</a></li>
+		</div>
+	</body>
+</html>

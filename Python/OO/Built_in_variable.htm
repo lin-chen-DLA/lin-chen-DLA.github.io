@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Built-in Variables
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Vehicle.py
+""" Vehicle Module defines Vehicle class
+"""
+
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+
+    def __init__(self, brand, year):
+	    self.brand = brand;
+	    self.year = year;
+		</pre>
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# test.py
+""" Test Vehicle class defined in Vehicle module
+"""
+
+from Vehicle import Vehicle
+
+def main():
+    print Vehicle.__bases__ # base classes from which the calss directly inherits
+    print Vehicle.__dict__ # a dictionary that corresponds to the class's namespace
+    print Vehicle.__doc__ # a class's docstring
+    print Vehicle.__module__ # module name in which the class is defined
+    print Vehicle.__name__ # class name
+
+    v = Vehicle("Buick", 1999)
+    print v.__class__ # class name from which the object was instantiated
+    print v.__dict__ # {'brand': 'Buick', 'year': 1999}
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+
+		<div class = "subtitle">__builtins__</div>
+		<div class = "block">
+			<li>provides direct access to all ‘built-in’ identifiers of Python; for example, __builtin__.open is the full name for the built-in function open()</li>
+		</div>
+		<div class = "subtitle">__name__, the name of the module</div>
+		<div class = "subtitle">__file__, the “path” to the file</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Vehicle.py
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+
+    def __init__(self, brand, year):
+	#print "Create Vehicle Object ...";
+	self._brand = brand;
+	self._year = year;
+
+def main():
+	v = Vehicle("Lincoln", 1998);
+	print(__name__) # __main__
+        print(__file__) # Vehicle.py
+
+if __name__ == "__main__":
+	main()
+		</pre>
+		</div>
+		<div class = "subtitle">__all__</div>
+		<div class = "block">
+			<li>Defined in __init__.py file, the list of modules that should be imported by <span>from myPackage import *</span></li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.python.org/2/genindex-_.html">Index – _</a></li>
+			<li>Python How to Program, Appendix O</li>
+		</div>
+	</body>
+</html>

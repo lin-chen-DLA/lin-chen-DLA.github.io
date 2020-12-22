@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>R</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Function
+		</div>
+
+		<div class = "subtitle">Create function</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+getRand &lt;- function(n)
+{
+	return(runif(n))
+}
+
+print(getRand(4))
+		</pre>
+		</div>
+
+		<div class = "subtitle">Default parameters</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+getSum &lt;- function(a = 0, b = 1, c = 2)
+{
+	return(a+b+c)
+}
+
+print(getSum(1, 2, 3)) # a = 1, b = 2, c = 3
+print(getSum(1, 2)) # a = 1, b = 2, c = 2
+print(getSum()) # a= 0, b = 1, c = 2
+print(getSum(b = 10)) # pass value by parameter name, a = 0, b = 10, c = 2
+		</pre>
+		</div>
+
+		<div class = "subtitle">Return multiple values</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+library(gsubfn)
+
+getMul &lt;- function()
+{
+	return(list(1, 2))
+}
+
+list[a, b] &lt;- getMul()
+
+message(sprintf("%d, %d\n", a, b))
+		</pre>
+		</div>
+	</body>
+</html>

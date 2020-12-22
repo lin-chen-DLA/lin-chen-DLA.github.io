@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>PHP</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			PHP Basics
+		</div>
+
+		<div class = "subtitle">Basics</div>
+		<div class = "block">
+			<li>Tags
+				<ul>
+					<li>&lt;?php, opening tags</li>
+					<li>?&gt;, closing tags, prefer to be omitted if the file is pure PHP code</li>
+				</ul>
+			</li>
+			<pre class = "prettyprint linenums">
+&lt;?php
+	echo "php tags&lt;br&gt;";
+?&gt;
+			</pre>
+			<li>Comments
+				<ul>
+					<li>// or #, line comment</li>
+					<li>/* ... */, block comment</li>
+				</ul>
+			</li>
+			<li>Case sensitivity
+				<ul>
+					<li>The names of user-defined classes and functions, as well as built-in constructs and keywords such as echo, while, class, etc., are case-insensitive</li>
+					<li>Variables, on the other hand, are case-sensitive</li>
+				</ul>
+			</li>
+			<li>Variables
+				<ul>
+					<li>Variable names start with a dollar sign ($)</li>
+					<li>$$, reference the value of a variable whose name is stored in another variable</li>
+			<pre class = "prettyprint linenums">
+&lt;?php
+	$v = "temp";
+	$temp = 100;
+
+	echo $$v;//100
+?&gt;
+			</pre>
+					<li>&, variable reference, create aliases</li>
+			<pre class = "prettyprint linenums">
+&lt;?php
+	$v1 = & $v2;
+	$v1 = 10;
+	$v2 = 100;
+
+	echo "$v1 $v2\n";//100 100
+?&gt;
+			</pre>
+				</ul>
+			</li>
+			<li>Constants
+				<ul>
+					<li>only scalar values—Boolean, integer, double, and string—can be constants</li>
+			<pre class = "prettyprint linenums">
+&lt;?php
+	define('NAME', 'Lin');
+	echo NAME;
+?&gt;
+			</pre>
+				</ul>
+			</li>
+			<li>Data types
+				<ul>
+					<li>Scalar types
+						<ul>
+							<li>boolean</li>
+							<li>integer</li>
+							<li>float</li>
+							<li>string</li>
+						</ul>
+					</li>
+					<li>Compound types
+						<ul>
+							<li>array</li>
+							<li>object</li>
+							<li>callable</li>
+							<li>iterable</li>
+						</ul>
+					</li>
+					<li>Special types
+						<ul>
+							<li>resource</li>
+							<li>NULL</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</div>
+	</body>
+</html>

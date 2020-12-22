@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>Git</title>
+       <meta http-equiv="Page-Enter" contect="revealTrans(duration=10,transtion= 50)">
+       <style>
+	       span {color: red}
+	</style>
+    </head>
+    <body bgcolor = white text = #4E6AAA link = silver alink = silver vlink = silver>
+	    <ol>
+		    <li><span style = "color:red">How to add Git system to a project</span>
+			    <ul>
+				    <li>Enter the project folder</li>
+				    <li>git init, a .git folder will be added</li>
+			    </ul>
+		    </li>
+		    <li><span style = "color: red">How to configure git</span>
+			    <ul>
+				    <li>git config --global user.name "Lin", set the user name</li>
+				    <li>git config --global user.email lchen@ecsu.edu, set the value for user.email</li>
+				    <li>git config --global core.editor vim</li>
+				    <li>git config --global commit.template /home/lin/Documents/Git/template, add a commit template</li>
+				    <li>git config --global excludesfile /home/lin/Documents/Git/ignore, add a global gitignore file</li>
+			    </ul>
+		    </li>
+		    <li><span style = "color: red">How to get the help information of a command</span>
+			    <ul>
+				    <li>git help config, get the help information of config</li>
+			    </ul>
+		    </li>
+		    <li><span style = "color:red">What are the three stages in git</span>
+			    <ul>
+				    <li>modified, files changed but not commited, working directory</li>
+				    <li>staged, files added, index in git directory</li>
+				    <li>commited, files commited, in .git/object</li>
+			    </ul>
+		    </li>
+		    <li><span style = "color:red">How to create a shared repository</span>
+			    <ul>
+				    <li>mkdir rep.git, create a git folder</li>
+				    <li>chgrp -R groupName rep.git, change the group</li>
+				    <li>chmod 2770 rep.git, make the folder readable and writable for users in the group</li>
+				    <li>cd rep.git, enter rep.git</li>
+				    <li>git init --bare --shared=group, files readable and writable for all users in the group</li>
+				    <li>cd .git/hooks, mv post-update.sample post-update</li>
+			    </ul>
+		    </li>
+		    <li><span>How to add files in a projects to be monitored by git system</span>
+			    <ul>
+				    <li>git add *</li>
+			    </ul>
+		    </li>
+		    <li><span>How to remove a file from tracking</span>
+			    <ul>
+				    <li>git reset HEAD -- [fileName]</li>
+				    <li>git rm --cached [fileName]</li>
+			    </ul>
+		    </li>
+		    <li><span>How to stage file</span>
+			    <ul>
+				    <li>git add fileName</li>
+			    </ul>
+		    </li>
+		    <li><span>How to commit</span>
+			    <ul>
+				    <li>git commit</li>
+				    <li>git commit -m message</li>
+				    <li>git commit -am message</li>
+			    </ul>
+		    </li>
+		    <li><span>How to get a copy from server</span>
+			    <ul>
+				    <li>git clone url</li>
+			    </ul>
+		    </li>
+		    <li><span>How to show a single file in a branch, commit</span>
+			    <ul>
+				    <li>git show [branchName]:[fileName]</li>
+				    <li>git show [commit]:[fileName]</li>
+			    </ul>
+		    </li>
+		    <li><span>How to show the work tree of a branch, or commit</span>
+			    <ul>
+				    <li>git ls-tree [commit]</li>
+				    <li>git show [branchName]^{tree}</li>
+				    <li>git show [commit]^{tree}</li>
+			    </ul>
+		    </li>
+		    <li><span>How to checkout a single file</span>
+			    <ul>
+				    <li>git checkout [branchName] -- [fileName]</li>
+				    <li>git checkout [commit] -- [fileName]</li>
+			    </ul>
+		    </li>
+		    <li><span>How to undo all changes made since last commit</span>
+			    <ul>
+				    <li>git checkout -f</li>
+				    <li>git reset --hard HEAD</li>
+			    </ul>
+		    </li>
+		    <li><span>How to compare two commit</span>
+			    <ul>
+				    <li>git diff [commit_1] [commit_2]</li>
+				    <li>git diff [branch_1]...[branch_2], changes that occurred on the branch_2 since branch_1 start off</li>
+			    </ul>
+		    </li>
+		    <li><span>How to rewind to a commit</span>
+			    <ul>
+				    <li>git reset --hard [commit], get rid of the commits after it</li>
+			    </ul>
+		    </li>
+		    <li><span>How to show all branches</span>
+			    <ul>
+				    <li>git branch -v</li>
+			    </ul>
+		    </li>
+		    <li><span>How to show all branches in gitk</span>
+			    <ul>
+				    <li>git log --graph --all</li>
+				    <li>gitk -all</li>
+			    </ul>
+		    </li>
+		    <li><span>How to list the remote branches</span>
+			    <ul>
+				    <li>git ls-remote</li>
+				    <li>git remote show [repName]</li>
+			    </ul>
+		    </li>
+		    <li><span>How to remove a remote branch</span>
+			    <ul>
+				    <li>git push origin --delete [remoteBranchName], remove both the local and remote branch</li>
+				    <li>git branch -r -d origin/b_2, remove the local remote branch</li>
+			    </ul>
+		    </li>
+		    <li><span>How to add a branch to a previous commit</span>
+			    <ul>
+				    <li>git branch [branchName] [commit]</li>
+			    </ul>
+		    </li>
+		    <li><span>How to show all tracking branches</span>
+			    <ul>
+				    <li>git branch -vv</li>
+			    </ul>
+		    </li>
+		    <li><span>How to list all remote repositories</span>
+			    <ul>
+				    <li>git remote -v</li>
+			    </ul>
+		    </li>
+		    <li><span>How to add a remote repository</span>
+			    <ul>
+				    <li>git remote add [repName] [url]</li>
+			    </ul>
+		    </li>
+		    <li><span>How to remove a remote repository</span>
+			    <ul>
+				    <li>git rm [repName]</li>
+			    </ul>
+		    </li>
+		    <li><span>How to merge a remote branch to the current branch</span>
+			    <ul>
+				    <li>fetch
+					    <ul>
+						    <li>git fetch [repName] [repBranchName]</li>
+						    <li>check the branch to validate the content</li>
+						    <li>git merge [branchName], merge the target branch to the current branch</li>
+					    </ul>
+				    </li>
+				    <li>pull
+					    <ul>
+						    <li>git pull [repName] [repBranchName]</li>
+					    </ul>
+				    </li>
+			    </ul>
+		    </li>
+		    <li><span>How to check the unmerged files</span>
+			    <ul>
+				    <li>git diff --name-only --diff-filter=U</li>
+				    <li>git status</li>
+			    </ul>
+		    </li>
+		    <li><span>How to deposite the code to a remote repository</span>
+			    <ul>
+				    <li>git push [repName] [localBranch]:[remoteBranch]</li>
+			    </ul>
+		    </li>
+		    <li><span>How to create a tag</span>
+			    <ul>
+				    <li>anotate tag
+					    <ul>
+						    <li>git tag -a v1.2 9fceb02</li>
+						    <li>git tag -a v1.0 -m message</li>
+					    </ul>
+				    </li>
+				    <li>lightweight tag
+					    <ul>
+						    <li>git tag v1.1</li>
+					    </ul>
+				    </li>
+			    </ul>
+		    </li>
+		    <li><span>How to check the information of a tag</span>
+			    <ul>
+				    <li>git tag, list all tags</li>
+				    <li>git show [tagName]</li>
+			    </ul>
+		    </li>
+		    <li><span>How to push tags to the remote repository</span>
+			    <ul>
+				    <li>git push origin [tagName], push a specific tag to the remote repository</li>
+				    <li>git push origin --tags, push all tags</li>
+			    </ul>
+		    </li>
+		    <li><span>How to checkout a tag</span>
+			    <ul>
+				    <li>git checkout v1.0</li>
+				    <li>git checkout -b b_4</li>
+			    </ul>
+		    </li>
+		    <li><span>How to alias a git command</span>
+			    <ul>
+				    <li>git config --global alias.unstage "reset HEAD --"</li>
+				    <li>git config --global alias.ls '!ls', alias an external command</li>
+			    </ul>
+		    </li>
+		    <li><span>How to know the commit that HEAD points to</span>
+			    <ul>
+				    <li>gitg</li>
+				    <li>git log --graph --all --decorate</li>
+				    <li>git log --oneline --decorate</li>
+			    </ul>
+		    </li>
+		    <li><span>How to show the web-based commit</span>
+			    <ul>
+				    <li>git instaweb</li>
+			    </ul>
+		    </li>
+		    <li><span>How to use github to collaborate with team members</span>
+			    <ul>
+				    <li>fork + pull request</li>
+				    <li>add collaborators to a repository</li>
+				    <li>organization</li>
+			    </ul>
+		    </li>
+		    <li><span>What the README file should contain in github</span>
+			    <ul>
+				    <li>What the project is for</li>
+				    <li>How to configure and install it</li>
+				    <li>An example of how to use it or get it running</li>
+				    <li>The license that the project is offered under</li>
+				    <li>How to contribute to it</li>
+			    </ul>
+		    </li>
+		    <li><span>How to list the files in the index</span>
+			    <ul>
+				    <li>git ls-files</li>
+			    </ul>
+		    </li>
+		    <li><span>How to list all commits in a branch</span>
+			    <ul>
+				    <li>git rev-list [branchName]</li>
+			    </ul>
+		    </li>
+		    <li><span>How to show the HEAD commits of a branch</span>
+			    <ul>
+				    <li>git rev-parse [branchName]</li>
+			    </ul>
+		    </li>
+		    <li><span>How to show the commit information of a specific commit</span>
+			    <ul>
+				    <li>git cat-file -p [commit or tag]</li>
+			    </ul>
+		    </li>
+		    <li><span>How to check the reflog information</span>
+			    <ul>
+				    <li>git reflog</li>
+			    </ul>
+		    </li>
+		    <li><span>How to relative refer a commit</span>
+			    <ul>
+				    <li>^, the first parent of a commit</li>
+				    <li>^^, the parent of the first parent of a commit</li>
+				    <li>~n, the nth ancestor of the specific commit</li>
+				    <li>^{type}, refer to an object type name</li>
+				    <li>[commit]:[fileNmae], refer to a specific file</li>
+				    <li>:n:[fileName], the nth staged file in the index</li>
+			    </ul>
+		    </li>
+		    <li><span>What are object types in git</span>
+			    <ul>
+				    <li>blob, tree, commit, and tag</li>
+			    </ul>
+		    </li>
+		    <li><span>How to figure out a range of commits</span>
+			    <ul>
+				    <li>git log origin/master..HEAD, all commits that are unreachable from origin/master but reachable from HEAD</li>
+				    <li>git log refA refB --not refC, reachable from refA and refB but not from refC</li>
+				    <li>git log master...experiment, reachable from either of them but not from both</li>
+			    </ul>
+		    </li>
+		    <li><span>How to check when lines were introduced</span>
+			    <ul>
+				    <li>git blame -L 12,22 [fileName]</li>
+			    </ul>
+		    </li>
+		    <li><span>What is submodule and how to use submodule to manage your project</span>
+			    <ul>
+				    <li>Sometimes, your project may contain several libraries. Each of those libraries is an individual project or third-party module. To keep each of those libraries indepent and cooprate with the main project, we use submodule to manage the project.</li>
+				    <li>Add a submodule to the main project
+					    <ul>
+						    <li>git submodule add [repUrl]</li>
+						    <li>.gitmodules will be added in the main project</li>
+						    <li>.git/config will be updated</li>
+						    <li>the sub module folder will be taken as a special commit instead of a regular subdirectory or file</li>
+					    </ul>
+				    </li>
+				    <li>Each submodule is indpendent from the main project, which has it own repository, instead of combining the content of main project and the content of submodule, the repository of the main project does not contain the content of the submodule</li>
+				    <li>Take each submodule as an indepent project, push all modules if changed before pushing the main project</li>
+				    <li>Clone a main project containing submodules
+					    <ul>
+						    <li>git clone --recursive [repUrl]</li>
+						    <li>git submodule init, git submodule update, in the main project folder</li>
+					    </ul>
+				    </li>
+			    </ul>
+		    </li>
+		    <li><span>How to use bundle to tranfer repository</span>
+			    <ul>
+				    <li>git bundle create repo.bundle HEAD master</li>
+				    <li>git bundle verify repo.bundle</li>
+				    <li>git fetch repo.bundle [bundleBranch]:[localBranchName], fetch from a bundle</li>
+				    <li>git clone repo.bundle -b master, clone from a bundle</li>
+			    </ul>
+		    </li>
+		    <li><span>How to setup github in Eclipse</span>
+			    <ul>
+				    <li><a href = "http://selvakumar.me/integrate-github-project-with-eclipse-on-ubuntu/">EGit Setup</a></li>
+			    </ul>
+		    </li>
+	    </ol>
+    </body>
+</html>

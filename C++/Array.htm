@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Array
+		</div>
+
+		<div class = "subtitle">Array and Size</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	const int size = 10;
+	int array[size];
+
+	//initialize array
+	for(int i = 0; i &lt; size; i++)
+		array[i] = i*i;
+
+	//display array
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;array[i]&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+
+	//display array size
+	std::cout&lt;&lt;"Memory size: "&lt;&lt;sizeof(array)&lt;&lt;std::endl;
+	std::cout&lt;&lt;"Number of elements: "&lt;&lt;sizeof(array)/sizeof(*array)&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Subscript number starts at zero</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Bounds Checking</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	const int size = 5;
+	int array[size];
+
+	for(int i = 0; i &lt; size; i++)
+		array[i] =  10*i;
+
+	for(int i = 0; i &lt; 10; i++)
+		std::cout&lt;&lt;array[i]&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				C++ does not perform array bounds checking
+			</ul>
+		</div>
+		<div class = "subtitle">Array Initialization</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+void display(int array [], int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;array[i]&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	const int size = 5;
+
+	//array initialization
+	int array[size] = {10, 20, 30, 40, 50};
+	display(array, sizeof(array)/sizeof(*array));
+
+	//partial array initialization
+	int array2[size] = {10, 20};
+	display(array2, size);
+
+	//empty initialization
+	int array3[size] = {};
+	display(array3, size);
+
+	//no initialization
+	int array4[size];
+	display(array4, size);
+
+	//implicit array sizing
+	int array5[] = {10, 20, 30, 40};
+	display(array5, 4);
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>if an array is partially initialized, the uninitialized elements will be set to zero</li>
+				<li>Initialize an array without providing size, array size is the number of items in the initialization list</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Assignment</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+void display(int array [], int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;array[i]&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	const int size = 5;
+	int array[size] = {10, 20, 30, 40, 50};
+
+	int array2[size];
+
+	std::cout&lt;&lt;"Address of array: "&lt;&lt;array&lt;&lt;std::endl;
+	std::cout&lt;&lt;"Address of array2: "&lt;&lt;array2&lt;&lt;std::endl;
+
+	//array2 = array;//compile error
+	
+	for(int i = 0; i &lt; size; i++)
+		array2[i] = array[i];
+	display(array2, size);
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>array2 = array, does not work</li>
+				<li>Assign the individual elements in the array one by one</li>
+				<li>The name of an array is the beginning memory address of the array</li>
+				<li>Cannot change the starting memory address of an array</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Variable Size of Array</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	int size;
+	std::cout&lt;&lt;"Enter the size of the array: "&lt;&lt;std::endl;
+	std::cin&gt;&gt;size;
+
+	int array[size];
+
+	std::cout&lt;&lt;sizeof(array)/sizeof(*array)&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Pass Array to Function</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+void display(int array[], int s)
+{
+	for(int i = 0; i &lt; s; i++)
+		std::cout&lt;&lt;array[i]&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+void init(int array[], int s)
+{
+	for(int i = 0; i &lt; s; i++)
+		array[i] = 10*i;
+}
+
+int main(int argc, char *argv[])
+{
+	const int size = 5;
+	int array[size];
+
+	init(array, size);
+	display(array, size);
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Pass the beginning address of the array to the function</li>
+				<li>Array parameters work like reference variables</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Two Dimensional Array</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+const int rowSize = 3, columnSize = 4;
+
+void display(int array[][columnSize], int rowSize)
+{
+	for(int i = 0; i &lt; rowSize; i++)
+	{
+		for(int j = 0; j &lt; columnSize; j++)
+			std::cout&lt;&lt;array[i][j]&lt;&lt;" ";
+		std::cout&lt;&lt;std::endl;
+	}
+}
+
+void init(int array[][columnSize], int rowSize)
+{
+	for(int i = 0; i &lt; rowSize; i++)
+		for(int j = 0; j &lt; columnSize; j++)
+			array[i][j] = i*10+j;
+}
+
+int main(int argc, char *argv[])
+{
+	int array[rowSize][columnSize];
+
+	init(array, rowSize);
+
+	std::cout&lt;&lt;"Total size: "&lt;&lt;sizeof(array)&lt;&lt;" "&lt;&lt;sizeof(array)/sizeof(*array[0])&lt;&lt;std::endl;
+	std::cout&lt;&lt;"Row size: "&lt;&lt;sizeof(*array)&lt;&lt;" "&lt;&lt;sizeof(*array)/sizeof(*array[0])&lt;&lt;std::endl;
+
+	display(array, rowSize);
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				C++ requires the column size to be specified in the function prototype and header because of the way two-dimensional arrays are stored in memory and one row follows another
+			</ul>
+		</div>
+		<div class = "subtitle">Template</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+template &lt;class T&gt;
+void init(T array[], int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		array[i] = 10*i;
+}
+
+template &lt;class T&gt;
+void display(T array[], int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;array[i]&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	const int size = 5;
+	double array[size];
+
+	init(array, size);
+	display(array, size);
+
+	return 0;
+}
+			</pre>
+		</div>
+	<div class = "subtitle">Reference</div>
+	<div class = "block">
+		<ul>
+			<li>Starting out with C++, Tony Gaddis</li>
+		</ul>
+	</div>
+	</body>
+</html>

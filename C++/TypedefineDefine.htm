@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Typedef and Preprocessor directives
+		</div>
+
+		<div class = "subtitle">typedef</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+typedef std::vector&lt;int&gt; intContainer;
+
+int main(int argc, char *argv[])
+{
+	intContainer c;
+	for(int i = 0; i &lt; 10; i++)
+		c.push_back(i);
+
+	for(int i = 0; i &lt; 10; i++)
+		std::cout&lt;&lt;c[i]&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+				<div class = "block">
+		<pre class = "prettyprint linenums">
+//g++ main.cpp -std=c++11
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using intContainer = std::vector&lt;int&gt;;
+
+int main(int argc, char *argv[])
+{
+	intContainer c;
+	for(int i = 0; i &lt; 10; i++)
+		c.push_back(i);
+
+	for(int i = 0; i &lt; 10; i++)
+		std::cout&lt;&lt;c[i]&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "subtitle">#include</div>
+		<div class = "block">
+			<ul>
+				<li>#include &lt;filename&gt;, look for the file in a special place defined by the operating system</li>
+				<li>#include "filename", search the self-defined file in a specified directory</li>
+			</ul>
+		</div>
+	<div class = "subtitle">#define and #undef</div>
+	<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+#define SIZE 10
+#define getMax(a, b) ((a&gt;b)?a:b)
+
+int main(int argc, char *argv[])
+{
+	std::cout&lt;&lt;SIZE&lt;&lt;std::endl;
+	std::cout&lt;&lt;getMax(1, 2)&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+#define str(x) #x
+#define glue(a, b) a ## b
+
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	//std::cout&lt;&lt;"Hello World"&lt;&lt;std::endl;
+	std::cout&lt;&lt;str(Hello World)&lt;&lt;std::endl;
+
+	using std::cout;
+	glue(c, out)&lt;&lt;"Hello World"&lt;&lt;std::endl;
+
+	return 0;
+}
+	</pre>
+</div>
+	<div class = "block">
+		<ul>
+			<li>Directive are valid from the point of definition to the end of the file in which they are defined</li>
+			<li>Defined macros lasts until it is undefined with the #undef preprocessor directive</li>
+			<li>#, replace parameter name to a string</li>
+			<li>##, concatenates two arguments leaving no blank spaces between them</li>
+		</ul>
+	</div>
+		<div class = "subtitle">#ifdef, #ifndef, and #endif</div>
+	<div class = "block">
+		<pre class = "prettyprint linenums">
+#define PRINT_JOE
+
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+
+#ifdef PRINT_JOE
+	std::cout&lt;&lt;"JOE ..."&lt;&lt;std::endl;
+#endif
+
+#ifndef PRINT_BOB
+	std::cout&lt;&lt;"BOB ..."&lt;&lt;std::endl;
+#endif
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "subtitle">#if, #else, and #elif</div>
+	<div class = "block">
+		<pre class = "prettyprint linenums">
+#define SIZE 150
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+#if SIZE &lt; 100
+#undef SIZE
+#define SIZE 100
+#elif SIZE &lt; 200
+#undef SIZE
+#define SIZE 200
+#else
+#undef SIZE
+#define SIZE 300
+#endif
+	std::cout&lt;&lt;SIZE&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "subtitle">#line</div>
+	<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+#line 100
+#line 100 "temp.cpp"
+	std::cout&lt;&lt;__FILE__&lt;&lt;" "&lt;&lt;__LINE__&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			Define the file name and the starting line number, changes the results of __FILE__ and __LINE__
+		</ul>
+	</div>
+	<div class = "subtitle">#error</div>
+	<div class = "block">
+		<pre class = "prettyprint linenums">
+#ifndef __cplusplus
+#error A C++ compiler is required!
+#endif
+
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			Aborts the compliation process if the mmacro name __cplusplus is not defined
+		</ul>
+	</div>
+	<div class = "subtitle">#pragma</div>
+	<div class = "block">
+		<ul>
+			Specify diverse options to the compiler for the platform and the compiler used, such as in OpenACC and OpenMP</li>
+		</ul>
+	</div>
+	<div class = "subtitle">Predefined Macros</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	//__LINE__
+	std::cout&lt;&lt;__LINE__&lt;&lt;std::endl;
+
+	//__FILE__
+	std::cout&lt;&lt;__FILE__&lt;&lt;std::endl;
+
+	//__DATE__
+	std::cout&lt;&lt;__DATE__&lt;&lt;std::endl;
+
+	//__TIME__
+	std::cout&lt;&lt;__TIME__&lt;&lt;std::endl;
+
+	//__STDC__, signify the compiler conforms to ISO Standard C
+	std::cout&lt;&lt;__STDC__&lt;&lt;std::endl;
+
+	//__STDC_HOSTED__, 1 if the implementation is a hosted implementation
+	std::cout&lt;&lt;__STDC_HOSTED__&lt;&lt;std::endl;
+
+	//__cplusplus, defined when the C++ compiler is in user
+	std::cout&lt;&lt;__cplusplus&lt;&lt;std::endl;
+
+	//__STDCPP_THREADS__, 1 if the program have more than one thread
+	//std::cout&lt;&lt;__STDCPP_THREADS__&lt;&lt;std::endl;
+
+	return 0;
+}
+	</pre>
+</div>
+<div class = "block">
+<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;typeinfo&gt;
+
+int main(int argc, char *argv[])
+{
+	//__GNUG__, defined if GNU C++ Compiler is in use
+	std::cout&lt;&lt;__GNUG__&lt;&lt;std::endl;
+
+	//__BASE_FILE__
+	std::cout&lt;&lt;__BASE_FILE__&lt;&lt;std::endl;
+
+	//__INCLUDE_LEVEL__
+	std::cout&lt;&lt;__INCLUDE_LEVEL__&lt;&lt;std::endl;
+
+	//__VERSION__, compiler version
+	std::cout&lt;&lt;__VERSION__&lt;&lt;std::endl;
+
+	//__INT8_TYPE__, char
+	__INT8_TYPE__ n = 90;
+	std::cout&lt;&lt;typeid(n).name()&lt;&lt;" "&lt;&lt;n&lt;&lt;std::endl;
+
+	//and, &&
+	//and_eq, &=
+	//bitand, &
+	//bitor, |
+	//compl, ~
+	//not, !
+	//not_eq, !=
+	//or, ||
+	//or_eq, |=
+	//xor, ^
+	//xor_eq, ^=
+	if (1 &lt; 2 and 4 &gt; 1)
+		std::cout&lt;&lt;"And ..."&lt;&lt;std::endl;
+
+	return 0;
+}
+</pre>
+</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "https://gcc.gnu.org/onlinedocs/cpp/Predefined-Macros.html">gcc.gnu.org</a></li>
+		</ul>
+	</div>
+	<div class = "subtitle">Reference</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "http://www.cplusplus.com/doc/tutorial/preprocessor/">cplusplus.com</a></li>
+			<li><a href = "http://www.learncpp.com/cpp-tutorial/110-a-first-look-at-the-preprocessor/">learncpp.com</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

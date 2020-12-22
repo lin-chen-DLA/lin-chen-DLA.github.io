@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Chimera
+		</div>
+
+		<div class = "subtitle">Atom specification</div>
+		<div class = "block">
+			<li>Hierarchical Specifiers
+				<ul>
+					<li>#, model</li>
+					<li>., submodel/chain/alternative</li>
+					<li>:, residue</li>
+					<li>@, atom</li>
+				</ul>
+		<pre class = "prettyprint linenums">
+select #0:10-12.A@CA # select CA atoms in model 0, chain A, residue 10-12
+select :ARG; ~select :215 # select ARG, but not select ARG215
+select :72@OE2.B # select alternative B of atom OE2 in residue 72
+select :ARG.A,.B # select ARG residues in chain A and all residues in chain B
+		</pre>
+			</li>
+			<li>Wild cards
+				<ul>
+					<li>* matches all atoms in a residue or all residues in a mode</li>
+					<li>= matches parts of atom or residue names</li>
+					<li>? matches single characters within residue or atom names</li>
+				</ul>
+		<pre class = "prettyprint linenums">
+select :*.A # select all residues in chain A
+select :GL= # select GLN and GLU
+select :AR? # select ARG
+		</pre>
+			</li>
+			<li>Zones
+				<ul>
+					<li>z/zr&lt;, select the residues within a specific distance</li>
+					<li>za&lt;, select the atoms within a specific distance</li>
+				</ul>
+		<pre class = "prettyprint linenums">
+select :68.A z&lt;4 # select all residues within 4 angstoms to residue 68 in chain A
+		</pre>
+			</li>
+			<li>Categores
+				<ul>
+					<li><a href = "https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/midas/frameatom_spec.html">ResProp</a>
+						<ul>
+							<li>hydrophobic, positive, negative, polar, charged, small, tiny, aromatics, aliphatic</li>
+						</ul>
+					</li>
+					<li>msms cat (surfcat)
+						<ul>
+							<li>solvent, ions, ligand, main</li>
+						</ul>
+					</li>
+				</ul>
+		<pre class = "prettyprint linenums">
+select hydrophobic # select hydrophobic residues
+		</pre>
+			</li>
+			<li>Attributes
+				<ul>
+					<li>Atom attributes
+						<ul>
+							<li>element, color, defaultRadius, name</li>
+						</ul>
+					</li>
+					<li>Residue attributes
+						<ul>
+							<li>isHelix, isSheet, phi, psi, type</li>
+						</ul>
+					</li>
+					<li>Model attributes
+						<ul>
+							<li>display</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+select @/element=C # select all carbon atoms
+select @/element=C and color=red # select all carbon atoms labeled as red color
+select @/defaultRadius&gt;1 and defaultRadius&lt;1.5 # select atoms which has default radius between 1 and 1.5 angstroms
+		</pre>
+		<pre class = "prettyprint linenums">
+select :/type=ARG and isHelix # select ARG residues in Helix
+		</pre>
+		<pre class = "prettyprint linenums">
+select #/display
+		</pre>
+		</div>
+
+
+		<div class = "subtitle">Commands</div>
+		<div class = "block">
+			<li>open
+				<ul>
+					<li>
+				</ul>
+			</li>
+			<li>select
+				<ul>
+					<li>select, select model/chain/residue/atom</li>
+					<li>~select, not select</li>
+					<li>+, next specification string</li>
+					<li>select/sel/picked, selected atoms</li>
+					<li>names of saved selected</li>
+				</ul>
+		<pre class = "prettyprint linenums">
+select :ARG # select ARG residues
+select ~sel # select all unselected residues
+select :ARG; select :PHE # replace mode, select ARG, then select PHE
+select :ARG | :PHE # append, select ARG and PHE residues
+select :ARG & :/isHelix #intersect, select ARG in helix
+		</pre>
+			</li>
+			<li>namesle, name a selection
+		<pre class = "prettyprint linenums">
+select :ARG # select ARG residues
+namesel temp # name selected residues as temp
+color red temp # color selected residues
+		        </li>
+			<li>color
+				<ul>
+					<li><a href = "https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/colortables.html">Built-in colors</a></li>
+					<li>
+				</ul>
+		<pre class = "prettyprint linenums">
+select :ARG # select ARG residues
+ribbon sel # ribbon selection
+color Ne,r # color ribbon
+		</pre>
+			</li>
+			<li>ribbon
+				<ul>
+					<li>ribbon, ribbon selection</li>
+					<li>~remove ribbon</li>
+				</ul>
+			</li>
+		</div>
+
+		<div class = "subtitle">Command line scripts</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+		</pre>
+		</div>
+
+		<div class = "subtitle">Demo Editor tool</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+		</pre>
+		</div>
+
+		<div class = "subtitle">Python scripts</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/midas/frameatom_spec.html">Atom specification</a></li>
+			<li><a href = "https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/framecommand.html">Chimera commands</a></li>
+			<li><a href = "https://www.cgl.ucsf.edu/chimera/docs/ContributedSoftware/accelerators/alist.html">Command shortcuts</a></li>
+		</div>
+	</body>
+</html>

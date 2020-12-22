@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Link</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Chimera</div>
+		<div class = "subtitle">Scripts</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# open a protein and run chimera commands
+from chimera import runCommand as rc # use 'rc' as shorthand for runCommand
+from chimera import replyobj # for emitting status messages
+
+replyobj.status('Reading 5nsr from pdb.org ...')
+rc('open 5nsr')
+rc('sel :.C :.D')
+rc('del ~sel')
+rc('sel :325.C :773.C :1161.C :361.D')
+rc('color blue')
+rc('color red sel')
+			</pre>
+		</div>
+		<div class = "subtitle">IDLE</div>
+		<div class = "block">
+			<li>Tools -&gt; General Controls -&gt; IDLE</li>
+		</div>
+		<div class = "subtitle">Protein</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import chimera
+
+# open a protein in Chimera
+opened = chimera.openModels.open('3fx2', type="PDB") # a list of opened modules
+
+mol = opened[0] # get the first molecule
+
+# mol.name # pdf file name
+# mol.atoms # atoms
+# mol.bonds # bonds
+# mol.residues # residues
+
+# chimera.colorTable contains getColorByName and getTKColorByName
+from chimera.colorTable import getColorByName
+red = getColorByName('red') # _chimera.MaterialColor
+blue = getColorByName('blue')
+yellow = getColorByName('yellow')
+
+mol.color = red # change model color to be red
+
+atoms = mol.atoms
+print(len(atoms))
+for atom in atoms:
+    if atom.name == 'CA':
+        atom.color = yellow
+    else:
+        atom.color = blue
+    atom.drawMode = chimera.Atom.Ball
+    #coor = atom.xformCoord()
+    #print('%10s%10s\n' % (atom.name, atom.residue.id)) # disply stdout to IDLE
+    #print(coor.x, coor.y, coor.z)
+			</pre>
+		</div>
+		<div class = "subtitle">Extension</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "chimera.png" width = "70%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# ChimeraExtension.py
+from  chimera.extension import EMO, manager
+
+# -----------------------------------------------------------------------------
+#
+class ModelZ_Dialog_EMO ( EMO ):
+
+  def name(self):
+    return 'ecsudraft' # extension name displayed in Chimera
+
+  def description(self):
+    return "a draft for ecsu validation tool" # description appeared as balloon help
+
+  def categories(self):
+    return ['Utilities'] # category in Chimera
+
+  def icon(self):
+    return self.path('logo.jpg') # logo
+
+  def activate(self):
+    # if no name is supplied, the "__init__.py" module is returned
+    self.module('backbone').colorBB() # locate module backbone and call its function colorBB()
+
+# -----------------------------------------------------------------------------
+# Register dialogs and menu entry.
+#
+manager.registerExtension ( ModelZ_Dialog_EMO ( __file__ ) )
+
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# backbone.py
+import chimera
+from chimera import openModels, Molecule
+from chimera.colorTable import getColorByName
+
+def colorBB():
+
+    red = getColorByName('red')
+    yellow = getColorByName('yellow')
+
+    # return a list of opened molecules
+    for mol in openModels.list(modelTypes=[Molecule]):
+        mol.color = red # change model color to be red
+        atoms = mol.atoms
+        for atom in atoms:
+            if atom.name == 'CA':
+                atom.color = yellow # change CA atoms to be yellow
+			</pre>
+		</div>
+		<div class = "subtitle">Install Biopython</div>
+		<div class = "block">
+			<li>Download <a href = "https://biopython.org/wiki/Download">biopython</a></li>
+			<li>python setup.py install --home=/Applications/Chimera.app/Contents/Frameworks/Python.framework/Versions/2.7/</li>
+			<li>Enter /Applications/Chimera.app/Contents/Frameworks/Python.framework/Versions/2.7/lib, "mv ./python/* ./python2.7", "rm -r ./python", # the default install directory is /python instead of /python2.7</li>
+			<li>Restart Chimera, open IDLE, type "import Bio"</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "http://www.cgl.ucsf.edu/chimera/current/docs/UsersGuide/quickref.pdf">Chimera quick reference guide</a></li>
+			<li><a href = "http://www.cgl.ucsf.edu/chimera/1.1602/docs/ProgrammersGuide/Reference/generated/">Documentations</a></li>
+			<li><a href = "https://www.cgl.ucsf.edu/chimera/plugins/plugins.html">Plugins</a></li>
+			<li><a href = "http://www.cgl.ucsf.edu/chimera/current/docs/ProgrammersGuide/Examples/">Introduction to Examples</a></li>
+			<li><a href = "https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/midas/frameatom_spec.html">Hierarchical Specifiers</a></li>
+			<li><a href = "https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/framecommand.html">Chimera commands</a></li>
+			<li><a href = "http://plato.cgl.ucsf.edu/trac/chimera/wiki/Scripts">Scripts</a></li>
+			<li><a href = "https://www.cgl.ucsf.edu/chimera/docs/ProgrammersGuide/index.html">Programmer guide</a></li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Twitter
+		</div>
+
+		<div class = "subtitle">Basics</div>
+		<div class = "block">
+			<li>Standard API, free, recent Tweets published in the past <span>7</span> days</li>
+			<li>Premium API, pay as you go, advanced filtering functionality and scalable access to the the Search Tweets API, free and paid, access to either the last <span>30</span> days of Tweets or access to Tweets from as early as <span>2006</span></li>
+			<li>Enterprise-level, paid subscription, access to Twitter data, including real-time Tweets and public account information, historical Tweets, and Tweet insights, access to either the last <span>30</span> days of Tweets or access to Tweets from as early as <span>2006</span></li>
+			<li><a href = "https://developer.twitter.com/en/docs/basics/authentication/oauth-2-0/application-only">Authentication</a>
+				<ul>
+					<li>OAuth2, is for developers that just need read-only to access public information</li>
+					<li>OAuth 1.0a, allows an authorized app to act on behalf of a user.</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Twitter Account</div>
+		<div class = "block">
+			<ol>
+				<li>Create App
+					<ul>
+						<li><a href = "https://developer.twitter.com/en/apps">Create Twitter App</a></li>
+						<li>Developer Agreement</li>
+						<li>Create App</li>
+						<li>Genearte Access Token</li>
+					</ul>
+				</li>
+				<li>Setup one or more <a href = "https://developer.twitter.com/en/account/environments">development environment</a>
+					<ul>
+						<li>Search Tweets: 30-DaysSandbox</li>
+						<li>Search Tweets: Full ArchiveSandbox</li>
+						<li>Account Activity APISandbox</li>
+					</ul>
+				</li>
+				<li>Start using the endpoints
+					<ul>
+						<li><a href = "https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets">Standard</a></li>
+						<li><a href = "https://developer.twitter.com/en/docs/tweets/search/api-reference/premium-search">Premium</a></li>
+						<li><a href = "https://developer.twitter.com/en/docs/tweets/search/api-reference/enterprise-search">Enterprise</a></li>
+					</ul>
+				</li>
+			</ol>
+                </div>
+		<div class = "subtitle">Flow Chart</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Twitter.png" width = "40%"></p>
+		</div>
+		<div class = "subtitle">Standard Search</div>
+		<div class = "block">
+			<li>Create App, get customer API keys, generate access token</li>
+			<li>Search
+				<ul>
+					<li>curl with API keys and access tokens</li>
+					<li>twurl</li>
+					<li><a href = "TwitterAPI.html">TwitterAPI</a></li>
+				</ul>
+			</li>
+			<li><a href = "https://github.com/lin-chen-VA/Twitter/tree/master/SSearch">Sample Code with TwitterAPI</a>
+				<ul>
+					<li>Download 100 tweets each request</li>
+					<li>More requests may return the random different 100 random tweets</li>
+					<li>Too many requests with a 15-min window will return Excetpion</li>
+					<li>Pause 901 seconds, then send the requests in the next 15-min window</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Premium Search</div>
+		<div class = "block">
+			<li>Create App, get customer API keys, generate access token</li>
+			<li>Generate <a href = "https://developer.twitter.com/en/docs/basics/authentication/oauth-2-0/bearer-tokens">Bearer Token</a></li>
+			<li>Search
+				<ul>
+					<li>https://api.twitter.com/1.1/tweets/search/:product/:label.json, retrieve Tweets matching the specified query 
+						<ul>
+							<li>:product, <span>30day</span> or <span>fullarchive</span></li>
+							<li>:label, developer environment name</li>
+						</ul>
+					</li>
+					<li><a href = "https://developer.twitter.com/en/docs/tweets/rules-and-filtering/overview/operators-by-product">Operators</a>
+						<ul>
+							<li><a href = "https://developer.twitter.com/en/docs/tweets/rules-and-filtering/guides/using-premium-operators">Matching on Tweet Contents</a>
+								<ul>
+									<li>AND, "Valdosta State"</li>
+									<li>OR, "(Valdosta OR State)"</li>
+									<li>NOT, "(Valdosta -State)"</li>
+									<li>GROUP, "()"</li>
+									<li><a href = "https://developer.twitter.com/en/docs/tweets/search/guides/integrating-premium">Sample</a></li>
+								</ul>
+							</li>
+							<li>Tweet Attributes</li>
+							<li>Geospatial operators
+								<ul>
+									<li><a href = "https://www.geonames.org/">GeoNames</a></li>
+									<li>bounding_box:[west_long south_lat east_long north_lat]</li>
+									<li>point_radius:[lon lat radius]
+										<ul>
+											<li>radius should be less than 25 miles</li>
+										</ul>
+									</li>
+									<li>place:</li>
+									<li>place_country:</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>https://api.twitter.com/1.1/tweets/search/:product/:label/counts.json, retrieve the number of Tweets matching the specified query</li>
+					<li>curl</li>
+		<pre class = "prettyprint linenums">
+curl -X POST "https://api.twitter.com/1.1/tweets/search/30day/SearchThirtyDays.json" -d '{"query":"Valdosta State","maxResults":"100","fromDate":"201910200000","toDate":"201910310000"}' -H "Authorization: Bearer AAAAAAAAAAAAAAAAAAAAAIRWAwEAAAAALRrtvjL3wDGnv%2FuA0EO463TjzLc%3DzuLJ3ypKMwrp59WQ4fY6TuAKXN1jqq4VEj4TDx9AFAzWj9qeg4" &gt; junk
+		</pre>
+					<li>TwitterAPI</li>
+					<li><a href = "https://github.com/lin-chen-VA/Twitter/tree/master/PreSearch">Sample Code with Python request</a></li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Enterprise Search</div>
+		<div class = "block">
+			<li>Create App, get customer API keys, generate access token</li>
+			<li>Generate <a href = "https://developer.twitter.com/en/docs/basics/authentication/oauth-2-0/bearer-tokens">Bearer Token</a></li>
+			<li>Search
+				<ul>
+					<li>https://gnip-api.twitter.com/search/:product/accounts/:account/:label.json, retrieve Tweets matching the specified query
+						<ul>
+							<li>:product, 30day or fullarchive</li>
+							<li>:account, account (case sensitive)</li>
+							<li>:label, developer environment name</li>
+						</ul>
+					</li>
+					<li>https://gnip-api.twitter.com/search/:product/accounts/:account/:label/counts.json, retrieve the number of Tweets matching the specified query</li>
+					<li>curl</li>
+		<pre class = "prettyprint linenums">
+curl -X POST -u<username> "https://gnip-api.twitter.com/search/:product/accounts/:account_name/:label.json" -d '{"query":"TwitterDev "search api"","maxResults":"500","fromDate":"<yyyymmddhhmm>","toDate":"<yyyymmddhhmm>"}'
+		</pre>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "http://www.tweepy.org/">tweepy</a></li>
+			<li><a href = "https://github.com/geduldig/TwitterAPI">TwitterAPI</a></li>
+			<li><a href = "https://github.com/twitterdev/search-tweets-python">Search Tweets Python</a></li>
+			<li><a href = "https://developer.twitter.com/en/docs/api-reference-index">API Reference Index</a></li>
+			<li><a href = "https://developer.twitter.com/en/docs/tweets/search/overview">Twitter Search</a></li>
+		</div>
+	</body>
+</html>

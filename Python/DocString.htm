@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Docstring
+		</div>
+
+		<div class = "subtitle">Format</div>
+		<div class = "block">
+			<li>The doc string line should begin with a capital letter and end with a period.</li>
+			<li>The first line should be a short description.</li>
+			<li>If there are more lines in the documentation string, the second line should be blank, visually separating the summary from the rest of the description.</li>
+			<li>The docstring may span multiple lines. The type may optionally be specified on the first line, separated by a colon.</li>
+			<li>Function or class function
+				<ul>
+					<li>Function description</li>
+					<li>Args</li>
+					<li>Returns</li>
+					<li>Raises</li>
+					<li>Examples</li>
+				</ul>
+			</li>
+			<li>Module
+				<ul>
+					<li>Module description</li>
+					<li>Examples</li>
+					<li>Attributes, module level variable</li>
+				</ul>
+			</li>
+			<li>Class
+				<ul>
+					<li>Class description</li>
+					<li>Public attributes</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+'''A brief description of the module.
+
+Extended description.
+
+Example:
+    python convert.py inputFile outputFile
+
+'''
+
+__author__ = "Lin Chen"
+__license__ = "GPL"
+__version__ = "0.1"
+__email__ = "lichen@valdosta.edu"
+__status__ = "Prototype"
+
+import sys, os # import built-in modules
+import bs4 # import third-party modules
+import m2 # import own modules
+
+def convertRead(filename):
+    '''Summary line.
+
+    Extended description.
+
+    Args:
+        filename (str): intput file name.
+
+    Returns:
+        list: a list of strings.
+
+    Raises:
+        IOError: io error.
+
+    Examples:
+        &gt;&gt;&gt; l = convertRead('readme.txt');
+
+    '''
+    pass
+
+def main():
+    pass
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+'''A brief description of the module.
+
+Extended description.
+
+'''
+
+__author__ = "Lin Chen"
+__license__ = "GPL"
+__version__ = "0.1"
+__email__ = "lchen@ecsu.edu"
+__status__ = "Prototype"
+
+class Car:
+    '''Summary line.
+
+    Extended description.
+
+    Args:
+        color (str): color of the car.
+        maker (str): maker of the car.
+
+    '''
+
+    def __init__(self, c, m):
+        '''Initialize a car.
+
+        Extended description.
+
+        Args:
+            c (str): color of the car.
+            m (str): maker of the car.
+
+        '''
+        pass
+
+    def printCar():
+        '''Print the car information.
+
+        '''
+        pass
+		</pre>
+		</div>
+		<div class = "subtitle">Access docstring</div>
+		<div class = "block">
+			<li>help(moduleName)</li>
+			<li>help(moduleName.functionName)</li>
+			<li>print moduleName.__doc__</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.geeksforgeeks.org/python-docstrings/">Geeksforgeeks</a></li>
+			<li><a href = "https://blog.dolphm.com/pep257-good-python-docstrings-by-example/">PEP257: Good Python docstrings</a></li>
+			<li><a href = "https://www.python.org/dev/peps/pep-0257/">PEP257 -- Docstring Conventions</a></li>
+			<li><a href = "https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html">Google Style Python Docstrings</a></li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Prolog
+		</div>
+
+		<div class = "subtitle">Derivation Trees</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+/* p3.pl */
+p(a)   		/* #1 */
+p(X) :- u(X).   /* #2 */
+
+u(b). 		/* #3 */
+u(c). 		/* #4 */
+		</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "pl_1.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+			<li>Prolog derivation tree is a depth first traversal of such a derivation tree</li>
+		</div>
+		<div class = "subtitle">Cut</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+?- p(X), !.
+X = a. /* only producing the first answer, the rest branches have been eliminated */
+
+?- p(X), !, u(Y).
+X = a,
+Y = b ;
+X = a,
+Y = c.
+		</pre>
+		</div>
+	</body>
+</html>

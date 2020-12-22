@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			IO
+		</div>
+
+		<div class = "subtitle">File</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.io.*;
+
+public class F
+{
+	public static void main(String args[])
+	{
+		File f = new File("./");
+
+		//exists
+		if(f.exists())
+		{
+			System.out.println(f+" exist ...");
+
+			//isDirectory
+			if(f.isDirectory())
+			{
+				//list
+				String files [] = f.list();
+				for(String e : files)
+				{
+					File temp = new File(e);
+					System.out.println(temp.getName());//getName
+					System.out.println(temp.getAbsolutePath());//getAbsolutePath
+					System.out.println(temp.getPath());//getPath
+					System.out.println(temp.getParent());//getParent
+					System.out.println(temp.length());//length
+					System.out.println();
+				}
+			}
+		}
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>Binary file, use byte-based stream</li>
+				<li>Text file, use character-based stream</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<table width="100%" cellspacing="0" cellpadding="5" style="border: 1px solid #aaaaaa;">
+    <tr><td class="borderRightCell">&nbsp;</td>
+        <td class="borderRightCell" colspan="2">Byte Based</td>
+        <td colspan="2">Character Based</td>
+    </tr>
+    <tr><td class="borderBottomRightCell">&nbsp;</td>
+        <td class="borderBottomRightCell">Input</td>
+        <td class="borderBottomRightCell">Output</td>
+        <td class="borderBottomRightCell">Input</td>
+        <td class="borderBottomCell">Output</td>
+    </tr>
+    <tr><td class="borderBottomRightCell">Basic</td>
+        <td class="borderBottomRightCell">InputStream</td>
+        <td class="borderBottomRightCell">OutputStream</td>
+        <td class="borderBottomRightCell">Reader<br/>InputStreamReader</td>
+        <td class="borderBottomCell">Writer<br/>OutputStreamWriter</td>
+    </tr>
+    <tr><td class="borderBottomRightCell">Arrays</td>
+        <td class="borderBottomRightCell">ByteArrayInputStream</td>
+        <td class="borderBottomRightCell">ByteArrayOutputStream</td>
+        <td class="borderBottomRightCell">CharArrayReader</td>
+        <td class="borderBottomCell">CharArrayWriter</td>
+    </tr>
+    <tr><td class="borderBottomRightCell">Files</td>
+        <td class="borderBottomRightCell">FileInputStream<br/>RandomAccessFile</td>
+        <td class="borderBottomRightCell">FileOutputStream<br/>RandomAccessFile</td>
+        <td class="borderBottomRightCell">FileReader</td>
+        <td class="borderBottomCell">FileWriter</td>
+    </tr>
+    <tr><td class="borderBottomRightCell">Pipes</td>
+        <td class="borderBottomRightCell">PipedInputStream</td>
+        <td class="borderBottomRightCell">PipedOutputStream</td>
+        <td class="borderBottomRightCell">PipedReader</td>
+        <td class="borderBottomCell">PipedWriter</td>
+    </tr>
+    <tr><td class="borderBottomRightCell">Buffering</td>
+        <td class="borderBottomRightCell">BufferedInputStream</td>
+        <td class="borderBottomRightCell">BufferedOutputStream</td>
+        <td class="borderBottomRightCell">BufferedReader</td>
+        <td class="borderBottomCell">BufferedWriter</td>
+    </tr>
+    <tr><td class="borderBottomRightCell">Filtering</td>
+        <td class="borderBottomRightCell">FilterInputStream</td>
+        <td class="borderBottomRightCell">FilterOutputStream</td>
+        <td class="borderBottomRightCell">FilterReader</td>
+        <td class="borderBottomCell">FilterWriter</td>
+    </tr>
+    <tr><td class="borderBottomRightCell">Parsing</td>
+        <td class="borderBottomRightCell">PushbackInputStream<br/>StreamTokenizer</td>
+        <td class="borderBottomRightCell">&nbsp;</td>
+        <td class="borderBottomRightCell">PushbackReader<br/>LineNumberReader</td>
+        <td class="borderBottomCell">&nbsp;</td>
+    </tr>
+    <tr><td class="borderBottomRightCell">Strings</td>
+        <td class="borderBottomRightCell">&nbsp;</td>
+        <td class="borderBottomRightCell">&nbsp;</td>
+        <td class="borderBottomRightCell">StringReader</td>
+        <td class="borderBottomCell">StringWriter</td>
+    </tr>
+    <tr><td class="borderBottomRightCell">Data</td>
+        <td class="borderBottomRightCell">DataInputStream</td>
+        <td class="borderBottomRightCell">DataOutputStream</td>
+        <td class="borderBottomRightCell">&nbsp;</td>
+        <td class="borderBottomCell"><br/></td>
+    </tr>
+    <tr><td class="borderBottomRightCell">Data - Formatted</td>
+        <td class="borderBottomRightCell">&nbsp;</td>
+        <td class="borderBottomRightCell">PrintStream</td>
+        <td class="borderBottomRightCell">&nbsp;</td>
+        <td class="borderBottomCell">PrintWriter</td>
+    </tr>
+    <tr><td class="borderBottomRightCell">Objects</td>
+        <td class="borderBottomRightCell">ObjectInputStream</td>
+        <td class="borderBottomRightCell">ObjectOutputStream</td>
+        <td class="borderBottomRightCell">&nbsp;</td>
+        <td class="borderBottomCell">&nbsp;</td>
+    </tr>
+    <tr><td class="borderBottomRightCell">Utilities</td>
+        <td class="borderBottomRightCell">SequenceInputStream<br/></td>
+        <td class="borderBottomRightCell">&nbsp;</td>
+        <td class="borderBottomRightCell">&nbsp;</td>
+        <td class="borderBottomCell">&nbsp;</td>
+    </tr>
+</table>
+<a href = "http://tutorials.jenkov.com/java-io/overview.html">Overview in Jenkov's Tutorial</a></li>
+		</div>
+		<div class = "subtitle">Bytes Stream</div>
+		<div class = "block">
+			<ul>
+				<li>PusbackInputStream</li>
+				<li>PusbackReader</li>
+				<li>StreamTokenizer</li>
+				<li>PushbackReader</li>
+				<li>LineNumberReader</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Bytes Stream</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/IO_2.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>InputStream/OutputStream, abstract classes</li>
+				<li>FileInputStream/FileOutputStream, manipulate files, initialize other stream objects</li>
+				<li>AccessRandomFile, read/write files with random access</li>
+				<li>PipedInputStream/PipedOutputStream, establish pipes between two threads</li>
+				<li>ObjectInputStream/ObjectOutputStream, serilize objects</li>
+				<li>FilterInputStream/FilterOutputStream, aggregate data bytes into meaningful primitive-type units, abstract class
+					<ul>
+						<li>PrintStream, perform text output to the specified stream</li>
+						<li>DataInputStream, read primitive data</li>
+					</ul>
+				</li>
+				<li>ByteArrayInputStream, temporarily store data internally</li>
+				<li>PushbackInputStream, able to push bytes back to stream</li>
+				<li>BufferedInputStream, use buffer memory to speed up reading</li>
+				<li>SequenceInputStream, merge two streams</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Read/Write byptes, it is fast, but rude, usually do not use it directly</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+//FileInputStream, FileOutputStream
+import java.io.*;
+
+public class S
+{
+	public static void main(String args[]) throws IOException
+	{
+		FileOutputStream out = null;
+
+		try
+		{
+			out = new FileOutputStream("output2.txt");
+
+			//output string "12"
+			out.write("1".getBytes());
+			out.write("2".getBytes());
+
+			//output number 12
+			out.write(" ".getBytes());
+			out.write(3);
+			out.write(4);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			if(out != null)
+				out.close();
+		}
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.io.*;
+
+public class S3
+{
+	public static void main(String args[]) throws IOException
+	{
+		FileInputStream in = null;
+
+		try
+		{
+			in = new FileInputStream("output2.txt");
+
+			int n = 0, c;
+			while((c = in.read()) != -1)
+			{
+				//read string number
+				if(c &gt;= '0')
+				{
+					while(c &gt;= '0' && c &lt;= '9')
+					{
+						n = n*10 + c - '0';//convert byte to number
+						c = in.read();
+					}
+					System.out.println(n);
+					n = 0;
+				}
+				//read binary number
+				if( c &lt; 10)
+				{
+					while(c != -1 && c &lt; 10)
+					{
+						n = n*10+c;
+						c = in.read();
+					}
+					System.out.println(n);
+					n = 0;
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			if(in != null)
+				in.close();
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Instead of read byte by byte, read several bytes each time and view them as primitive-type value</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+//DataInputStream, DataOutputStream
+//Wrtite 00102010 by FileOutputStream byte by byte
+import java.io.*;
+
+public class S
+{
+	public static void main(String args[]) throws IOException
+	{
+		FileOutputStream out = null;
+
+		try
+		{
+			out = new FileOutputStream("output.txt");
+
+			out.write(0);
+			out.write(0);
+			out.write(1);
+			out.write(0);
+
+			out.write(2);;
+			out.write(0);
+			out.write(1);
+			out.write(0);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			if(out != null)
+				out.close();
+		}
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//read 256 and 33554688
+import java.io.*;
+
+public class S3
+{
+	public static void main(String args[]) throws IOException
+	{
+		DataInputStream ds = null;
+
+		try
+		{
+			ds = new DataInputStream(new FileInputStream("output.txt"));
+
+			int temp;
+			while(ds.available() &gt; 0)
+				System.out.println(ds.readInt());//read four bytes each time
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			if(ds != null)
+				ds.close();
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Pass each stream pipe to each thread</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+//PipedInputStream, PipedOutputStream
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+
+public class P {
+
+    public static void main(String[] args) throws IOException {
+
+        final PipedOutputStream output = new PipedOutputStream();
+        final PipedInputStream  input  = new PipedInputStream(output);
+
+
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+			System.out.println("Thread 1 write message to pipe ...");
+                    output.write("Hello world, pipe!\n".getBytes());
+                } catch (IOException e) {
+                }
+            }
+        });
+
+
+        Thread thread2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+			System.out.println("Thread 2 receive messge from pipe ...");
+		    int data;
+                    while((data = input.read()) != -1){
+                        System.out.print((char) data);
+                    }
+                } catch (IOException e) {
+                }
+            }
+        });
+
+        thread1.start();
+        thread2.start();
+
+    }
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Temporarily store data internally</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+//ByteArrayInputStream, BytesArrayOutputStream
+import java.io.*;
+
+public class B
+{
+	//convert four bytes to integer
+	public static int bytes2int(byte [] array)
+	{
+		int n = 0;
+		for(int i = 0; i &lt; 4; i++)
+		{
+			n &lt;&lt;= 8;
+			n |= array[i] & 0xff;
+		}
+
+		return n;
+	}
+
+	public static void main(String args[])
+	{
+		ByteArrayInputStream ba = new ByteArrayInputStream("Hello World!".getBytes());
+
+		byte [] array = new byte[4];
+
+		//read bytes
+		System.out.println("Read the first four bytes ...");
+		ba.read(array, 0, 4);
+
+		for(int i = 0; i &lt; array.length; i++)
+			System.out.println(array[i]+" "+(char)array[i]);
+
+		//bytes2int
+		System.out.println("Number: "+bytes2int(array));
+
+		//read the rest of bytes
+		System.out.println("Read the rest of bytes ...");
+		int b;
+		while((b = ba.read()) != -1)
+		{
+			System.out.println(b+" "+(char)b);
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Able to push bytes back to stream</li>
+				<li>Default size of pushback buffer is -1</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+//PushbackInputStream
+import java.io.*;
+
+public class P
+{
+	public static void main(String args[]) throws IOException
+	{
+		PushbackInputStream ps = new PushbackInputStream(new ByteArrayInputStream("Hello World!".getBytes()), 100);//set up pushback buffer to be 100
+
+		int n;
+
+		n = ps.read();//read a byte
+		System.out.println("Read: "+(char)n);
+
+		byte [] array;
+		array = "Pushback ".getBytes();
+
+		//push several bytes back to stream
+		ps.unread(array);
+
+		//output stream
+		while((n = ps.read()) != -1)
+		{
+			System.out.println((char)n);
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Rather than read one byte at a time from the network or disk, the BufferedInputStream reads a larger block at a time into an internal buffer</li>
+				<li>When you read a byte from the BufferedInputStream you are therefore reading it from its internal buffer</li>
+				<li>When the buffer is fully read, the BufferedInputStream reads another larger block of data into the buffer</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+//BufferedInputStream, BUfferedOutputStream
+import java.io.*;
+
+public class B
+{
+	public static void main(String args[]) throws IOException
+	{
+		InputStream in = new BufferedInputStream(new FileInputStream("temp.txt"), 8*1024);//set up buffer size to 8k
+
+		byte [] array = new byte[10];
+		in.read(array, 0, 4);
+
+		System.out.println(new String(array));
+
+		in.mark(2);
+
+		System.out.println((char)in.read());
+		System.out.println((char)in.read());
+
+		in.reset();
+
+		System.out.println((char)in.read());
+		System.out.println((char)in.read());
+		System.out.println((char)in.read());
+		System.out.println((char)in.read());
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Merge two streams</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+//SequenceInputStream
+import java.io.*;
+
+public class S
+{
+	public static void main(String args[]) throws IOException
+	{
+		InputStream in = new SequenceInputStream(new ByteArrayInputStream("Hello ".getBytes()), new ByteArrayInputStream("World!".getBytes()));
+
+		int n;
+
+		while((n = in.read()) != -1)
+		{
+			System.out.println((char)n);
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">StringBufferInputStream</div>
+		<div class = "block">
+			<ul>
+				<li>Initialize an input stream with a string</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//StringBufferInputStream
+import java.io.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		try(InputStream in = new StringBufferInputStream("Hello World!"))
+		{
+			int n;
+
+			while((n = in.read()) != -1)
+			{
+				System.out.println();
+			}
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Scanner, character-based input, input data from keyboard or file</li>
+				<li>Formatter, character-based output, enables formated data to the screen or to a file</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+// Format output, Formatter
+import java.util.*;
+
+public class F
+{
+	public static void main(String args[])
+	{
+		Formatter output = null;
+
+		// Open output file
+		try
+		{
+			output = new Formatter("output.txt");
+
+			// Format output
+			output.format("%20s%20s%n", "First Name:", "Lin");
+			output.format("%20s%20s%n", "Last Name:", "Chen");
+			output.format("%20s%20s%n", "Age: ", "38");
+			output.format("%20s%20s%n", "University:", "ECSU");
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			if(output != null)
+				output.close();
+		}
+
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+// Format input, Scanner
+import java.util.*;
+import java.io.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		Scanner input = null;
+
+		try
+		{
+			input = new Scanner(new FileInputStream("output.txt"));
+
+			while(input.hasNext())
+			{
+				String temp = input.nextLine();
+				System.out.printf("%20s%20s%n", temp.substring(0, 20), temp.substring(20, 40));
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			if(input != null)
+				input.close();
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">AccessRandomFile</div>
+		<div class = "block">
+			<ul>
+				<li>getFilePointer, seek, length</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//AccessRandomFile
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+public class R {
+    static final String FILEPATH = "temp.txt";
+    public static void main(String[] args) {
+        try {
+        	RandomAccessFile file = new RandomAccessFile(FILEPATH, "rw");
+
+		//toEnd
+		toEnd(file);
+
+		//readFromFile
+            	System.out.println(new String(readFromFile(file, 10, 4)));
+
+		//writeToFile
+            	writeToFile(file, "JavaCodeGeeks Rocks!", 2);
+
+		//close file
+		file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void toEnd(RandomAccessFile f) throws IOException
+    {
+	    System.out.println("Length: "+f.length());//check file length
+	    f.seek(f.length()-2);//move the pointer to the second last character
+	    System.out.println((char)f.read());
+    }
+
+    private static byte[] readFromFile(RandomAccessFile file, int position, int size)
+            throws IOException {
+        file.seek(position);
+        byte[] bytes = new byte[size];
+        file.read(bytes);
+        return bytes;
+    }
+
+    private static void writeToFile(RandomAccessFile file, String data, int position)
+            throws IOException {
+        file.seek(position);
+        file.write(data.getBytes());
+    }
+}
+
+			</pre>
+		</div>
+		<div class = "subtitle">Serializable</div>
+		<div class = "block">
+			<ul>
+				<li>Implement Serializable</li>
+				<li>All attributes must be Serializable</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.io.*;
+
+public class Part implements Serializable
+{
+	private String name;
+
+	public Part()
+	{
+		name = "unknown";
+	}
+
+	public String toString()
+	{
+		return name;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.io.*;
+
+public class Car implements Serializable
+{
+	private String maker;
+	private Part p;
+
+	public Car(String m)
+	{
+		maker = m;
+		p = new Part();
+	}
+
+	public String getMaker()
+	{
+		return maker;
+	}
+
+	public void setMaker(String m)
+	{
+		maker = m;
+	}
+
+	public String toString()
+	{
+		return "Car: "+maker+" "+p.toString();
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//ObjectInputStream, ObjectOutputStream
+import java.io.*;
+
+public class S
+{
+	public static void main(String args[]) throws IOException
+	{
+		ObjectOutputStream output = null;
+
+		try
+		{
+			output = new ObjectOutputStream(new FileOutputStream("data.dat"));
+			output.writeObject(new Car("Buick"));
+			output.writeObject(new Car("Honda"));
+			output.writeObject("Hello World!");
+			output.writeObject(123);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			if(output != null)
+				output.close();
+		}
+
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.io.*;
+
+public class S2
+{
+	public static void main(String args[]) throws IOException
+	{
+		ObjectInputStream input = null;
+
+		try
+		{
+			input = new ObjectInputStream(new FileInputStream("data.dat"));
+			Car c = (Car)input.readObject();
+			System.out.println(c);
+			Car c2 = (Car)input.readObject();
+			System.out.println(c2);
+			String s = (String)input.readObject();
+			System.out.println(s);
+			int n = (int)input.readObject();
+			System.out.println(n);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			if(input != null)
+				input.close();
+		}
+
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Character Stream</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/IO_1.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Scanner, formatted input, has issue with nextLine(), slow, is not synchronous</li>
+				<li>BufferedReader, more efficient, large buffer, synchronous</li>
+				<li>Outputstreamwriter, append conent to an existing file</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//FileReader, FileWriter
+import java.io.*;
+
+public class S
+{
+	public static void main(String args[]) throws IOException
+	{
+		FileWriter out = null;
+
+		try
+		{
+			out = new FileWriter("output.txt");
+
+			for(int i = 0; i &lt; 10; i++)
+				out.write(Integer.toString(i));
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			if(out != null)
+				out.close();
+		}
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.io.*;
+
+public class S2
+{
+	public static void main(String args[]) throws IOException
+	{
+		FileReader in = null;
+
+		try
+		{
+			in = new FileReader("output.txt");
+
+			int c;
+			while((c = in.read()) != -1)
+				System.out.println((char)c);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			if(in != null)
+				in.close();
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>BufferedReader plus StringTokenizer</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+//BufferedReader
+import java.util.*;
+import java.io.*;
+
+public class S
+{
+	public static void main(String args[]) throws IOException
+	{
+		BufferedReader br = null;
+
+		try
+		{
+			br = new BufferedReader(new InputStreamReader(new FileInputStream("output.txt")));
+			String line;
+			while((line = br.readLine()) != null)
+			{
+				//System.out.println(line);
+				StringTokenizer st = new StringTokenizer(line);
+				System.out.printf("%20s%20s%n", st.nextToken()+" "+st.nextToken(), st.nextToken());
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			if(br != null)
+				br.close();
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Get line number</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+//LineNumberReader
+import java.io.*;
+
+public class L
+{
+	public static void main(String args[])
+	{
+		try(LineNumberReader l = new LineNumberReader(new FileReader("L.java")))
+		{
+			int n;
+
+			while((n = l.read()) != -1)
+			{
+				System.out.println("Line: "+l.getLineNumber()+" "+(char)n);
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Standard Stream</div>
+		<div class = "block">
+			<ul>
+				<li>System.in, InputStream</li>
+				<li>System.out, System.err, PrintStream</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+import java.util.Scanner;
+import java.io.*;
+
+public class S
+{
+	public static void main(String args[]) throws IOException
+	{
+		Scanner s = new Scanner(System.in);
+
+		int temp;
+		temp = s.nextInt();
+
+		try
+		{
+			temp = 100/temp;
+			System.out.println(temp);
+		}
+		catch (Exception e)//if temp is 0
+		{
+			System.err.println(e);
+		}
+
+		PrintStream pOut = new PrintStream(new FileOutputStream("output.txt"));
+
+		System.setOut(pOut);
+
+		System.out.println("Hello World!");
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Character Stream</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/essential/io/index.html">Oracle Tutorial</a></li>
+				<li><a href = "http://tutorials.jenkov.com/java-io/index.html">Jenkov's Tutorial</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/fast-io-in-java-in-competitive-programming/">Fast IO at Geeksforgeeks</a></li>
+				<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/io/package-tree.html">IO Package Tree</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

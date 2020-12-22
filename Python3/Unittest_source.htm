@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Test</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Source Code for Unit Test
+		</div>
+		<div class = "block">
+			<span>generator</span>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+"""A Python program generating a list of prime numbers and output them into a csv file
+
+"""
+
+from primepackage import get_n_prime, write_primes, read_primes
+
+def main():
+    """Generate 100 prime numbers and output it into output.csv file
+
+    """
+    try:
+        primes = get_n_prime(100)
+    except ValueError as err:
+        print('is_prime '+ err)
+
+    try:
+        write_primes(primes, 'output.csv')
+    except IOError as err:
+        print(err)
+
+    try:
+        prime_list = read_primes('output.csv')
+    except IOError as err:
+        print(err)
+
+    print(prime_list)
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "block">
+			<span>primepackage/__init__.py</span>
+		<pre class = "prettyprint linenums">
+from primepackage.primeio import write_primes, read_primes
+from primepackage.primemodule import is_prime, get_n_prime
+		</pre>
+		</div>
+		<div class = "block">
+			<span>primepackage/primeio.py</span>
+		<pre class = "prettyprint linenums">
+"""Function for io operations
+
+In Spring 2020, to demo how to build a Python project, this project was
+created for the students in CS4900 senior seminar class. This module contains
+the functions about input and output the prime nubmers into or from a csv file.
+
+Example:
+    python primeio.py
+
+"""
+
+__author__ = 'Lin Chen'
+__version__ = 0.1
+__email__ = 'lichen@valdosta.edu'
+__status__ = 'Prototype'
+
+import csv
+
+def write_primes(prime_list, file_name):
+    """Output a list of prime numbers into a csv file
+
+    Args:
+        prime_list (list): a list of prime numbers
+        file_name (str): file name of a csv file
+
+    Raises:
+        IOError: if file is not able to be opened
+
+    Examples:
+        &gt;&gt;&gt; write_primes([2, 3, 5, 7], 'output.csv')
+
+    """
+    with open(file_name, 'w') as csvfile:
+        writter = csv.writer(csvfile, delimiter=',')
+        writter.writerow(prime_list)
+
+def read_primes(file_name):
+    """Read a list of prime numbers from a csv file
+
+    Args:
+        file_name (str): file name of a csv file
+
+    Raises:
+        IOError: if file is not able to be read
+
+    Examples:
+        &gt;&gt;&gt; l = read_primes('output.csv')
+
+    """
+    with open(file_name, newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for row in reader:
+            prime_list = []
+            for field in row:
+                prime_list.append(int(field))
+            return prime_list
+		</pre>
+		</div>
+		<div class = "block">
+			<span>primepackage/primemodule.py</span>
+		<pre class = "prettyprint linenums">
+"""Functions for prime numbers
+
+In Spring 2020, to demo how to build a Python project, this project was
+created for the students in CS4900 senior seminar class. This module contains
+the functions about prime numbers.
+
+Example:
+    python primemodule.py
+
+"""
+
+__author__ = "Lin Chen"
+__version__ = 0.1
+__email__ = "lichen@valdosta.edu"
+__status__ = "Prototype"
+
+def is_prime(number):
+    """Check if a number is a prime
+
+    Args:
+        number (int): integer number
+
+    Return:
+        boolean: true if n is a prime number, false otherwise
+
+    Raises:
+        ValueError: if n is not a natural number
+
+    Examples:
+        &gt;&gt;&gt; b = is_prime(83)
+
+    """
+    if not isinstance(number, int):
+        raise ValueError("Not an integer number")
+
+    if number &lt;= 0:
+        raise ValueError("Not a natural number")
+
+    if number == 1:
+        return False
+
+    for i in range(2, number):
+        if number%i == 0:
+            return False
+
+    return True
+
+def get_n_prime(num):
+    """Get the fist num prime numbers
+
+    Args:
+        num (int): the number of the first prime numbers
+
+    Return:
+        list: a list of integer numbers
+
+    Examples:
+        &gt;&gt;&gt; prime_list = get_n_prime(10)
+
+    """
+    current_num = 2
+    count = 0
+    prime_list = []
+
+    while True:
+        if is_prime(current_num):
+            prime_list.append(current_num)
+            count += 1
+            if count == num:
+                return prime_list
+        current_num += 1
+		</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Comparable and Comparator
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>Sorting of objects based on natural order uses Comparable whereas if you sorting needs to be done on attributes of different objects, then use Comparator in Java</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Comparable</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Car implements Comparable&lt;Car&gt;
+{
+	private String maker;
+	private String color;
+
+	public Car(String maker, String color)
+	{
+		this.maker = maker;
+		this.color = color;
+	}
+
+	public int compareTo(Car c)
+	{
+		return maker.compareTo(c.maker);
+	}
+
+	public static void main(String args[])
+	{
+		Car c = new Car("Buick", "White");
+		Car c2 = new Car("Honda", "Blue");
+
+		System.out.println(c.compareTo(c2));
+
+		if(c.compareTo(c2) &lt; 0)
+			System.out.println("Less than ...");
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class Car implements Comparable&lt;Car&gt;
+{
+	private String maker;
+	private String color;
+
+	public Car(String maker, String color)
+	{
+		this.maker = maker;
+		this.color = color;
+	}
+
+	public int compareTo(Car c)
+	{
+		//System.out.println(maker+" - "+c.maker+" "+maker.compareTo(c.maker));
+		return maker.compareTo(c.maker);
+	}
+
+	public String toString()
+	{
+		return maker+": "+color;
+	}
+
+	public static void main(String args[])
+	{
+		PriorityQueue&lt;Car&gt; q = new PriorityQueue&lt;Car&gt;();
+
+		q.add(new Car("Buick", "White"));
+		q.add(new Car("Honda", "Blue"));
+		q.add(new Car("Accord", "Blue"));
+		q.add(new Car("Lincoln", "White"));
+
+		System.out.println(q);
+
+		//poll objects in the queue by priority
+		for(int i = 0, len = q.size(); i &lt; len; i++)
+			System.out.println(q.poll());
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class Car implements Comparable&lt;Car&gt;
+{
+	private String maker;
+	private String color;
+
+	public Car(String maker, String color)
+	{
+		this.maker = maker;
+		this.color = color;
+	}
+
+	public int compareTo(Car c)
+	{
+		//System.out.println(maker+" - "+c.maker+" "+maker.compareTo(c.maker));
+		return maker.compareTo(c.maker);
+	}
+
+	public String toString()
+	{
+		return maker+": "+color;
+	}
+
+	public static void main(String args[])
+	{
+		SortedSet&lt;Car&gt; s = new TreeSet&lt;Car&gt;();
+
+		s.add(new Car("Buick", "White"));
+		s.add(new Car("Honda", "Blue"));
+		s.add(new Car("Accord", "Blue"));
+		s.add(new Car("Lincoln", "White"));
+
+		System.out.println(s);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Comparator</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class Car
+{
+	private String maker;
+	private String color;
+
+	public Car(String maker, String color)
+	{
+		this.maker = maker;
+		this.color = color;
+	}
+
+	public String toString()
+	{
+		return maker+": "+color;
+	}
+
+	public String getMaker()
+	{
+		return maker;
+	}
+
+	public String getColor()
+	{
+		return color;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class CarComparator implements Comparator<Car>
+{
+	public int compare(Car c1, Car c2)
+	{
+		return (c1.getMaker().compareTo(c2.getMaker()));
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class Main
+{
+	public static void main(String args[])
+	{
+		ArrayList&lt;Car&gt; l = new ArrayList&lt;Car&gt;();
+
+		//add
+		l.add(new Car("Buick", "White"));
+		l.add(new Car("Honda", "Blue"));
+		l.add(new Car("Lincoln", "White"));
+		l.add(new Car("Accord", "Blue"));
+
+		System.out.println(l);
+
+		//sort by comparator
+		Collections.sort(l, new CarComparator());
+
+		System.out.println(l);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "http://www.geeksforgeeks.org/comparable-vs-comparator-in-java/">Geekforgeek</a></li>
+		</div>
+	</body>
+</html>

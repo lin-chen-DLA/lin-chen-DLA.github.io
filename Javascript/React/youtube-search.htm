@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Youtube Search
+		</div>
+
+		<div class = "subtitle">Create Google Project</div>
+		<div class = "block">
+			<ol>
+				<li>Go to https://console.developers.google.com/ and log in with your Google account</li>
+				<li>Create a new project
+					<ul>
+						<li>On the top of the window, click the downside triangle, which pops up a window that lists all your existing projects</li>
+						<li>Click "NEW PROJECT", name it "YouTube Search", and click "CREATE"</li>
+						<li>Important: Wait a little bit until Google is done creating the project</li>
+						<li>Click the downside triangle again and select the newly created project "YouTube Search"</li>
+					</ul>
+				</li>
+				<li>Click ENABLE APIS AND SERVICES at the top of the Dashboard</li>
+				<li>Search for "youtube" and click "YouTube Data API v3"</li>
+				<li>Click "ENABLE"</li>
+				<li>In the left pane, find "Credentials" and click it. Then click "Credientials in APIs &amp; Services". Click "Create credentials" and select "API key" in the dropdown menu</li>
+				<li>In the "API key created" window, copy your API key and click "close"</li>
+				<li>npm install --save youtube-api-search, install Google youtube API</li>
+				<li>npm install --save bootstrap, install bootstrap</li>
+			</ol>
+		</div>
+		<div class = "subtitle">Project Appearance</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/React_3.png" width=60% /></p>
+		</div>
+		<div class = "subtitle">Project Architecture</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/React_4.png" width=60% /></p>
+		</div>
+		<div class = "subtitle">Code Organization</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/React_5.png" width=40% /></p>
+		</div>
+		<div class = "block">
+			<li>Whenever any <span>state</span> of a component is changed, the component immediately <span>re-renders</span> and also forces its children components to <span>re-render</span> as well</li>
+			<li><span>this.setState(...)</span> is the ONLY way to update the React state object</li>
+			<li>In React, the term "downward data flow/one-way data flow/one-way data binding" means that typically only the most parent component (in our project, the App component) should be responsible for fetching the data from either an API server or a Redux framework and saving them in the form of <span>states</span></li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import YTSearch from 'youtube-api-search';
+import _ from 'lodash';
+import 'bootstrap/dist/css/bootstrap.min.css'; // import Bootstrap CSS library
+import "./index.css"; // in addition, import our own CSS specs
+import SearchBar from "./components/search_bar";
+import VideoList from "./components/video_list";
+import VideoDetail from "./components/video_detail";
+
+const API_KEY = 'AIzaSyCf0m-NsXkkwEcdlQ2072ESd4NQvJsgeoY';
+
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+
+	this.state = { videos: [], selectedVideo: null };
+    }
+	    
+    videoSearch(term) {
+        YTSearch({ key: API_KEY, term: term }, videos =&gt; {
+            // ES6 syntax for this.setState({ videos: videos});
+            this.setState({
+                videos: videos,
+                selectedVideo: videos[0]
+            });
+        });
+    }
+
+    render() {
+	const videoSearch = _.debounce((term) =&gt; { this.videoSearch(term) }, 500);
+        return (
+            &lt;div&gt;
+                &lt;SearchBar onSearchTermSearch={videoSearch}/&gt;
+		&lt;div className="row"&gt;
+			&lt;VideoDetail video={this.state.selectedVideo} /&gt;
+			&lt;VideoList // callback function
+                        onVideoSelect={selectedVideo =&gt;
+                            this.setState({ selectedVideo })
+                        }
+			videos={this.state.videos} /&gt;
+		&lt;/div&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+
+ReactDOM.render(&lt;App /&gt;, document.getElementById('root'));
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//index.css
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.row {
+    margin: 20px;
+}
+
+.search-bar {
+    margin: 20px;
+    text-align: center;
+}
+
+.search-bar input {
+    width: 75%;
+}
+
+.video-detail .details {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.list-group-item:hover {
+    background-color: #eee;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//video_list.js
+import React from "react";
+import VideoListItem from "./video_list_item";
+
+const VideoList = props =&gt; {
+    const videoIterms = props.videos.map(video =&gt; {
+        return &lt;VideoListItem onVideoSelect={props.onVideoSelect}
+                key={video.etag} video={video} /&gt;;
+    });
+
+    return &lt;ul className="col-md-4 list-group"&gt;{ videoIterms }&lt;/ul&gt;;
+};
+
+export default VideoList;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//video_list_item.js
+import React from 'react';
+
+const VideoListItem = ({video, onVideoSelect}) =&gt; {
+    const imageUrl = video.snippet.thumbnails.default.url;
+    const title = video.snippet.title;
+
+    return (
+        &lt;li onClick={ () =&gt; onVideoSelect(video) } className="list-group-item"&gt;
+            &lt;div className="video-list media"&gt;
+                &lt;div className="media-body"&gt;
+                    &lt;div className="media-heading"&gt;{title}&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;img className="media-object" src={imageUrl} alt="" /&gt;
+            &lt;/div&gt;
+        &lt;/li&gt;
+    );
+}
+
+export default VideoListItem;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//video_detail.js
+import React, { Component } from 'react';
+
+class SearchBar extends React.Component {
+   constructor(props) {
+        super(props);
+
+        this.state = { term: "" };
+    }
+
+    onInputChange(term) {
+        this.setState({term});
+        this.props.onSearchTermSearch({term});
+    }
+
+    render() {
+        return (
+            &lt;div className="search-bar"&gt;
+                &lt;input
+		    value={this.state.term} //Controlled Component
+		onChange={event =&gt; this.onInputChange(event.target.value)}
+                /&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+
+export default SearchBar;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//search_bar.js
+import React, { Component } from 'react';
+
+class SearchBar extends React.Component {
+   constructor(props) {
+        super(props);
+
+        this.state = { term: "" };
+    }
+
+    onInputChange(term) {
+        this.setState({term});
+        this.props.onSearchTermSearch({term});
+    }
+
+    render() {
+        return (
+            &lt;div className="search-bar"&gt;
+                &lt;input
+		    value={this.state.term} //Controlled Component
+		onChange={event =&gt; this.onInputChange(event.target.value)}
+                /&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+
+export default SearchBar;
+		</pre>
+		</div>
+		<div class = "subtitle">Project Domain</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+https://youtube-search-lin.herokuapp.com/
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li>CS4840 by Dr. Zhiguang Xu at Valdosta State University</li>
+		</div>
+	</body>
+</html>

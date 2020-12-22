@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			List
+		</div>
+
+		<div class = "subtitle">Built-in functions</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+l = [] # create a list
+
+#concate a list to another list
+l = l+[10, 20, 30, 'Hello']; #[10, 20, 30, 'Hello']
+
+#extend
+l.extend(['a', 'b', 'c']); #[10, 20, 30, 'Hello', 'a', 'b', 'c']
+
+#access an element
+print l[0];
+
+#append, add an element
+l.append(10); #[10, 20, 30, 'Hello', 'a', 'b', 'c', 10]
+
+#count, count of how many times obj occurs
+print l.count(10);
+print l.count('Hello');
+
+#index, the lowest index in list that obj appears
+print l.index(10);
+
+#insert, insert an element at the specific position
+l.insert(0, 100); #[100, 10, 20, 30, 'Hello', 'a', 'b', 'c', 10]
+
+#pop, remove the last element
+print l.pop(); #[100, 10, 20, 30, 'Hello', 'a', 'b', 'c']
+
+#remove, remve an object
+l.remove('c'); #[100, 10, 20, 30, 'Hello', 'a', 'b']
+
+#reverse, reverse the order
+l.reverse(); #['b', 'a', 'Hello', 30, 20, 10, 100]
+
+#sort
+l.sort(); #[100, 10, 20, 30, 'Hello', 'a', 'b']
+
+#repeat a list
+l = l*2;
+
+#del
+del l[0]; #remove the first 100
+l = [x for x in l if x != 20]; #remove all copies of 20
+
+#check length
+print len(l); #14
+		</pre>
+		</div>
+		<div class = "subtitle">Slicing</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+l = range(0, 100, 10); #[0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+
+print l[2]; #20
+print l[-2]; #80
+
+print l[2:5]; #[20, 30, 40], select element of indices [2, 5)
+
+print l[:2]; #[0, 10]
+print l[7:]; #[70, 80, 90]
+
+		</pre>
+		</div>
+		<div class = "subtitle">Unpacking</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+a, b = [1, 2];
+print a, b; #1 2
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li>Python How to Program</li>
+			<li><a href = "https://www.tutorialspoint.com/python/python_lists.htm">Tutorialspoint</a></li>
+		</div>
+	</body>
+</html>

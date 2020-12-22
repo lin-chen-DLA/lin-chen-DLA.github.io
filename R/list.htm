@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>R</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			List
+		</div>
+
+		<div class = "block">
+			<li>Lists are the R objects which contain elements of different types like − numbers, strings, vectors, matrix, functions, and another list</li>
+			<li>Index starts from 1</li>
+		</div>
+
+		<div class = "subtitle">Create List</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+l = list("Red", 1, c(1, 2, 3, 4), TRUE)
+		</pre>
+		</div>
+
+		<div class = "subtitle">Accessing</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+l = list("Red", 1, c(1, 2, 3, 4), TRUE)
+
+names(l) = c("l_color", "l_num", "l_list", "l_boolean")
+
+print(l[1]) # access by index
+print(l$l_color) # access by name
+		</pre>
+		</div>
+
+		<div class = "subtitle">Operations</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+l = list("Red", 1, c(1, 2, 3, 4), TRUE)
+
+l[length(l)+1] = 100 # add element at the end
+
+l[length(l)] = NULL # remove the last element
+
+l[1] = "Blue" # update element
+print(l)
+
+l1 = list("Red", 1)
+l2 = list("Blue", 2)
+
+l3 = c(l1, l2) # merge lists
+
+print(l3)
+
+a = 1:10
+b = list(a) # convert vector to list
+c = unlist(b) # convert list to vector
+
+print(c)
+		</pre>
+		</div>
+	</body>
+</html>

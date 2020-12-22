@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>R</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Package
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+.libPaths() # Get library locations containing R packages
+
+View(available.packages()) # list the available package at CRAN
+
+View(install.packages(packageName)) # install a package
+
+# check installed libraries
+installed.packages()
+library()
+
+library(ggplot2) # load ggplot2 library
+search() # list the loaded libraries
+
+# call functions defined in a package
+devtools::install()
+
+or
+
+library(devtools) # add devtools into search list
+install()
+
+# check functions defined in a package
+ls("package:myPackage")
+
+# access help information
+help(getRand, package = "myPackage")
+help(getRand)
+??myPackage::getRand # search functions starting with getRand
+?getRand # get help document for getRand
+		</pre>
+		</div>
+
+		<div class = "subtitle">Use Functions Defined in a File</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# p1.r
+getRand &lt;- function(n)
+{
+	return(runif(n))
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+# main.r
+source("p1.r")
+
+print(getRand(10))
+		</pre>
+		</div>
+
+		<div class = "subtitle">Create Package</div>
+		<div class = "block">
+			<li>myPackage.Rproj, RStudio project file</li>
+			<li>.Rbuildignore, exclude a specific file or directory</li>
+			<li>.Rproj.user, used for temporary files</li>
+			<li>DESCRIPTION, metadata
+				<ul>
+					<li>Imports: packages listed here must be present for your package to work</li>
+					<li>Suggests: your package can use these packages, but doesn’t require them</li>
+				</ul>
+			</li>
+			<li>NAMESPACE, helps encapsulate your package and makes it self-contained</li>
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# DESCRIPTION
+Package: myPackage
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Lin",
+           family = "Chen",
+           role = c("aut", "cre"),
+           email = "lin.chen@ieee.org")
+Description: What the package does (one paragraph).
+License: What license it uses
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0.9000
+Imports:
+    ggvis (&gt;= 0.2), # automatically download and install the required packages
+    dplyr (&gt;= 0.3.0.1)
+Suggests:
+    MASS (&gt;= 7.3.0)
+		</pre>
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 1. Install needed packages
+install.packages("devtools")
+library("devtools")
+devtools::install_github("klutometis/roxygen")
+library(roxygen2)
+		</pre>
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 2. Create package
+usethis::create_package("myPackage")
+		</pre>
+		</div>
+
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/r1.png" width = "30%"></p>
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 3. Add functions
+getRand &lt;- function(n)
+{
+	return(runif(n))
+}
+		</pre>
+		</div>
+
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/r2.png" width = "30%"></p>
+		</div>
+
+		<div class = "block">
+			<li>Necessary description
+				<ul>
+			<li>#' @param argument_name description of the argument</li>
+			<li>#' @return Vector of character strings representing the chosen set of colors, in RGB.</li>
+			<li>#' @examples line is followed by a set of example R code on how to use the function</li>
+			<li>#' @export, This tells Roxygen2 to add this function to the NAMESPACE file, so that it will be accessible to users</li>
+				</ul>
+			</li>
+			<li>Extra stuff
+				<ul>
+					<li>#' @author Lin Chen, \email{lin.chen@ieee.org}</li>
+					<li>#' @references \url{https://lin-chen-va.github.io/}</li>
+					<li>#' @seealso \code{\link{getRand}}</li>
+					<li>#' @keywords print</li>
+					<li>#' @importFrom grDevices rgb2hsv, import selected functions from a package</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+# 4. Add comments
+#' getRand Function
+#'
+#' get a sequence of random numbers between 0 and 1
+#' @author Lin Chen, \email{lin.chen@ieee.org}
+#' @references \url{https://lin-chen-va.github.io/}
+#' @param n the number of random numbers
+#' @keywords cats
+#' @export
+#' @examples
+#' v = getRand(10)
+getRand &lt;- function(n)
+{
+	return(runif(n))
+}
+		</pre>
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 5. Process your documentation
+library("devtools")
+setwd("./myPackage")
+document()
+		</pre>
+		</div>
+
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/r3.png" width = "30%"></p>
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 6. Generate documents
+build_site(path = ".", quiet = TRUE) # optional
+		</pre>
+		</div>
+
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/r4.png" width = "30%"></p>
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 7. Push the package to your github repository
+# 8. Install package
+install_github("lin-chen-VA/myPackage")
+
+or
+install("myPackage") # install from the parent directory of myPackage
+		</pre>
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 9. Call functions defined in package
+getRand(10)
+myPackage::getRand(10) # call function with namespace
+		</pre>
+		</div>
+
+		<div class = "subtitle">Create Binary Packages</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+devtools::build(binary = TRUE) # in the package folder
+R CMD INSTALL packagename myPackage_0_0_0.9000.tgz # install from command line
+install.packages("myPackage_0.0.0.9000.tgz", repos = NULL) # install in interactive environment
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "http://r-pkgs.had.co.nz/">R packages</a></li>
+			<li><a href = "http://r-pkgs.had.co.nz/description.html#description">Package metadata</a></li>
+			<li><a href = "https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/">Writing an R package from scratch</a></li>
+			<li><a href = "https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html">Introduction to roxygen2</a></li>
+			<li><a href = "http://kbroman.org/pkg_primer/pages/docs.html">Writing documentation with Roxygen2</a></li>
+		</div>
+	</body>
+</html>

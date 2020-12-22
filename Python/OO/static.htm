@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Static Methods and Class Methods
+		</div>
+
+		<div class = "block">
+			<li><span>Instance Methods:</span> The most common method type. Able to access data and properties unique to each instance.</li>
+			<li><span>Static Methods:</span> Cannot access anything else in the class. Totally self-contained code.</li>
+			<li><span>Class Methods:</span> Can access limited methods in the class. Can modify class specific details.</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+ 
+    count = 0; # static variable
+
+    def info():
+        return Vehicle.count;
+
+    info = staticmethod(info) # static function
+
+    def __init__(self, brand, year):
+        self._brand = brand;
+	self._year = year;
+        Vehicle.count += 1;
+ 
+    def __str__(self):
+        return self._brand+' '+str(self._year)
+
+    def __del__(self):
+        Vehicle.count -= 1;
+
+def main():
+    vehicles = [Vehicle("Buick", 1998), Vehicle("Lincoln", 1999)]
+
+    print(Vehicle.info())
+    print(vehicles[1].info())
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+ 
+    count = 0;
+
+    @staticmethod
+    def info():
+        return Vehicle.count;
+
+    @classmethod
+    def cla(cls):
+        print('Call class method ...')
+        print(Vehicle.info()) # class methods can call static methods
+
+    def __init__(self, brand, year):
+        self._brand = brand;
+	self._year = year;
+        Vehicle.count += 1;
+ 
+    def __str__(self):
+        return self._brand+' '+str(self._year)
+
+    def __del__(self):
+        Vehicle.count -= 1;
+
+def main():
+    vehicles = [Vehicle("Buick", 1998), Vehicle("Lincoln", 1999)]
+
+    print(Vehicle.info()) # call static method
+    print(vehicles[1].info())
+
+    Vehicle.cla() # call class method
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.makeuseof.com/tag/python-instance-static-class-methods/">Instance vs. Static vs. Class Methods in Python: The Important Differences</a></li>
+		</div>
+	</body>
+</html>

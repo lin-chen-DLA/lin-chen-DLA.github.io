@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CSS</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Responsive
+		</div>
+
+		<div class = "subtitle">Responsive Image Galery</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+	* {
+  		box-sizing: border-box;
+	}
+	header {width: 90%; height: 100px; background-color: silver; margin: auto; text-align: center; padding: 20px;}
+	section {width: 90%; border: 1px solid red; margin: auto; overflow: auto; display: flex; flex-wrap: nowrap;}
+	section::after {  content: ""; clear: both; display: table;}
+	nav {width: 30%; float: left; border: 1px solid blue; background-color: green;}
+	nav ul {list-style-type: none;}
+	ul a:link {text-decoration: none;}
+	nav ul li {width: 80%; height: 60px; background-color: silver; margin: 5px auto; text-align: center; padding: 20px; border: 1px solid red;}
+	article {width: 70%; float: left; border: 1px solid blue; min-height: 300px; padding: 20px; background-color: white;}
+	footer {width: 90%; height: 100px; background-color: silver; margin: auto; text-align: center; padding: 20px;}
+	/* Responsive Images */
+	.responsive {width: 50%; float: left; border: 1px solid blue; object-fit: cover;}
+	.responsive img {width: 100%; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
+	.responsive img:hover {opacity: 0.7}
+	div.desc {padding: 15px; text-align: center;}
+	@media only screen and (max-width: 700px) {
+  		.responsive {width: 100%;}
+	}
+	/* Popup Window */
+	.modal { display: none; position: fixed; z-index: 1; left: 10%; top: 10%; padding-top: 10px; width: 80%; overflow: auto; background-color: rgba(0,0,0,0.8);}
+	.modal-image {  margin: auto; display: block; width: 80%; animation-name: zoom; animation-duration: 0.6s;}
+	#close {position: absolute; left: 2%; top: 2%; color: silver; font-size: 40px; font-weight: bold; transition: 0.3s;}
+	@keyframes zoom {  from {transform: scale(0.1)} to {transform: scale(1)}}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;header&gt;
+  &lt;h2&gt;Cities&lt;/h2&gt;
+&lt;/header&gt;
+
+&lt;section&gt;
+  &lt;nav&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="#"&gt;London&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#"&gt;Paris&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#"&gt;Tokyo&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+  
+  &lt;article&gt;
+    &lt;h1&gt;London&lt;/h1&gt;
+    &lt;p&gt;London is the capital city of England. It is the most populous city in the  United Kingdom, with a metropolitan area of over 13 million inhabitants.&lt;/p&gt;
+    &lt;p&gt;Standing on the River Thames, London has been a major settlement for two millennia, its history going back to its founding by the Romans, who named it Londinium.&lt;/p&gt;
+    &lt;h1&gt;Images&lt;/h1&gt;
+    &lt;div class = "responsive"&gt;
+    	&lt;img id = "img1" src = "./img/Shanghai.jpg" onclick = "displayWindow(this)" /&gt;
+    	&lt;div class = "desc"&gt;Shanghai&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class = "responsive"&gt;
+    	&lt;img id = "img2" src = "./img/GreatWall.jpg" onclick = "displayWindow(this)"/&gt;
+    	&lt;div class = "desc"&gt;Great Wall&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id="myModal" class="modal"&gt;
+  		&lt;span id="close"&gt;×&lt;/span&gt;
+  		&lt;img class="modal-image" id="img-window"&gt;
+	&lt;/div&gt;
+  &lt;/article&gt;
+&lt;/section&gt;
+
+&lt;footer&gt;
+  &lt;p&gt;Footer&lt;/p&gt;
+&lt;/footer&gt;
+
+&lt;script&gt;
+	function displayWindow(element)
+	{
+		const img = document.getElementById('myModal');
+		img.style.display = "block";
+		modelImg = document.getElementById('img-window');
+		modelImg.src = element.src;
+
+		const span = document.getElementById('close');
+		span.onclick = function() { img.style.display = "none";}
+	}
+&lt;/script&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Always Design for Mobile First</div>
+		<div class = "block">
+			<li>Mobile First means designing for mobile before designing for desktop or any other device</li>
+			<li>Instead of changing styles when the width gets smaller than a threshold, we should change the design when the width gets larger than the threshold</li>
+		</div>
+		<div class = "subtitle">One Breakpoint</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		* {box-sizing: border-box;}
+		div {border: 1px solid red;}
+		/* Mobile Device */
+		[class*="col-"] {width: 100%; float:left; padding: 10px;}
+
+		@media only screen and (min-width: 768px)
+		/* Desktop Device */
+		{
+			.col-1 {width: 20%;}
+			.col-2 {width: 40%;}
+			.col-3 {width: 100%;}
+		}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class = "col-1"&gt;Colume 1&lt;/div&gt;
+	&lt;div class = "col-2"&gt;Colume 2&lt;/div&gt;
+	&lt;div class = "col-2"&gt;Colume 3&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Two Breakpoints</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		* {box-sizing: border-box;}
+		div {border: 1px solid red;}
+		[class*="col-"] {width: 100%; float:left; padding: 10px;}
+
+		@media only screen and (min-width: 600px)
+		/* Tablet Devices */
+		{
+			.col-s-1 {width: 20%;}
+			.col-s-2 {width: 40%;}
+			.col-s-3 {width: 60%;}
+			.col-s-4 {width: 100%;}
+		}
+
+		@media only screen and (min-width: 768px)
+		/* Desktop Devices */
+		{
+			.col-1 {width: 20%;}
+			.col-2 {width: 40%;}
+			.col-3 {width: 60%;}
+			.col-4 {width: 100%;}
+		}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class = "col-s-2 col-1"&gt;Colume 1&lt;/div&gt;
+	&lt;div class = "col-s-3 col-2"&gt;Colume 2&lt;/div&gt;
+	&lt;div class = "col-s-4 col-2"&gt;Colume 3&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Typical Device Breakpoints</div>
+		<div class = "block">
+			<li><span>Phones, portrait tablets and large phones</span>, 600px</li>
+			<li><span>landscape tablets</span>, 768px</li>
+			<li><span>laptops/desktops</span>, 992px</li>
+			<li><span>large laptops and desktops</span>, 1200px</li>
+		</div>
+	</body>
+</html>

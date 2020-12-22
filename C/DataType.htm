@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Basic Syntax</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Data Types
+		</div>
+
+		<div class = "subtitle">Integer</div>
+		<div class = "block">
+			<li>int (signed int), unsigned int</li>
+			<li>short (signed short int), unsigned short</li>
+			<li>long (signed long int), unsigned long</li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+int main()
+{
+	printf("Int: %lu bytes\n", sizeof(int)); // 4
+	printf("Min Int: %d\n", INT_MIN); // -2147483648
+	printf("Max Int: %d\n", INT_MAX); // 2147483647
+
+	printf("Unsigned Int: %lu bytes\n", sizeof(unsigned int)); // 4
+	printf("Min Unsigned Int: %d\n", 0); // 0
+	printf("Max Unsigned Int: %u\n", UINT_MAX); // 4294967295
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+int main()
+{
+	printf("Int: %lu bytes\n", sizeof(int)); // 4
+	printf("Short: %lu bytes\n", sizeof(short)); // 2
+	printf("Long: %lu bytes\n", sizeof(long)); // 8
+
+	printf("Min Short: %d\n", SHRT_MIN); // -32768
+	printf("Max Short: %u\n", SHRT_MAX); // 32767
+
+	printf("Min Short: %ld\n", LONG_MIN); // -9223372036854775808
+	printf("Max Short: %ld\n", LONG_MAX); // 9223372036854775807
+
+	return 0;
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Overflow and Underflow</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include <stdio.h>
+#include <limits.h>
+
+int main()
+{
+	// Overflow
+	short a = SHRT_MAX + 1;
+	printf("Overflow: %d\n", a); # -32768
+
+	// Underflow
+	short b = SHRT_MIN - 1;
+	printf("Underflow: %d\n", b); # 32767
+
+	return 0;
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Char</div>
+		<div class = "block">
+			<li>unsigned char, char (signed char)</li>
+			<li>char type in C is integer</li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+int main()
+{
+	char var = 'a';
+
+	printf("Char: %c\n", var);
+
+	// use char as integer
+	printf("Int: %d\n", var); // 97
+	printf("Int: %d\n", var+1); // 98
+
+	// user integer as char
+	char var2 = 97;
+	printf("Char: %c\n", var2); // a
+	printf("Char: %c\n", 97); // a
+
+	printf("Char: %lu bytes\n", sizeof(char)); // 1
+	printf("Min Char: %d\n", CHAR_MIN); // -128
+	printf("Max Char: %d\n", CHAR_MAX); // 127
+
+	return 0;
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Float</div>
+		<div class = "block">
+			<li>float</li>
+			<li>double</li>
+			<li>long double</li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;float.h&gt;
+
+int main()
+{
+	printf("Float: %lu bytes\n", sizeof(float)); // 4
+	printf("Min Float: %e\n", FLT_MIN);
+	printf("Max Float: %e\n", FLT_MAX);
+
+	printf("Double: %lu bytes\n", sizeof(double)); // 8
+	printf("Min Double: %e\n", DBL_MIN);
+	printf("Max Double: %e\n", DBL_MAX);
+
+	printf("Long Double: %lu bytes\n", sizeof(long double)); // 16
+
+	return 0;
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Enum</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+  
+int main() 
+{ 
+	enum week{Mon, Tue, Wed, Thur, Fri, Sat, Sun}; 
+
+    	enum week day;
+
+    	day = Wed; 
+
+    	printf("%d\n", day); // 2
+
+	int i;
+	for(i = Mon; i &lt;= Sun; i++)
+		printf("%d\n", i); // 0 1 2 3 4 5 6
+
+    	return 0; 
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Define Type</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+typedef float myType;
+
+int main()
+{
+	myType Pi = 3.14;
+
+	printf("Pi: %f\n", Pi);
+
+	return 0;
+}
+			</pre>
+		</div>
+	</body>
+</html>

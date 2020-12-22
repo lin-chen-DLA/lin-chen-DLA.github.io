@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			JOptionPane
+		</div>
+
+		<div class = "subtitle">JOptionPane.showMessageDialog</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import javax.swing.JOptionPane;
+
+public class Dialog
+{
+	public static void main(String args[])
+	{
+		JOptionPane.showMessageDialog(null, "Welcome to Java");
+	}
+}
+			</pre>
+		</div>
+				<div class = "subtitle">JOptionPane.showInputDialog</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import javax.swing.JOptionPane;
+
+public class Dialog2
+{
+	public static void main(String args[])
+	{
+		String name = JOptionPane.showInputDialog("What is your name?");
+		System.out.printf("You name: %s\n", name);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">JOptionPane.showInputDialog + JOptionPane.showMessageDialog</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import javax.swing.JOptionPane;
+
+public class Dialog3
+{
+	public static void main(String args[])
+	{
+		String name = JOptionPane.showInputDialog("What is your name?");
+		String message = String.format("Welcom, %s, to Java Programming!", name);
+
+		JOptionPane.showMessageDialog(null, message, "Java Message", JOptionPane.DEFAULT_OPTION);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">JOptionPane.showInputDialog + JOptionPane.showMessageDialog + ImageIcon</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
+
+public class Dialog4
+{
+	public static void main(String args[])
+	{
+		String name = JOptionPane.showInputDialog("What is your name?");
+		String message = String.format("Welcom, %s, to Java Programming!", name);
+
+		ImageIcon icon = new ImageIcon("./java-icon.png", "Java Logo");
+		JOptionPane.showMessageDialog(null, message, "Java Message", JOptionPane.DEFAULT_OPTION, icon);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">JOptionPane.showConfirmDialog</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
+
+public class Dialog5
+{
+	public static void main(String args[])
+	{
+		//0, yes
+		//1, no
+		//2, cancel
+		int choice = JOptionPane.showConfirmDialog(null, "Are you 21 years or older?");
+
+		if (choice == 0)
+			JOptionPane.showMessageDialog(null, "Welcome, you can drink");
+		else if (choice == 1)
+			JOptionPane.showMessageDialog(null, "No, you cannot drink");
+		else
+			JOptionPane.showMessageDialog(null, "You don't want to tell us your age");
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">JOptionPane.showOptionDialog</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import javax.swing.JOptionPane;
+
+public class Dialog6
+{
+	public static void main(String args[])
+	{
+		Object[] options = {"Happy", "Cry", "Smile", "CANCEL"};
+
+		int choice = JOptionPane.showOptionDialog(null, "Click OK to continue", "Warning",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, options, options[0]);
+
+		String message = String.format("Your choice is: %s\n", options[choice]);
+
+		JOptionPane.showMessageDialog(null, message);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.oracle.com/javase/7/docs/api/javax/swing/JOptionPane.html">Documentation</a></li>
+			</ul>
+	</div>
+	</body>
+</html>

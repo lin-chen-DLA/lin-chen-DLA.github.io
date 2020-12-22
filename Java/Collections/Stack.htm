@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			<a href = "https://docs.oracle.com/javase/7/docs/api/java/util/Stack.html">Stack</a>
+		</div>
+
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		Stack&lt;Integer&gt; s = new Stack&lt;Integer&gt;();
+
+		//push
+		for(int i = 0; i &lt; 10; i++)
+			System.out.printf("%4d", s.push(i));
+		System.out.println();
+
+		//toString
+		System.out.println(s);
+
+		//search
+		System.out.printf("Search: %d%n", s.search(5));
+
+		//peek
+		System.out.printf("Peer: %d%n", s.peek());
+
+		//empty and pop
+		while(!s.empty())
+		{
+			System.out.printf("%4d", s.pop());
+		}
+		System.out.println();
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Enumeration</div>
+		<div class = "block">
+			<ul>
+				<li>For Vector and Stack</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		Stack&lt;Integer&gt; s = new Stack&lt;Integer&gt;();
+
+		//push
+		for(int i = 0; i &lt; 10; i++)
+			System.out.printf("%4d", s.push(i));
+		System.out.println();
+
+		Enumeration e = s.elements();
+
+		while(e.hasMoreElements())
+		{
+			System.out.printf("%4d", e.nextElement());
+		}
+		System.out.println();
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Iterator</div>
+		<div class = "block">
+			<ul>
+				<li>hasNext, next, remove</li>
+				<li>Only forward direction iterating</li>
+				<li>Not able to replace or add element</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		Stack&lt;Integer&gt; s = new Stack&lt;Integer&gt;();
+
+		//push
+		for(int i = 0; i &lt; 10; i++)
+			System.out.printf("%4d", s.push(i));
+		System.out.println();
+
+		Iterator itr = s.iterator();
+
+		while(itr.hasNext())
+		{
+			System.out.printf("%4d", itr.next());
+		}
+		System.out.println();
+		
+		//remove
+		itr = s.iterator();
+		while(itr.hasNext())
+		{
+			if((Integer)itr.next()%2 == 0)
+				itr.remove();
+		}
+
+		System.out.println(s);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">For-each</div>
+		<div class = "block">
+			<ul>
+				<li>Iterator and for-each have same performance</li>
+				<li>They are much faster than for loop for collection with no random access</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		Stack&lt;Integer&gt; s = new Stack&lt;Integer&gt;();
+
+		for(int i = 0; i &lt; 10; i++)
+			s.add(i);
+
+		System.out.println(s);
+
+		for(int e : s)
+			System.out.printf("%4d", e);
+		System.out.println();
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.geeksforgeeks.org/stack-class-in-java/">Stack at GeekForGeek</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/iterators-in-java/">Iterator at GeekForGeek</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/iterator-vs-foreach-in-java/">Iterator and for-each</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

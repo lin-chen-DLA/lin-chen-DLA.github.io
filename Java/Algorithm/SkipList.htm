@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Skip List</div>
+		<div class = "block">
+			<ul>
+				<li>Dynamic search structure, O(lgn)</li>
+			</ul>
+		</div>
+		<div class = "subtitle">2 Sorted Linked List</div>
+		<div class = "block">
+			<ul>
+				<li>L<sub>2</sub> stores all elements, L<sub>1</sub> stores subset</li>
+			</ul>
+				<p style = "text-align:center;"><img src = "img/SkipList.png" width = "80%"></p>
+		</div>
+		<div class = "subtitle">Search (X)</div>
+		<div class = "block">
+			<ul>
+				<li>Walk right in top list L<sub>1</sub> until going right would go too far</li>
+				<li>Walk to L<sub>2</sub></li>
+				<li>Walk right in L<sub>2</sub> until find X (or &gt; X)</li>
+				<li>For example, serach 59, start 14 of L<sub>1</sub>, walk to 34, 42, 72, 72 is greater than 59, switch back to 42 and jump to L<sub>2</sub> to continue the search until find 59</li>
+			</ul>
+		</div>
+		<div class = "subtitle">What keys go in L<sub>1</sub></div>
+		<div class = "block">
+			<ul>
+				<li>Best is to spread them out uniformly</li>
+				<li>Cost of search, |L<sub>1</sub>| + |L<sub>2</sub>|/|L<sub>1</sub>|</li>
+				<li>minimize |L<sub>1</sub>| + n/|L<sub>1</sub>|</li>
+				<li>|L<sub>1</sub>|<sup>2</sup> = n</li>
+				<li>Search cost 2&radic;n</li>
+				<li>3 sorted list, 3<sup>3</sup>&radic;n</li>
+				<li>k sorted list, k<sup>k</sup>&radic;n</li>
+				<li>k = lgn, lgn<sup>lgn</sup>&radic;n = 2lgn</li>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/SkipList2.png" width = "80%"></p>
+		</div>
+		<div class = "subtitle">Insert (X)<sub>1</sub></div>
+		<div class = "block">
+			<ul>
+				<li>Search (X) to find where to insert in bottom list</li>
+				<li>Which other list should add x, flip coin, if head, add it, flip coin, ...</li>
+				<li>Store -&infin; to the left of each list</li>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/SkipListInsert.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle">Delete (X)<sub>1</sub></div>
+		<div class = "block">
+			<ul>
+				<li>find (x) and delete in all lists</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-introduction-to-algorithms-sma-5503-fall-2005/video-lectures/lecture-12-skip-lists/">MIT OCW Lecture 12</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/treap-a-randomized-binary-search-tree/">Treap</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			String
+		</div>
+
+		<div class = "subtitle">String</div>
+		<div class = "block">
+			<li>Strings of characters, immutable</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+s = 'Hello World!';
+
+#access element
+print s[0]; #H
+
+#slicing
+print s[:2]; #He
+
+#slice
+sl = slice(0, 10, 2);
+print s[sl]; #HloWr
+
+#concatenation
+print s+' ...';
+
+#repeat
+print s*2;
+
+#in
+if 'H' in s:
+    print 'Contain H';
+
+#raw string, suppresses actual meaning of escape characters
+print r'raw string\n';
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+s = 'Hello World!';
+
+#capitalize, capitalizes first letter of string
+print s.capitalize();
+
+#center
+print s.center(20, '*');
+
+#count
+print s.count('l');
+
+#endswith
+if s.endswith('!'):
+    print 'end with ! ...';
+
+#find
+print s.find('or'); #7
+
+#index, find a string and raise an exception if the string is not found
+print s.index('or');
+
+#join
+c = '-';
+print c.join(['a', 'b', 'c']);
+
+#lower
+print s.lower();
+
+#replace
+print s.replace('l', '-', 2);
+
+#split
+str = "Line1-abcdef, \nLine2-abc, \nLine4-abcd";
+print str.split();
+
+#strip
+print '  Hello ... '.strip();
+
+#upper
+print s.upper(); #HELLO WORLD!
+		</pre>
+			</div>
+		<div class = "subtitle">Regular Expression</div>
+		<div class = "block">
+			<li>Pattern
+				<ul>
+					<li>^, beginning of a line</li>
+					<li>$, end of a line</li>
+					<li>., matches any single character except newline</li>
+					<li>[...], matches any single character in brackets</li>
+					<li>[^...], matches any single character not in brackets</li>
+					<li>*, matches 0 or more occurrences of preceding expression</li>
+					<li>+, matches 1 or more occurrence of preceding expression</li>
+					<li>?, matches 0 or 1 occurrence of preceding expression</li>
+					<li>re{n}, match exact n time</li>
+					<li>re{n, m}, matches at least n and at most m occurrences</li>
+					<li>a|b, matches either a or b</li>
+					<li>\w, match word characters</li>
+					<li>\W, match none word characters</li>
+					<li>&lt;.*&gt;, greedy repetition</li>
+					<li>&lt;.*?&gt;, none greedy repetition, matches the smallest number of repetitions</li>
+				</ul>
+			</li>
+			<li>Flags
+				<ul>
+					<li>re.I, performs case-insensitive matching</li>
+					<li>re.M, makes $ match the end of a line (not just the end of the string) and makes ^ match the start of any line</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import re;
+
+phone = "2004-959-559 # This is Phone Number"
+
+#match
+m = re.match(r'(\d+)-(\d+)-\d+.*', phone);
+if m:
+    print type(m);
+    print m.group(); #2004-959-559 # This is Phone Number
+    print m.group(1); # 2004
+    print m.groups(); # ('2004', '959')
+
+#search
+s = re.search(r'\d+', phone);
+if s:
+    print type(s);
+    print s.group(); #2004
+
+#findall
+a = re.findall(r'\d+', phone);
+print a; #['2004', '959', '559']
+
+#replace
+r = re.sub(r'\d', '*', phone);
+print r; ****-***-*** # This is Phone Number
+		</pre>
+		</div>
+		<div class = "subtitle">Unicode</div>
+		<div class = "block">
+			<li>a sequence of code points, immutable</li>
+			<li>Python keep characters as unicode in memory</li>
+			<li>String read from a file is byte string, need to be decoded to unicode</li>
+			<li>Output unicode to a file, need to encode to byte string</li>
+			<li>Print a unicode on console, it is encoded to byte string automatically by default encoding method</li>
+			<li>ord, convert a string to its unicode code point</li>
+			<li>unichr, convert an integer into a Unicode string</li>
+			<li>type 'str' represents byte string in Python 2, type 'unicode' represent unicode</li>
+		</div>
+<div class = "block">
+				<p style = "text-align:center;"><img src = "img/Unicode.png" width = "60%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import sys;
+
+# set up default encoding
+reload(sys)  # Reload does the trick!
+sys.setdefaultencoding('UTF8')
+print sys.stdout.encoding;
+
+# unicode to str
+s = 'Café';
+print type(s), len(s); #'str', 5
+s = u'Café';
+print type(s), len(s); #'unicode', 4
+print type(s.encode('utf-8')); #'str'
+
+# read string from a file and print it to screen
+f = open('temp.txt', 'rb');
+l = f.next(); #read a line and save it to byte string
+l = l.decode('utf-8'); #decode str to unicode
+print type(l); #'unicode'
+print l; #陈, print encode unicode to str with utf-8
+f.close();
+
+# get unicode code point
+c = ord(u'陈'); #38472
+print unichr(38472); #陈, do not print code point, it is encoded to str
+		</pre>
+		</div>
+		<div class = "subtitle">codecs</div>
+		<div class = "block">
+			<li>Regular open() function is not able to read chunks since one unicode character can be represented by several bytes, which cause problems when read in the last character</li>
+			<li>If we read the whole file and encode, it may require a large memory</li>
+		<pre class = "prettyprint linenums">
+import codecs
+
+f = codecs.open('codecs.html', encoding='utf-8', mode='r') # read line and decode to unicode
+
+#for line in f: % codecs creates a buffer to read lines
+
+	#print repr(line)
+
+outf = codecs.open('output.html', encoding='utf-8', mode='w+') # encode line and write to output file
+
+for line in f:
+
+	outf.write(line)
+
+outf.close()
+
+f.close()
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.tutorialspoint.com/python/python_strings.htm">Tutorialspoint</a></li>
+			<li><a href = "https://www.tutorialspoint.com/python/python_reg_expressions.htm">Regular Expression</a></li>
+			<li><a href = "https://docs.python.org/2/howto/regex.html">Regular Expression HowTo</a></li>
+			<li><a href = "https://docs.python.org/2/howto/unicode.html">Unicode HowTo</a></li>
+			<li><a href = "https://www.pythonsheets.com/notes/python-unicode.html#encode-unicode-code-point-to-bytes">Unicode cheat sheet</a></li>
+			<li><a href = "https://docs.python.org/2/library/codecs.html#standard-encodings">Standard Encoding</a></li>
+			<li><a href = "https://pymotw.com/2/codecs/">Codecs PyHowTo</a></li>
+		</div>
+	</body>
+</html>

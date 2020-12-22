@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Copy
+		</div>
+
+		<div class = "subtitle">Assignment</div>
+		<div class = "block">
+			assign the reference of an object to the variable
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+l = ['a', 'b', 'c', 'd']
+l2 = l
+print id(l), id(l2) # l and l2 have same id
+l2[1] = 't' # change both l and l2
+print l, l2
+			</pre>
+		</div>
+
+		<div class = "subtitle">Shallow Copy</div>
+		<div class = "block">
+			constructs a new compound object, then inserts references of the elements in the original object into it
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# all elements are immutable elements, shallow copy and deep copy have the same effect
+l = ['a', 'b', 'c', 'd']
+l2 = copy.copy(l) # shallow copy
+print id(l), id(l2) # l and l2 have different id
+l2[1] = 't' # not change l
+print l, l2
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# have mutable elements, shallow copy and deep copy are not same
+l = ['a', 'b', [ab', 'ba']]
+l2 = copy.copy(l) # shallow copy
+print id(l), id(l2) # l and l2 have different id
+l2[2][1] = 't' # change both l and l2
+print l, l2
+			</pre>
+		</div>
+
+		<div class = "subtitle">Deep Copy</div>
+		<div class = "block">
+			constructs a new compound object, then inserts copies of the elements of the original objects into it
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# have object elements, shallow copy and deep copy are not same
+l = ['a', 'b', [ab', 'ba']]
+l2 = copy.deepcopy(l) # deep copy
+print id(l), id(l2) # l and l2 have different id
+l2[2][1] = 't' # not change l
+print l, l2
+			</pre>
+		</div>
+
+		<div class = "subtitle">List</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+l = [1, 2, 3, 4]
+# Slicing, shallow copy
+l2 = l[:]
+# list, shallow copy
+l2 = list(l)
+# copy.copy(), shallow copy
+l2 = copy.copy(l)
+# copy.deepcopy(), deep copy
+l2 = copy.deepcopy()
+			</pre>
+		</div>
+
+		<div class = "subtitle">Dict</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Shallow copy
+d = {'Name':'Lin', 'List':[1, 2, 3, 4]
+d2 = d.copy()
+d2['List'][1] = 10
+print d, d2
+
+# Deep copy
+d = {'Name':'Lin', 'List':[1, 2, 3, 4]
+d2 = copy.deepcopy(d)
+d2['List'][1] = 10
+print d, d2
+			</pre>
+		</div>
+
+		<div class = "subtitle">Tuple</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# for immutable elements, shallow copy and deep copy are same
+i = (1, 2, (3, 4))
+i2 = copy.copy(i)
+print id(i), id(i2) # i and i2 have same id
+i2 = copy.deepcopy(i)
+print id(i), id(i2) # i and i2 have same id
+
+# containing mutable elements
+# Shallow copy
+l = (1, 2, [3, 4])
+l2 = copy.copy(l)
+print id(l), id(l2) # l and l2 have same id
+# Deep copy
+l2 = l+()
+print id(l), id(l2) # l and l2 have differnt id
+l2 = copy.deepcopy(l)
+print id(l), id(l2) # l and l2 have differnt id
+			</pre>
+		</div>
+
+		<div class = "subtitle">Shallow copy and deep copy class instance</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Vehicle.py
+import copy
+
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+
+    def __init__(self, brand, year, owners):
+        print('Create a Vehicle ...')
+        self._brand = brand;
+	self._year = year;
+        self._owners = owners;
+
+    def __str__(self):
+        s = self._brand+' '+str(self._year) + ' owned by: '
+        for n in self._owners:
+            s = s + ' ' + n
+        return s
+
+    def addOwner(self, name):
+        self._owners.append(name);
+
+    # shallow copy for copy.copy()
+    def __copy__(self):
+        print('Call __copy__ ...')
+        c = type(self)(self._brand, self._year, [])
+        c.__dict__.update(self.__dict__)
+        return c
+
+    def __deepcopy__(self, memo):
+        print('Call __deepcopy__ ...')
+        c = type(self)(self._brand, self._year, [])
+        for k, v in self.__dict__.items():
+            print(k, v)
+            setattr(c, k, copy.deepcopy(v, memo))
+        return c
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Car.py
+import copy
+from Vehicle import Vehicle;
+
+class Car(Vehicle):
+	"""Define class Car, which is inherit from class Vehicle"""
+	def __init__(self, brand, year, owners, model):
+	    """Construct"""
+	    print "Create Car Object ..."; 
+	    super(Car, self).__init__(brand, year, owners);
+	    #Vehicle.__init__(self, brand, year);
+	    self._model = model;
+
+        # override __str__ in Vehicle
+	def __str__(self):
+            #return super(Car, self).__str__() + " " + self.model
+            return Vehicle.__str__(self) + " " + self._model
+
+        def __copy__(self):
+            print('Call __copy__ in Car ...')
+            c = type(self)(self._brand, self._year, [], self._model)
+            c.__dict__.update(self.__dict__)
+            #Vehicle.__init__(c, self._brand, self._year, self._owners)
+            return c
+
+        def __deepcopy__(self, memo):
+            print('Call __deepcopy__ in Car ...')
+            c = type(self)(self._brand, self._year, [], self._model)
+            for k, v in self.__dict__.items():
+                setattr(c, k, copy.deepcopy(v, memo))
+	    #Vehicle.__init__(c, self._brand, self._year, copy.deepcopy(self._owners))
+            return c
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Copy.py
+#!/usr/bin/python
+
+import copy
+from Vehicle import Vehicle
+from Car import Car
+
+print('--------------------Vehicle-------------------')
+v = Vehicle("Buick", 1998, ['Lin', 'Yanhua'])
+
+# shallow copy, call __copy__
+v2 = copy.copy(v)
+
+v2.addOwner('Hannah')
+print(v) # Buick 1998 Lin Yanhua Hannah
+print(v2) # Buick 1998 Lin Yanhua Hannah
+
+# deep copy, call __deepcopy__
+v3 = copy.deepcopy(v)
+
+v3.addOwner('Hadley')
+print(v)
+print(v3)
+
+print('--------------------Car-------------------')
+c = Car("Buick", 1998, ['Lin', 'Yanhua'], 'Century')
+
+c2 = copy.copy(c)
+c2.addOwner('Hannah')
+print(c)
+print(c2)
+
+# deep copy, call __deepcopy__ in Car
+c3 = copy.deepcopy(c)
+c3.addOwner('Hadley')
+print(c)
+print(c3)
+			</pre>
+		</div>
+
+		<div class = "subtitle">Resource</div>
+		<div class = "block">
+			<li><a href = "https://stackoverflow.com/questions/1500718/what-is-the-right-way-to-override-the-copy-deepcopy-operations-on-an-object-in-p">stackoverflow</a></li>
+			<li><a href = "http://www.python-course.eu/deep_copy.php">Python Course</a></li>
+		</div>
+	</body>
+</html>

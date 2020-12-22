@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			rvalue
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>lvalue, an expression that may appear on the left or on the right hand side of an assignment, l stand for location, has physical memory allocated</li>
+				<li>rvalue, an expression that can only appear on the right hand side of an assignment, r stand for read, not able to reference a memory location</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				If it has a name, then it is an lvalue. Otherwise, it is an rvalue.
+			</ul>
+		</div>
+		<div class = "subtitle">lvalue reference and ravlue reference</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+//lvalue reference
+void display(std::string &str)
+{
+	std::cout&lt;&lt;"Pass lvalue"&lt;&lt;std::endl;
+	str = str+" --- lvalue";
+	std::cout&lt;&lt;str&lt;&lt;std::endl;
+}
+
+//rvalue reference
+void display(std::string && str)
+{
+	std::cout&lt;&lt;"Pass rvalue"&lt;&lt;std::endl;
+	str = str + " --- rvalue";
+	std::cout&lt;&lt;str&lt;&lt;std::endl;
+}
+
+std::string getStr()
+{
+	return "Get String ...";
+}
+
+int main(int argc, char *argv[])
+{
+	std::string str = "Hello";
+
+	//call lvalue reference
+	display(str);
+	std::cout&lt;&lt;"Str: "&lt;&lt;str&lt;&lt;std::endl;
+
+	//call rvalue reference
+	display(std::move(str));
+	std::cout&lt;&lt;"Str: "&lt;&lt;str&lt;&lt;std::endl;
+
+	//call rvalue reference
+	display(getStr());
+
+	//call rvalue reference
+	display("Hello World!");
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li><span style = "color:red">Passing variable to a rvalue reference function performs like passing variables to a lvalue reference function. Both them can make changes on the value of variables</span></li>
+				<li>It is alright to overload any function in this manner, however, in the overwhelming majority of cases, this kind of overload should occur only for copy constructors and assignment operators</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Is rvalue immutable in C++?</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef V_H
+#define V_H
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		//constructor
+		V(int s):size(s)
+		{
+			std::cout&lt;&lt;"Constructor ..."&lt;&lt;std::endl;
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+			std::cout&lt;&lt;"----End Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//copy constructor
+		V(const V &right):size(right.size), array(size?new int [size]:nullptr)
+		{
+			std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+			std::cout&lt;&lt;"----End Copy Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//move constructor
+		V(V && right):size(0), array(nullptr)
+		{
+			std::cout&lt;&lt;"Move Constructor ..."&lt;&lt;std::endl;
+			size = right.size;
+			array = right.array;
+			right.size = 0;
+			right.array =  nullptr;
+			std::cout&lt;&lt;"----End Move Constructor ..."&lt;&lt;std::endl;
+		}
+
+		int *getAddress() const {return array;}
+		int getSize() const {return size;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		V & time(int n)
+		{
+			for(int i = 0; i &lt; size; i++)
+				array[i] *= n;
+			return *this;
+		}
+
+		//copy assignment
+		const V& operator=(const V &right)
+		{
+			std::cout&lt;&lt;"Copy Assignment ..."&lt;&lt;size&lt;&lt;std::endl;
+			if(this != &right)
+			{
+				V temp(right);
+				std::swap(size, temp.size);
+				std::swap(array, temp.array);
+				std::cout&lt;&lt;"----End Assignment ..."&lt;&lt;std::endl;
+			}
+
+			return *this;
+		}
+
+		//move assignment
+		V & operator=(V&& right)
+		{
+			std::cout&lt;&lt;"Move Assignment ..."&lt;&lt;std::endl;
+			if(this != &right)
+			{
+				delete [] array;
+				array = 0;
+				size = 0;
+
+				size = right.size;
+				array = right.array;
+
+				right.size = 0;
+				right.array = nullptr;
+			}
+			std::cout&lt;&lt;"----End Move Assignment ..."&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		~V()
+		{
+			std::cout&lt;&lt;"Destructor ..."&lt;&lt;size&lt;&lt;std::endl;
+			delete array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+
+//return an object
+V getObject()
+{
+	std::cout&lt;&lt;"Inside function ..."&lt;&lt;std::endl;
+	//call constructor
+	V v(10);
+
+	std::cout&lt;&lt;"Return from function ..."&lt;&lt;std::endl;
+	return v;
+}
+
+//pass by lvalue reference
+void byRef(V &v) 
+{
+	std::cout&lt;&lt;"-------Pass by lvalue reference-------"&lt;&lt;std::endl;
+}
+
+//pass by constant lvalue reference
+void byRef(const V &v) 
+{
+	std::cout&lt;&lt;"-------Pass by constant lvalue reference-------"&lt;&lt;std::endl;
+}
+
+//pass by rvalue reference
+void byRef(V &&v) 
+{
+	std::cout&lt;&lt;"-------Pass by rvalue reference-------"&lt;&lt;std::endl;
+	v.time(2);
+	v.display();
+}
+void byRef(const V&& v) 
+{
+	std::cout&lt;&lt;"-------Pass by constant rvalue reference-------"&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	//V *ptr = &getObject();//compile error, rvalue
+	V v(10);
+
+	//pass by lvalue reference
+	byRef(v);
+
+	//pass by rvalue reference
+	byRef(getObject());
+	byRef(std::move(getObject()));
+	byRef(std::move(v));
+
+	//immutable and mutable
+	//int x;
+	//(x+7) = 7;//compile error
+	V v2 = getObject().time(10);
+
+	std::cout&lt;&lt;"Assign to itself ..."&lt;&lt;std::endl;
+	v2 = v2.time(2);
+
+	std::cout&lt;&lt;"Assign to another object ..."&lt;&lt;std::endl;
+	v2 = v.time(2);//call copy assignment
+	v.time(2);
+	//v2 = std::move(v);//call move assignment
+	v.display();
+	v2.display();
+
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>rvalues of builtin data type is immutable</li>
+				<li>rvalue of User Defined data type is mutable</li>
+			</ul>
+		</div>
+		<div class = "block" style = "color: red">
+			<ul>
+				<li>Accessor functions, set as constant</li>
+				<li>Mutator functions, return *this for return and chain calls</li>
+				<li>If mutator function return const object, cannot use chain call to call mutator function
+				<ul>
+					<li>const V& time(int t)</li>
+					<li>v.time(2).time(2);</li>
+				</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://thispointer.com/c11-tutorial/">thispointer.com</a></li>
+				<li><a href = "http://thbecker.net/articles/rvalue_references/section_01.html">Thomas Becker</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">Type Deduction</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+template &lt;class T&gt;
+void f(T& param)
+{
+	//param++;
+	std::cout&lt;&lt;param&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	int x = 22;
+	f(x);//x is int&
+
+	const int cx = x;
+	f(cx);//cx is const int&
+
+	const int& rx = x;
+	f(rx);//rx is const int&
+
+	int v = 22;
+	auto&  v1 = v;//v1 is int&
+
+	const int cv = v;
+	auto& v2 = cv;//v2 is const int&
+
+	const int& rx = v;
+	auto& v3 = rx;//v3 is const int
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+
+template &lt;class T&gt;
+void display(T &p)
+{
+	std::cout&lt;&lt;"Pass lvalue: "&lt;&lt;p&lt;&lt;std::endl;
+}
+
+template &lt;class T&gt;
+void display(T &&p)
+{
+	std::cout&lt;&lt;"Pass rvalue: "&lt;&lt;p&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::string str = "Hello World!";
+	display(str);//lvalue
+	display("Hello World!");//lvalue
+	display(std::forward&lt;std::string&gt;("Hello World!"));//rvalue
+	display(std::move(str));//rvalue
+
+	return 0;
+}
+		</pre>
+	</div>
+		<div class = "block">
+			<table>
+				<tr><th>TR</th><th>R</th><th></th></tr>
+				<tr><th>T&</th><th>&</th><th>T&</th></tr>
+				<tr><th>T&</th><th>&&</th><th>T&</th></tr>
+				<tr><th>T&&</th><th>&</th><th>T&</th></tr>
+				<tr><th>T&&</th><th>&&</th><th>T&&</th></tr>
+			</table>
+			<ul>
+				<li>The deduced parameters are evaluated as lvalues, even they are rvalue, use <span style = "color:red">forward</span> to solve it, if parameter is rvalue, pass parameter as rvalue; if parameter is lvalue, pass parameter as lvalue</li>
+				<li><a href = "https://stackoverflow.com/questions/8526598/how-does-stdforward-work">stackoverflow.cpp</a></li>
+				<li><a href = "http://www.aristeia.com/TalkNotes/C++TypeDeductionandWhyYouCareCppCon2014.pdf">C++ Type Deduction and Why You Care</a></li>
+			</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+template &lt;class T&gt;
+void display(T &&p)//universal reference
+{
+	std::cout&lt;&lt;"Universal reference: "&lt;&lt;p&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::string str = "Hello World!";
+	display(str);//lvalue
+	display("Hello World!");//rvalue
+	display(std::forward&lt;std::string&gt;("Hello World!"));//rvalue
+	display(std::move(str));//rvalue
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			<li><span style = "color:red">Do not have to overload function for T& and T&&, define T&& function only with universal reference</span></li>
+				<li>If a variable or parameter is declared to have type T&& for some deduced type, that variable or parameter is a universal reference</li>
+				<li><a href = "https://isocpp.org/blog/2012/11/universal-references-in-c11-scott-meyers">Universal Reference</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Comparison
+		</div>
+		<div class = "subtitle">is</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# is test object id, it is true only if x and y are same objects
+l = [1, 2, 3, 4]
+l2 = l
+l3 = [1, 2, 3, 4]
+print id(l), id(l2)
+
+if l is l2:
+	print 'l is l2' # print
+else:
+	print 'l is not l2'
+
+if l is l3:
+	print 'l is l3'
+else:
+	print 'l is not l3' # print
+			</pre>
+		</div>
+		<div class = "subtitle">==, compare values</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# ==, compare value
+l = [1, 2, 3, 4]
+l2 = l
+l3 = [1, 2, 3, 4]
+
+if l == l2:
+	print 'l is l2' # print
+else:
+	print 'l is not l2'
+
+if l == l3:
+	print 'l is l3' # print
+else:
+	print 'l is not l3'
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+l = [1, 2, [3, 4]]
+l2 = [1, 2, [3, 4]]
+
+print 'ID: ', id(l), id(l2);# l and l2 have different ids
+if l == l2:
+	print 'l == l2'# print
+else:
+	print 'l != l2'
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+a = 'pub'
+b = ''.join(['p', 'u', 'b'])
+print a == b # True
+print a is b # False
+		</pre>
+	</div>
+		<div class = "subtitle">cmp, compare values</div>
+		<div class = "block">
+			<li>has been deprecated</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://stackoverflow.com/questions/18674988/comparison-of-list-using-cmp-or">stackoverflow.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

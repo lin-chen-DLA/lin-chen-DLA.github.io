@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Biopython
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+		</pre>
+		</div>
+
+		<div class = "subtitle"><a href = "http://biopython.org/wiki/The_Biopython_Structural_Bioinformatics_FAQ">Bio.PDB</a></div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Biopython.png" width = "40%"></p>
+		</div>
+
+		<div class = "subtitle">PDB IO</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Read proteins from PDB files
+#!/usr/bin/python
+
+from Bio.PDB import *
+import numpy as np
+
+def getStructure(fileName):
+    # create a protein structure parser
+    parser = PDBParser();
+
+    # read the protein structure with the parser
+    try:
+    	structure = parser.get_structure('5szs', fileName);
+    	return structure;
+    except Exception, err:
+	    print err
+
+def getModels(structure):
+    for model in structure.get_models():
+        yield model;
+
+def getChains(model):
+    for chain in model.get_chains():
+        yield chain;
+
+def getResidues(chain):
+    for residue in chain.get_residues():
+        yield residue;
+
+def getAtoms(residue):
+    for atom in residue.get_atoms():
+	yield atom;
+
+def getAtomInfo(atom):
+	print atom.get_name(), atom.get_id(), atom.get_full_id(), atom.get_coord(), atom.get_bfactor(), atom.get_occupancy(), atom.get_fullname(), atom.get_altloc(), atom.get_vector(), atom.get_vector().get_array(), atom.get_parent().get_id()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Walk through protein with iteration
+def getStructure(fileName):
+    # create a protein structure parser
+    parser = PDBParser();
+
+    # read the protein structure with the parser
+    try:
+    	structure = parser.get_structure('5szs', fileName);
+    	return structure;
+    except Exception, err:
+	    print err
+
+def main():
+    structure = getStructure('4mv2.pdb');
+
+    for model in structure:
+	for chain in model:
+	    for residue in chain:
+		print residue.get_resname()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Read proteins from cif files
+def getStructure(fileName):
+    # create a protein structure parser
+    parser = MMCIFParser();
+
+    # read the protein structure with the parser
+    try:
+    	structure = parser.get_structure('5szs', fileName);
+    	return structure;
+    except Exception, err:
+	    print err
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Output a structure to a pdb file
+def getStructure(fileName):
+    # create a protein structure parser
+    parser = PDBParser();
+
+    # read the protein structure with the parser
+    try:
+    	structure = parser.get_structure('5szs', fileName);
+    	return structure;
+    except Exception, err:
+	    print err
+
+def main():
+    ''' Generate dihedral angles for a specific residue 
+    
+        Args:
+            residueName (string), target residue
+    '''
+    structure = getStructure('5szs.pdb');
+
+    # Dice
+    Dice.extract(structure, 'A', 1, 100, 'temp2.pdb');
+
+    # PDBIO
+    io = PDBIO();
+    sel = Dice.ChainSelector('A', 1, 100);
+
+    io.set_structure(structure);
+    io.save('temp.pdb', sel);
+		</pre>
+		</div>
+		<div class = "subtitle">Download PDB</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+def getStructure(fileName):
+    pdbl = PDBList();
+    pdbl.retrieve_pdb_file(fileName, file_format = 'mmCif');
+
+def main():
+    ''' Generate dihedral angles for a specific residue 
+    
+        Args:
+            residueName (string), target residue
+    '''
+    structure = getStructure('1FAT');
+		</pre>
+		</div>
+		<div class = "subtitle">PDB Header</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Read header information from a pdb or cif file
+def getStructure(fileName):
+    # create a protein structure parser
+    parser = PDBParser();
+
+    # read the protein structure with the parser
+    try:
+    	structure = parser.get_structure('5szs', fileName);
+    	return structure;
+    except Exception, err:
+	    print err
+
+def main():
+    ''' Generate dihedral angles for a specific residue 
+    
+        Args:
+            residueName (string), target residue
+    '''
+    structure = getStructure('5szs.pdb');
+    print structure.header;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://biopython-cn.readthedocs.io/zh_CN/latest/index.html">Biopython Documentation in Chinese</a></li>
+				<li><a href = "http://biopython.org/DIST/docs/tutorial/Tutorial.pdf">Tutorial</a></li>
+				<li><a href = "http://biopython.org/">Biopython Documentation</a></li>
+				<li><a href = "http://biopython.org/DIST/docs/api/">API</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

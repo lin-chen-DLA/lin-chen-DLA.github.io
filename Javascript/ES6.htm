@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			ES6
+		</div>
+
+		<div class = "subtitle">Module</div>
+		<div class = "block">
+			<li><span>module</span> is a piece of reusable code, one file per module</li>
+		</div>
+		<div class = "subtitle">import</div>
+		<div class = "block">
+			<li>Modules are imported with either absolute or Relative references and must start with either “/”, “./”, or “../”</li>
+		</div>
+		<div class = "subtitle">export</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+export {sumAll, substractAll, divideAll, multiplyAll, findModulus}
+			</pre>
+			<pre class = "prettyprint linenums">
+import {sumAll, substractAll} from "./module"
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+export {sumAll, substractAll, divideAll, multiplyAll, findModulus}
+			</pre>
+			<pre class = "prettyprint linenums">
+import * as math from "./module"
+//use math.sumAll, math.substractAll
+			</pre>
+		</div>
+		<div class = "subtitle">export default</div>
+		<div class = "block">
+			<li>can be used in place of export when you wish to export only one type</li>
+			<li>one can have only one default export per file</li>
+			<pre class = "prettyprint linenums">
+export default {sumAll, subtractAll, divideAll, multiplyAll, addFive};
+			</pre>
+			<pre class = "prettyprint linenums">
+import math from './math.js';
+//use math.submAll, math.substractAll
+			</pre>
+		</div>
+		<div class = "subtitle">Module Example</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//index.html
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;script type="module" src="../src/app.js"&gt;&lt;/script&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//helper.js
+export const print = (message) => log(message, new Date());
+export const log = (message, timestamp) =>
+    console.log(`${timestamp.toString()}: ${message}`)
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import {print, log} from './helper.js';
+console.log(print("Hello World!"));
+			</pre>
+		</div>
+		<div class = "subtitle">CommonJS</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+const print = (message) =&gt; log(message, new Date());
+const log = (message, timestamp) =&gt;
+    console.log(`${timestamp.toString()}: ${message}`)
+
+module.exports = {print, log}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+const { log, print } = require('./helper')
+console.log(print("Hello World!"));
+			</pre>
+		</div>
+	</body>
+</html>

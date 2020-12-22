@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Pointer
+		</div>
+
+		<div class = "subtitle">Address</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	int x = 25;
+	int *ptr = &x;
+
+	std::cout&lt;&lt;"Value: "&lt;&lt;*ptr&lt;&lt;std::endl;
+	std::cout&lt;&lt;"Address: "&lt;&lt;ptr&lt;&lt;" "&lt;&lt;std::endl;
+
+	return 0;
+}
+</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>&, return the memory address of a variable</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	int x = 25;
+	int *ptr = &x;
+
+	*ptr += 100;
+
+	std::cout&lt;&lt;"Value: "&lt;&lt;*ptr&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+			<div class = "subtitle">Array and Pointer</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+template &lt;class T&gt;
+void init(T *array, int size)
+{
+	//use pointer as array
+	for(int i = 0; i &lt; size; i++)
+		array[i] = i*10;
+}
+
+template &lt;class T&gt;
+void display(T *array, int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;*(array+i)&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	const int size = 10;
+	int array[size];
+
+	init(array, size);
+	display(array, size);
+
+	//use array as pointer
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;*(array+i)&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>When add a value to a pointer, actually adding that value times the size of the data type being referenced by the pointer</li>
+			</ul>
+		</div>
+					<div class = "subtitle">Pointer Arithmetic</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	const int size = 5;
+	int array[] = {10, 20, 30, 40, 50};
+
+	int *ptr;
+	ptr = array;
+
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;*ptr++&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+
+	ptr = array;
+	std::cout&lt;&lt;*(ptr+3)&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Pass to Function</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+template &lt;class T&gt;
+T getNumber()
+{
+	T n;
+	std::cout&lt;&lt;"Enter a number:";
+	std::cin&gt;&gt;n;
+	return n;
+}
+
+template &lt;class T&gt;
+void doubleNum(T *n)
+{
+	*n *= 2;
+}
+
+int main(int argc, char *argv[])
+{
+	int num;
+
+	num = getNumber&lt;int&gt;();//explicitily select template since no T appears in function's parameter list
+	doubleNum(&num);
+
+	std::cout&lt;&lt;"Num: "&lt;&lt;num&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+template &lt;class T&gt;
+void init(T *array, int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		*array++ = i*10;
+}
+
+template &lt;class T&gt;
+void display(T *array, int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;*array++&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	const int size = 5;
+	int array[size];
+
+	init(array, size);
+	display(array, size);
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			*array++, * operator defference array firstly, then ++ operator will increment the address in array
+		</ul>
+	</div>
+	<div class = "subtitle">Tranverse</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include &lt;cstdlib&gt;
+
+template &lt;class T&gt;
+void init(T it, T end)
+{
+	for(; it != end; ++it)
+		*it = rand()%100;
+}
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	int *ptr = new int[10];
+	init(ptr, ptr+11);
+
+	display(ptr, ptr+11);
+
+	return 0;
+}
+			</pre>
+		</div>
+			<div class = "subtitle">Pointers to Constants</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+template &lt;class T&gt;
+void init(T *array, int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		*array++ = i*10;
+}
+
+template &lt;class T&gt;
+//void increase(const T *array, int size)//compile error
+void increase(T *array, int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		*array++ += 1;
+}
+
+template &lt;class T&gt;
+void display(const T *array, int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;*array++&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	const int size = 5;
+	double array[size];
+
+	init(array, size);
+	increase(array, size);
+	display(array, size);
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Pointers to Constants and Constant Pointers</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+//pointer to const
+void change1(const int *ptr)
+{
+	//*ptr += 1;//compile error
+}
+
+//constant pointer
+void change2(int * const ptr)
+{
+	//ptr = 0;//compile error
+}
+
+//constant pointers to constants
+void change3(const int * const ptr)
+{
+	std::cout&lt;&lt;*ptr&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	int v = 10;
+
+	change1(&v);
+	change2(&v);
+	change3(&v);
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>pointer to const points to a constant item, the data that pointer points to cannot change, but the pointer itself can change</li>
+				<li>const pointer, the pointer itself is constant, once the pointer is initialized with an address, it cannot point to anything else</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Dynamic Memory Allication</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+
+int main(int argc, char *argv[])
+{
+	int *ptr;
+	ptr = new int;
+
+	if (ptr == NULL)
+	{
+		std::cerr&lt;&lt;"Error on Allocating Memory ..."&lt;&lt;std::endl;
+		exit(1);
+	}
+
+	delete ptr;
+	ptr = 0;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+template &lt;class T&gt;
+void init(T *array, int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		array[i] = i*10;
+}
+
+template &lt;class T&gt;
+void display(T *array, int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;*array++&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	int size;
+
+	std::cout&lt;&lt;"Enter array size: "&lt;&lt;std::endl;
+	std::cin&gt;&gt;size;
+
+	//allocate memory
+	int *array = new int[size];
+
+	init(array, size);
+	display(array, size);
+
+	//release memory
+	delete [] array;
+	array = 0;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+		array = 0
+		<ul>
+			<li>prevent code to access the freed memory</li>
+			<li>prevent erros from occurring if delete is accidentlly called on the pointer again</li>
+		</ul>
+	</div>
+		<div class = "subtitle">Returning Pointers from Function</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int *getArray(int size)
+{
+	int *array = new int[size];
+	return array;
+}
+
+void init(int *array, int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		array[i] = i*10;
+}
+
+void display(int *array, int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;array[i]&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+void freeArray(int *array)
+{
+	delete [] array;
+	array = 0;
+}
+
+int main(int argc, char *argv[])
+{
+	const int size = 10;
+
+	int *array;
+	array = getArray(size);
+
+	init(array, size);
+	display(array, size);
+
+	freeArray(array);
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			Only return a pointer from a function if it is
+			<ul>
+				<li>a pointer to an item that was passed into the function as an argument</li>
+				<li>a pointer to a dynamically allocated chunk of memory</li>
+			</ul>
+		</div>
+	</body>
+</html>

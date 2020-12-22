@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Animations
+		</div>
+
+		<div class = "subtitle">react-addons-css-transition-group</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//App.js
+import React from 'react';
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+
+class App extends React.Component {
+   render() {
+      return (
+         &lt;div&gt;
+            &lt;ReactCSSTransitionGroup transitionName = "example"
+               transitionAppear = {true} transitionAppearTimeout = {500}
+               transitionEnter = {false} transitionLeave = {false}&gt;
+					
+               &lt;h1&gt;My Element...&lt;/h1&gt;
+            &lt;/ReactCSSTransitionGroup&gt;
+         &lt;/div&gt;      
+      );
+   }
+}
+export default App;
+		</pre>
+		<pre class = "prettyprint linenums">
+//style.css
+//&lt;link rel = "stylesheet" type = "text/css" href = "./style.css"&gt;
+.example-appear {
+   opacity: 0.04;
+}
+.example-appear.example-appear-active {
+   opacity: 2;
+   transition: opacity 500s ease-in;
+}
+		</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			For and Foreach
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+void f(int &n)//pass by reference
+//void f(int n)//pass by value
+{
+	n *= 10;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; c = {1, 2, 3, 4};
+
+	//for
+	for(int i = 0; i &lt; c.size(); i++)
+		c[i] *= 10;
+
+	//foreach
+	for(auto &e : c)//pass by reference
+	//for(auto e : c)//pass by value
+		e *= 10;
+
+	//for_each in algorithm library
+	for_each(c.begin(), c.end(), f);
+
+	//display
+	for(int i = 0; i &lt; c.size(); i++)
+		std::cout&lt;&lt;c[i]&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	</body>
+</html>

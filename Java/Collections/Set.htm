@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			<a href = "https://docs.oracle.com/javase/7/docs/api/java/util/Set.html">Set</a>
+		</div>
+
+		<div class = "subtitle">Set</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		Set&lt;Integer&gt; a = new HashSet&lt;Integer&gt;();
+		a.addAll(Arrays.asList(new Integer[] {1, 2, 3, 4}));
+		System.out.println("A: "+a);
+
+		Set&lt;Integer&gt; b = new HashSet&lt;Integer&gt;();
+		b.addAll(Arrays.asList(new Integer[] {5, 2, 6, 4}));
+		System.out.println("B: "+b);
+
+		//Union
+		Set&lt;Integer&gt; c = new HashSet&lt;Integer&gt;(a);
+		c.addAll(b);
+		System.out.println("Union: "+c);
+
+		//Intersection
+		Set&lt;Integer&gt; d = new HashSet&lt;Integer&gt;(a);
+		d.retainAll(b);
+		System.out.println("Intersection: "+d);
+
+		//Difference
+		Set&lt;Integer&gt; e = new HashSet&lt;Integer&gt;(a);
+		e.removeAll(b);
+		System.out.println("Difference: "+e);
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">SortedSet</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		SortedSet&lt;String&gt; s = new TreeSet&lt;String&gt;();
+
+		s.add("practice");
+        	s.add("geeksforgeeks");
+        	s.add("quiz");
+        	s.add("code");
+
+		System.out.println(s);
+
+		//first
+		System.out.println("First: "+s.first());
+		//last
+		System.out.println("Last: "+s.last());
+
+		//headSet
+		System.out.println("Head: "+s.headSet("quiz"));
+
+		//subSet
+		System.out.println("Subset: "+s.subSet("code", "practice"));
+
+		//tailSet
+		System.out.println("Tail: "+s.tailSet("code"));
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">NavigableSet</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		NavigableSet&lt;Integer&gt; s = new TreeSet&lt;Integer&gt;();
+
+		//add
+		for(int i = 0; i &lt; 10; i++)
+			s.add(i);
+
+		System.out.println(s);
+
+		//descending
+		System.out.println(s.descendingSet());
+
+		//lower
+		System.out.println(s.lower(4));//3
+
+		//floor
+		System.out.println(s.floor(4));//4
+
+		//ceiling
+		System.out.println(s.ceiling(4));//4
+
+		//higher
+		System.out.println(s.higher(4));//5
+
+		//headSet
+		System.out.println(s.headSet(4));
+
+		//subSet
+		System.out.println(s.subSet(3, 8));
+
+		//tailSet
+		System.out.println(s.tailSet(4));
+
+		//pollFirst
+		System.out.println(s.pollFirst());
+		System.out.println(s);
+
+		//pollLast
+		System.out.println(s.pollLast());
+		System.out.println(s);
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">HashSet</div>
+		<div class = "block">
+			<ul>
+				<li>Use a hashMap for sorting its objects, key and value have same value, complexity O(1)</li>
+				<li>Objects in hashSet are not sorted, order is based on their hash code</li>
+				<li>Not keep the insert order</li>
+				<li>NULL elements are allowed in HashSet</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		Set&lt;Integer&gt; s = new HashSet&lt;Integer&gt;();
+		Random r = new Random();
+
+		//add
+		s.add(r.nextInt(100));
+		s.add(r.nextInt(100));
+		s.add(r.nextInt(100));
+		s.add(1);
+
+		//contains
+		if(s.contains(1))
+			System.out.println("Contains 1 ...");
+
+		//size
+		System.out.println("Size: "+s.size());
+
+		//remove
+		s.remove(1);
+
+		System.out.println(s);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">LinkedHashSet</div>
+		<div class = "block">
+			<ul>
+				<li>Maintains the insert order</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		Set&lt;Integer&gt; a = new LinkedHashSet&lt;Integer&gt;();
+		Random r = new Random();
+
+		a.add(r.nextInt(100));
+		a.add(r.nextInt(100));
+		a.add(r.nextInt(100));
+		a.add(1);
+		a.add(100);
+		a.add(2);
+
+		System.out.println(a);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">TreeSet</div>
+		<div class = "block">
+			<ul>
+				<li>Elements are sorted by key</li>
+				<li>Not keep the insert order</li>
+				<li>Allow NULL inserted</li>
+				<li>Self-balance binary tree, add, remvoe and search take O(logn) time</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		Set&lt;Integer&gt; s = new TreeSet&lt;Integer&gt;();
+		Random r = new Random();
+
+		//add
+		s.add(r.nextInt(100));
+		s.add(r.nextInt(100));
+		s.add(r.nextInt(100));
+		s.add(1);
+		s.add(2);
+		s.add(100);
+
+		//contains
+		if(s.contains(1))
+			System.out.println("Contains 1 ...");
+
+		//size
+		System.out.println("Size: "+s.size());
+
+		//remove
+		s.remove(1);
+
+		System.out.println(s);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">EnumSet</div>
+		<div class = "block">
+			<ul>
+				<li>All elements of each EnumSet instance must be elements of a single enum type</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public enum Day
+{
+	Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday;
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class DaySet
+{
+	public static void main(String args[])
+	{
+		EnumSet&lt;Day&gt; s1 = EnumSet.of(Day.Monday, Day.Tuesday, Day.Sunday);
+
+		//toString
+		System.out.println(s1);
+
+		//iterator
+		Iterator itr = s1.iterator();
+
+		while(itr.hasNext())
+		{
+			System.out.printf("%s\n", itr.next());
+		}
+
+		//complementOf
+		EnumSet&lt;Day&gt; s2 = EnumSet.complementOf(s1);
+
+		System.out.println(s2);
+
+
+		//allOf
+		EnumSet&lt;Day&gt; s3 = EnumSet.allOf(Day.class);
+
+		System.out.println(s3);
+
+		//range
+		EnumSet&lt;Day&gt; s4 = EnumSet.range(Day.Monday, Day.Friday);
+		System.out.println(s4);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.geeksforgeeks.org/set-in-java/">Set at Geekforgeek</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/hashset-in-java/">HashSet at Geekforgeek</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/enumset-class-java/">EnumSet at Geekforgeek</a></li>
+				<li><a href = "https://stackoverflow.com/questions/25602382/java-hashset-vs-treeset-when-should-i-use-over-other">Stackoverflow</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

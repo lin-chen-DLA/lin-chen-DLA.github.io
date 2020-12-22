@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Array List</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class List
+{
+	private int count;
+	private int MAXSIZE = 10;
+	private int space [];
+
+	public List()
+	{
+		count = 0;
+		space = new int[MAXSIZE];
+	}
+
+	public boolean isEmpty()
+	{
+		return (count == 0);
+	}
+
+	public int getElement(int index)
+	{
+		if(index &lt; 0 || index &gt;= count)
+			return -1;
+		return space[index];
+	}
+
+	public int getSize()
+	{
+		return count;
+	}
+
+	public boolean equals(List l)
+	{
+		if(count != l.count) return false;
+		for(int i = 0; i &lt; count; i++)
+			if(space[i] != l.space[i])
+				return false;
+		return true;
+	}
+
+	public String toString()
+	{
+		String str = "[";
+		for(int i = 0; i &lt; count; i++)
+			str += " "+space[i];
+		return str+" ]";
+	}
+
+	public int getIndex(int element)
+	{
+		for(int i = 0; i &lt; count; i++)
+			if(element == space[i])
+				return i;
+		return -1;
+	}
+
+	public boolean insert(int element, int index)
+	{
+		if(index &lt; 0 || index &gt; count)
+			return false;
+		if(count == MAXSIZE)
+		{
+			int [] space2 = new int[MAXSIZE*2];
+			for(int i = 0; i &lt; count; i++)
+				space2[i] = space[i];
+			space = space2;
+			MAXSIZE *= 2;
+		}
+		if(index == count)
+		{
+			space[index] = element;
+			count++;
+			return true;
+		}
+		else
+		{
+			for(int i = count-1; i &gt;= index; i--)
+				space[i+1] = space[i];
+			space[index] = element;
+			count++;
+			return true;
+		}
+	}
+
+	public boolean delete(int index)
+	{
+		if(index &lt; 0 || index &gt; count-1)
+			return false;
+		if(index == count -1)
+		{
+			count--;
+			return true;
+		}
+		for(int i = index+1; i &lt;= count-1; i++)
+			space[i-1] = space[i];
+		count--;
+		return true;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.util.Random;
+
+public class ListTest
+{
+	public static void main(String args[])
+	{
+		Random r = new Random();
+
+		List l = new List();
+
+		for(int i = 0; i &lt; 11; i++)
+			l.insert(r.nextInt(100), i);
+
+		System.out.println(l);
+
+		//insert
+		l.insert(100, 5);
+		System.out.println(l);
+
+		//delete
+		l.delete(10);
+		System.out.println(l);
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>LeetCode</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title"><a href = "https://leetcode.com/problems/remove-duplicates-from-sorted-list/">83. Remove Duplicates from Sorted List</a></div>
+		<div class = "block">
+			O(n)
+			<pre class = "prettyprint linenums">
+# Definition for singly-linked list.
+class ListNode:
+     def __init__(self, x):
+         self.val = x
+         self.next = None
+
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -&gt; ListNode:
+        if head is None:
+            return head
+
+        walker = head
+        d = {}
+
+        if walker is not None:
+            d[walker.val] = 1
+
+        while walker is not None and walker.next is not None:
+            if walker.next.val in d:
+                walker.next = walker.next.next
+            else:
+                d[walker.next.val] = 1
+                walker = walker.next
+
+        return head
+
+def main():
+    s = Solution()
+
+    l = [1,1,1]
+    l = insert(l)
+    disp(l)
+
+    l = s.deleteDuplicates(l)
+    disp(l)
+
+def insert(nums):
+    l = ListNode(nums[0])
+    walker = l
+    for index in range(1, len(nums)):
+        walker.next = ListNode(nums[index])
+        walker = walker.next
+
+    return l
+
+def disp(l):
+    walker = l
+    while walker is not None:
+        print(walker.val, end = ' -&gt; ')
+        walker = walker.next
+    print('None')
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+	</body>
+</html>

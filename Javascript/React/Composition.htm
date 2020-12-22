@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Composition vs Inheritance
+		</div>
+
+		<div class = "subtitle"></div>
+		<div class = "block">
+			<li>React elements like <Contacts /> and <Chat /> are just objects, so you can pass them as props like any other data</li>
+			<li>use the special <span>children</span> prop to pass children elements directly into their output</li>
+			<li>Use composition instead of inheritance, haven’t found any use cases where need creating component inheritance hierarchies</li>
+		<pre class = "prettyprint linenums">
+function FancyBorder(props) {
+  return (
+    &lt;div className={'FancyBorder FancyBorder-' + props.color}&gt;
+      {props.children}
+    &lt;/div&gt;
+  );
+}
+
+function WelcomeDialog() {
+  return (
+    &lt;FancyBorder color="blue"&gt;
+      &lt;h1 className="Dialog-title"&gt;
+        Welcome
+      &lt;/h1&gt;
+      &lt;p className="Dialog-message"&gt;
+        Thank you for visiting our spacecraft!
+      &lt;/p&gt;
+    &lt;/FancyBorder&gt;
+  );
+}
+		</pre>
+		</div>
+	</body>
+</html>

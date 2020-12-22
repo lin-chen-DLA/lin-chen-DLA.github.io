@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Layout
+		</div>
+
+		<div class = "subtitle">Absolute Location</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.border.Border;
+
+public class Draw
+{
+	public static void main(String args[])
+	{
+		Border border = BorderFactory.createLineBorder(Color.BLUE, 1);
+
+		//create JFrame Object as the container
+		JFrame frame = new JFrame("Frame Demo");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setPreferredSize(new Dimension(1000, 500));
+		frame.setLayout(null);
+
+		//create label
+		JLabel label_1 = new JLabel("Label 1");
+		label_1.setBorder(border);
+		label_1.setBounds(10, 20, 200, 100);
+
+		//create button
+		JButton button = new JButton("Button");
+		button.setBounds(300, 300, 200, 50);
+
+		//add component
+		frame.add(label_1, BorderLayout.EAST);
+		frame.add(button, BorderLayout.SOUTH);
+
+		//display
+		frame.pack();//adjust frame size
+		frame.setVisible(true);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">BorderLayout</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.border.Border;
+
+public class Draw
+{
+	public static void main(String args[])
+	{
+		Border border = BorderFactory.createLineBorder(Color.BLUE, 1);
+
+		//create JFrame Object as the container
+		JFrame frame = new JFrame("Frame Demo");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		frame.setPreferredSize(new Dimension(700, 400));
+		frame.getContentPane().setBackground(new Color(255, 255, 255));
+
+		//create button
+		JButton button = new JButton("Button East");
+		button.setPreferredSize(new Dimension(200, 100));
+		JButton button2 = new JButton("Button West");
+		button2.setPreferredSize(new Dimension(200, 100));
+		JButton button3 = new JButton("Button Center");
+		button3.setPreferredSize(new Dimension(200, 100));
+		JButton button4 = new JButton("Button North");
+		button4.setPreferredSize(new Dimension(200, 100));
+		JButton button5 = new JButton("Button South");
+		button5.setPreferredSize(new Dimension(200, 100));
+
+
+		//add component
+		frame.add(button, BorderLayout.EAST);
+		frame.add(button2, BorderLayout.WEST);
+		frame.add(button3, BorderLayout.CENTER);
+		frame.add(button4, BorderLayout.NORTH);
+		frame.add(button5, BorderLayout.SOUTH);
+
+		//display
+		frame.pack();//adjust frame size
+		frame.setVisible(true);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">FlowLayout</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.border.Border;
+
+public class Draw
+{
+	public static void main(String args[])
+	{
+		Border border = BorderFactory.createLineBorder(Color.BLUE, 1);
+
+		//create JFrame Object as the container
+		JFrame frame = new JFrame("Frame Demo");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new FlowLayout());
+		frame.setPreferredSize(new Dimension(700, 400));
+		frame.getContentPane().setBackground(new Color(255, 255, 255));
+
+		//create buttons
+		JButton button = new JButton("Button 1");
+		button.setPreferredSize(new Dimension(200, 100));
+		JButton button2 = new JButton("Button 2");
+		button2.setPreferredSize(new Dimension(200, 100));
+		JButton button3 = new JButton("Button 3");
+		button3.setPreferredSize(new Dimension(200, 100));
+		JButton button4 = new JButton("Button 4");
+		button4.setPreferredSize(new Dimension(200, 100));
+		JButton button5 = new JButton("Button 5");
+		button5.setPreferredSize(new Dimension(200, 100));
+
+		//add component
+		frame.add(button);
+		frame.add(button2);
+		frame.add(button3);
+		frame.add(button4);
+		frame.add(button5);
+
+		//display
+		frame.pack();//adjust frame size
+		frame.setVisible(true);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/uiswing/examples/layout/index.html">Demo Code</a></li>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html">Visual</a></li>
+				<li><a href = "https://www.tutorialspoint.com/swing/swing_layouts.htm">tutorialspoint.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

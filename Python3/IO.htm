@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			IO
+		</div>
+
+		<div class = "subtitle">input</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+value = input('Input an integer number: ')
+print(type(value)) # str
+print(int(value)*100)
+		</pre>
+		</div>
+		<div class = "subtitle">Read</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# open file
+'''
+1234567
+abcdefg
+'''
+f = open('data.txt', 'rb');
+
+# read line by line
+for line in f:
+    print(line)
+
+f.seek(0, 0); # offset, from, 0, start of the file, 1, current position, 2, end of the file
+
+# read line by line with index
+for index, line in enumerate(f):
+    print(index, line)
+
+# back to starting position
+f.seek(0, 0)
+
+# display the current position
+print(f.tell(), f.read(2)); # read two characters
+print(f.tell(), f.read()) # read to the end
+
+# read line by line
+f.seek(0, 0);
+try:
+    while True:
+        print(next(f)) # raise StopIteration when hit EOF
+except StopIteration:
+    pass;
+
+f.seek(0, 0)
+# read character by character
+while True:
+    c = f.read(1);
+    if not c:
+        break;
+    print("%10s, %10d" % (c, ord(c)));
+
+# close file
+f.close();
+		</pre>
+		</div>
+
+		<div class = "subtitle">Write</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# open file
+f = open('data.txt', 'r');
+o = open('temp.txt', 'w');
+
+# read line by line
+for index, line in enumerate(f):
+    s = '{:10d} {}'.format(index, line);
+    o.write(s);
+
+f.close();
+o.close();
+		</pre>
+		</div>
+
+		<div class = "subtitle">File Attributes</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# open file
+f = open('data.txt', 'rb');
+
+# file attributes
+print(f.closed)
+print(f.mode) # rb
+print(f.name) # data.txt
+
+# close file
+f.close();
+		</pre>
+		</div>
+
+		<div class = "subtitle">Open and Close File</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+import sys
+
+try:
+    f = open('temp.txt', 'w+')
+    f.write('Hello')
+except OSError as argument:
+    print(argument)
+finally:
+    if 'f' in locals():
+        print('Close the opened file ...')
+        f.close()
+    else:
+        print('Can not close file ...')
+		</pre>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# open a file and close
+with open('data.txt', 'rb') as f:
+    # read line by line
+    for line in f:
+        print(line)
+		</pre>
+		</div>
+
+		<div class = "subtitle">Encoding</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+f = open('data.txt', 'rb', encoding='utf-8');
+
+# close file
+f.close();
+		</pre>
+		</div>
+
+		<div class = "subtitle">Unicode and Byte String</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+f = open('welcome.txt', 'r', encoding = 'utf-8')
+o = open('output.txt', 'w')
+
+for line in f:
+    print(type(line)) # unicode
+    o.write(line)
+
+o.close()
+f.close()
+		</pre>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+f = open('welcome.txt', 'rb')
+o = open('output.txt', 'wb')
+
+for line in f:
+    print(type(line)) # byte string
+    o.write(line)
+
+o.close()
+f.close()
+		</pre>
+		</div>
+
+		<div class = "subtitle">File Name and Line Index</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# i11.py
+from inspect import currentframe, getframeinfo
+
+def info():
+    frameinfo = getframeinfo(currentframe())
+    return frameinfo.filename, frameinfo.lineno
+		</pre>
+		<pre class = "prettyprint linenums">
+#/usr/bin/python
+
+import i11
+
+filename, line_index = i11.info()
+print(filename, line_index)
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://www.tutorialspoint.com/python/file_methods.htm">Tutorialspoint.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

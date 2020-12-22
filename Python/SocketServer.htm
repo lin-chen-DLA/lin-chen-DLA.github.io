@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Socket Server
+		</div>
+
+		<div class = "subtitle">Server Types</div>
+		<div class = "block">
+			<ul>
+				<li>BaseServer, defines APIs
+					<ul>
+						<li>handle_request(), handle request once</li>
+						<li>serve_forever(), calls handle_request() in an infinite loop</li>
+					</ul>
+				</li>
+				<li>TCPServer, use TCP/IP socket to communicate</li>
+				<li>UDPServer, use UDP socket to communicate</li>
+				<li>UnixStreamServer and UnixDatagramServer, use UDS to communicate</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Handlers</div>
+		<div class = "block">
+			<ul>
+				<li>BaseRequestHandler
+					<ul>
+						<li>setup(), called before the handle() method to perform any initialization actions required</li>
+						<li>handle(), define what to do</li>
+						<li>finish(), called after the handle() method to perform any clean-up actions required</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#server.py
+#!/usr/bin/python
+
+import SocketServer
+
+import SocketServer
+
+class MyTCPHandler(SocketServer.BaseRequestHandler):
+    def handle(self):
+        self.data = self.request.recv(1024).strip()
+        print type(self.request), type(self.client_address), type(self.server)
+        print 'Client: ', self.client_address
+        print 'Server: ', self.server
+        print self.data
+        # just send back the same data, but upper-cased
+        self.request.sendall(self.data.upper())
+
+if __name__ == "__main__":
+    HOST, PORT = "localhost", 9999
+    server = SocketServer.TCPServer((HOST, PORT), MyTCPHandler)
+
+    server.serve_forever()
+			</pre>
+			<pre class = "prettyprint linenums">
+#client.py
+#!/usr/bin/python
+
+import socket
+import sys
+
+HOST, PORT = "localhost", 9999
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+try:
+    data = raw_input("Eneter your message:\n");
+    sock.connect((HOST, PORT))
+    sock.sendall(data + "\n")
+
+    # Receive data from the server and shut down
+    received = sock.recv(1024)
+finally:
+    sock.close()
+
+print "Received: {}".format(received)
+			</pre>
+		</div>
+		<div class = "subtitle">Flow Control</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#server.py
+#!/usr/bin/python
+
+import SocketServer
+import struct
+
+class MyTCPHandler(SocketServer.BaseRequestHandler):
+
+    def __init__(self, request, client_address, server):
+        self.n = 0;
+        SocketServer.BaseRequestHandler.__init__(self, request, client_address, server)
+
+    def handle(self):
+        s = struct.Struct('f');
+        while True:
+            self.data = self.request.recv(s.size)
+            self.unpacked_data = s.unpack(self.data)
+            self.n += 1
+            print 'received: ', self.n, self.unpacked_data[0]
+
+if __name__ == "__main__":
+    HOST, PORT = "localhost", 9999
+    server = SocketServer.TCPServer((HOST, PORT), MyTCPHandler)
+
+    server.serve_forever()
+			</pre>
+			<pre class = "prettyprint linenums">
+#client.py
+#!/usr/bin/python
+
+import random
+import socket
+import sys
+import struct
+
+HOST, PORT = "localhost", 9999
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+s = struct.Struct('f');
+num = 0;
+
+sock.connect((HOST, PORT))
+
+try:
+    while True:
+        n = random.random();
+        packed = s.pack(n);#pack data into a string
+        num += 1;
+        print 'Sent: ', num, n
+        sock.sendall(packed)
+finally:
+    pass
+    #sock.close()
+			</pre>
+		</div>
+		<div class = "subtitle">Threading and Forking</div>
+		<div class = "block">
+			<ul>
+				<li>Threads, use the ThreadingMixIn</li>
+				<li>Processes, use the ForkingMixIn</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#server.py
+import threading
+import SocketServer
+import socket
+
+class ThreadedEchoRequestHandler(SocketServer.BaseRequestHandler):
+
+    def handle(self):
+        # Echo the back to the client
+        data = self.request.recv(1024)
+        cur_thread = threading.currentThread()
+        response = '%s: %s' % (cur_thread.getName(), data)
+        print 'Received: ', response
+
+class ThreadedEchoServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+    pass
+
+if __name__ == '__main__':
+    address = ('localhost', 50007) # let the kernel give us a port
+    server = ThreadedEchoServer(address, ThreadedEchoRequestHandler)
+    ip, port = server.server_address # find out what port we were given
+    print ip, port
+
+    t = threading.Thread(target=server.serve_forever)
+    #t.setDaemon(True) # don't hang on exit
+    t.start()
+    print 'Server loop running in thread:', t.getName()
+
+    #server.socket.close()
+			</pre>
+			<pre class = "prettyprint linenums">
+import socket
+import threading
+
+address = ('localhost', 50007) # let the kernel give us a port
+
+# Connect to the server
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(address)
+
+# Send the data
+message = 'Hello, world'
+print 'Sending : "%s"' % message
+len_sent = s.send(message)
+
+# Clean up
+s.close()
+			</pre>
+		</div>
+	</body>
+</html>

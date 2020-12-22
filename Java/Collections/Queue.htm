@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			<a href = "https://docs.oracle.com/javase/7/docs/api/java/util/Queue.html">Queue</a>
+		</div>
+
+		<div class = "subtitle">Queue</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class Q
+{
+	public static void main(String args[])
+	{
+		Queue&lt;Integer&gt; q = new LinkedList&lt;Integer&gt;();
+
+		//add
+		for(int i = 0; i &lt; 10; i++)
+			q.add(i);
+
+		//toString
+		System.out.println(q);
+
+		//peek
+		System.out.println("Front: "+q.peek());
+
+		//remove
+		while(!q.isEmpty())
+		{
+			System.out.printf("%4d", q.remove());
+		}
+		System.out.println();
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">PriorityQueue</div>
+		<div class = "block">
+			<ul>
+				<li>The elements of the priority queue are ordered according to their natural ordering, or by a Comparator provided at queue construction time, depending on which constructor is used</li>
+				<li>Poll order is by their natural order, but the saved order could be different
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class Q
+{
+	public static void main(String args[])
+	{
+		PriorityQueue&lt;String&gt; q = new PriorityQueue&lt;String&gt;();
+
+		q.add("Java");
+		q.add("C++");
+		q.add("Python");
+		q.add("MATLAB");
+
+		//peek
+		System.out.println("Peek: "+q.peek());
+
+		//for each
+		for(String e : q)
+			System.out.printf("%10s", e);//C++ Java Python MATLAB
+		System.out.println();
+
+		//poll
+		for(int i = 0, len = q.size(); i &lt; len; i++)
+			System.out.println("Poll: "+q.poll());//C++ Java MATLAB Python
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Deque</div>
+		<div class = "block">
+			<ul>
+				<li>Deque is related to the double-ended queue that supports addition or removal of elements from either end of the data structure</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class Q
+{
+	public static void main(String args[])
+	{
+		Deque&lt;Integer&gt; q = new LinkedList&lt;Integer&gt;();
+
+		for(int i = 0; i &lt; 10; i++)
+			q.add(i);
+
+		//addFirst
+		q.addFirst(20);
+
+		//addLast
+		q.addLast(30);
+		System.out.println(q);
+
+		//getFirst
+		System.out.println("First: "+q.getFirst());
+
+		//getLast
+		System.out.println("Last: "+q.getLast());
+
+		//pollFirst
+		System.out.println("Poll First: "+q.pollFirst());
+
+		//pollLast
+		System.out.println("Poll Last: "+q.pollLast());
+
+		System.out.println(q);
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>

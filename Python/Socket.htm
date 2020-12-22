@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Socket
+		</div>
+
+		<div class = "subtitle">TCP</div>
+		<div class = "block">
+			<ul>
+				<li>Address Family
+					<ul>
+						<li>AF_INET, IPv4 address</li>
+						<li>AF_INET6, IPv6 address</li>
+						<li>AF_UNIX, Unix Domain Socket, an interprocess communication protocol</li>
+					</ul>
+				</li>
+				<li>Socket Type
+					<ul>
+						<li>SOCK_DGRAM, UDP</li>
+						<li>SOCK_STREAM, TCP/IP</li>
+					</ul>
+				</li>
+				<li>Useful Functions
+					<ul>
+						<li>getfqdn(), get a fully qualified domain name, which is a domain name that specifies its exact location in the tree hierarchy of the DNS</li>
+						<li>gethostname(), get the host name of the current system</li>
+						<li>gethostbyname(), get <span style = "color:red">IPv4</span> address from host name</li>
+						<li>gethostbyname_ex(), get host name, aliases, addresses</li>
+						<li>gethostbyaddr(), get host name, aliases, and addresses by IP address</li>
+						<li>getnameinfo(), translate socket address (host, port) to domain name and protocol</li>
+						<li>getservbyname(), translate an internet service name to <span style = "color:red">port number</span></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import socket
+
+#DNS
+print socket.getfqdn('www.google.com');
+print socket.gethostname();
+print socket.gethostbyname('localhost');
+print socket.gethostbyname('www.google.com');
+print socket.gethostbyname_ex('localhost');
+print socket.gethostbyaddr('4.2.2.2');
+print socket.getnameinfo((socket.gethostbyname('www.google.com'), 80), 0);
+print socket.getservbyname('http');
+print socket.getservbyport(80);
+print socket.getaddrinfo("www.google.com", 80, 0, 0, socket.IPPROTO_TCP)
+print socket.getdefaulttimeout();
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Client, get string from standard input, send it to server, then receive the feedback from server and print it to standard output</li>
+				<li>Server, receive string from client, convert it to upper case, then send it back to client</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#server.py
+#!/usr/bin/python
+
+import socket
+
+HOST = '' # Symbolic name meaning all available interfaces
+PORT = 50007 # Arbitrary non-privileged port
+
+# Create a socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+# Bind the socket to an address
+s.bind((HOST, PORT))
+
+# Waiting for a connection
+s.listen(2)
+print 'Waiting for a connection ...'
+
+while 1:
+    # Build a connection, create a new socket to handle it, get the client address
+    conn, addr = s.accept()
+    print 'Connecting server at: ', conn.getsockname(),
+    print 'from client at: ', addr
+    try:
+        data = conn.recv(1024)
+        print 'Received: ', data;
+        #if not data: break
+        conn.sendall(data.upper())
+    except socket.error, msg:
+        print "Error: ", msg;
+        break
+conn.close()
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#client.py
+#!/usr/bin/python
+
+import socket
+
+# Server address
+HOST = ''    # The remote host
+PORT = 50007              # The same port as used by the server
+
+# Create a socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+# Build a connection
+s.connect((HOST, PORT))
+
+# Read the message from keyboard
+m = raw_input("Eneter your message:\n");
+while len(m) &lt; 1:
+    m = raw_input("Not allow empty message, please re-input your message:\n");
+#m = input("Eneter your message:\n");# evaluate the string
+
+# Send the message to server
+s.send(m);
+#s.sendall('Hello, world')
+
+# Receive the feedback from server
+data = s.recv(1024)
+s.close()
+
+print 'Received from server:\n', data
+#print 'Received:\n', repr(data)
+
+			</pre>
+		</div>
+		<div class = "subtitle">UDS</div>
+		<div class = "block">
+			<ul>
+				<li>the address of the socket is a path on the filesystem, rather than a tuple containing servername and port</li>
+				<li>the node created in the filesystem to represent the socket persists after the socket is closed, and needs to be removed each time the server starts up</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#server.py
+#!/usr/bin/python
+
+import socket
+import sys
+import os
+
+server_address = './uds_socket'
+
+# Make sure the socket does not already exist
+try:
+    os.unlink(server_address)
+except OSError:
+    if os.path.exists(server_address):
+        raise
+
+# Create a socket
+s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+print 'Socket name: ', s.getsockname();
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+# Bind the socket to an address
+s.bind(server_address)
+
+# Waiting for a connection
+s.listen(1)
+print 'Waiting for a connection ...'
+
+while 1:
+    # Build a connection, create a new socket to handle it, get the client address
+    conn, addr = s.accept()
+    print 'Connecting server at: ', conn.getsockname(),
+    print 'from client at: ', addr
+    try:
+        data = conn.recv(1024)
+        print 'Received: ', data;
+        #if not data: break
+        conn.sendall(data.upper())
+    except socket.error, msg:
+        print "Error: ", msg;
+        break
+conn.close()
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#client.py
+#!/usr/bin/python
+
+import socket
+
+# Create a socket
+s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+server_address = './uds_socket'
+
+# Build a connection
+s.connect(server_address)
+
+# Read the message from keyboard
+m = raw_input("Eneter your message:\n");
+while len(m) &lt; 1:
+    m = raw_input("Not allow empty message, please re-input your message:\n");
+#m = input("Eneter your message:\n");# evaluate the string
+
+# Send the message to server
+s.send(m);
+#s.sendall('Hello, world')
+
+# Receive the feedback from server
+data = s.recv(1024)
+s.close()
+
+print 'Received from server:\n', data
+#print 'Received:\n', repr(data)
+			</pre>
+		</div>
+		<div class = "subtitle">UDP</div>
+		<div class = "block">
+			<ul>
+				<li>No connection</li>
+				<li>Use sendto</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#server.py
+#!/usr/bin/python
+
+import socket;
+
+port = 50007;
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+s.bind(('', port))
+
+print 'UDP server ...'
+
+while 1:
+    data, addr = s.recvfrom(1024)
+    print 'server received %r from %r' % (data, addr)
+    s.sendto(data.upper(), addr); #the socket should not be connected to a remote socket
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#client.py
+#!/usr/bin/python
+
+import socket
+
+# Server address
+HOST = '' # The remote host
+PORT = 50007 # the port of the server
+
+# Create a socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+# Read the message from keyboard
+m = raw_input("Eneter your message:\n");
+while len(m) &lt; 1:
+    m = raw_input("Not allow empty message, please re-input your message:\n");
+#m = input("Eneter your message:\n");# evaluate the string
+
+# Send the message to server
+s.sendto(m, (HOST, PORT));
+
+# Receive the feedback from server
+data = s.recv(1024)
+s.close()
+
+print 'Received from server:\n', data
+#print 'Received:\n', repr(data)
+			</pre>
+		</div>
+		<div class = "subtitle">Binary Data</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#server.py
+#!/usr/bin/python
+
+import binascii
+import socket
+import struct
+import sys
+
+# Create a TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_address = ('localhost', 10000)
+sock.bind(server_address)
+sock.listen(1)
+
+# Create Struct instance
+s = struct.Struct('hhl');
+
+while True:
+    print &gt;&gt;sys.stderr, '\nwaiting for a connection'
+    connection, client_address = sock.accept()
+    try:
+        data = connection.recv(s.size)
+        print &gt;&gt;sys.stderr, 'received "%s"' % binascii.hexlify(data)
+
+        unpacked_data = s.unpack(data)
+        print &gt;&gt;sys.stderr, 'unpacked:', unpacked_data
+    finally:
+        connection.close();
+			</pre>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import socket
+import struct
+import binascii
+
+# Create a TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_address = ('localhost', 10000)
+sock.connect(server_address)
+
+# Create Struct instance
+s = struct.Struct('hhl');
+
+# Pack information
+packed = s.pack(1, 2, 3);#pack data into a string
+sock.sendall(packed)
+			</pre>
+		</div>
+		<div class = "subtitle">Flow Control</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#server.py TCP
+#!/usr/bin/python
+
+import binascii
+import socket
+import struct
+import sys
+import time
+
+# Create a TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+server_address = ('localhost', 10000)
+sock.bind(server_address)
+sock.listen(1)
+
+# Create Struct instance
+s = struct.Struct('f');
+connection, client_address = sock.accept()
+
+num = 0;
+
+while True:
+    try:
+        data = connection.recv(s.size)
+        unpacked_data = s.unpack(data)
+        num += 1;
+        print 'Received: ', num, unpacked_data
+	time.sleep(0.01)
+    except Exception, err:
+        print err
+        break;
+
+connection.close();
+			</pre>
+			<pre class = "prettyprint linenums">
+#client.py TCP
+#!/usr/bin/python
+
+import socket
+import struct
+import binascii
+import random
+
+# Create a TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_address = ('localhost', 10000)
+sock.connect(server_address)
+
+# Create Struct instance
+s = struct.Struct('f');
+
+num = 0;
+
+# Pack information
+while True:
+    n = random.random();
+    packed = s.pack(n);#pack data into a string
+    sock.sendall(packed)
+    num += 1;
+    print 'Sent: ', num, n
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#server.py UDP
+#!/usr/bin/python
+
+import binascii
+import socket
+import struct
+import sys
+import time
+
+# Create a TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+server_address = ('localhost', 10000)
+sock.bind(server_address)
+
+# Create Struct instance
+s = struct.Struct('f');
+
+num = 0;
+
+while True:
+    try:
+        data, address= sock.recvfrom(s.size)
+        unpacked_data = s.unpack(data)
+        num += 1;
+        print 'Received: ', num, unpacked_data
+        time.sleep(0.001)
+    except Exception, err:
+        print err
+        break;
+			</pre>
+			<pre class = "prettyprint linenums">
+#client.py UDP
+#!/usr/bin/python
+
+import socket
+import struct
+import binascii
+import random
+
+# Create a TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_address = ('localhost', 10000)
+
+# Create Struct instance
+s = struct.Struct('f');
+
+num = 0;
+
+# Pack information
+while True:
+    n = random.random();
+    packed = s.pack(n);#pack data into a string
+    sock.sendto(packed, server_address)
+    num += 1;
+    print 'Sent: ', num, n
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.python.org/2/library/socket.html">Documentation</a></li>
+		</div>
+	</body>
+</html>

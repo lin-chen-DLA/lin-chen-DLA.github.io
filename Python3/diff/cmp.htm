@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			cmp
+		</div>
+
+		<div class = "subtitle">Python 2</div>
+		<div class = "block">
+			<li>cmp(x, y), compare two objects, need to override __cmp__ for user defined type</li>
+			<li>The return value is negative if x &lt; y, zero if x == y and strictly positive if x &gt; y</li>
+		<pre class = "prettyprint linenums">
+l = [1, 2, 3, 4]
+print cmp(l, [1, 2, 3, 4]) # 0
+		</pre>
+		</div>
+		<div class = "subtitle">Python 3</div>
+		<div class = "block">
+			<li>cmp() has been removed in Python 3</li>
+		</div>
+	</body>
+</html>

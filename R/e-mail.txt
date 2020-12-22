@@ -1,0 +1,11 @@
+Dear all,
+
+    First all, thanks for your hard work this semester. You guys did great jobs.
+
+    The grading will be completed by the midnight today. Please check your blackboard, let me know ASAP if I missed any of your assignments and projects. I will post your final grade on the banner system at noon tomorrow. After it, we are not able to make any change on it.
+
+    Right now, it is the time to add Scala, Bash Script, make, cmake, prolog, and Azure cloud to your resume.
+
+    Have a nice winter break.
+
+Lin Chen

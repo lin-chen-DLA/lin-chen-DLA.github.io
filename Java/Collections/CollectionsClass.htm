@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Collections
+		</div>
+
+		<div class = "subtitle">Shuffle</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class C
+{
+	public static void main(String args[])
+	{
+		ArrayList&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+
+		for(int i = 0; i &lt; 10; i++)
+			l.add(i);
+
+		Collections.shuffle(l);
+
+		System.out.println(l);
+
+		Collections.shuffle(l, new Random());
+
+		System.out.println(l);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Swap</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class C
+{
+	public static void main(String args[])
+	{
+		ArrayList&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+
+		for(int i = 0; i &lt; 10; i++)
+			l.add(i);
+
+		System.out.println(l);
+
+		Collections.swap(l, 3, 4);
+
+		System.out.println(l);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reverse</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class C
+{
+	public static void main(String args[])
+	{
+		ArrayList&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+
+		for(int i = 0; i &lt; 10; i++)
+			l.add(i);
+
+		System.out.println(l);
+
+		Collections.reverse(l);
+
+		System.out.println(l);
+
+		Integer array[] = {1, 2, 3, 4};
+
+		System.out.println(Arrays.toString(array));
+
+		List l2 = Arrays.asList(array);
+		Collections.reverse(l2);
+
+		System.out.println(l2);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">BinarySearch</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class C
+{
+	public static void main(String args[])
+	{
+		ArrayList&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+
+		for(int i = 0; i &lt; 10; i++)
+			l.add(i);
+
+		Collections.shuffle(l);
+		Collections.sort(l);
+
+		System.out.println(l);
+
+		int index = Collections.binarySearch(l, 5);
+
+		System.out.println(index);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Sort</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class C
+{
+	public static void main(String args[])
+	{
+		ArrayList&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+
+		for(int i = 0; i &lt; 10; i++)
+			l.add(i);
+
+		Collections.shuffle(l);
+
+		System.out.println(l);
+
+		Collections.sort(l);
+
+		System.out.println(l);
+
+		Collections.sort(l, Collections.reverseOrder());
+
+		System.out.println(l);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Rotate</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class C
+{
+	public static void main(String args[])
+	{
+		ArrayList&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+
+		for(int i = 0; i &lt; 10; i++)
+			l.add(i);
+
+		System.out.println(l);
+
+		Collections.rotate(l, 2);
+
+		System.out.println(l);
+
+		Collections.rotate(l, -2);
+
+		System.out.println(l);
+		
+		Integer [] array = {1, 2, 3, 4};
+
+		List l2 = Arrays.asList(array);
+		Collections.rotate(l2, 2);
+
+		System.out.println(l2);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Rotate</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class C
+{
+	public static void main(String args[])
+	{
+		ArrayList&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+		Random r = new Random();
+
+		for(int i = 0; i &lt; 10; i++)
+			l.add(r.nextInt(4));
+
+		System.out.println(l);
+
+		System.out.println("Frequence of 2: "+Collections.frequency(l, 2));
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Disjoint</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class C
+{
+	public static void main(String args[])
+	{
+		ArrayList&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; l2 = new ArrayList&lt;Integer&gt;();
+
+		Random r = new Random();
+
+		for(int i = 0; i &lt; 4; i++)
+		{
+			l.add(i);
+			l2.add(r.nextInt(10));
+		}
+
+		System.out.println(l);
+		System.out.println(l2);
+
+		System.out.println(Collections.disjoint(l, l2));
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>

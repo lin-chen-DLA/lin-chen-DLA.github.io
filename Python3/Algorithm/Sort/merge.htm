@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Merge sort</div>
+		<div class = "block">
+			<li>Best Case, O(nlogn)</li>
+			<li>Worst Case, Ω(nlogn)</li>
+			<li>Memory Complexity, O(n)</li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import random
+
+def merge_sort(l):
+    if len(l) &lt;= 1:
+        return l
+
+    # split
+    m = int(len(l)/2)
+    left = merge_sort(l[:m])
+    right = merge_sort(l[m:])
+
+    # merge
+    merge = []
+    while left and right:
+        if left[0] &lt; right[0]:
+            merge.append(left.pop(0))
+        else:
+            merge.append(right.pop(0))
+
+    if left:
+        merge = merge + left
+
+    if right:
+        merge = merge + right
+
+    return merge
+
+def get_list():
+    random.seed()
+    l = random.choices(range(10), k=10)
+
+    return l
+
+def main():
+    l = get_list()
+    print(l)
+
+    l = merge_sort(l)
+    print(l)
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Data Types
+		</div>
+
+		<div class = "subtitle">Types</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import sys;
+import decimal
+import fractions;
+
+# int
+n1 = 10;
+print type(n1);
+
+# long
+n3 = 100L;
+print type(n3);
+
+# float
+n2 = 3.14;
+print type(n2);
+#print sys.float_info;
+
+# complex
+n4 = complex(5, 10);
+print type(n4);
+print n4, n4.real, n4.imag;
+
+# fraction
+n5 = fractions.Fraction(1, 2);
+print type(n5);
+
+# decimal
+n8 = decimal.Decimal('0.1');
+print type(n8);
+		</pre>
+	</div>
+	<div class = "subtitle">Arithmetic</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# int
+n1 = 10;
+n2 = 3;
+print n1+n2;# 13
+print n1-n2;# 7
+print n1*n2;# 30
+print n1/n2;# 3
+print n1//n2;# 3
+print n1%n2;# 1
+print divmod(n1, n2);# (3, 1)
+print pow(n1, n2);# 1000
+print n1**n2;# 1000
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# float
+n1 = 3.14;
+n2 = 2.0;
+print n1+n2;# 5.14
+print n1-n2;# 1.14
+print n1*n2;# 6.28
+from __future__ import division; # include both / and //
+print n1/n2;# 1.57, true division
+print n1//n2;# 1, floor division
+print n1%n2;# 1.14
+print divmod(n1, n2);# (1, 1.14)
+print pow(n1, n2);# 9.8596
+print n1**n2;# 9.8596
+		</pre>
+	</div>
+	<div class = "subtitle">True and False</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+x = (1 &lt; 2);# True
+y = (1 == 1);# True
+
+print (x or y);# True
+print (x and y);# True
+print (not x);# False
+			</pre>
+		</div>
+		<div class = "subtitle">Bit Operations</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+x = 5;
+y = 10;
+
+print bin(x);#101
+print bin(y);#1010
+print 'or: ', x|y, bin(x|y);#15, 1111
+print 'and: ', x&y, bin(x&y);#0, 0
+print 'exclusive: ', x^y, bin(x^y);#15, 1111
+print 'shifted left: ', x&lt;&lt;2, bin(x&lt;&lt;2), x;#20, 10100, 5
+print 'shifted right: ', x&gt;&gt;2, bin(x&gt;&gt;2), x;#1, 1, 5
+print 'bit length: ', x.bit_length(), y.bit_length();#3 4
+print 'not: ', ~x, bin(~x);#-6, -110
+			</pre>
+		</div>
+		<div class = "subtitle">Override Functions</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# int
+n1 = 10;
+print type(n1);
+
+print dir(n1);
+print n1.__str__();
+print n1.__sizeof__();
+print n1.__pow__(2);
+print n1.__add__(10);
+print n1.__rand__
+print n1.__hash__();
+print n1.__index__();
+print type(n1.__repr__());
+			</pre>
+		</div>
+	<div class = "subtitle">Reference</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "https://docs.python.org/2/library/stdtypes.html">Python Documentation</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

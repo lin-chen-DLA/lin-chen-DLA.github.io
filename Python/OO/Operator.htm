@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Overload Operators
+		</div>
+
+		<div class = "subtitle">Unary operator</div>
+		<div class = "block">
+			<li>__neg__, -</li>
+			<li>__pos__, +</li>
+			<li>__invert__, ~</li>
+		</div>
+		<div class = "subtitle">Binary operator</div>
+		<div class = "block">
+			<li>__add__, +</li>
+			<li>__sub__, -</li>
+			<li>__mul__, *</li>
+			<li>__div__, /</li>
+			<li>__floordiv__, //</li>
+			<li>__mod__, %</li>
+			<li>__pow__, **</li>
+			<li>__lshift__, &lt;&lt;</li>
+			<li>__rshift__, &gt;&gt;</li>
+			<li>__and__, &</li>
+			<li>__xor__, ^</li>
+			<li>__or__, |</li>
+			<li>__iadd__, +=</li>
+			<li>__isub__, -+</li>
+			<li>__imul__, *=</li>
+			<li>__idiv__, /=</li>
+			<li>__ifloordiv__, //=</li>
+			<li>__imod__, %=</li>
+			<li>__ipow__, **=</li>
+			<li>__ilshift__, &lt;&lt;=</li>
+			<li>__irshift__, &gt;&gt;=</li>
+			<li>__iand__, &=</li>
+			<li>__ixor__, ^=</li>
+			<li>__ior__, |=</li>
+			<li>__eq__, ==</li>
+			<li>__ne__, !=, &lt;&gt;</li>
+			<li>__gt__, &gt;</li>
+			<li>__lt__, &lt;</li>
+			<li>__ge__, &gt;=</li>
+			<li>__le__, &lt;=</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+class Integer(object):
+
+    def __init__(self, value):
+        self._value = value;
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, v):
+        self._value = v;
+
+    @value.deleter
+    def value(self):
+        del self._value
+
+    def __str__(self):
+        return "Value: %d" % self._value
+
+    def __add__(self, other):
+        return Integer(self._value + other._value)
+
+    def __sub__(self, other):
+        return Integer(self._value - other._value)
+
+    def __mul__(self, other):
+        return Integer(self._value * other._value)
+
+    def __div__(self, other):
+        return Integer(self._value / other._value)
+
+    def __neg__(self):
+        return Integer(-self._value)
+
+    def __eq__(self, other):
+        return (self - other).value == 0
+
+    def __lt__(self, other):
+        return (self - other).value &lt; 0
+
+    def __gt__(self, other):
+        return (self - other).value &gt; 0
+
+    def __ne__(self, other):
+        return not (self == other)
+
+    def __iadd__(self, other):
+        self._value += other._value
+        return self
+
+def main():
+    i1 = Integer(10);
+    i2 = Integer(100);
+
+    print(i1+i2) # __add__
+    print(i1-i2) # __sub__
+    print(i1*i2) # __mul__
+    print(i2/i1) # __div__
+    print(-i1) # __neg__
+
+    print(i1 == i2) # __eq__
+    print(i1 &lt; i2) # __lt__
+    print(i1 &gt; i2) # __gt__
+    print(i1 != i2) # __ne__
+
+    i1 += i2;
+    print(i1)
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.python.org/2/genindex-_.html">Index – _</a></li>
+		</div>
+	</body>
+</html>

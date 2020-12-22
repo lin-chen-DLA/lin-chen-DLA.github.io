@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Share</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Shared Folder among Group Users</div>
+		<div class = "block">
+			<li>sudo groupadd project, create a group</li>
+			<li>/etc/group, list of the groups and users in each group</li>
+			<li>sudo usermod -a -G project user1, add user1 to group project</li>
+		</div>
+		<div class = "subtitle">Create shared folder</div>
+		<div class = "block">
+			<li>sudo mkdir /home/project.git, create a shared folder</li>
+			<li>sudo chgrp -R project project.git, change it's group to be project</li>
+			<li>sudo chmod -R 2770 project.git, change mode to 770 and set up SGID</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.tecmint.com/create-a-shared-directory-in-linux/">How to Create a Shared Directory for All Users in Linux</a></li>
+		</div>
+	</body>
+</html>

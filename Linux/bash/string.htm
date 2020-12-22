@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Linux</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			String
+		</div>
+
+		<div class = "subtitle">Operators</div>
+		<div class = "block">
+			<li>=, equal</li>
+			<li>!=, not equal</li>
+			<li>-z, checks if the given string operand size is zero</li>
+			<li>-n, checks if the given string operand size is non-zero</li>
+			<li>str, if str is empty, return false</li>
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+a="abc"
+b="def"
+
+if [ ! $a = $b ]
+then
+	echo "Not same ..."
+fi
+
+if [ -n $a ]
+then
+	echo "Size is none zero ..."
+fi
+			</pre>
+		</div>
+		<div class = "subtitle">String manipulation</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+a="abc"
+
+# length
+echo "Size: ${#a}"
+echo `expr length $a`
+
+# match substring at the beginning of string
+stringZ=abcABC123ABCabc
+echo `expr match "$stringZ" 'abc[A-Z]*.2'` # 8
+
+# index of substring in string
+echo `expr index "$stringZ" C12` # 6
+
+# Substring Extraction
+# ${string:position}
+# ${string:position:length}
+echo ${stringZ:1} # bcABC123ABCabc
+echo ${stringZ:7:3} # 23A
+echo ${stringZ:(-4)} # Cabc
+# expr substr $string $position $length
+echo `expr substr $stringZ 1 2` # ab
+# expr match "$string" '\($substring\)'
+echo `expr match "$stringZ" '\(.[b-c]*[A-Z]..[0-9]\)'` # bcABC1
+echo `expr "$stringZ" : '\(.[b-c]*[A-Z]..[0-9]\)'`     # abcABC1
+
+# Substring Removal
+# ${string#substring}, deletes shortest match of $substring from front of $string
+echo ${stringZ#a*C} # 123ABCabc
+# ${string##substring}, deletes longest match of $substring from front of $string
+echo ${stringZ##a*C}     # abc
+# ${string%substring}, deletes shortest match of $substring from back of $string
+# ${string%%substring}, deletes longest match of $substring from back of $string
+
+# Substring Replacement
+# ${string/substring/replacement}, replace the first match
+echo ${stringZ/abc/xyz} # xyzABC123ABCabc
+# ${string//substring/replacement}, replace all matches
+echo ${stringZ//abc/xyz}      # xyzABC123ABCxyz
+# ${string/#substring/replacement}, If $substring matches front end of $string, substitute $replacement for $substring
+echo ${stringZ/#abc/XYZ}          # XYZABC123ABCabc
+# ${string/%substring/replacement}, If $substring matches back end of $string, substitute $replacement for $substring
+echo ${stringZ/%abc/XYZ}          # abcABC123ABCXYZ
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://www.tldp.org/LDP/abs/html/string-manipulation.html">TLDP 10.1</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

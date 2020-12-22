@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Scope
+		</div>
+
+		<div class = "subtitle">Local Variable in Function</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+void doubleNum(int a) // a is a local variable of the function
+{
+	a = 2*a;
+
+	printf("a in doubleNum function: %d, %p\n", a, &amp;a);
+}
+ 
+int main()
+{
+	int a = 10;
+
+	printf("a in main function: %d, %p\n", a, &amp;a);
+
+	doubleNum(a);
+
+	printf("a in main function: %d, %p\n", a, &amp;a);
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/Scope_1.png" width=40% /></p>
+		</div>
+		<div class = "subtitle">Local Variable in Block</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+ 
+int main()
+{
+	int a = 10;
+
+	printf("a in function: %d, %p\n", a, &amp;a);
+ 
+	{
+		int a = 100; //screen the a in main function
+		printf("a in block: %d, %p\n", a, &amp;a);
+	}
+
+	printf("a in function: %d, %p\n", a, &amp;a);
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+ 
+int main()
+{
+	int a = 10;
+
+	printf("a in function: %d, %p\n", a, &amp;a);
+ 
+	for(int a = 0; a &lt; 5; a++) // screen the a in  main function
+	{
+		printf("a in block: %d, %p\n", a, &amp;a);
+	}
+
+	printf("a in function: %d, %p\n", a, &amp;a);
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Global Variable and Local Variable</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+ 
+int a = 10; // global variable
+ 
+void display()
+{
+	printf("Global a in display: %d, %p\n", a, &amp;a);
+
+	int a = 1000; // screen global a
+
+	printf("Local a in display: %d, %p\n", a, &amp;a);
+}
+ 
+int main()
+{
+	printf("Global a in main: %d, %p\n", a, &amp;a);
+
+	int a = 100; // screen global a
+
+	printf("Local a in main: %d, %p\n", a, &amp;a);
+
+	display();
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Storage classes</div>
+		<div class = "block">
+			<li><span>auto,</span> this is the default storage class for all the variables declared inside a function or a block, auto variables can be only accessed within the block/function they have been declared</li>
+			<li><span>register,</span> this storage class declares register variables which have the same functionality as that of the auto variables, but store these variables in the register of the microprocessor if a free register is available</li>
+			<li><span>static,</span> keep a local variable in existence during the life-time of the program instead of creating and destroying it each time it comes into and goes out of scope</li>
+			<li><span>extern,</span> simply tells us that the variable is defined elsewhere and not within the same block where it is used</li>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/Scope_2.png" width=40% /></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+void f()
+{
+	static int c = 0; // static variable
+	int d = 0; // auto variable
+	c++;
+	d++;
+
+	printf("c: %d\n", c);
+	printf("d: %d\n", d);
+}
+
+int main()
+{
+	auto int a = 10; // auto
+
+	printf("a: %d\n", a); // 10
+
+	register int b = 100; // register
+
+	printf("b: %d\n", b); // 100
+
+	f(); // 1, 1
+
+	f(); // 2, 1
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// main.c
+#include &lt;stdio.h&gt;
+
+extern int a;
+
+int main()
+{
+	printf("a: %d\n", a);
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+// util.c
+int a = 10;
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://www.geeksforgeeks.org/storage-classes-in-c/">Storage Classes in C</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

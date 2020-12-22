@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Function
+		</div>
+		<div class = "block">
+			<li>Scala function's name can have characters like +, ++, ~, &,-, --, \, /, :, etc.</li>
+		<pre class = "prettyprint linenums">
+def functionName ([list of parameters]) : [return type] = {
+   function body
+   return [expr]
+}
+		</pre>
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import scala.util.Random
+
+object Demo
+{
+  // return an random integer
+  def getNum() : Int = {
+    var r = new Random();
+
+    return r.nextInt(10);
+  }
+
+  // no return
+  def hello() : Unit = {
+    println("Hello World!");
+  }
+
+  def main(args : Array[String])
+  {
+    println(getNum());
+
+    hello();
+  }
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Call by Value and Call by Name</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def doSomething() : Int = {
+    println("Do something ...");
+    return 1;
+  }
+
+  // call by value
+  def callByValue(x : Int) : Unit = {
+    println(x);
+    println(x);
+  }
+
+  // call by name
+  def callByName(x : =&gt; Int) : Unit = {
+    println(x);
+    println(x);
+  }
+
+  def main(args : Array[String])
+  {
+    // pass an integer number, they have the same performance
+    callByValue(10);
+    callByName(10);
+
+    //call by value
+    println("Call by value ...");
+    //&gt;&gt;Do something ...
+    //&gt;&gt;1
+    //&gt;&gt;1
+    callByValue(doSomething());
+
+    //call by name
+    println("Call by name ...");
+    //&gt;&gt;Do something ...
+    //&gt;&gt;1
+    //&gt;&gt;Do something ...
+    //&gt;&gt;1
+    callByName(doSomething());
+  }
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Variable Arguments</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def getArgs(num : Int, args : String*)
+  {
+    println("Total %d parameters ...".format(num));
+
+    for(arg &lt;- args)
+      println(arg)
+  }
+
+  def main(args: Array[String])
+  {
+    getArgs(4, "p1", "p2", "p3", "p4");
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Default Parameter Values</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def getSum(a : Int = 1, b : Int = 10) : Int = 
+  {
+    return a + b
+  }
+
+  def main(args : Array[String])
+  {
+    // not use default value
+    println(getSum(1, 2));
+
+    // pass value to a, b use the default value
+    println(getSum(1));
+
+    // a use the default value, assign value to b
+    println(getSum(b=2));
+  }
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Nested Functions</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def factorial(i : Int) : Int = {
+    def fact(i: Int, accumulator: Int): Int = {
+         if (i &lt;= 1)
+            accumulator
+         else
+            fact(i - 1, i * accumulator)
+      }
+    return fact(i, 1)
+  }
+
+  def main(args : Array[String])
+  {
+    println(factorial(4));
+  }
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Partially Applied Functions</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def getSum(a : Int, b : Int) : Int = {
+    return a+b;
+  }
+
+  def main(args : Array[String])
+  {
+    var partialSum = getSum(1, _ : Int);
+
+    println(partialSum(10));
+  }
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Named Arguments</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def getSum(a : Int = 1, b : Int = 2) : Int = {
+    return a+b;
+  }
+
+  def main(args : Array[String])
+  {
+    println(getSum(b = 10, a = 100));
+  }
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Recursion Functions</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def factorial(n : Int) : Int = {
+    if( n &lt;= 1)
+      return 1
+    else
+      return n*factorial(n-1)
+  }
+
+  def main(args : Array[String])
+  {
+    println(factorial(4));
+  }
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Higher-Order Functions</div>
+		<div class = "block">
+			<li>Functions can take other functions as parameters, or whose result is a function</li>
+		<pre class = "prettyprint linenums">
+object Demo {
+   def main(args: Array[String]) {
+      println( apply( layout, 10) )
+   }
+
+   def apply(f: Int =&gt; String, v: Int) = f(v)
+
+   def layout[A](x: A) = "[" + x.toString() + "]" // A is parameter type
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+object Demo {
+   def main(args: Array[String]) {
+      println( apply(getSum, 10) )
+   }
+
+   def getSum(a : Int, b : Int) : Int = {
+     return a+b;
+   }
+
+   def apply(f: (Int, Int) =&gt; Int, v: Int) = f(v, v)
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Anonymous Functions</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def main(args : Array[String])
+  {
+    var getSum = (a:Int, b:Int) =&gt; a+b;
+
+    println(getSum(10, 100));
+  }
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Currying Functions</div>
+		<div class = "block">
+			<li>Currying transforms a function that takes multiple parameters into a chain of functions, each taking a single parameter</li>
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def doubleNum(a : Int) : Int = 2*a;
+
+  def getSum(a: Int)(b : Int) : Int = {
+    return doubleNum(a) + doubleNum(b)
+  }
+
+  def main(args : Array[String])
+  {
+    println(getSum(10)(100));
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.tutorialspoint.com/scala/scala_functions.htm">Tutorialspoint</a></li>
+		</div>
+	</body>
+</html>

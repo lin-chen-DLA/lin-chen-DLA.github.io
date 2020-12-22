@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Hashtable</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Entry
+{
+	private int key;
+	private int value;
+	private Entry next;
+
+	public Entry(int k, int v)
+	{
+		key = k;
+		value = v;
+	}
+
+	public int getKey()
+	{
+		return key;
+	}
+
+	public int getValue()
+	{
+		return value;
+	}
+
+	public Entry getNext()
+	{
+		return next;
+	}
+
+	public void setNext(Entry n)
+	{
+		next  = n;
+	}
+
+	public String toString()
+	{
+		return "["+key+", "+value+"]";
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Hashtable
+{
+	private Entry [] bucket;
+	private int bucketSize;
+	private int count;
+
+	public Hashtable()
+	{
+		bucketSize = 10;
+		bucket = new Entry[bucketSize];
+		count++;
+	}
+
+	// O(1)
+	public void put(int k, int v)
+	{
+		Entry e = new Entry(k, v);
+		if(bucket[hashCode(k)] == null)
+			bucket[hashCode(k)] = e;
+		else
+		{
+			e.setNext(bucket[hashCode(k)]);
+			bucket[hashCode(k)] = e;
+		}
+	}
+
+	// O(1)
+	public int hashCode(int k)
+	{
+		return k%bucketSize;
+	}
+
+	// O(n)
+	public int get(int k)
+	{
+		Entry walker = bucket[hashCode(k)];
+		if(walker == null)
+			return -1;
+		while(walker != null)
+		{
+			if(k == walker.getKey())
+				return walker.getValue();
+		}
+		return -1;
+	}
+
+	// O(n)
+	public String toString()
+	{
+		String s = "";
+		for(int i = 0; i &lt; bucketSize; i++)
+		{
+			s = s+"Bucket "+i+": ";
+			Entry walker;
+			walker = bucket[i];
+			while(walker != null)
+			{
+				s=s+walker.toString()+" ";
+				walker = walker.getNext();
+			}
+			s = s+"\n";
+		}
+
+		return s;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class HashtableTest
+{
+	public static void main(String args[])
+	{
+		Hashtable t = new Hashtable();
+
+		t.put(11, 1);
+		t.put(21, 2);
+		t.put(7, 3);
+		t.put(34, 4);
+
+		System.out.println(t);
+
+		System.out.println(t.get(21));
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>

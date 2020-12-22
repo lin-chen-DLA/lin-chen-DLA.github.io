@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Coding Style
+		</div>
+
+		<div class = "subtitle">Code organization</div>
+		<div class = "block">
+			<ol>
+				<li>#!/usr/bin/python</li>
+				<li>docstring</li>
+				<li>authorship information
+					<ul>
+					<li>__author__</li>
+					<li>__copyright__</li>
+					<li>__credits__</li>
+					<li>__license__</li>
+					<li>__version__</li>
+					<li>__maintainer__</li>
+					<li>__email__</li>
+					<li>__status__, one of Prototype, Development, or Production</li>
+					</ul>
+				</li>
+				<li>Import built-in modules, followed by third-party modules, followed by any changes to the path and your own modules</li>
+			</ol>
+		</div>
+		<div class = "subtitle">Google Style</div>
+		<div class = "block">
+			<li>Import
+				<ul>
+					<li>Do not use relative name in import, even if the module is in the same package, use the full package name</li>
+				</ul>
+			</li>
+			<li>Exception
+				<ul>
+					<li>Use <span>raise myError('Error message')</span>, not <span> raise myError, 'Error message'</span></li>
+					<li>Never use catch-all except, or catch Exception or StandardError</li>
+					<li>Use the finally for cleanup, i.e., closing a file</li>
+				</ul>
+			</li>
+			<li>Global variables
+				<ul>
+					<li>Avoid global variables</li>
+				</ul>
+			</li>
+			<li>Comprehensions & Generator Expressions
+				<ul>
+					<li>Multiple for clauses or filter expressions are not permitted</li>
+				</ul>
+			</li>
+			<li>Conditional Expressions
+				<ul>
+					<li><span>Okay for one-liners, for example, x = 1 if cond else 2</span></li>
+				</ul>
+			</li>
+			<li>Default Argument Values
+				<ul>
+					<li>Do not use mutable objects as default values in the function or method definition</li>
+				</ul>
+			</li>
+			<li>Properties
+				<ul>
+					<li>Use properties in new code to access or set data</li>
+				</ul>
+			</li>
+			<li>True/False evaluations
+				<ul>
+					<li>A quick "rule of thumb" is that all "empty" values are considered false, so 0, None, [], {}, '' all evaluate false</li>
+				</ul>
+			</li>
+			<li>Python Style Rules
+				<ul>
+					<li>Semicolons, do not terminate your lines with semi-colons and do not use semi-colons to put two statements on the same line</li>
+					<li>Line length, maximum line length is 80 characters</li>
+					<li>Indentation, indent your code blocks with 4 spaces, never use tabs or mix tabs and spaces</li>
+					<li>Blank Lines, two blank lines between top-level definitions, one blank line between method definitions</li>
+					<li>Whitespace, no whitespace inside parentheses, brackets or braces; no whitespace before a comma, semicolon, or colon; no whitespace before the open paren/bracket that starts an argument list, indexing or slicing; surround binary operators with a single space on either side; never use spaces around the '=' sign when passing keyword arguments;</li>
+					<li>Shebang Line, most .py files do not need to start with a #! line, start the main file of a program with #!/usr/bin/python</li>
+					<li>Comments and Docstrings
+						<ul>
+							<li>Docstring, should be organized as <span>a summary line</span> (one physical line) terminated by a <span>period</span>, question mark, or exclamation point, followed by a <span>blank line</span>, followed by the rest of the docstring starting at the same cursor position as the first quote of the first line</li>
+							<li>Modules, every file should contain license boilerplate, such as Apache 2.0, BSD, LGPL, GPL</li>
+							<li>Block and Inline Comments, never describe the code, assume the person reading the code knows Python (though not what you're trying to do) better than you do</li>
+						</ul>
+					</li>
+					<li>Classes, if a class inherits from no other base classes, explicitly inherit from object</li>
+					<li>Files and Sockets, explicitly close files and sockets when done with them</li>
+					<li>TODO Comments, use TODO comments for code that is temporary, a short-term solution, or good-enough but not perfect</li>
+					<li>Imports formatting, imports should be on separate lines
+						<ul>
+							<li>Python standard library imports</li>
+							<li>third-party module or package imports</li>
+							<li>third-party module or package imports</li>
+							<li>application-specific imports that are part of the same top level sub-package as this file</li>
+						</ul>
+					</li>
+					<li>Statements, generally only one statement per line</li>
+					<li>Access Control, if an accessor function would be trivial you should use public variables instead of accessor functions to avoid the extra cost of function calls in Python</li>
+					<li>Naming
+						<ul>
+							<li>Avoid single character names, dashes (-) in any package/module name</li>
+							<li>Use <span>CapWords</span> for class names, but <span>lower_with_under.py</span> for module names, <span>CapWords.py</span> is now discouraged</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</div>
+
+		<div class = "subtitle">PEP 8 -- Style Guide for Python Code</div>
+		<div class = "block">
+			<li>Code Lay-out
+				<ul>
+					<li>Indentation, use 4 spaces per indentation level</li>
+					<li>Tabs or Spaces, spaces are the preferred indentation method</li>
+					<li>Maximum Line Length, limit all lines to a maximum of 79 characters</li>
+					<li>Should a Line Break Before or After a Binary Operator, break before binary operators</li>
+					<li>Blank Lines, surround top-level function and class definitions with two blank lines, method definitions inside a class are surrounded by a single blank line</li>
+					<li>Imports, imports should usually be on separate lines, imports are always put at the top of the file, just after any module comments and docstrings, and before module globals and constants</li>
+					<li>Absolute imports are recommended</li>
+					<li>Wildcard imports (from &lt;module&gt; import *) should be avoided</li>
+					<li>Module Level Dunder Names
+						<ul>
+							<li>docstring</li>
+							<li>dunder names, such as __all__, __version__, __author__</li>
+							<li>import statements</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>String Quotes, for triple-quoted strings, always use <span>double quote</span> characters to be consistent with the docstring convention in PEP 257</li>
+			<li>Whitespace in Expressions and Statements
+				<ul>
+					<li>Avoid extraneous whitespace</li>
+					<li>Avoid trailing whitespace anywhere</li>
+					<li>Always surround these binary operators with a single space on either side: assignment (=), augmented assignment (+=, -= etc.), comparisons (==, &lt;, &gt;, !=, &lt;&gt;, &lt;=, &gt;=, in, not in, is, is not), Booleans (and, or, not)</li>
+					<li>If operators with different priorities are used, consider adding whitespace around the operators with the lowest priority(ies)</li>
+					<li>If operators with different priorities are used, consider adding whitespace around the operators with the lowest priority(ies)</li>
+					<li><span>Compound statements</span> (multiple statements on the same line) are generally discouraged</li>
+				</ul>
+			</li>
+			<li>Comments
+				<ul>
+					<li>Comments should be complete sentences. The first word should be capitalized, unless it is an identifier that begins with a lower case letter (never alter the case of identifiers!)</li>
+					<li>Block comments generally consist of one or more paragraphs built out of complete sentences, with each sentence ending in a period</li>
+					<li>two spaces after a sentence-ending period in multi- sentence comments, except after the final sentence</li>
+					<li>Block Comments
+						<ul>
+							<li>Each line of a block comment starts with a # and a single space (unless it is indented text inside the comment)</li>
+							<li>Paragraphs inside a block comment are separated by a line containing a single #</li>
+						</ul>
+					</li>
+					<li>Inline Comments, inline comments should be separated by at least two spaces from the statement, they should start with a # and a single space</li>
+				</ul>
+			</li>
+			<li>Naming Conventions
+				<ul>
+					<li>_single_leading_underscore: weak "internal use" indicator. E.g. from M import * does not import objects whose name starts with an underscore</li>
+					<li>single_trailing_underscore_: used by convention to avoid conflicts with Python keyword</li>
+					<li>__double_leading_underscore: when naming a class attribute, invokes name mangling</li>
+					<li>__double_leading_and_trailing_underscore__: "magic" objects or attributes that live in user-controlled namespaces</li>
+					<li>Never use the characters 'l' (lowercase letter el), 'O' (uppercase letter oh), or 'I' (uppercase letter eye) as single character variable names</li>
+					<li>Modules should have short, all-lowercase names</li>
+					<li>Class names should normally use the CapWords convention</li>
+					<li>Exception names should use class convention</li>
+					<li>Function and variable names, should be lowercase, with words separated by underscores as necessary to improve readability</li>
+					<li>Constants are usually defined on a module level and written in all capital letters with underscores separating words</li>
+				</ul>
+			</li>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://github.com/google/styleguide/blob/gh-pages/pyguide.md">Google Python Style Guide</a></li>
+			<li><a href = "https://www.python.org/dev/peps/pep-0008/">PEP 8</a></li>
+			<li><a href = "https://stackoverflow.com/questions/1523427/what-is-the-common-header-format-of-python-files/1523435#1523435">Code organization</a></li>
+		</div>
+	</body>
+</html>

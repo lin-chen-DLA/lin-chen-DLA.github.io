@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+       <title>Git</title>
+
+       <meta http-equiv="Page-Enter" contect="revealTrans(duration=10,transtion= 50)">
+
+       <style>
+
+	       span {color: red}
+
+	</style>
+
+    </head>
+
+    <body bgcolor = white text = #4E6AAA link = silver alink = silver vlink = silver>
+
+	    <li>Git
+
+	    <ul>
+
+		    <li><a href = "https://git-scm.com/book/en/v2/">On-line Book</a>
+
+		    <ul>
+
+			    <li><span>git config</span>
+
+			    <ul>
+
+				    <li>--system, /etc/gitconfig, contains values for every user on the system and all their repositories</li>
+
+				    <li>--global, ~/.gitconfig, specific to your user</li>
+
+				    <li>--local, .git/gitconfig, specific to a project</li>
+
+				    <li>-l, list all values
+
+				    <ul>
+
+					    <li>git config -l --show-list, list all values and locations</li>
+
+					    <li>git config --global -l, list the global values</li>
+
+				    </ul>
+
+				    </li>
+
+				    <li>set a value
+
+				    <ul>
+
+					    <li>git config --global user.age 31</li>
+
+				    </ul>
+
+				    </li>
+
+				    <li>add a value
+					    <ul>
+						    <li>git config --global --add user.email lchen@ecsu.edu</li>
+					    </ul>
+				    </li>
+				    <li>remove values
+					    <ul>
+						    <li>git config --global --unset-all user.email</li>
+					    </ul>
+				    </li>
+			    </ul>
+
+			    </li>
+
+			    <li>git help
+
+			    <ul>
+
+				    <li>git help config, get the help information of "config"</li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>git init</span>
+
+			    <ul>
+
+				    <li>Create a local repository
+
+				    <ul>
+
+				    	   <li>git init, initialize a local git repository</li>
+
+				    </ul>
+
+				    </li>
+
+				    <li>Create a repository shared by a group
+
+				    <ul>
+
+					    <li>mkdir rep.git, create a git folder</li>
+
+					    <li>chgrp -R groupName rep.git</li>
+
+					    <li>chmod 770 rep.git, make the folder readable and writable for user and group</li>
+
+					    <li>chmod g+s rep.git, turn on setuid bit, user executing the file gets the permission of the group that owns the file</li>
+
+					    <li>cd rep.git, enter the created folder</li>
+
+					    <li>git init --bare --shared=660, or git init --bare --shre=group</li>
+
+				    </ul>
+
+				    </li>
+
+				    <li>git init --bare, create an empty git repository
+
+				    <ul>
+
+					    <li>mv hooks/post-update.sample to hooks/post-update</li>
+
+					    <li><a href = "http://githooks.com/">Git Hooks</a></li>
+
+				    </ul>
+
+				    </li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>git clone</span>
+
+			    <ul>
+
+				    <li>git clone [url], clone a repository to the current directory</li>
+
+				    <li>git clone [url] [name], clone a repository to a target directory</li>
+
+				    <li>fetch all remote branch, but only create one local branch master</li>
+
+				    <li>git branch -a, display all branches</li>
+
+				    <li>git checkout b_1, synchronize the branch from the remote</li>
+				    <li>git clone --bare my_project my_project.git, create a bare repository from the current git project
+					    <ul>
+						    <li>cp -Rf my_project/.git my_project.git</li>
+					    </ul>
+				    </li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>git status</span>
+
+			    <ul>
+
+				    <li>git status -s, show the modification status
+
+				    <ul>
+
+					    <li>'', unmodified</li>
+
+					    <li>M, modified</li>
+
+					    <li>A, added</li>
+
+					    <li>D, deleted</li>
+
+					    <li>R, renamed</li>
+
+					    <li>C, copied</li>
+
+					    <li>U, updated by unmerged</li>
+
+					    <li>??, untracked files</li>
+
+				    </ul>
+
+				    </li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>git add</span>
+			    <ul>
+				    <li>git add [fileName], add file contents to the index
+				    <ul>
+					    <li>index is a snapshot that is taken as the contents of the next commit</li>
+					    <li>must use the <span>add</span> command to add any <span>new</span> or <span>modified</span> files to the index</li>
+				    </ul>
+				    </li>
+				    <li>git add *, add all files not in the gitignore list by default</li>
+				    <li>git add [directory], stage all changes in [directory] for the next commit</li>
+				    <li><span>git add -A</span>, adds, modifies, and removes index entries to match the working tree</li>
+			    </ul>
+			    </li>
+
+			    <li><span>.gitignore</span>
+
+			    <ul>
+
+				    <li><a href = "https://github.com/github/gitignore">gitignore template</a>, usually .gitignore should be added into repository</li>
+				    <li><a href = "https://www.atlassian.com/git/tutorials/saving-changes/gitignore#git-ignore-patterns">gitignore tutorial</a></li>
+			    <pre style = "background-color: #EBF7FB">
+# no .a files
+*.a
+
+# but do track lib.a, even though you're ignoring .a files above
+!lib.a
+
+# only ignore the TODO file in the current directory, not subdir/TODO
+/TODO
+
+# ignore all files in the build/ directory
+build/
+
+# ignore doc/notes.txt, but not doc/server/arch.txt
+doc/*.txt
+
+# ignore all .pdf files in the doc/ directory
+doc/**/*.pdf
+			    </pre>
+		    	    </ul>
+
+			    </li>
+
+			    <li><span>git diff</span>
+
+			    <ul>
+
+				    <li>git diff, the changes that have not yet been staged</li>
+
+				    <li>git diff --staged/cached, changes staged that will go into your next commit</li>
+
+				    <li>git diff --raw, generate the difference in the raw format</li>
+
+				    <li>git diff --stat, generate a difference statement</li>
+
+				    <li>git diff --summary, a summary for creation, renames and mode changes</li>
+
+				    <li>git diff HEAD, changes in the working tree since the last commit</li>
+
+				    <li>git diff b_1, compare with branch b_1</li>
+
+				    <li>git diff HEAD -- fileName, changes in the fileName in the working tree since the last commit</li>
+
+				    <li>git diff HEAD^ HEAD, compare the current version and its parent version</li>
+
+				    <li>git diff b_1 master, compare two branches</li>
+
+				    <li>git diff --diff-filter=MRC, show only modification, rename, and copy</li>
+
+				    <li>git diff [commit_1] [commit_2], show the difference between two commits</li>
+			    </ul>
+
+			    </li>
+
+			    <li><span>git commit</span>, stores the current contents of the index in a new commit along with a log message
+			    <ul>
+				    <li>git commit -am, add the unstaged files to the current index, set a comment message, and store the contents</li>
+				    <li>git add fileName, add the unstaged files to the current index</li>
+				    <li>git rm fileName, remove files from the working tree and the index
+				    	<ul>
+				    		<li>Equals to "rm fileName", then "git add fileName"</li>
+				    	</ul>
+				    </li>
+				    <li>git commit fileName, only commit the specific file</li>
+				    <li>git commit --amend, append some updated to the previous commit</li>
+				    <li>access commit
+				    <ul>
+					    <li>HEAD, refs</li>
+					    <li>[commit], SHA1 checksum, or only the first a couple of characters of the SHA1 checksum</li>
+				    </ul>
+				    </li>
+			    </ul>
+
+			    </li>
+
+			    <li><span>git rm</span>
+
+			    <ul>
+
+				    <li>git rm [fileName], remove a file and add it to index, equals to "rm", then "git add fileName"</li>
+
+				    <li>if a file has been modified and added to the index, need -f to remove it to prevent the accidental removal of data that has not been recorded</li>
+
+				    <li>git rm --cached [fileName], untrack a file, not in the index, but still in the work tree</li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>git mv</span>, rename a file and add the information to the index
+
+			    <ul>
+
+				    <li>mv fromFile toFile
+
+				    <ul>
+
+					    <li>copy fileFile to toFile, toFile is an untracked file</li>
+
+					    <li>remove fileFile</li>
+
+				    </ul>
+
+				    </li>
+
+				    <li>equals to "mv fromFile toFile", then "git rm fromFile", "git add toFile"</li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>git log/version/tag</span>, show the commit logs of the current branch
+			    <ul>
+				    <li><span>git log -n 10,</span> limit the number of commits to output</li>
+				    <li>git log -p -2, show the difference between commits</li>
+				    <li><span>git log --since "1 day ago",</span> list all commits since one day ago</li>
+				    <li>--after, --until, before</li>
+				    <li><span>git log --author "Lin Chen",</span> list all commits whose author is "Lin Chen"</li>
+				    <li><span>git log -i --grep "t_4.*",</span> list all commits whose messages contain "t_4" and ignore the case</li>
+				    <li>git log --merges/--no-merges, list/not list all merge commits</li>
+				    <li>git log --branches="b_1*", list all commits of the branches whose names contain "b_1"</li>
+				    <li>git log --remotes="rep", list all commits of the remote repsitory "rep"</li>
+				    <li>git log --reverse, list commits in reverse order</li>
+				    <li>git rev-list --left-right --pretty=oneline [branchName], list a summary of the commits</li>
+				    <li><span>git log --graph,</span> draw a text-based graph of the commit history</li>
+				    <li><span>git log --graph --all</span>, draw a graph of the commit history for all branches
+				    	<ul>
+				    		<li><span>git log --graph --all --pretty=oneline</span></li>
+				    		<li><span>git log --graph --all --oneline --decorate</span></li>
+				    	</ul>
+				    </li>
+				    <li>git log --name-status, show only names and status of changed files</li>
+				    <li>git log --follow [fileName], show commits changed a specific file</li>
+				    <li><span>git log [branchName],</span> list commits of a specific branch</li>
+				    <li>git log -p, list commits with patches</li>
+				    <li>git log --stat, list commits with difference statement</li>
+				    <li><span>git log -S "str",</span> list commits that introduced a change to the code that added or removed that string</li>
+			    </ul>
+			    </li>
+
+			    <li>gitk
+			    	<ul>
+			    		<li>gitk --all, show all branches</li>
+			    	</ul>
+			    </li>
+
+			    <li><span>git reset</span>
+
+			    <ul>
+
+				    <li><a href = "http://stackoverflow.com/questions/3528245/whats-the-difference-between-git-reset-mixed-soft-and-hard">Different between --soft, --mixed, and --hard</a>
+
+				    <ul>
+
+					    <li>--soft, reset to a commit, but keep the current staged index</li>
+
+					    <li>--mixed, default, reset to a commit and change the index, but not change work tree</li>
+
+					    <li>--hard, reset to a commit, change both the index and the work tree</li>
+
+				    </ul>
+
+				    </li>
+
+				    <li>git reset HEAD -- [fileName], reset a staged file</li>
+
+				    <li>git reset, reset to the last commit and remove the added file from tracking list</li>
+				    <li>Change the commit message
+
+				    <ul>
+
+					    <li>git reset --soft HEAD^</li>
+
+					    <li>git commit -a -c ORIG_HEAD</li>
+
+				    </ul>
+
+				    </li>
+
+				    <li>Rewind to a commit
+
+				    <ul>
+
+					    <li>git reset --hard HEAD~2, get rid of two commits</li>
+
+				    </ul>
+
+				    </li>
+
+				    <li>Rewind a pull
+
+				    <ul>
+
+					    <li>git pull</li>
+
+					    <li>git reset --merge ORIG_HEAD</li>
+
+					    <li><span>ORIG_HEAD</span>, the last value of HEAD before dangeous operations</li>
+
+					    <li><span>HEAD@{1}</span>, the last value of HEAD</li>
+
+				    </ul>
+
+				    </li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>git remote</span>
+
+			    <ul>
+
+				    <li>remote -v, display the remote repositories</li>
+
+				    <li>remote add [name] [url], add a remote repository</li>
+
+				    <li>remote rename [old] [new], rename a remote repository</li>
+
+				    <li>remote rm [name], remove a remote repository</li>
+
+				    <li>remote set-ul [name] [url], set the url for a remote repository</li>
+
+				    <li>remote show [name], display all branch information of the remote repository</li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>git fetch</span>, fetch the data from the remote repository, but not merge to the current work tree
+
+			    <ul>
+
+				    <li>git fetch [repName], fetch the all branches from the remote repository
+
+				    <ul>
+
+					    <li>create several branch starting with "origin"</li>
+
+					    <li>git checkout origin/master, enter into a detached branch and inspect files, if all satisfy the requirements, merge it to the work tree</li>
+
+				    </ul>
+
+				    </li>
+
+				    <li>git merge origin/master, merge a remote branch to the current branch</li>
+
+				    <li>git fetch [repName] [branchName], fetch a specific branch from the remote repository</li>
+			    </ul>
+
+			    </li>
+
+			    <li><span>git push</span>
+			    <ul>
+				    <li>git push origin, push the current branch to the remote corresponding branch</li>
+				    <li>git push origin master, push the local master branch to the remote master branch</li>
+				    <li>git push origin b_1, push the local branch b_1 to the remote branch b_1</li>
+				    <li><span>git push origin master:b_1</span>, push the <span>local</span> master branch to the <span>remote</span> branch b_1</li>
+				    <li>git push origin HEAD:master, push the current branch to the remote master branch</li>
+				    <li><span>git push origin --delete [branch]</span>, remove the branch in the remote repository</li>
+			    </ul>
+			    </li>
+
+			    <li><span>git tag</span>, create a tag for a commit
+
+			    <ul>
+
+				    <li>git tag, list all tags</li>
+
+				    <li>git tag -a v1.0 -m message, create an anotate tag</li>
+
+				    <li>git tag v1.0, create a lightweight tag</li>
+
+				    <li>git tag -a v1.2 [commit], create a anotated tag for a specific commit</li>
+
+				    <li>git show [tagName], show the information of a commit including the tag information</li>
+
+				    <li>git rev-list -n 1 [tagName], show the commit that a tag pointing to</li>
+
+				    <li>git describe [commit], show the tag name of a specific commit</li>
+				    <li>git tag -l [regularExpression], search tags</li>
+
+				    <li>git tag -d [tagName], delete a tag name</li>
+
+				    <li>share tags
+
+				    <ul>
+
+					    <li>git push does not push tags to the remote repository</li>
+
+					    <li>git push origin [tagName], push a tag to the remote repository</li>
+
+					    <li>git push origin --tag, push all tags to the remote repository</li>
+					    <li>git push origin --delete [tagname], delete a remote tag</li>
+
+				    </ul>
+
+				    </li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>git pull</span>
+
+			    <ul>
+
+				    <li>equals to "fetch", then "merge FETCH_HEAD"</li>
+
+				    <li>git pull [remoteRepName] [remoteBranchName], fetch and merge a branch in the remote repository into the current branch</li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>git merge</span>
+
+			    <ul>
+
+				    <li><span><i>Commit before merge</i></span></li>
+
+				    <li><span><i>if no conflict, merge create a new commit</i></span></li>
+
+				    <li><span><i>if has conflicts, merge does not create a new commit, the user need to fix the conflicts, then create a commit</i></span>
+
+				    <ul>
+
+					    <li>git diff --name-only --diff-filter=U, list all unmerged files</li>
+
+				    </ul>
+
+				    </li>
+
+				    <li>git pull and git merge will stop without doing anything when local uncommitted changes overlap with files that git pull/git merge may need to update</li>
+
+				    <li>git merg B1, merge B1 to the current branch, B1 is not deleted</li>
+
+				    <li>git log --graph, show the branch and merge history</li>
+
+				    <li>git merge orgin/master, merge the remote version to the current branch</li>
+
+				    <li>Conflict
+
+				    <ul>
+
+					    <li>git status, check the conflict</li>
+
+					    <li>Both changed the same part of the same file</li>
+
+					    <li>One delete a file, one edit the same file</li>
+
+				    </ul>
+
+				    </li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>git rebase</span>
+			    	<ul>
+			    		<li>git rebase [base], rebase the current branch to the base branch</li>
+			    		<li>git rebase [base] [topic_branch], rebase the topic branch to the base branch</li>
+			    		<li>git rebase --onto [newbase] [oldbase] [topic_branch]</li>
+			    		<li>Never rebase commits once they've been pushed to a public repository</li>
+			    	<li>Steps
+			    	<ol>
+			    		<li>git rebase [base]</li>
+			    		<li>Manually resolve the conflicts</li>
+			    		<li>git add *, mark the files as resolved</li>
+			    		<li>git rebase --continue, so far, the current branch has been rebased to the base branch</li>
+			    		<li>git checkout master, switch to master</li>
+			    		<li>git merge b1, make the master and b1 point to the same commit</li>
+			    		<li>git branch -d b1, remove the branch b1</li>
+			    	</ol>
+			    	</li>
+					</ul>
+			    </li>
+
+			    <li><span>git branch</span>
+			    <ul>
+				    <li>git branch, list the available branches</li>
+				    <Li>git branch -a, display all branches</li>
+				    <li>git branch -v, display branches and the commit in each branch</li>
+				    <li>git branch -r, list all remote branches</li>
+				    <li>git branch -m, rename a branch</li>
+				    <li>git branch -d, delete a branch</li>
+				    <li>git branch -r -d origin/b_1, delete a branch on the remote repository</li>
+			    </ul>
+			    </li>
+
+			    <li><span>git show</span>, show one or more objects
+
+			    <ul>
+
+				    <li>git show, show the current HEAD</li>
+
+				    <li>git show v1.0, display a tag</li>
+
+				    <li>git show HEAD^{tree}, display the work tree</li>
+
+				    <li>git show [branchName]^{tree}, display the work tree of a branch</li>
+				    <li>git show [commit]^{tree}, display the work tree of a commit</li>
+				    <li>git show v1.0^{commit}, display the commit of a tag</li>
+
+				    <li>git show [branchName]:[fileName], display the content of a file in the specific branch</li>
+
+				    <ul>
+
+					    <li>git fetch origin</li>
+
+					    <li>git show remotes/origin/master^{tree}, display the work tree of a remote branch</li>
+
+					    <li>git show origin/master:t_12.txt, display the content of a file in the remote branch</li>
+
+				    </ul>
+
+				    </li>
+
+				    <li>git show [commit]:[fileName], show the content of a file of a specific commit</li>
+			    </ul>
+
+			    </li>
+
+			    <li><span>git checkout</span>
+
+			    <ul>
+				    <li><span>commit before switching to another branch.</span></li>
+				    <li><span>git checkout -- [fileName]</span>, restore a file from the index, back to the last staged version
+				    <ul>
+					    <li>--, avoid there is a branch having the same name as the file name</li>
+				    </ul>
+				    </li>
+				    <li>git checkout HEAD -- [fileName], restore a file from the last commit</li>
+				    <li>git checkout [branch] -- [fileName], restore a file from a specific branch</li>
+				    <li>git checkout [remoteBranch] -- [fileName], restore a file from a remote branch</li>
+				    <li>git checkout -f, throw any local changes
+				    <ul>
+					    <li>git reset --hard HEAD, has the same effect</li>
+				    </ul>
+				    </li>
+				    <li>git checkoout b_1, switch to branch b_1</li>
+				    <li><span>git checkout -b b_1</span>, create branch b_1 and switch to branch b_1</li>
+				    <li><span>git checkout -b [branch] [remote/branch]</span>, convert the detached branch to a local branch
+				    	<ul>
+				    		<li>git checkout --track [remote/branch], create a remote-tracking branch, which will tell git pull which server and which branch to pull</li>
+						<li>git branch -vv, check the remote-tracking branches, by default, the master branch in a cloned project is a remote-tracking branch</li>
+				    	</ul>
+				    </li>
+				    <li><span>git checkout [commit]</span>, switch to a commit</li>
+				    <li>git checkout HEAD^
+				    <ul>
+					    <li>switch back to the parent commit</li>
+					    <li>in a "detached HEAD" state, it a special branch, any commits in this state does not impact other branches, switching to another commit will drop it</li>
+					    <li>git checkout -b [branchName], change the branch to a regular branch</li>
+				    </ul>
+				    </li>
+				    <li>git ls-files -d | xargs git checkout --, to restore all those deleted files in a folder</li>
+			    </ul>
+			    </li>
+
+			    <li><span>git alias</span>
+
+			    <ul>
+
+				    <li>git config --global alias.st status
+
+				    <ul>
+
+					    <li>git st, check the status</li>
+
+					    <li>saved in ~/.gitconfig</li>
+
+				    </ul>
+
+				    </li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>.gitconfig</span>
+
+			    <ul>
+
+				    <li><a href = "https://gist.github.com/pksunkara/988716">gitconfig template</a></li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>git cat-file</span>
+
+			    <ul>
+
+				    <li>git cat-file -p [commit]:[fileName], show the cotent of an object</li>
+
+			    </ul>
+
+			    </li>
+
+			    <li><span>git archive</span>
+				    <ul>
+					    <li>Create an archive of files from a named tree</li>
+					    <li>git archive --format=tar --prefix=junk/ HEAD -o output.tar, create a tar archive that contains the contents of the latest commit on the current branch</li>
+				    </ul>
+			    </li>
+			    <li><span>git grep</span>
+				    <ul>
+					    <li>git grep keyword, search a keyword</li>
+					    <li>git grep cout 1f1f8d, search the keyword in a commit</li>
+					    <li>git grep cout v2.5, search the keyword in a tag</li>
+				    </ul>
+			    </li>
+		    </ul>
+
+		    </li>
+
+		    <li><a href = "http://www.gitguys.com/">Git guys</a>
+
+		    <ul>
+
+			    <li><a href = "http://www.gitguys.com/topics/glossary/">Glossary</a></li>
+
+			    <li><a href = "http://www.gitguys.com/topics/all-git-object-types-blob-tree-commit-and-tag">Data types in git</a></li>
+
+			    <li>blob
+
+			    <ul>
+
+				    <li>basic data storage unit
+
+				    <ul>
+
+					    <li>100644 blob f283... f_1.txt</li>
+
+				    </ul>
+
+				    </li>
+
+				    </li>
+
+				    <li>git hash-object [fileName], get the hash value of a file</li>
+
+				    <li>git ls-tree HEAD, list all blobs of the current commit</li>
+
+			    </ul>
+
+			    </li>
+
+			    <li>tree
+
+			    <ul>
+
+				    <li>refers other trees and blobs</li>
+
+			    </ul>
+
+			    </li>
+
+			    <li>commits
+
+			    <ul>
+
+				    <li>refers to the main tree</li>
+
+			    </ul>
+
+			    </li>
+
+			    <li>tag
+
+			    <ul>
+
+				    <li>give a name to a git commit</li>
+
+				    <li>git cat-file -p v1.0, show the information of a tag</li>
+
+			    </ul>
+
+			    </li>
+
+			    <li>index
+
+			    <ul>
+
+				    <li><a href = "http://www.gitguys.com/topics/whats-the-deal-with-the-git-index">Deal with the git index</a></li>
+
+				    <li>contain the file list of staged files</li>
+
+				    <li>git ls-files --stage, show the content of the index</li>
+
+				    <li>[fileName] and [hashValue]</li>
+
+			    </ul>
+
+			    </li>
+
+		    </ul>
+
+		    </li>
+
+		    <li><a href = "https://git-scm.com/docs">Documentation</a></li>
+
+	    </ul>
+
+	    </li>
+
+	    <li>Reference
+
+	    <ul>
+	    	<li><a href = "https://git-scm.com/book/en/v2/">Git-scm Online Book</a></li>
+	    	<li><a href = "https://www.atlassian.com/git/tutorials/what-is-version-control">git tutorial</a></li>
+	    </ul>
+
+	    </li>
+
+    </body>
+
+    </html>
+

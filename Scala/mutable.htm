@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Mutable and Immutable
+		</div>
+
+		<div class = "subtitle">Data Types</div>
+		<div class = "block">
+			<li><span>Unit</span>, corresponds to no value</li>
+			<li><span>Null</span>, null or empty reference</li>
+			<li><span>Nothing</span>, the subtype of every other type; includes no values</li>
+			<li><span>Any</span>, the supertype of any type; any object is of type Any</li>
+			<li><span>AnyRef</span>, the supertype of any reference type</li>
+		</div>
+		<div class = "subtitle">Mutable and Immutable Reference</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Variables {
+   def main(args: Array[String]) {
+     var v : String = "Hello"; // mutable reference
+     val v2 : String = "Hello"; // immutable reference
+     var v3 = 10; // automatically decide data type
+
+     v = "World!"; // v can be reassigned to a different object
+     v = 10; //error, v cannot be reassigned to a different data type
+
+     v2 = "World!"; //error, v2 cannot be reassigned to a different object
+   }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Immutable Reference to a Immutable Object</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Person(val name: String) { // mutable fields
+  def getName(): String = {
+    s"$name"
+  }
+}
+
+object Demo {
+     def main(args: Array[String]) {
+      val p = new Person("Lin"); // immutable reference
+
+      println("Name: "+p.getName())
+
+      p.name = "Chen"; //error, not able to reassign the value
+   }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Immutable Reference to a Mutable Object</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Person(var name: String) { // mutable fields
+  def getName(): String = {
+    s"$name"
+  }
+}
+
+object Demo {
+     def main(args: Array[String]) {
+      val p = new Person("Lin"); // immutable reference
+
+      println("Name: "+p.getName())
+
+      p.name = "Chen";
+      println("Name: "+p.getName())
+   }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://medium.com/@mrpowers/difference-between-immutable-references-and-immutable-values-in-scala-5af9ada76628">immutable references and immutable values</a></li>
+		</div>
+	</body>
+</html>

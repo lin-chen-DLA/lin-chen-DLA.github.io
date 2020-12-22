@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CSS</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Flexbox
+		</div>
+
+		<div class = "block">
+			<li>A Flexible Layout must have a parent element with the <span>display</span> property set to <span>flex</span></li>
+			<li>Direct child elements(s) of the flexible container automatically becomes flexible items</li>
+		</div>
+		<div class = "subtitle">Flex Container Properties</div>
+		<div class = "block">
+			<li>flex-direction, defines in which direction the container wants to stack the flex items</li>
+			<li>flex-wrap, specifies whether the flex items should wrap or not</li>
+			<li>flex-flow, a shorthand property for setting both the flex-direction and flex-wrap properties</li>
+			<li>justify-content, is used to align the flex items</li>
+			<li>align-items, is used to align the flex items vertically</li>
+			<li>align-content, is used to align the flex lines</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		.container {display: flex; flex-wrap: wrap; justify-content: space-around; border: 1px solid red;}
+		.container &gt; div {text-align: center; width: 200px; margin: 20px; line-height: 100px; border: 1px solid blue;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class = 'container'&gt;
+		&lt;div&gt;A&lt;/div&gt;
+		&lt;div&gt;B&lt;/div&gt;
+		&lt;div&gt;C&lt;/div&gt;
+		&lt;div&gt;D&lt;/div&gt;
+	&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Flex Item Properties</div>
+		<div class = "block">
+			<li>order, specifies the order of the flex items</li>
+			<li>flex-grow, specifies how much a flex item will grow relative to the rest of the flex items</li>
+			<li>flex-shrink, specifies how much a flex item will shrink relative to the rest of the flex items</li>
+			<li>flex-basis, specifies the initial length of a flex item</li>
+			<li>flex, is a shorthand property for the flex-grow, flex-shrink, and flex-basis properties</li>
+			<li>align-self, specifies the alignment for the selected item inside the flexible container</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		* {box-sizing: border-box}
+		.container {display: flex; flex-wrap: wrap; border: 1px solid red;}
+		.item {flex: 25%; text-align: center; line-height: 100px; border: 1px solid blue;}
+		@media (max-width: 800px) {.item {flex: 50%;}}
+		@media (max-width: 600px) {.item {flex: 100%;}}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class = 'container'&gt;
+		&lt;div class = 'item'&gt;A&lt;/div&gt;
+		&lt;div class = 'item'&gt;B&lt;/div&gt;
+		&lt;div class = 'item'&gt;C&lt;/div&gt;
+		&lt;div class = 'item'&gt;D&lt;/div&gt;
+	&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+	</body>
+</html>

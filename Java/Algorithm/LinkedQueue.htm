@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Linked Queue</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Node
+{
+	private int data;
+	private Node link;
+
+	public Node()
+	{
+		data = 0;
+		link = null;
+	}
+
+	public int getData()
+	{
+		return data;
+	}
+
+	public Node getLink()
+	{
+		return link;
+	}
+
+	public void setData(int d)
+	{
+		data = d;
+	}
+
+	public void setLink(Node l)
+	{
+		link = l;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class List
+{
+	private Node head;
+	private int count;
+
+	public List()
+	{
+		head = null;
+		count = 0;
+	}
+
+	public boolean isEmpty()
+	{
+		return (count == 0);
+	}
+
+	public int getSize()
+	{
+		return count;
+	}
+
+	public int getElement(int index)
+	{
+		if(index &lt; 0 || index &gt; count) return -1;
+		Node walker = head;
+		for(int i = 0; i &lt; index; i++)
+			walker = walker.getLink();
+
+		return walker.getData();
+	}
+
+	public String toString()
+	{
+		String str = "[";
+		Node walker = head;
+		while(walker != null)
+		{
+			str = str + " " + walker.getData();
+			walker = walker.getLink();
+		}
+
+		return str+" ]";
+	}
+
+	public boolean search(int element)
+	{
+		Node walker = head;
+		while(walker != null && walker.getData() != element)
+			walker = walker.getLink();
+		if(walker == null)
+			return false;
+		else
+			return true;
+	}
+
+	public boolean insert(int element, int index)
+	{
+		if(index &lt; 0 || index &gt; count)
+			return false;
+
+		Node newNode = new Node();
+		newNode.setData(element);
+
+		if(index == 0)
+		{
+			newNode.setLink(head);
+			head = newNode;
+			count++;
+			return true;
+		}
+
+		Node walker = head;
+		for(int i = 0; i &lt; index-1; i++)
+			walker = walker.getLink();
+		newNode.setLink(walker.getLink());
+		walker.setLink(newNode);
+		count++;
+		return true;
+	}
+
+	public boolean delete(int index)
+	{
+		if(index &lt; 0 || index &gt; count-1)
+			return false;
+		if(index == 0)
+		{
+			head = head.getLink();
+			count--;
+			return true;
+		}
+		Node walker = head;
+		for(int i = 0; i &lt; index-1; i++)
+			walker = walker.getLink();
+		walker.setLink(walker.getLink().getLink());
+		count--;
+		return true;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Queue extends List
+{
+	public Queue()
+	{
+		super();
+	}
+
+	public int front()
+	{
+		return getElement(0);
+	}
+
+	public int rear()
+	{
+		return getElement(getSize()-1);
+	}
+
+	public boolean enqueue(int e)
+	{
+		return insert(e, getSize());
+	}
+
+	public boolean dequeue()
+	{
+		return delete(0);
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class QueueTest
+{
+	public static void main(String args[])
+	{
+		Queue q = new Queue();
+
+		//enqueue
+		for(int i = 0; i &lt; 10; i++)
+			q.enqueue(i);
+
+		//toString
+		System.out.println(q);
+
+		for(int i = 0, len = q.getSize(); i &lt; len; i++)
+		{
+			q.dequeue();
+			System.out.println(q);
+		}
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>

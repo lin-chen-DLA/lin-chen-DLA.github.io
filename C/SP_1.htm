@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			System Programming Chapter 1
+		</div>
+
+		<div class = "block">
+			<li>Simple IO model</li>
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int c;
+
+	while((c = getchar()) != EOF)
+		putchar(c);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Process ID</li>
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+int main()
+{
+	printf("Process id: %d\n", getpid());
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<li>privileged mode, only the operating system is allowed to execute privileged instructions
+				<ul>
+					<li>acquiring more memory;</li>
+					<li>changing the system time;</li>
+					<li>raising the priority of the running process;</li>
+					<li>reading from or writing to the disk;</li>
+					<li>entering privileged mode.</li>
+				</ul>
+			</li>
+			<li>unprivileged mode, user processes</li>
+		</div>
+		<div class = "block">
+			<li>Environment Variables
+				<ul>
+					<li>env, list environment variables</li>
+					<li>name=value, set environment variable</li>
+					<li>unset name, unset environment variable</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "block">
+			<li>Get environment variable</li>
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+	char* home = getenv("HOME");
+	printf("Home direcotry is %s\n", home);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<li>System call with wrapper, the wapper in C library has same name as the function in kernel</li>
+			<li>System call without wrapper, such as gettid</li>
+		<pre class = "prettyprint linenums">
+#define _GUNU_SOURCE
+#include &lt;unistd.h&gt;
+#include &lt;sys/syscall.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	printf("Thread id %ld\n", syscall(SYS_gettid));
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">The UNIX File Hierarchy</div>
+		<div class = "block">
+			<li>bin, essential binary executables including those shell
+				commands</li>
+			<li>boot, Static files of the boot loader</li>
+			<li>dev, essential device files
+				<ul>
+					<li>/dev/null: a device which never can be filled up</li>
+				</ul>
+			</li>
+			<li>etc, host conguration files and system administration programs
+				<ul>
+					<li><a href = "https://linux.die.net/Intro-Linux/sect_03_02.html">Configuration files</a></li>
+					<li>/etc/passwd, ID:password:uid:gid:name:directory:shell</li>
+					<li>/etc/group, group information</li>
+					<li>/etc/shadow, saves password, only can be seen under root, use /usr/sbin/pwunconv to take off shadow and /usr/sbin/pwconv to restore it</li>
+					<li>/etc/shells, a list of shells</li>
+					<li>/etc/apt/sources.list, repository list</li>
+					<li>/ect/init.d, containing System V init scripts</li>
+					<li>/etc/init.d/networking stop, equals to service networking stop</li>
+					<li>/etc/init, containing upstart jobs</li>
+					<li>/etc/rc(x).d, scripts executed during system start-up</li>
+					<li>files in /etc/rc(x).d, S+number+service, number is the order that script run</li>
+					<li>/etc/fstab, mount information</li>
+					<li>/etc/rc.d, system initialization</li>
+				</ul>
+			</li>
+			<li>home, user home directories</li>
+			<li>lib, essential shared libraries and kernel modules</li>
+			<li>mnt, mount point for mounting a le system temporarily</li>
+			<li>opt, add-on application software packages, used for the storage of larger program packages</li>
+			<li>sbin, essential system binaries for system start-up
+				<ul>
+					<li>/sbin/init, start program</li>
+				</ul>
+			</li>
+			<li>tmp, temporary files</li>
+			<li>usr, the top of a hierarchy in which non-essential binaries, libraries, and sources
+				<ul>
+					<li>/usr/share/doc, document files</li>
+					<li>/usr/bin, program not needed for system start-up but installed by the distribution</li>
+					<li>/usr/include, heaser files</li>
+					<li>/usr/lib, libraries and program packages</li>
+					<li>/usr/local, programs compiled and installed by system administrators</li>
+					<li>/usr/sbin, programs for the system administrator</li>
+					<li>/usr/share, architecture-independent data</li>
+					<li>/usr/src, souorce code of various programs</li>
+				</ul>
+			</li>
+			<li>var, variable files
+				<ul>
+					<li>/var/log, system log</li>
+				</ul>
+			</li>
+			<li>proc, pseudo file system containing process information
+				<ul>
+					<li>cat /proc/cpuinfo, check cpu information</li>
+					<li>cat /proc/meminfo, check memory information</li>
+				</ul>
+			</li>
+			<li>root, system administrator home directory</li>
+		</div>
+		<div class = "subtitle">Files and Filenames</div>
+		<div class = "block">
+			<li>regular files</li>
+			<li>device files (character or block)</li>
+			<li>FIFOs</li>
+			<li>sockets</li>
+			<li>symbolic links</li>
+			<li>- (regular le), d (directory), b (buered special le), c (character special le), l (symbolic link), p (pipe), or s (socket)</li>
+		</div>
+		<div class = "subtitle"><span>more</span> Program</div>
+		<div class = "block">
+			<li>more file1 file2 ... filen</li>
+			<li>ls -l | more</li>
+			<li>more &lt; file1</li>
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#define SCREEN_ROWS 23
+#define LINELEN 512
+#define SPACEBAR 1
+#define RETURN 2
+#define QUIT 3
+#define INVALID 4
+
+
+/** do_more_of ( )
+ * Given a FILE* argument fp, display up to a page of the
+ * file fp, and then display a prompt and wait for user input.
+ * If user input is SPACEBAR, display next page.
+ * If user input is RETURN, display one more line.
+ * If user input is QUIT, terminate program.
+*/
+void do_more_of (FILE *filep) ;
+
+/** get_user_input ( )
+ * Displays more's status and prompt and waits for user response,
+ * Require that user press return key to receive input
+ * Returns one of SPACEBAR, RETURN or QUIT on valid key presses
+ * and INVALID for invalide key presses.
+*/
+int get_user_input();
+
+int main(int argc, char *argv[])
+{
+	FILE *fp;
+	int i = 0;
+	if(argc == 1)
+		do_more_of(stdin); // no args, read from standard input
+	else
+		while(++i &lt; argc)
+		{
+			fp = fopen(argv[i], "r");
+			if (NULL != fp)
+			{
+				do_more_of(fp);
+				fclose(fp);
+			}
+			else
+				printf("Skipping %s \n", argv[i]);
+		}
+
+	return 0;
+}
+
+void do_more_of (FILE * fp)
+{
+	char line[LINELEN]; // buffer to store line of input
+	int num_of_lines = SCREEN_ROWS; // # of lines left on screen
+	int getmore = 1; // boolean to signal when to stop
+	int reply; // input from user
+
+	while(getmore && fgets(line, LINELEN, fp)){
+		//fgets() return pointr to string read or NULL
+		if(num_of_lines == 0)
+		{
+			reply = get_user_input();
+			switch(reply)
+			{
+				case SPACEBAR:
+					num_of_lines = SCREEN_ROWS; // all full screen
+					break;
+				case RETURN:
+					num_of_lines++; // allow one more line
+					break;
+				case QUIT:
+					getmore = 0;
+					break;
+				default:
+					break;
+			}
+		}
+		if(fputs(line, stdout) == EOF)
+			exit(1);
+		num_of_lines--;
+	}
+}
+
+int get_user_input()
+{
+	int c;
+	// Control Sequence Introducer
+	printf("\033[7m more? \033[m"); // reverse on a VT100
+
+	while((c = getchar()) != EOF)
+		switch(c)
+		{
+			case 'q':
+				return QUIT;
+			case ' ':
+				return SPACEBAR;
+			case '\n':
+				return RETURN;
+			default:
+				return INVALID;
+		}
+
+	return INVALID;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Device Special Files</div>
+		<div class = "block">
+			<li>Every I/O device is associated with a device special file</li>
+			<li>/dev/tty is the name of the terminal that the process is using</li>
+			<li>/dev/mem is a special le that is a character interface to memory</li>
+			<li>/dev/null is a special le that acts like a black hole. All data sent to it is discarded</li>
+		<pre class = "prettyprint linenums">
+tty # /dev/pts/3
+echo 'Hello World!' &gt; /dev/pts/3
+		</pre>
+		</div>
+		<div class = "subtitle">Notation</div>
+		<div class = "block">
+			<li>ls [&lt;option&gt;] ... [&lt;directory_name&gt;] ...
+				<ul>
+					<li>[ ], enclose optional arguments to the command</li>
+					<li>&lt; &gt;, enclose placeholders</li>
+					<li>|, logical-or</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Shells</div>
+		<div class = "block">
+			<li>Bourne shell (sh), the C shell (csh), the Korn shell
+				(ksh), the Bourne-again shell (bash), the Z shell (zsh), and the TC shell (tcsh)</li>
+			<li>echo $0 or echo $SHELL, check the current shell</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "http://www.compsci.hunter.cuny.edu/~sweiss/course_materials/unix_lecture_notes/">System Programming at CNUY</a></li>
+		</div>
+	</body>
+</html>

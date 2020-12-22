@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			gdb
+		</div>
+
+		<div class = "subtitle">Debug</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// main.c
+#include &lt;stdio.h&gt;
+
+int doubleNum(int n)
+{
+	int temp;
+	temp = 2*n;
+
+	return temp;
+}
+
+int main ()
+{
+	int a = 10;
+
+	int b = doubleNum(a);
+
+	printf("%d\n", b);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// Exercise 1
+gcc -g main.c // generate the executable file a.out
+gdb a.out // load the program into gdb
+(gdb) list // list the first 10 lines of the code
+(gdb) list // list the next 10 lines of the code
+(gdb) run // run the program
+(gdb) quit // quit gdb
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// Exercise 3
+gdb a.out // load the program into gdb
+(gdb) list main // list the code of the main function
+(gdb) break 15 // set up a breakpoint before line 15
+(gdb) run // run program, pause at the breakpoint
+(gdb) print a // print out the value of variable a
+(gdb) whatis a // print out the data type of variable a
+(gdb) next // run the current instruction and move to the start of the next instruction
+(gdb) next
+(gdb) print b
+(gdb) next
+(gdb) quit
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// Exercise 3
+gdb a.out // load the program into gdb
+(gdb) list doubleNum
+(gdb) break 8
+(gdb) break 17
+(gdb) info break
+(gdb) run // run program, pause at line 8
+(gdb) print temp
+(gdb) continue // continue run program, pause at line 17
+(gdb) print b
+(gdb) continue
+(gdb) info break
+(gdb) disable 1 // disable the fist breakpoint
+(gdb) info break
+(gdb) run // run program, pause at line 17
+(gdb) continue
+(gdb) quit
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// Exercise 4
+gdb a.out // load the program into gdb
+(gdb) l
+(gdb) b 15 // setup a breakpoint before line 15
+(gdb) r
+(gdb) set var a = 100
+(gdb) n
+(gdb) print b
+(gdb) c
+(gdb) q
+		</pre>
+		</div>
+		<div class = "subtitle">Makefile</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/GDB.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// main.c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include "util.h"
+
+int main()
+{
+	int *array = getArray(10);
+
+	change(array, 10);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// util.h
+#ifndef UTIL_H
+#define UTIL_H
+
+int *getArray(int size);
+
+void change(int *array, int size);
+
+#endif
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// util.c
+#include &lt;stdlib.h&gt;
+#include "util.h"
+
+int *getArray(int size)
+{
+	int *ptr = (int *) malloc(size*sizeof(int));
+
+	for(int i = 0; i &lt; size; i++)
+		ptr[i] = i;
+
+	return ptr;
+}
+
+void change(int *array, int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		array[i] *= 10;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Makefile
+vpath %.h include
+vpath %.c src
+ 
+SRC = src
+OBJECTIVES = main.o util.o
+CFLAGS = -g -I include
+CC = gcc
+PROG = Array
+ 
+$(PROG): $(OBJECTIVES)
+	$(CC) -o $(PROG) $(OBJECTIVES)
+ 
+main.o: main.c util.h
+	$(CC) -c $(SRC)/main.c $(CFLAGS)
+util.o: util.c util.h
+	$(CC) -c $(SRC)/util.c $(CFLAGS)
+ 
+.PHONY: clean
+clean:
+	-rm -f *.o $(PROG)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// Exercise 6
+make
+gdb Array // load the program into gdb
+(gdb) l util.c:1 // list the code near to line 1 in util.c
+(gdb) b 10 // setup a breakpoint at line 10 in util.c
+(gdb) info b
+(gdb) r
+(gdb) p i
+(gdb) p ptr[i]
+(gdb) c
+(gdb) c
+(gdb) p i
+(gdb) p ptr[i-1]
+(gdb) q
+		</pre>
+		</div>
+		<div class = "subtitle">Commands</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+gcc -g, compile the program to generate debug information
+
+# open program with gdb
+gdb executableFile, debug program
+
+# check code
+list or l, display next 10 lines of code
+list lineNumber, display the code near the specified line number
+list functionName, display the code of a function
+list fileName:lineNumber, display the code in a specific file
+
+# setup breakpoints
+break or b + lineNumber, set up a breakpoint before a specific line
+info b, display breakpoints
+disable index, disable a breakpoint
+enable index, enable a breakpoint
+clear, clear all breakpoints
+
+# run code
+run or r, run program, will stop at a breakpoint
+next or n, run next line of code, do not dive into function
+step or s, run next instruction, dive into function
+continue or c, continue run the code until next breakpoint
+whatis i, check the data type of variable i
+
+# quit gdb
+quit or q
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "http://kirste.userpage.fu-berlin.de/chemnet/use/info/gdb/gdb_1.html">GDB</a></li>
+			<li><a href = "https://sourceware.org/gdb/current/onlinedocs/gdb/index.html">Debugging with GDB</a></li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Array
+		</div>
+
+		<div class = "subtitle">Create an array</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var cars = ["Buick", "Acura", "Lincoln", "Honda"];
+console.log(cars);
+console.log(typeof(cars)); //object
+
+var cars_2 = new Array("Buick", "Acura", "Lincoln", "Honda");
+console.log(cars_2);
+console.log(typeof(cars_2)); //object
+		</pre>
+		</div>
+		<div class = "subtitle">Array methods</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var cars = ["Buick", "Acura", "Lincoln", "Honda"];
+
+//access element
+console.log(cars[0]);
+
+//modify element
+cars[0] = "Toyota";
+console.log(cars);
+
+//length
+console.log(cars.length); //4
+
+//add element as the last element
+cars.push("Subaru"); //["Toyota", "Acura", "Lincoln", "Honda", "Subaru"]
+console.log(cars);
+cars[cars.length] = "Benz";
+console.log(cars); //["Toyota", "Acura", "Lincoln", "Honda", "Subaru", "Benz"]
+
+//remove the last element
+console.log(cars.pop()); //Benz
+console.log(cars); //["Toyota", "Acura", "Lincoln", "Honda", "Subaru"]
+
+//shift, removes the first array element
+console.log(cars.shift()); //Toyota
+console.log(cars); //["Acura", "Lincoln", "Honda", "Subaru"]
+
+//unshfit, add element as the first array element
+console.log(cars.unshift("Infiniti"));
+console.log(cars); //["Infiniti", "Acura", "Lincoln", "Honda", "Subaru"]
+
+//remove element
+delete cars[1];
+console.log(cars); //["Infiniti", empty, "Lincoln", "Honda", "Subaru"]
+
+//splice, add items
+cars.splice(2, 1, "LandRover"); //insert element at index 2, remove 1 element, insert the rest of the elements
+console.log(cars); //["Infiniti", empty, "LandRover", "Honda", "Subaru"]
+
+//isArray
+console.log(Array.isArray(cars)); //true
+console.log(cars instanceof Array); //true
+
+//toString
+console.log(cars.toString())
+
+//join
+console.log(cars.join("-"));
+
+//concatenate
+var a_1 = [1, 2, 3, 4];
+var a_2 = ['Buick', 'Lincoln', 'Honda'];
+var a_3 = a_1.concat(a_2);
+console.log(a_3); //[1, 2, 3, 4, "Buick", "Lincoln", "Honda"]
+
+//slice
+var a_4 = a_3.slice(1, 5); //end index is exclusive
+console.log(a_4); //[2, 3, 4, "Buick"]
+
+//indexOf, returns the position of the first occurrence
+console.log(a_3.indexOf("Honda")); //6
+
+//lastIndexOf, returns the position of the last occurrence
+var fruits = ["Apple", "Orange", "Apple", "Mango"];
+console.log(fruits.lastIndexOf("Apple")); //2
+		</pre>
+		</div>
+		<div class = "subtitle">Sort</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.sort();
+
+console.log(fruits); //["Apple", "Banana", "Mango", "Orange"]
+
+fruits.reverse();
+console.log(fruits); //["Orange", "Mango", "Banana", "Apple"]
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var a = [40, 100, 1, 5, 25, 10];
+
+a.sort();
+console.log(a); //[1, 10, 100, 25, 40, 5]
+
+a.sort(function(a, b){return a - b}); //[1, 5, 10, 25, 40, 100]
+console.log(a);
+		</pre>
+		</div>
+		<div class = "subtitle">Max and Min</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var a = [40, 100, 1, 5, 25, 10];
+
+console.log(Math.max.apply(null, a));
+console.log(Math.min.apply(null, a));
+		</pre>
+		</div>
+		<div class = "subtitle">ForEach</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var a = [40, 100, 1, 5, 25, 10];
+
+function f(value)
+{
+	console.log(value)
+}
+
+a.forEach(f);
+		</pre>
+		</div>
+		<div class = "subtitle">Map</div>
+		<div class = "block">
+			<li>performing a function on <span>each</span> array element</li>
+			<li>the function takes 3 arguments, item value, item value, array itself</li>
+		<pre class = "prettyprint linenums">
+var a = [40, 100, 1, 5, 25, 10];
+
+function f(value, index, array)
+{
+	return value*2;
+}
+
+var b = a.map(f);
+console.log(b);
+		</pre>
+		</div>
+		<div class = "subtitle">Filter</div>
+		<div class = "block">
+			<li>creates a new array with array elements that passes a test</li>
+			<li>the function takes 3 arguments, item value, item value, array itself</li>
+		<pre class = "prettyprint linenums">
+var a = [40, 100, 1, 5, 25, 10];
+
+function f(value, index, array)
+{
+	if (value%2 == 0)
+		return value;
+}
+
+var b = a.filter(f);
+console.log(b);
+		</pre>
+		</div>
+		<div class = "subtitle">Reduce</div>
+		<div class = "block">
+			<li>runs a function on each array element to produce (reduce it to) a single value</li>
+			<li>the function takes 4 arguments, total value, item value, item value, array itself</li>
+		<pre class = "prettyprint linenums">
+var a = [40, 100, 1, 5, 25, 10];
+
+function f(total, value, index, array)
+{
+	return total + value;
+}
+
+var b = a.reduce(f);
+console.log(b);
+		</pre>
+		</div>
+		<div class = "subtitle">Every</div>
+		<div class = "block">
+			<li>check if all array values pass a test</li>
+			<li>the function takes 3 arguments, item value, item value, array itself</li>
+		<pre class = "prettyprint linenums">
+var a = [40, 100, 1, 5, 25, 10];
+
+function f(value, index, array)
+{
+	return value % 2 == 0;
+}
+
+console.log(a.every(f)); //false
+		</pre>
+		</div>
+		<div class = "subtitle">Some</div>
+		<div class = "block">
+			<li>check if some array values pass a test</li>
+			<li>the function takes 3 arguments, item value, item value, array itself</li>
+		<pre class = "prettyprint linenums">
+var a = [40, 100, 1, 5, 25, 10];
+
+function f(value, index, array)
+{
+	return value % 2 == 0;
+}
+
+console.log(a.some(f)); //true
+		</pre>
+		</div>
+		<div class = "subtitle">Find</div>
+		<div class = "block">
+			<li>returns the value of the first array element that passes a test function</li>
+			<li>the function takes 3 arguments, item value, item value, array itself</li>
+		<pre class = "prettyprint linenums">
+var a = [40, 100, 1, 5, 25, 10];
+
+function f(value, index, array)
+{
+	return value % 2 != 0;
+}
+
+console.log(a.find(f)); //1
+		</pre>
+		</div>
+		<div class = "subtitle">FindIndex</div>
+		<div class = "block">
+			<li>returns the index of the first array element that passes a test function</li>
+			<li>the function takes 3 arguments, item value, item value, array itself</li>
+		<pre class = "prettyprint linenums">
+var a = [40, 100, 1, 5, 25, 10];
+
+function f(value, index, array)
+{
+	return value % 2 != 0;
+}
+
+console.log(a.findIndex(f)); //2
+		</pre>
+		</div>
+		<div class = "subtitle">Destructuring Assignment</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var [firstResort] = ["Kirkwood", "Squaw", "Alpine"];
+console.log(firstResort); // Kirkwood
+
+var [,,thirdResort] = ["Kirkwood", "Squaw", "Alpine"];
+console.log(thirdResort); // Alpine
+		</pre>
+		</div>
+		<div class = "subtitle">Spread Operator</div>
+		<div class = "block">
+			<li>Combine the contents of arrays</li>
+		<pre class = "prettyprint linenums">
+var peaks = ["Tallac", "Ralston", "Rose"];
+var canyons = ["Ward", "Blackwood"];
+var tahoe = [...peaks, ...canyons];
+console.log(tahoe.join(', ')); // Tallac, Ralston, Rose, Ward, Blackwood
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Extract element without changing the original array</li>
+		<pre class = "prettyprint linenums">
+var peaks = ["Tallac", "Ralston", "Rose"];
+var [last] = [...peaks].reverse();
+console.log(last); // Rose
+console.log(peaks.join(', ')); // Tallac, Ralston, Rose, not change the order of elements in peaks
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Get the rest of the array</li>
+		<pre class = "prettyprint linenums">
+var lakes = ["Donner", "Marlette", "Fallen Leaf", "Cascade"]
+var [first, ...rest] = lakes
+console.log(rest.join(", ")) // "Marlette, Fallen Leaf, Cascade"
+		</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Streamlit
+		</div>
+
+		<div class = "subtitle">Iris Predictor</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+from sklearn import datasets
+import numpy as np
+import pandas as pd
+
+st.title('Iris Flower Prediction App')
+st.sidebar.title('Input Parameters')
+
+@st.cache
+def get_data():
+    print('Load data ...')
+    iris = datasets.load_iris()
+    return iris.data[:, :2], iris.target
+
+@st.cache(allow_output_mutation=True)
+def train_model(train_X, train_Y):
+    print('Train model ...')
+    from sklearn.ensemble import RandomForestClassifier
+    clf = RandomForestClassifier()
+    clf.fit(train_X, train_Y)
+
+    return clf
+
+def get_features():
+    sepal_length = st.sidebar.slider('Sepal length', 4.3, 7.9, 5.4)
+    sepal_width = st.sidebar.slider('Sepal width', 2.0, 4.4, 3.4)
+    data = {'sepal_length': sepal_length,
+            'sepal_width': sepal_width}
+    features = pd.DataFrame(data, index=[0])
+    return features
+
+X, Y = get_data()
+clf = train_model(X, Y)
+
+df = get_features()
+prediction = clf.predict(df)
+
+def display_image(value):
+    from PIL import Image
+
+    if value == 0:
+        image = Image.open('Iris-setosa.jpg')
+        st.image(image, caption='Iris Setosa', width=200)
+    elif value == 1:
+        image = Image.open('IRIS_VERSICOLOR.jpeg')
+        st.image(image, caption='Iris Versicolor', width=200)
+    else:
+        image = Image.open('Iris_virginica.jpg')
+        st.image(image, caption='Iris Virginica', width=200)
+
+display_image(prediction[0])
+		</pre>
+		</div>
+
+		<div class = "subtitle">Optimization</div>
+		<div class = "block">
+			<li>To avoid some code is re-run</li>
+		<pre class = "prettyprint linenums">
+@st.cache(persist=True)
+def get_data():
+    print('Load data '+str(count)+' ...')
+    iris = datasets.load_iris()
+    return iris.data, iris.target
+		</pre>
+		</div>
+
+		<div class = "subtitle">Components</div>
+		<div class = "block">
+			<li>Widget
+				<ul>
+					<li>button</li>
+					<li>checkbox</li>
+					<li>radio</li>
+					<li>sidebar</li>
+					<li>selectbox</li>
+					<li>multiselect</li>
+					<li>slider</li>
+					<li>text_input</li>
+					<li>number_input</li>
+					<li>text_area</li>
+					<li>date_input</li>
+					<li>time_input</li>
+					<li>file_uploader</li>
+					<li>beta_color_picker</li>
+				</ul>
+			</li>
+			<li>Writing
+				<ul>
+					<li>title, set the app’s title</li>
+					<li>header, heading level</li>
+					<li>subheader, sub heading level</li>
+					<li>text, write pure text</li>
+					<li>markdown, write markdown text</li>
+					<li>latex, display mathematical expressions formatted as LaTeX</li>
+					<li>write, write different things depending on what the input is</li>
+					<li>dataframe, display a dataframe as an interactive table</li>
+					<li>table, display a static table</li>
+					<li>json, display object or string as a pretty-printed JSON string</li>
+				</ul>
+			</li>
+			<li>Plotting
+				<ul>
+					<li>line_chart</li>
+					<li>area_chart</li>
+					<li>bar_chart</li>
+					<li>pyplot</li>
+					<li>altair_chart</li>
+					<li>vega_lite_chart</li>
+					<li>plotly_chart, display an interactive Plotly chart</li>
+					<li>bokeh_chart, display an interactive Bokeh chart</li>
+					<li>pydeck_chart, supports 3D maps, point clouds, and more</li>
+					<li>deck_gl_chart, follows Deck.GL’s JavaScript API</li>
+					<li>graphviz_chart, display a graph using the dagre-d3 library</li>
+					<li>map, display a map with points on it</li>
+					<li>image, display an image or list of images</li>
+					<li>audio, display an audio player</li>
+					<li>video, display a video player</li>
+				</ul>
+			</li>
+			<li>Sidebar
+				<ul>
+					<li>st.sidebar.[element_name]</li>
+				</ul>
+			</li>
+		</div>
+
+		<div class = "subtitle">Local</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+streamlit run [appname]
+		</pre>
+		</div>
+		<div class = "subtitle">Heroku</div>
+		<div class = "block">
+			<li>Local Project
+				<ol>
+					<li>Create a project</li>
+					<li>pipreq projectDirectory, create requirements.txt</li>
+					<li>Create setup.sh</li>
+		<pre class = "prettyprint linenums">
+mkdir -p ~/.streamlit/
+
+echo "\
+[general]\n\
+email = \"your-email@domain.com\"\n\
+" &gt; ~/.streamlit/credentials.toml
+
+echo "\
+[server]\n\
+headless = true\n\
+enableCORS=false\n\
+port = $PORT\n\
+" &gt; ~/.streamlit/config.toml
+		</pre>
+		<li>Create Procfile, used to first execute the setup.sh and then call streamlit run to run the application</li>
+		<pre class = "prettyprint linenums">
+web: sh setup.sh &amp;&amp; streamlit run app.py
+		</pre>
+				</ol>
+			</li>
+			<li>Deploy at Heroku
+				<ol>
+					<li>Create a app at Heroku</li>
+					<li>git init</li>
+					<li>heroku git:remote -a [appname]</li>
+					<li>git add .</li>
+					<li>git commit -am "comments"</li>
+					<li>git push heroku master</li>
+					<li><a href = "https://mlstreamlit.herokuapp.com/">App at Heroku</a></li>
+				</ol>
+			</li>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://gilberttanner.com/blog/deploying-your-streamlit-dashboard-with-heroku">Deploying your Streamlit dashboard with Heroku</a></li>
+			<li><a href = "https://docs.streamlit.io/en/stable/api.html">API</a></li>
+		</div>
+	</body>
+</html>

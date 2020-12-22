@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">List Lab</div>
+		<div class = "block">
+			In this lab we are going to use a linked list implementation the list ADT to represent polynomials and then perform some basic polynomial operations: addition of polynomials and multiplication of polynomials.<br><br>
+			A polynomial is composed of terms. For example the polynomial 3X^2 + 2X^1 + 5X^0, is composed of three terms: 3X^2, 2X^1, and 5X^0. We can then represent a polynomial as a list of its terms. And to represent each term, we just need store its coefficient and exponent.<br><br>
+
+The first step in this lab is to write and compile the following NodeModule.py file. Each term of our polynomials will be an object of type Node. Notice that each node (term) is composed of the term's coefficient, the term's exponent, and a link pointing to the next node (term) in the polynomial. For example, the polynomial 3X^2 will be represented by a single node with its coefficient data part set to 3, its exponent data part set to 2, and its link set to null.
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# NodeModule.py
+#!/usr/bin/python
+""" A model containing Node class """
+
+__author__ = "Lin Chen"
+__version__ = "0.1"
+
+class Node:
+    """Single node in a data structure"""
+
+    def __init__(self, c, e):
+        """Initialize a Node
+        
+        Args:
+            data : data saved in the node
+        """
+        self._coefficient = c
+        self._exponent = e
+        self._next = None
+
+    @property
+    def coefficient(self):
+        return self._coefficient
+
+    @coefficient.setter
+    def coefficient(self, d):
+        self._coefficient = d
+
+    @coefficient.deleter
+    def coefficient(self):
+        del self._coefficient
+
+    @property
+    def exponent(self):
+        return self._exponent
+
+    @exponent.setter
+    def exponent(self, d):
+        self._exponent = d
+
+    @exponent.deleter
+    def exponent(self):
+        del self._exponent
+
+    @property
+    def next(self):
+        return self._next
+
+    @next.setter
+    def next(self, n):
+        self._next = n
+
+    @next.deleter
+    def next(self):
+        del self._next
+
+    def __eq__(self, other):
+        return self.exponent == other.exponent
+
+    def __lt__(self, other):
+        return self.exponent &lt; other.exponent
+
+    def __str__(self):
+        if self._coefficient &gt;= 0:
+            sign = "+"
+        else:
+            sign = ""
+        return sign + str(self._coefficient) + "X^" + str(self._exponent)
+			</pre>
+		</div>
+		<div class = "block">
+			The second step in this lab is to complete the following ListModule.py file. Each of our polynomials will be an object of type List. Notice that each polynomial (list) has a pointer to its first term (node) and also a count of how many terms (nodes) the polynomial (list) contains.
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# ListModule.py
+#!/usr/bin/python
+""" A modeule containing List class"""
+
+from NodeModule import Node
+
+class List:
+    """Linked List class with a pre-defined Node class"""
+
+    def __init__(self):
+        """Initialize a List
+        """
+        self._head = None
+        self._count = 0
+
+    def isEmpty(self):
+        """Check if the list is empty
+
+        Args:
+            None
+
+        Returns:
+            boolean : True, if list is empty; False, otherwise
+        """
+        return self._count == 0
+
+    def getSize(self):
+        """Return the size of the list
+        
+        Returns:
+            int : size of the list
+        """
+        return self._count
+
+    def select(self, index):
+        """Return a specific Node
+
+        Args:
+            index (int): index of a specific node
+
+        Returns:
+            Node: a node indexed by index
+        """
+        if index &lt; 0 or index &gt; self._count:
+            return None
+
+        if index == 0:
+            return self._head
+
+        current = self._head
+        for i in range(index):
+            current = current.next
+
+        return current
+
+    def search(self, e):
+        """Returns the index of the node with exponent e in the list
+           Returns -1 if the node does not exists
+        
+        Args:
+            e (int): exponent
+
+        Returns:
+            int: index of the term whose exponent is e
+        """
+        index = 0
+        current = self._head
+
+        while current is not None:
+            if current.exponent == e:
+                return index
+            index += 1
+            current = current.next
+
+        return -1
+
+    def insert(self, index, n):
+        """Insert a node to a specific location in the list
+
+        Args:
+            index (int): location of insertion, 0 is the location before the first element, 1 is the location after the first element
+            v : data which can be saved in a node
+
+        Returns:
+            boolean: True, if the value is inserted succefully; False, otherwise
+        """
+        if index &lt; 0 or index &gt; self._count:
+            return False
+
+        if index == 0:
+            n.next = self._head
+            self._head = n
+            self._count += 1
+            return True
+
+        current = self._head
+        for i in range(index-1):
+            current = current.next
+        n.next = current.next
+        current.next = n
+        self._count += 1
+        return True
+
+    def delete(self, index):
+        """Delete a valude located at a specific location in the list
+
+        Args:
+            index (int): location of deletion, 0 is the location before the first element, 1 is the location after the first element
+
+        Returns:
+            boolean: True, if the value is deleted succefully; False, otherwise
+        """
+        if index &lt; 0 or index &gt; self._count-1:
+            return False
+
+        if index == 0:
+            self._head = self._head.next
+            self._count -= 1
+            return True
+
+        current = self._head
+        for i in range(index-1):
+            current = current.next
+
+        current.next  = current.next.next
+        self._count -= 1
+        return True
+
+    def sort(self):
+        """Sorts the elements of the list:
+           From the element with greatest exponent to the element with smallest exponent
+        """
+        l = []
+        current = self._head
+        while current is not None:
+            l.append(current)
+            current = current.next
+
+        l = sorted(l)
+
+        self._head = None
+
+        for e in l:
+            self.insert(0, e)
+
+    def __str__(self):
+        """Convert the list to a string
+
+        Returns:
+            string : a string represents the list
+        """
+        if self.isEmpty():
+            return "Empty"
+
+        current = self._head
+        output = []
+
+        while current is not None:
+            output.append(str(current))
+            current = current.next
+
+        return "".join(output)
+			</pre>
+		</div>
+		<div class = "block">
+			The third step in this lab is to complete the following Test.py file. This program asks the user to enter two polynomials, prints the polynomials, and then computes and prints their addition and multiplication. Your program must behave like the execution examples given below.
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Test.py
+#!/usr/bin/python
+
+from NodeModule import Node
+from ListModule import List
+
+def readPoly(message):
+    l = List()
+
+    n = input(message)
+    for i in range(n):
+        c = input("Enter coefficient of term #%d: " % i)
+        e = input("Enter expoent of term #%d: " % i)
+        l.insert(0, Node(c, e))
+
+    return l
+
+def addTwoPoly(l1, l2):
+    addedL = List()
+
+    count1 = 0 # count the searched term in l1
+    count2 = 0 # count the searched term in l2
+
+    exponent = 0
+
+    while(count1 &lt; l1.getSize() or count2 &lt; l2.getSize()):
+        n1 = l1.search(exponent)
+        n2 = l2.search(exponent)
+
+        c = 0 # coefficient for added term
+
+        if n1 != -1:
+            c += l1.select(n1).coefficient
+            count1 += 1
+
+        if n2 != -1:
+            c += l2.select(n2).coefficient
+            count2 += 1
+
+        if c != 0:
+            n = Node(c, exponent)
+            addedL.insert(0, n)
+
+        exponent += 1
+
+    return addedL
+
+def main():
+    l1 = readPoly("Enter number of terms of the first polynomial: ")
+    l2 = readPoly("Enter number of terms of the second polynomial: ")
+
+    print(l1)
+    print(l2)
+
+    l = addTwoPoly(l1, l2)
+    l.sort()
+
+    print(l)
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+Example 1
+Enter number of terms of the first polynomial: 1
+Enter coefficient and exponent of term #0: 1 1
+
+Enter number of terms of the second polynomial: 1
+Enter coefficient and exponent of term #0: 1 1
+
+The first polynomial is: 1X^1
+
+The second polynomial is: 1X^1
+
+Their addition is: 2X^1
+
+Their multiplication is: 1X^2
+
+
+Example 2
+Enter number of terms of the first polynomial: 2
+Enter coefficient and exponent of term #0: 3 3
+Enter coefficient and exponent of term #1: 2 2
+
+Enter number of terms of the second polynomial: 1
+Enter coefficient and exponent of term #0: 1 1
+
+The first polynomial is: 3X^3 +2X^2
+
+The second polynomial is: 1X^1
+
+Their addition is: 3X^3 +2X^2 +1X^1
+
+Their multiplication is: 3X^4 +2X^3
+
+
+Example 3
+Enter number of terms of the first polynomial: 3
+Enter coefficient and exponent of term #0: 1 2
+Enter coefficient and exponent of term #1: 1 1
+Enter coefficient and exponent of term #2: 3 0
+
+Enter number of terms of the second polynomial: 2
+Enter coefficient and exponent of term #0: 2 3
+Enter coefficient and exponent of term #1: 1 1
+
+The first polynomial is: 1X^2 +1X^1 +3X^0
+
+The second polynomial is: 2X^3 +1X^1
+
+Their addition is: 2X^3 +1X^2 +2X^1 +3X^0
+
+Their multiplication is: 2X^5 +2X^4 +7X^3 +1X^2 +3X^1
+
+
+Example 4
+Enter number of terms of the first polynomial: 3
+Enter coefficient and exponent of term #0: 2 2
+Enter coefficient and exponent of term #1: 1 1
+Enter coefficient and exponent of term #2: 1 0
+
+Enter number of terms of the second polynomial: 3
+Enter coefficient and exponent of term #0: 2 2
+Enter coefficient and exponent of term #1: 1 1
+Enter coefficient and exponent of term #2: 1 0
+
+The first polynomial is: 2X^2 +1X^1 +1X^0
+
+The second polynomial is: 2X^2 +1X^1 +1X^0
+
+Their addition is: 4X^2 +2X^1 +2X^0
+
+Their multiplication is: 4X^4 +4X^3 +5X^2 +2X^1 +1X^0
+
+
+Example 5
+Enter number of terms of the first polynomial: 3
+Enter coefficient and exponent of term #0: 3 2
+Enter coefficient and exponent of term #1: 2 1
+Enter coefficient and exponent of term #2: 5 0
+
+Enter number of terms of the second polynomial: 3
+Enter coefficient and exponent of term #0: 4 3
+Enter coefficient and exponent of term #1: 2 2
+Enter coefficient and exponent of term #2: 1 1
+
+The first polynomial is: 3X^2 +2X^1 +5X^0
+
+The second polynomial is: 4X^3 +2X^2 +1X^1
+
+Their addition is: 4X^3 +5X^2 +3X^1 +5X^0
+
+Their multiplication is: 12X^5 +14X^4 +27X^3 +12X^2 +5X^1
+
+
+Example 6
+Enter number of terms of the first polynomial: 3
+Enter coefficient and exponent of term #0: 2 2
+Enter coefficient and exponent of term #1: 3 1
+Enter coefficient and exponent of term #2: 4 0
+
+Enter number of terms of the second polynomial: 2
+Enter coefficient and exponent of term #0: 5 1
+Enter coefficient and exponent of term #1: 2 0
+
+The first polynomial is: 2X^2 +3X^1 +4X^0
+
+The second polynomial is: 5X^1 +2X^0
+
+Their addition is: 2X^2 +8X^1 +6X^0
+
+Their multiplication is: 10X^3 +19X^2 +26X^1 +8X^0
+
+
+Example 7
+Enter number of terms of the first polynomial: 3
+Enter coefficient and exponent of term #0: 8 3
+Enter coefficient and exponent of term #1: 2 1
+Enter coefficient and exponent of term #2: -4 0
+
+Enter number of terms of the second polynomial: 3
+Enter coefficient and exponent of term #0: 2 3
+Enter coefficient and exponent of term #1: -4 2
+Enter coefficient and exponent of term #2: 5 1
+
+The first polynomial is: 8X^3 +2X^1 -4X^0
+
+The second polynomial is: 2X^3 -4X^2 +5X^1
+
+Their addition is: 10X^3 -4X^2 +7X^1 -4X^0
+
+Their multiplication is: 16X^6 -32X^5 +44X^4 -16X^3 +26X^2 -20X^1
+
+
+Example 8
+Enter number of terms of the first polynomial: 1
+Enter coefficient and exponent of term #0: 10 5
+
+Enter number of terms of the second polynomial: 1
+Enter coefficient and exponent of term #0: 3 3
+
+The first polynomial is: 10X^5
+
+The second polynomial is: 3X^3
+
+Their addition is: 10X^5 +3X^3
+
+Their multiplication is: 30X^8
+
+
+Example 9
+Enter number of terms of the first polynomial: 2
+Enter coefficient and exponent of term #0: 2 2
+Enter coefficient and exponent of term #1: 1 1
+
+Enter number of terms of the second polynomial: 2
+Enter coefficient and exponent of term #0: -2 2
+Enter coefficient and exponent of term #1: 1 1
+
+The first polynomial is: 2X^2 +1X^1
+
+The second polynomial is: -2X^2 +1X^1
+
+Their addition is: 2X^1
+
+Their multiplication is: -4X^4 +1X^2
+			</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Prolog
+		</div>
+
+		<div class = "subtitle">Run Prolog</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+swipl /* implemnt SWI-Prolog */
+		</pre>
+		<pre class = "prettyprint linenums">
+?- help(command). /* search help documentation of a command */
+		</pre>
+		<pre class = "prettyprint linenums">
+?- [ 'p1.pl' ]. /* load a prolog program */
+?- listing(factorial/2). /* display the program on the screen, 2 is # of parameters*/
+?- factorial(4, what).
+what = 24.
+?- halt.
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+/* p1.pl */
+factorial(0,1).
+  
+factorial(A,B) :-  
+           A &gt; 0, 
+           C is A-1,
+           factorial(C,D),
+           B is A*D. 
+		</pre>
+		</div>
+		<div class = "block">
+			<li>A Prolog <span>goal</span> is terminated with a period "."</li>
+			<li>The built-in predicate 'listing' will list the program in memory</li>
+			<li>The 'halt' goal always succeeds and returns the user to the operating system.</li>
+		</div>
+	</body>
+</html>

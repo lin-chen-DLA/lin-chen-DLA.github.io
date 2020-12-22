@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Data Type
+		</div>
+
+		<div class = "subtitle"></div>
+		<div class = "block">
+			<li>Data types that can contain values, string, number, boolean, object, function</li>
+			<li>Six types of objects, Object, Date, Array, String, Number, Boolean</li>
+			<li>Data types that cannot contain values, null, undefined</li>
+		</div>
+		<div class = "subtitle">typeof and instanceof</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var a = 10; // Number
+document.write(typeof(a)+"&lt;br&gt;");
+document.write((a instanceof Number)+"&lt;br&gt;");
+
+var b = "Hello World!"; // String
+document.write(typeof(b)+"&lt;br&gt;");
+document.write((b instanceof String)+"&lt;br&gt;");
+
+// returns "object" for objects, arrays, and null
+var x = {firstName: 'Lin', lastName: 'Chen'}; # Object
+document.write(typeof(x)+"&lt;br&gt;");
+document.write((x instanceof Object)+"&lt;br&gt;");
+
+var y = true; // Boolean
+document.write(typeof(y)+"&lt;br&gt;");
+document.write((y instanceof Boolean)+"&lt;br&gt;");
+
+function f(){} // Function
+document.write(typeof(f)+"&lt;br&gt;");
+document.write(f instanceof Function);
+		</pre>
+		</div>
+
+		<div class = "subtitle">undefined</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var a;
+
+document.write(typeof(a)+"&lt;br&gt;");
+document.write(typeof(a) == 'undefined');
+		</pre>
+		</div>
+
+		<div class = "subtitle">Empty Values</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var a = ""; // String
+document.write(typeof(a));
+		</pre>
+		</div>
+
+		<div class = "subtitle">Null</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var a = null;
+document.write(typeof(a)); // Object
+		</pre>
+		</div>
+
+		<div class = "subtitle">Object</div>
+		<div class = "block">
+			<li>access propertities</li>
+		<pre class = "prettyprint linenums">
+var person = {
+	name: 'Lin',
+	age: 39
+};
+
+console.log(person.name);
+console.log(person["name"]);
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Are addressed by reference</li>
+		<pre class = "prettyprint linenums">
+var person = {name: 'Lin', age: 39};
+
+var person_2 = person; // person and person_2 point to the same object
+
+person.name = 'Yanhua';
+
+console.log(person);
+console.log(person_2);
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Loops through the properties of an object</li>
+		<pre class = "prettyprint linenums">
+var person = {name: 'Lin', age: 39};
+
+for(var e in person)
+	console.log(e);
+
+console.log(Object.keys(person)); // get properties of object
+		</pre>
+		</div>
+		<div class = "block">
+			<li>add and delete object <span>property</span></li>
+		<pre class = "prettyprint linenums">
+var a = {};
+
+a.name = 'Lin'
+a.age = 39
+
+console.log(a)
+
+delete a.age // remove a property
+console.log(a)
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>function</span> in object</li>
+		<pre class = "prettyprint linenums">
+var person = {
+	name: 'Lin',
+	age: 39,
+	info: function (){
+		return this.name + ',' + this.age;
+	}
+}
+
+console.log(person.info());
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var person = {
+	name: 'Lin',
+	age: 39,
+	info(){
+		return `${this.name}, ${this.age}`;
+	}
+}
+ 
+console.log(person.info());
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>getter and setter</span></li>
+		<pre class = "prettyprint linenums">
+var person = {
+	name: 'Lin',
+	age: 39,
+	get info()
+	{
+		return this.name +' : '+this.age;
+	},
+	set info(n) // setter must have exactly one formal parameter
+	{
+		this.name = n;
+	}
+}
+
+person.info = "Yanhua";
+
+console.log(person.info);
+		</pre>
+		<pre class = "prettyprint linenums">
+var person = {
+	name: 'Lin',
+	age: 39,
+	get pname()
+	{
+		return this.name +' : '+this.age;
+	},
+	set pname(n)
+	{
+		this.name = n;
+	}
+};
+
+person.pname = "Yanhua";
+console.log(person.pname)
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>Object Constructors</span></li>
+		<pre class = "prettyprint linenums">
+function Person(name, age)
+{
+	this.name = name;
+	this.age = age;
+	this.getName = function () {return this.name;}
+	this.setName = function (n) {this.name = n;}
+}
+
+var person = new Person('Lin', 39); // create a person object
+
+// add property to object
+// cannot add a new property to an object constructor
+person.sex = 'M'; // add property
+
+// add function to object
+person.info = function (){
+	return this.name + ' : ' + this.age + ' : ' + this.sex;
+}
+
+console.log(person);
+console.log(person.info());
+
+person.setName("Yanhua");
+console.log(person.getName());
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>Keyword Arguments</span> in Constructor</li>
+		<pre class = "prettyprint linenums">
+function Person({name = 'Lin', age = 39})
+{
+	this.name = name;
+	this.age = age;
+	this.getName = function () {return this.age;}
+	this.setName = function (n) {this.name = n;}
+}
+
+var person = new Person('Lin', 39); // create a person object
+var person_2 = new Person({name:'Yanhua'});
+
+console.log(person);
+console.log(person_2);
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>prototype</span></li>
+		<pre class = "prettyprint linenums">
+function Person(name, age)
+{
+	this.name = name;
+	this.age = age;
+}
+
+Person.prototype.sex = 'M'; // add properties to constructor
+Person.prototype.info = function () {return this.name + " : " + this.age + " : " + this.sex;} // add functions to constructor
+
+var person = new Person('Lin', 39);
+
+console.log(person); // {name: "Lin", age: 39}
+console.log(person.sex);
+console.log(person.info());
+console.log(Object.keys(person)); // ["name", "age"];
+		</pre>
+		</div>
+		<div class = "block">
+			<li>delete <span>object</span></li>
+		<pre class = "prettyprint linenums">
+var a = {name: 'Lin', age: 39}; // creates the property a on the global object, and marks it as non-configurable
+
+console.log(delete a); // false, cannot remove a
+
+b = {name: 'Yanhua', age: 39}; //creates the property b on the global object
+
+var c = b;
+
+console.log(delete b); // true, remove the reference b
+
+//console.log(b); // error, b has been deleted
+console.log(c); // the object created by b is not removed
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>undefined</span> and <span>null</span> are equal in value but different in type, null is <span>object</span>, undefine is <span>undefined</span></li>
+		<pre class = "prettyprint linenums">
+var a = {firstName: 'Lin', lastName: 'Chen'};
+console.log(a); // document.write print out 'Object'
+
+a = null; // Empty object
+document.write(a+"&lt;br&gt;");
+
+var b = {firstName: 'Yanhua', lastName: 'Feng'};
+console.log(b);
+
+b = undefined; // Empty object
+document.write(b);
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>Destructuring Assignment</span>
+		<pre class = "prettyprint linenums">
+var sandwich = {
+bread: "dutch crunch",
+          meat: "tuna",
+          cheese: "swiss",
+          toppings: ["lettuce", "tomato", "mustard"]
+}
+var {bread, meat} = sandwich
+console.log(bread, meat)
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>Object Literal Enhancement</span>
+		<pre class = "prettyprint linenums">
+var name = "Tallac";
+var elevation = 9738;
+var funHike = {name,elevation};
+console.log(funHike); // {name: "Tallac", elevation: 9738}
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>Combine Objects</span>
+		<pre class = "prettyprint linenums">
+var morning = {
+	breakfast: "oatmeal",
+	lunch: "peanut butter and jelly"
+}
+
+var dinner = "mac and cheese"
+
+var night = {fruit: 'orange'}
+
+var backpackingMeals = {
+	...morning,
+	dinner,
+	...night
+}
+
+console.log(backpackingMeals) 
+// { breakfast: "oatmeal",
+	// lunch: "peanut butter and jelly",
+	// dinner: "mac and cheese"
+	// fruit: 'orange'
+// }
+		</pre>
+		</div>
+		<div class = "subtitle">String</div>
+		<div class = "block">
+			<li><span>declare</span> a string</li>
+		<pre class = "prettyprint linenums">
+var s_1 = "Lin"; // double quote
+var s_2 = 'Lin'; // single quote
+var s_3 = "I'm 'Lin'"; // or 'I'm "Lin"'
+var s_4 = "I'm \"Lin\"";
+
+console.log(s_1.length); // 3, string length
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>concatenation</span></li>
+		<pre class = "prettyprint linenums">
+var s_1 = 'Lin';
+var s_2 = 'Chen';
+
+console.log(s_1+' '+s_2);
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>string functions</span></li>
+		<pre class = "prettyprint linenums">
+var s_1 = "I'm Lin and Lin";
+
+console.log(s_1.length); // length
+
+console.log(s_1[0]); // access character by index
+
+console.log(s_1.indexOf('Lin')); // 4, index of first occurrence of 'Lin' in s_1
+console.log(s_1.lastIndexOf('Lin')); // 12, index of last occurrence of 'Lin' in s_1
+
+console.log(s_1.indexOf('Lin', 3)); // 4, search starting from 3
+console.log(s_1.indexOf('Lin', 5)); // 12, search starting from 5
+
+console.log(s_1.search('Lin')); //4, search the first occurrence of 'Lin"'
+
+console.log(s_1.slice(4, 7)); //Lin, end index is exclusive
+console.log(s_1.substring(4, 7)); // Lin, start, end
+console.log(s_1.substr(4, 3)); //Lin, start, length
+
+var s_2 = s_1.replace('Lin', 'Yanhua'); //replaces only the first match
+console.log(s_2);
+
+var s_3 = s_1.replace(/Lin/g, 'Yanhua');
+console.log(s_3); //replaces all the occurrences with regular expression
+
+var s_4 = s_1.toUpperCase(); //upper case
+console.log(s_4);
+
+var s_5 = s_1.toLowerCase(); //lower case
+console.log(s_5);
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>modification</span></li>
+		<pre class = "prettyprint linenums">
+var s_1 = "I'm Lin";
+
+s_1[0] = 'H'; // does not change string
+
+console.log(s_1); //I'm Lin
+
+var a = s_1.split("");
+console.log(a);
+
+a[0] = 'H';
+console.log(a);
+
+var s_2 = a.join('');
+console.log(s_2);
+		</pre>
+		</div>
+		<div class = "subtitle">Number</div>
+		<div class = "block">
+			<li>JavaScript numbers are always stored as <span>double precision floating point</span> numbers</li>
+		<pre class = "prettyprint linenums">
+var a = 10;
+var b = 10.0;
+
+console.log(a); // 10
+console.log(b); // 10
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// +, for both summation and concatenation
+var x = 1, y = 10;
+console.log(x+y); // 11
+
+var x = 1, y = "10";
+console.log(x+y); //110
+
+var x = 1, y = 10, z = "20";
+console.log(x+y+z); // 1120
+
+// /, division
+var x = 1, y = "10";
+console.log(x/y); // 0.1
+
+var x = "1", y = "10";
+console.log(x/y); // 0.1
+
+// *, multiplication
+var x = "1", y = "10";
+console.log(x*y); // 10
+
+// -, minus
+var x = "1", y = "10";
+console.log(x-y); // -9
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var x = 100/"Apple";
+
+console.log(x); //NaN, a number is not a legal number
+console.log(typeof(x)); // number
+console.log(isNaN(x)); //true
+
+var y = 10/0;
+console.log(y); // Infinity
+console.log(typeof(y)); // number, a number is outside the largest possible number
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var x = 0xFF;
+console.log(x); //255
+
+var y = 32;
+console.log(y.toString(2)); //100000
+console.log(y.toString(8)); //40
+console.log(y.toString(16)); //20
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var x = 10;
+var y = new Number(100);
+
+console.log(x); //10
+console.log(typeof(x)); // number
+
+console.log(y); //Number, 10
+console.log(typeof(y)); //object
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var x = 123;
+console.log(x.toString()); //123
+
+var y = 9.656;
+console.log(y.toExponential(2)); //9.66e+0
+console.log(y.toFixed(2)); //9.66
+console.log(y.toPrecision(2)); //9.7
+
+console.log(parseInt("10")); //convert string to int
+console.log(parseFloat("3.14")); //convert string to float
+
+var a = Number.MAX_VALUE
+console.log(a);
+var b = Number.MIN_VALUE
+console.log(b);
+		</pre>
+		</div>
+		<div class = "subtitle">Boolean</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var a = true;
+console.log(true);
+console.log(typeof(a)); //boolean
+
+var b = new Boolean(false);
+console.log(b);
+console.log(typeof(b)); //object
+
+var a = true;
+console.log(true);
+console.log(typeof(a)); //boolean
+
+var b = new Boolean(false);
+console.log(b);
+console.log(typeof(b)); //object
+
+console.log(Boolean(0)); //false
+console.log(Boolean(-0)); //false
+console.log(Boolean("")); //false
+
+var x;
+console.log(Boolean(x)); //false
+
+console.log(Boolean(null)); //false
+console.log(Boolean(NaN)); //false
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://stackoverflow.com/questions/33239464/javascript-delete-object-property-not-working">Javascript delete object property not working</a></li>
+		</div>
+	</body>
+</html>

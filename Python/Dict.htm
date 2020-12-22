@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color:red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Dict
+		</div>
+
+		<div class = "block">
+			<li>maps hashable values to arbitrary objects</li>
+			<li><span>mutable</span></li>
+			<li>More than one entry per key not allowed</li>
+			<li>Keys must be <span>immutable</span>, like strings, numbers, or tuples</li>
+		</div>
+
+		<div class = "subtitle">Initialize a dict</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Create a dict
+dict = {}
+
+# Create a dict with initial values
+dict = {'Name': 'Zara', 'Age': 7, 'Class': 'First'}
+		</pre>
+	</div>
+
+		<div class = "subtitle">Update</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Change the value of a key word
+dict['Name'] = 'Lin'
+
+# Add a new key and value
+dict['Major'] = 'CS'
+		</pre>
+	</div>
+
+		<div class = "subtitle">Delete</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Delete an element of the dict
+del dict['Name']
+
+# Remove all elements of the dict
+dict.clear()
+
+# Remove the whole dict
+del dict
+		</pre>
+	</div>
+
+		<div class = "subtitle">Build-in functions</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# cmp, compare two dicts
+dict1 = {'Name':'Lin', 'Age':37}
+dict2 = {'Name':'Lin', 'Age':37}
+print cmp(dict1, dict2)
+
+#len, get the number of items in dict
+print len(dict1)
+
+#str, convert a dict to a string
+print str(dict1)
+
+#type, check type
+print type(dict1)
+
+#id, get the memory id of the dict
+print id(dict1)
+		</pre>
+	</div>
+
+		<div class = "subtitle">Methods</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+d = {}; #create a dict
+
+d['Name'] = 'Lin';
+d['Age'] = 38;
+
+#has_key()
+if d.has_key('Name'):
+    print 'Has key \'Name\'';
+if 'Name' in d:
+    print 'Has key \'Name\'';
+
+#get, returns a value for the given key; if key is not available then returns default value
+print d.get('Name');
+print d.get('Temp', 'Unknown');
+#print d['Temp']; # throw KeyError
+
+#items, return a list of tuples of (key, value) pairs
+items = d.items();
+print items
+
+#keys, return a list of keys
+keys = d.keys();
+print keys;
+
+#values, return a list of values
+values = d.values();
+print values
+
+#setdefault, get the value of key; if key is not available then return default value
+print d.setdefault('Age', None); #38
+print d.setdefault('Sex', None); #None
+
+#update, add a dict to another dict
+d2 = {'Sex': 'M', 'State': 'VA'};
+d.update(d2); #{'Name':'Lin', 'Age':38, 'Sex':'M', 'State':'VA'}
+print d
+
+#remove and retun an arbitrary key-value pair
+print d.popitem();
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+d = {'Name': 'Lin', 'Age': 38, 'Sex': 'M', 'State': 'VA'};
+
+#iterkeys
+i = d.iterkeys();
+
+while 1:
+    try:
+        e = i.next();
+    except StopIteration:
+        break;
+    else:
+        print e,
+print
+
+#itervalues
+iv = d.itervalues();
+for v in iv:
+    print v,
+print
+
+#iteritems
+it = d.iteritems();
+for t in it:
+    print t;
+			</pre>
+		</div>
+
+	<div class = "subtitle">Resources</div>
+	<div class = "block">
+		<li>Python How to Program</li>
+		<li><a href = "https://docs.python.org/2/library/stdtypes.html#dict">STL</a></li>
+	</div>
+
+	</body>
+</html>

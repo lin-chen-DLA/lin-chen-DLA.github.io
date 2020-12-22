@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Data Science</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Feature Engineering
+		</div>
+
+		<div class = "block">
+			<li>Feature selection: selecting the most useful features to train on among existing features</li>
+			<li>Feature extraction: combining existing features to produce a more useful one, such as, dimensionality reduction</li>
+			<li>Creating new features by gathering new data</li>
+		</div>
+
+		<div class = "subtitle">Encoding Categorical Features</div>
+		<div class = "block">
+			<li><span>Count Encoding</span>, count encoding replaces each categorical value with the number of times it appears in the dataset</li>
+			<li><span>Target Encoding</span>, target encoding replaces a categorical value with the average value of the target for that value of the feature</li>
+			<li><span>CatBoost Encoding</span>, based on the target probablity for a given value</li>
+			<li><a href = "./Feature_Engineering/Encoding.html">Kaggle Tutorial</a></li>
+		</div>
+		<div class = "subtitle">Correlated Features</div>
+		<div class = "block">
+			<li><span>Why</span> Removing Correlated Features
+				<ul>
+			<li>Make the learning algorithm faster</li>
+			<li>Decrease harmful bias
+				<ul>
+					<li>If correlated features are also correlated to the target, keep them, Naive Bayes actually directly benefit from "positive" correlated features, Random Forest may indirectly benefit from them</li>
+				</ul>
+			</li>
+			<li>Interpretability of your model</li>
+			<li>Dealing with curse of high dimensionality, overfitting
+				<ul>
+					<li>If we can’t solve a problem with a few features, adding more features seems like a good idea</li>
+					<li>However the number of samples usually stays the same</li>
+					<li>The method with more features is likely to perform worse instead of expected better</li>
+					<li>For each fixed sample size n, there is the optimal number of features to use</li>
+				</ul>
+			</li>
+				</ul>
+			</li>
+			<li><span>Greedy</span></li>
+			<li><span>Recursive Feature Elimination (RFE)</span></li>
+		</div>
+		<div class = "subtitle">Dimensionality Reduction</div>
+		<div class = "block">
+			<li>Lasso Regularision</li>
+			<li>Principle Component Analysis (PCA)</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://en.wikipedia.org/wiki/Curse_of_dimensionality">Wiki</a></li>
+			<li><a href = "http://www.cs.haifa.ac.il/~rita/uml_course/add_mat/PCA.pdf">Curse of Dimensionality</a></li>
+			<li><a href = "https://datascience.stackexchange.com/questions/24452/in-supervised-learning-why-is-it-bad-to-have-correlated-features">In supervised learning, why is it bad to have correlated features?</a></li>
+		</div>
+	</body>
+</html>

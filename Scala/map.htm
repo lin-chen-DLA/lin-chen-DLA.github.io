@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Map
+		</div>
+
+		<div class = "subtitle">Immutable Map</div>
+		<div class = "block">
+			<li>By default, Scala uses the immutable Map</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def main(args : Array[String])
+  {
+    var a : Map[String, Int] = Map();
+    var b  = Map("Hannah" -&gt; 12, "Hadley" -&gt; 1);
+
+    // add pairs
+    a = a + ("Lin" -&gt; 39, "Yanhua" -&gt; 38)
+
+    println(a.keys); // keys
+    println(a.values); // values
+
+    // concatenate
+    var c = a ++ b
+    println(c)
+
+    println(a("Lin")); // access element
+
+    // foreach
+    a.foreach(t =&gt; println(t._1+" "+t._2))
+
+    // contains
+    println(a.contains("Lin"))
+
+    // remove pair
+    a = a - "Lin"
+    println(a)
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Mutable Map</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import scala.collection.mutable.Map
+object Demo
+{
+  def main(args : Array[String])
+  {
+    var a : Map[String, Int] = Map("Lin" -&gt; 39, "Yanhua" -&gt; 38)
+
+    a("Lin") = 40
+    println(a);
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://alvinalexander.com/scala/how-to-add-update-remove-elements-immutable-maps-scala">Alvin Alexander</a></li>
+			<li><a href = "https://www.scala-lang.org/api/2.12.0/scala/collection/Map.html">Map Immutable</a></li>
+			<li><a href = "https://www.scala-lang.org/api/2.12.0/scala/collection/Map.html">Map Mutable</a></li>
+		</div>
+	</body>
+</html>

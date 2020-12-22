@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Typeinfo
+		</div>
+
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;typeinfo&gt;
+#include &lt;functional&gt;
+
+int main(int argc, char *argv[])
+{
+	//name
+	std::cout&lt;&lt;typeid(int).name()&lt;&lt;std::endl;
+	std::cout&lt;&lt;typeid(float).name()&lt;&lt;std::endl;
+	std::cout&lt;&lt;typeid(double).name()&lt;&lt;std::endl;
+
+	std::string name = "Lin Chen";
+	std::cout&lt;&lt;typeid(name).name()&lt;&lt;std::endl;
+
+	std::vector&lt;int&gt; intContainer;
+	std::vector&lt;std::string&gt; stringContainer;
+	std::cout&lt;&lt;typeid(intContainer).name()&lt;&lt;std::endl;
+	std::cout&lt;&lt;typeid(stringContainer).name()&lt;&lt;std::endl;
+
+	//hash_code, returns the same value for any two type_info objects that compare equal
+	int n;
+	std::cout&lt;&lt;typeid(int).hash_code()&lt;&lt;std::endl;
+	std::cout&lt;&lt;typeid(n).hash_code()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/typeinfo/type_info/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

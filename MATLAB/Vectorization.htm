@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MATLAB</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Vectorization Method
+		</div>
+
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+classdef Num
+    properties
+        value
+    end
+    methods
+        % Constructor
+        function self = Num(n)
+            [self.value] = n;
+        end
+        
+        % Accessor
+        function disp(self)
+            self.value
+        end
+        
+        % Mutator
+        function self = add(self, v)
+            [self.value] = [self.value] + v;
+        end
+    end
+end
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function numTest()
+    % Create a Num Object
+    n = Num([1 2 3 4]);
+    
+    % Call Vectorization Method
+    n = n.add(10); %[11 12 13 14]
+    n.disp();
+end
+		</pre>
+	</div>
+	</body>
+</html>

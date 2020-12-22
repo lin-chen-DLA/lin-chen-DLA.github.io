@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Threading
+		</div>
+
+		<div class = "subtitle">Thread</div>
+		<div class = "block">
+			<ul>
+				<li>target, the callable object to be invoked by the run() method</li>
+				<li>args, the argument tuple for the target invocation</li>
+				<li>kwargs, a dictionary of keyword arguments for the target invocation</li>
+				<li>start(), start thread</li>
+				<li>run(), implement callable object</li>
+				<li>join(), wait until the thread terminates</li>
+				<li>getName(), get thread's name</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Threading</div>
+		<div class = "block">
+			<ul>
+				<li>currentThreading(), get the current thread</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import threading
+
+def worker(i):
+    """thread worker function"""
+    print 'Hello World!', i
+
+threads = []
+
+#Create threads
+for i in range(5):
+    threads.append(threading.Thread(target=worker, args = (i, )));
+
+#Start theads
+for t in threads:
+    t.start()
+
+#Join theads
+for t in threads:
+    print 'Join', t.ident, t.getName()
+    t.join()
+
+print 'End of program'
+			</pre>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import threading
+import logging
+
+def worker(i):
+    """thread worker function"""
+    logging.debug(str(threading.currentThread().getName()) + ' Start ...');
+    print 'Hello World!', i
+    logging.debug(threading.currentThread().getName() + ' End ...');
+
+logging.basicConfig(format='[%(levelname)s] (%(threadName)-10s): %(message)s', level=logging.DEBUG);
+threads = []
+
+#Create threads
+for i in range(5):
+    threads.append(threading.Thread(target=worker, args = (i, )));
+
+#Start theads
+for t in threads:
+    t.start()
+
+#Join theads
+for t in threads:
+    print 'Join', t.ident, t.getName()
+    t.join()
+
+print 'End of program'
+			</pre>
+		</div>
+		<div class = "subtitle">Daemon thread</div>
+		<div class = "block">
+			<ul>
+				<li>runs without blocking the main program from exiting</li>
+				<li>like detach of thead in C++11</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import threading
+import logging
+
+def daemon():
+    logging.debug('Daemon thead starts ...');
+    logging.debug('Daemon thead ends ...');
+
+def nonDaemon():
+    logging.debug('None-daemon thead starts ...');
+    logging.debug('None-daemon thead ends ...');
+
+logging.basicConfig(format='[%(levelname)s] (%(threadName)-10s): %(message)s', level=logging.DEBUG);
+
+d = threading.Thread(target=daemon);
+d.setDaemon(True)
+nd = threading.Thread(target=nonDaemon);
+
+d.start();
+nd.start();
+
+#d.join();
+#nd.join();
+
+print 'End of program'
+			</pre>
+		</div>
+		<div class = "subtitle">Enumerate threads</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import threading
+import logging
+import time
+
+def worker(i):
+    """thread worker function"""
+    print 'Hello World!', i
+    time.sleep(1);
+
+logging.basicConfig(level=logging.DEBUG)
+threads = []
+
+#Create threads
+for i in range(5):
+    threads.append(threading.Thread(target=worker, args = (i, )));
+
+#Start theads
+for t in threads:
+    t.start()
+
+#Enumerate threads
+for t in threading.enumerate():
+    logging.debug('Name: %s ...', t.getName());
+
+#Join theads
+for t in threads:
+    print 'Join', t.ident, t.getName()
+    t.join()
+
+print 'End of program'
+			</pre>
+		</div>
+		<div class = "subtitle">Timer</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import threading
+import logging
+
+def worker():
+    """thread worker function"""
+    logging.debug('Hello World! %s', threading.currentThread().getName())
+
+logging.basicConfig(level=logging.DEBUG)
+threads = []
+
+#Create threads
+t_1 = threading.Timer(1, worker);
+t_2 = threading.Timer(1, worker);
+
+t_1.start();
+t_2.start();
+
+#Join theads
+for t in threading.enumerate():
+    if t is threading.currentThread():
+        continue
+    logging.debug('Join %d %s', t.ident, t.getName())
+    t.join()
+
+print 'End of program'
+			</pre>
+		</div>
+		<div class = "subtitle">Event</div>
+		<div class = "block">
+			<ul>
+				<li>isSet()</li>
+				<li>set()</li>
+				<li>clear()</li>
+				<li>wait()</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import threading
+import logging
+
+def event_1(e):
+    logging.debug('Waiting for the event happens ...');
+    e.wait();
+    logging.debug('Hello World!');
+
+def event_2(e):
+    logging.debug('Start the event ...');
+    e.set();
+
+logging.basicConfig(level=logging.DEBUG);
+
+e = threading.Event();
+
+t_1 = threading.Thread(target=event_1, args=(e, ));
+t_2 = threading.Thread(target=event_2, args=(e, ));
+
+t_1.start();
+t_2.start();
+			</pre>
+		</div>
+		<div class = "subtitle">Lock</div>
+		<div class = "block">
+			<ul>
+				<li>acquire(), request lock, if not available, block the current thread until the lock is available</li>
+				<li>acquire(0), request lock, if not available, do not block</li>
+				<li>release(), release lock</li>
+				<li>Python’s built-in data structures, such as lists, dictionaries, etc., are thread-safe</li>
+				<li>Other data structures implemented in Python, such as integers and floats, don’t have that protection</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import threading
+import logging
+
+num = 0;
+
+lock = threading.Lock();
+
+def increase(lock):
+    lock.acquire()
+    logging.debug('Call increase() in %s ...', threading.currentThread().getName());
+    global num;
+    num += 1;
+    logging.debug('End up thread %s ...', threading.currentThread().getName());
+    lock.release()
+
+logging.basicConfig(level=logging.DEBUG);
+
+threads = []
+
+for i in xrange(5):
+    threads.append(threading.Thread(target=increase, args=(lock, )));
+
+for t in threads:
+    t.start();
+
+for t in threads:
+    t.join();
+
+print num
+			</pre>
+		</div>
+		<div class = "subtitle">RLock</div>
+		<div class = "block">
+			<ul>
+				<li>A reentrant lock is a synchronization primitive that may be acquired multiple times by the same thread</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import threading
+
+lock = threading.RLock()
+
+print 'First try :', lock.acquire()
+print 'Second try:', lock.acquire()
+			</pre>
+		</div>
+		<div class = "subtitle">With</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import threading
+import logging
+
+num = 0;
+
+lock = threading.Lock();
+
+def increase(lock):
+    with lock:
+        logging.debug('Call increase() in %s ...', threading.currentThread().getName());
+        global num;
+        num += 1;
+        logging.debug('End up thread %s ...', threading.currentThread().getName());
+
+logging.basicConfig(level=logging.DEBUG);
+
+threads = []
+
+for i in xrange(5):
+    threads.append(threading.Thread(target=increase, args=(lock, )));
+
+for t in threads:
+    t.start();
+
+for t in threads:
+    t.join();
+
+print num
+			</pre>
+		</div>
+		<div class = "subtitle">Condition</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import logging
+import threading
+import time
+
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s (%(threadName)-2s) %(message)s',
+                    )
+
+def consumer(cond, l):
+    logging.debug('Starting consumer thread %s', threading.currentThread().getName())
+    t = threading.currentThread()
+    with cond:
+        cond.wait()
+        logging.debug('Resource is available to consumer')
+        print l
+        l[0] = 0;
+
+def producer(cond, l):
+    """set up the resource to be used by the consumer"""
+    logging.debug('Starting producer thread')
+    with cond:
+        l[0] = 100;
+        logging.debug('Making resource available')
+        cond.notifyAll()
+
+condition = threading.Condition()
+l = range(10);
+c1 = threading.Thread(name='c1', target=consumer, args=(condition, l))
+c2 = threading.Thread(name='c2', target=consumer, args=(condition, l))
+p = threading.Thread(name='p', target=producer, args=(condition, l))
+
+c1.start()
+c2.start()
+time.sleep(2)
+p.start()
+			</pre>
+		</div>
+		<div class = "subtitle">Semaphore</div>
+		<div class = "block">
+			<ul>
+				<li>Limist the number of threads that are able to access the shared resource at the same time</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import logging
+import random
+import threading
+import time
+
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s (%(threadName)-2s) %(message)s',
+                    )
+
+def worker(s):
+    with s:
+        logging.debug('Thread: %s ...', threading.currentThread().getName());
+        time.sleep(1)
+
+s = threading.Semaphore(2)
+for i in range(4):
+    t = threading.Thread(target=worker, name=str(i), args=(s, ))
+    t.start()
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://pymotw.com/2/threading/index.html">PyMOTW</a></li>
+				<li><a href = "https://docs.python.org/2/library/threading.html#lock-objects">Documentation</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

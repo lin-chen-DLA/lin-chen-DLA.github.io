@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Built-in Goals
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+help(S)
+halt
+trace, notrace
+[F1, F2, ...] /* load multiple files */
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+N &gt; M , N &lt; M, N =&lt; M, N &gt;= M
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+atom(X)
+integer(X)
+real(X)
+string(X)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+X = Y /* Tests whether X and Y can be unified */
+X == Y /* Tests whether X and Y are currently co-bound, i.e., have been bound to or share same value */
+ground(X) /* Tests whether G has unbound logical variables */
+var(X) /* Tests whether X is bound to a Prolog variable */
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+X is E /* Binds logical variable V to the numerical value of E */
+		</pre>
+		</div>
+	</body>
+</html>

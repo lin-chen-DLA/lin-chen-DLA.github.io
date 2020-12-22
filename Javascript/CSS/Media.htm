@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CSS</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Media
+		</div>
+
+		<div class = "subtitle">Media Query Syntax</div>
+		<div class = "block">
+			<li>consists of a media type and can contain one or more expressions</li>
+			<li>the query is true if the specified media type matches the type of device and all expressions are true</li>
+			<li>When a media query is true, the corresponding style sheet or style rules are applied</li>
+			<li>Unless you use the not or only operators, the media type is optional and the all type will be implied</li>
+		<pre class = "prettyprint linenums">
+@media not|only mediatype and (expressions) {
+  CSS-Code;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Examples</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		.container {width: 80%; min-height: 100px; margin: auto; background-color: silver;}
+
+		@media screen and (max-width: 800px) {.container {background-color: red;}}
+		@media screen and (max-width: 600px) {.container {background-color: blue;}}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class = "container"&gt;
+		Hello World!
+	&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		* {box-sizing: border-box;}
+		.container {width: 80%; padding: 10px 0px 10px 0px; margin: auto; background-color: silver; overflow: auto;}
+		.item {float: left; width: 25%; border: 1px solid red;}
+
+		@media screen and (max-width: 800px) {.item {width: 50%;} .container {background-color: yellow;}}
+		@media screen and (max-width: 600px) {.item {width: 100%;} .container {background-color: dodgerblue;}}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class = "container"&gt;
+		&lt;div class = "item"&gt;Home&lt;/div&gt;
+		&lt;div class = "item"&gt;Research&lt;/div&gt;
+		&lt;div class = "item"&gt;Teaching&lt;/div&gt;
+		&lt;div class = "item"&gt;Service&lt;/div&gt;
+	&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.w3schools.com/cssref/css3_pr_mediaquery.asp">CSS @media Rule</a></li>
+		</div>
+	</body>
+</html>

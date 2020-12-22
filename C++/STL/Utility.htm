@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			UTILITY
+		</div>
+
+		<div class = "subtitle">swap</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef V_H
+#define V_H
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		//constructor
+		V()
+		{
+			std::cout&lt;&lt;"Default Constructor ..."&lt;&lt;std::endl;
+			size = 0;
+			array = 0;
+		}
+
+		V(int s):size(s)
+		{
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+		}
+
+		//copy constructor
+		V(const V &right):size(right.size), array(size?new int[size]:nullptr)
+		{
+			std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+			std::cout&lt;&lt;"End Constructor ..."&lt;&lt;std::endl;
+		}
+
+		int *getAddress() const {return array;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		//copy assignment
+		const V& operator=(const V &right)
+		{
+			std::cout&lt;&lt;"Copy Assignment ..."&lt;&lt;std::endl;
+			V temp(right);
+			std::swap(size, temp.size);
+			std::swap(array, temp.array);
+			std::cout&lt;&lt;"End Assignment ..."&lt;&lt;std::endl;
+			return *this;
+		}
+
+		~V()
+		{
+			std::cout&lt;&lt;"Destructor ..."&lt;&lt;std::endl;
+			delete [] array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	V v(10);
+	V v2(20);
+
+	std::cout&lt;&lt;"Swap ..."&lt;&lt;std::endl;
+	std::swap(v, v2);
+	std::cout&lt;&lt;"Ends Swap ..."&lt;&lt;std::endl;
+
+	v.display();
+	v2.display();
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>In swap, one copy constructor is called, two assignment constructors are called</li>
+			</ul>
+		<pre class = "prettyprint linenums">
+//C++98
+template &lt;class T&gt; void swap ( T& a, T& b )
+{
+  T c(a); a=b; b=c;
+}
+
+//C++11
+template &lt;class T&gt; void swap ( T& a, T& b )
+{
+  T c(std::move(a)); a=std::move(b); b=std::move(c);
+}
+		</pre>
+		<ul>
+			<li><span style = "color:red">If no move constructor and move assignment, swap(*this, temp) of C++98 version will be called in assignment constructor and cause recursive calling of asssingment constructor</span></li>
+				<li>If has move constructor and move assignment, swap(*this, temp) of C++11 will called</li>
+	</ul>
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	V v(20);
+	V v2(40);
+	v2 = v;
+
+	v.display();
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<a href = "http://thbecker.net/articles/rvalue_references/section_04.html">thbecker.net</a>
+			</ul>
+		</div>
+		<div class = "subtitle">pair</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+#include &lt;typeinfo&gt;
+
+int main(int argc, char *argv[])
+{
+	std::pair &lt;std::string, int&gt; planet;
+
+	//make_pair
+	planet = std::make_pair("Earth", 4);//C++11 style
+	//planet = std::pair&lt;std::string, int&gt;("Earth", 4);//C++98 style
+
+	//access pair
+	std::cout&lt;&lt;planet.first&lt;&lt;" "&lt;&lt;planet.second&lt;&lt;std::endl;
+
+	//get
+	std::get&lt;0&gt;(planet) = "Mars";
+	std::get&lt;1&gt;(planet) = 5;
+	std::cout&lt;&lt;std::get&lt;0&gt;(planet)&lt;&lt;" "&lt;&lt;std::get&lt;1&gt;(planet)&lt;&lt;std::endl;
+
+	//tuple_size
+	std::cout&lt;&lt;std::tuple_size&lt;decltype(planet)&gt;::value&lt;&lt;std::endl;
+
+	//tuple_element
+	std::cout&lt;&lt;typeid(std::tuple_element&lt;0, decltype(planet)&gt;::type).name()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">make_pair</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+
+int main(int argc, char *argv[])
+{
+	std::pair &lt;std::string, int&gt; planet;
+
+	//make_pair
+	planet = std::make_pair("Earth", 4);//C++11 style
+
+	//access pair
+	std::cout&lt;&lt;planet.first&lt;&lt;" "&lt;&lt;planet.second&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">forward</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+
+template &lt;class T&gt;
+void display(T &p)
+{
+	std::cout&lt;&lt;"Pass lvalue: "&lt;&lt;p&lt;&lt;std::endl;
+}
+
+template &lt;class T&gt;
+void display(T &&p)
+{
+	std::cout&lt;&lt;"Pass rvalue: "&lt;&lt;p&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::string str = "Hello World!";
+	display(str);//lvalue
+	display("Hello World!");//lvalue
+	display(std::forward&lt;std::string&gt;("Hello World!"));//rvalue
+	display(std::move(str));//rvalue
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>If argument is rvalue reference, return rvalue reference</li>
+				<li>If argument is lvalue reference, return lvalue reference</li>
+				<li><span style = "color:red">Deduced parameters are evaluated as lvalue, even those parameters are rvalue, to solve it, use std::forward</span></li>
+			</ul>
+		</div>
+		<div class = "subtitle">move</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+
+template &lt;class T&gt;
+void display(T &p)
+{
+	std::cout&lt;&lt;"Pass lvalue: "&lt;&lt;p&lt;&lt;std::endl;
+}
+
+template &lt;class T&gt;
+void display(T &&p)
+{
+	std::cout&lt;&lt;"Pass rvalue: "&lt;&lt;p&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::string str = "Hello World!";
+	display(str);//lvalue
+	display(std::move(str));//rvalue
+
+	return 0;
+}
+			</pre>
+		</div>
+	</body>
+</html>

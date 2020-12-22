@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Linux</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Variable
+		</div>
+
+		<div class = "subtitle">System variables</div>
+		<div class = "block">
+			<li>Created and maintained by Linux itself, this type of variable defined in CAPITAL LETTERS</li>
+			<li><span>set</span>, check system variables</li>
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+echo $BASH
+echo $BASH_VERSION
+echo $COLUMNS
+echo $HOME
+echo $PATH
+echo '$USER is: '"$USER"
+			</pre>
+		</div>
+		<div class = "subtitle">User defined variables</div>
+		<div class = "block">
+			<li>Created and maintained by user, this type of variable defined in lower letters</li>
+			<li>Don't put spaces on either side of the equal sign when assigning value to variable</li>
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+name='Lin Chen'
+echo $name
+val=bus
+echo $val
+vech= # define NULL variable
+echo $vech
+unset val # unset variable
+			</pre>
+		</div>
+		<div class = "subtitle">Special variables</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+echo $$ # process id
+echo $? # The exit status of the last command executed
+echo $! # The process number of the last background command
+			</pre>
+		</div>
+		<div class = "subtitle">Variable Substitution</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+# If var is null or unset, print the default value
+echo ${var:-"Not defined ..."}
+
+# If var is null or unset, var is set to the specified value
+echo ${var:="Set value ..."}
+echo $var
+
+# If var is null or unset, message is printed to standard error
+unset var
+echo ${var:?"Warning message ..."} # print warning and exit
+
+# If var is set, word is substituted for var
+var="Hello"
+echo ${var:+"Substitution ..."} # Substitution
+echo $var # Hello 
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.tutorialspoint.com/unix/unix-shell-substitutions.htm">Tutoriaspoint</a></li>
+		</div>
+	</body>
+</html>

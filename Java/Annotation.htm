@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Annotation
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>Annotations do not change action of a compiled program</li>
+				<li>Annotations are not pure comments as they can change the way a program is treated by compiler
+					<ul>
+						<li> Annotations can be used by the compiler to detect errors or suppress warnings</li>
+						<li>Software tools can process annotation information to generate code, XML files, and so forth</li>
+						<li> Some annotations are available to be examined at runtime</li>
+					</ul>
+				</li>
+				<li>Annotations help to associate metadata (information) to the program elements i.e. instance variables, constructors, methods, classes, etc.</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Marker Annotations, contain no members and do not consist any data, such as @Override</li>
+				<li>Single value Annotations, contains only one member and allow a shorthand form of specifying the value of the member, the name of the member must be value</li>
+				<li>Full Annotations, consist of multiple data members/ name, value, pairs</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Built-in Annotations</div>
+		<div class = "block">
+			<ul>
+				<li>java.lang.annotation
+					<ul>
+						<li>@Retention
+							<ul>
+								<li>RetentionPolicy.RUNTIME, annotation should be available via reflection at runtime</li>
+								<li>RetentionPolicy.CLASS, annotation is stored in the .class file, but not available at runtime</li>
+								<li>RetentionPolicy.SOURCE, annotation is only available in the source code, and not in the .class files and not a runtime.</li>
+							</ul>
+						</li>
+						<li>@Documented, when defining an annotation, to ensure that classes using your annotation show this in their generated JavaDoc</li>
+						<li>@Target, specify which Java elements your custom annotation can be used to annotate
+							<ul>
+								<li>ElementType.ANNOTATION_TYPE</li>
+								<li>ElementType.CONSTRUCTOR</li>
+								<li>ElementType.FIELD</li>
+								<li>ElementType.LOCAL_VARIABLE</li>
+								<li>ElementType.METHOD</li>
+								<li>ElementType.PACKAGE</li>
+								<li>ElementType.PARAMETER</li>
+								<li>ElementType.TYPE</li>
+							</ul>
+						</li>
+						<li>@Inherited, causes the annotation for a superclass to be inherited by a subclass</li>
+					</ul>
+				</li>
+				<li>java.lang
+					<ul>
+						<li>@Deprecated, an element has been deprecated</li>
+						<li>@Override, override a method from a superclass, if it doesn’t, a compile-time error will result</li>
+						<li>@SuppressWarnings, suppress specified compiler warnings
+							<ul>
+								<li>deprecation, deprecated element</li>
+								<li>unchecked, unchecked warning is generated when a legacy code interfaces with a code that use generics</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Define Annotations</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Info.java
+import java.lang.annotation.*;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Target({ElementType.METHOD, ElementType. TYPE})
+@Inherited 
+@interface Info
+{
+	String Name() default "None";
+	String ExpiryDate() default "10.01.1980";
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+@Info(Name="Car", ExpiryDate="10.14.2017")
+public class Car
+{
+	@Info(Name="f1", ExpiryDate="10.01.2017")
+	public void f1()
+	{
+		System.out.println("f1 in Car ...");
+	}
+
+	@Info(Name="f2", ExpiryDate="10.14.2017")
+	public void f2()
+	{
+		System.out.println("f2 in Car ...");
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.lang.annotation.*;
+
+public class Buick extends Car
+{
+	@Override
+	public void f2()
+	{
+		System.out.println("f2 in Buick ...");
+	}
+
+	@Deprecated
+	public void f3()
+	{
+		System.out.println("f3 in Buick ...");
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://tutorials.jenkov.com/java/annotations.html#target">Jenkov's Tutorial</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/annotations-in-java/">Geeksforgeek</a></li>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/java/annotations/index.html">Oracle Tutorial</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

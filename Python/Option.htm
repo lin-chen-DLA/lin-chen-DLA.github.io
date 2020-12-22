@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Option
+		</div>
+
+		<div class = "subtitle">python -h, list help information</div>
+		<div class = "subtitle">python -B, don't write .pyc and .pyo file</div>
+		<div class = "block">
+			<li>.py: This is normally the input source code that you've written</li>
+			<li>.pyc: This is the compiled bytecode. If you import a module, python will build a *.pyc file that contains the bytecode to make importing it again later easier (and faster)</li>
+			<li>.pyo: This is a *.pyc file that was created while optimizations (-O) was on</li>
+		</div>
+		<div class = "subtitle">python -c, program passed in as string</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+python -c "import sys; print(sys.path)"
+			</pre>
+		</div>
+		<div class = "subtitle">python -E, ignore PYTHON* environment</div>
+		<div class = "subtitle">python -o filename.py, inspect interactively after running script</div>
+		<div class = "subtitle">python -m mod, run library module as a script</div>
+		<div class = "block">
+			<li>python -m site, print out the sys.path</li>
+			<li>python -m site --user-site, print out user's packages folder which is the directory where "pip install --user packagename" installs packages</li>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/py_10.png" width = "25%"></p>
+		</div>
+		<div class = "block">
+			python -m packageName, __main__.py will be implemented as a library module
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+if __name__ == '__main__':
+    print("Run the module ...")
+			</pre>
+		</div>
+		<div class = "subtitle">python -O, optimize genereated bytecode, assert will be turned off</div>
+		<div class = "subtitle">python -OO, remove doc-strings in addition to the -O optimization</div>
+		<div class = "subtitle">python -Q, division control</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# python -Q old filename.py
+print(10/4) # 2
+print(10//4) # 2
+
+# python -Q new filename.py
+print(10/4) # 2.5
+print(10//4) # 2
+
+# python -Q warn filename.py, old division semantics with a warning for int/int and long/long
+
+# python -Q warnall filename.py, old division semantics with a warning for all uses of the division operator
+			</pre>
+		</div>
+		<div class = "subtitle">python -R, use a pseudo-random salt to make hash() value be unpredictable</div>
+		<div class = "subtitle">python -s, don't add user site directory to sys.path, user site can be checked by "python -m site --user-site"</div>
+		<div class = "subtitle">python -S, disable the import of the module site and the site-dependent manipulations of sys.path that it entails</div>
+		<div class = "subtitle">python -t, issue warning about inconsistent tab usage</div>
+		<div class = "subtitle">python -u, force stdin, stdout and stderr to be totally unbuffered</div>
+		<div class = "subtitle">python -v, print a message each time a module is initialized</div>
+		<div class = "subtitle">python -W arg, warning control</div>
+		<div class = "block">
+			<li>ignore, ignore all warning</li>
+			<li>default, printing each warning once per source line</li>
+			<li>all, print a warning each time it occurs</li>
+			<li>module, print each warning only the first time it occurs in each module</li>
+			<li>once, print each warning only the first time it occurs in the program</li>
+			<li>error, raise an exception instead of printing a warning message</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.python.org/2/using/cmdline.html">Python Documentation</a></li>
+		</div>
+	</body>
+</html>

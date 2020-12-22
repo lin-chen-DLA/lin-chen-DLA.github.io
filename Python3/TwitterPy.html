@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			python-twitter
+		</div>
+
+		<div class = "subtitle">Basics</div>
+		<div class = "block">
+			<li>Standard API, free, recent Tweets published in the past <span>7</span> days</li>
+			<li>Premium API, pay as you go, advanced filtering functionality and scalable access to the the Search Tweets API, free and paid, access to either the last <span>30</span> days of Tweets or access to Tweets from as early as <span>2006</span></li>
+			<li>Enterprise-level, paid subscription, access to Twitter data, including real-time Tweets and public account information, historical Tweets, and Tweet insights, access to either the last <span>30</span> days of Tweets or access to Tweets from as early as <span>2006</span></li>
+			<li><a href = "https://developer.twitter.com/en/docs/basics/authentication/oauth-2-0/application-only">Authentication</a>
+				<ul>
+					<li>OAuth2, is for developers that just need read-only to access public information</li>
+					<li>OAuth 1.0a, allows an authorized app to act on behalf of a user.</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Twitter Account</div>
+		<div class = "block">
+			<ol>
+				<li>Create App
+					<ul>
+						<li><a href = "https://developer.twitter.com/en/apps">Create Twitter App</a></li>
+						<li>Developer Agreement</li>
+						<li>Create App</li>
+						<li>Genearte Access Token</li>
+					</ul>
+				</li>
+				<li>Setup one or more <a href = "https://developer.twitter.com/en/account/environments">development environment</a>
+					<ul>
+						<li>Search Tweets: 30-DaysSandbox</li>
+						<li>Search Tweets: Full ArchiveSandbox</li>
+						<li>Account Activity APISandbox</li>
+					</ul>
+				</li>
+				<li>Start using the endpoints
+					<ul>
+					</ul>
+				</li>
+			</ol>
+                </div>
+		<div class = "subtitle">Create API</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import twitter
+from t import ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET, CONSUMER_KEY, CONSUMER_SECRET
+
+api = twitter.Api(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
+		</pre>
+		</div>
+		<div class = "subtitle">GetUser()</div>
+		<div class = "block">
+			<li>Returns a single user</li>
+		<pre class = "prettyprint linenums">
+user = api.GetUser(screen_name="@valdostastate")
+		</pre>
+		</div>
+		<div class = "subtitle">GetSearch()</div>
+		<div class = "block">
+			<li>Return twitter search results for a given term
+				<ul>
+					<li>term</li>
+					<li>count, default 15, maximum 100</li>
+					<li>raw_query, a raw query as a string</li>
+					<li>since_id, returns results with an ID greater than the specified ID</li>
+					<li>max_id, returns only statuses with an ID less than or equal to the specified ID</li>
+					<li>until, returns tweets generated since the given date</li>
+					<li>geocode, geolocation within which to search for tweets</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+searches = api.GetSearch(term='valdosta state', count= 100)
+
+searches = api.GetSearch(raw_query="q=valdosta%20state&amp;result_type=recent&amp;since=2014-07-19&amp;count=100")
+
+searches = api.GetSearch(term='valdosta', since_id = 1193364932055711745)
+
+searches = api.GetSearch(term='valdosta', max_id = 1193364932055711745)
+
+searches = api.GetSearch(term='valdosta state', until='2019-11-09') #YYYY-MM-DD
+
+searches = api.GetSearch(term='FSU', geocode = [30.4433237, -84.2777568, "1mi"], result_type="recent", count=100)
+		</pre>
+		</div>
+		<div class = "subtitle">GetUserTimeline</div>
+		<div class = "block">
+			<li>Fetch the sequence of public Status messages for a single user</li>
+		<pre class = "prettyprint linenums">
+searches = api.GetUserTimeline(screen_name="@valdostastate", count = 100)
+		</pre>
+		</div>
+		<div class = "subtitle">GetFriends()</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#user_id, twitter id
+#screen_name, twitter name
+users = api.GetFriends() #fetch the follower
+
+user = users[0]
+print(user)
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://github.com/twitterdev/search-tweets-python">Search Tweets</a></li>
+			<li><a href = "https://developer.twitter.com/en/docs/api-reference-index">API Reference Index</a></li>
+			<li><a href = "https://developer.twitter.com/en/docs/tweets/search/overview">Twitter Search</a></li>
+			<li><a href = "https://python-twitter.readthedocs.io/en/latest/twitter.html#module-twitter.api">python-twitter API</a></li>
+			<li><a href = "https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-statuses-lookup">Twitter Tutorials</a></li>
+			<li><a href = "https://github.com/bear/python-twitter/tree/master/examples">python-twitter examples</a></li>
+		</div>
+	</body>
+</html>

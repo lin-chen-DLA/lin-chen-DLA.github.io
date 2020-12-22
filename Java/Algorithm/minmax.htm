@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Min and Max</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+import javafx.util.*;
+
+public class M
+{
+	public static Pair&lt;Integer, Integer&gt; getMinMax(int [] array)
+	{
+		int min, max;
+		int index;
+
+		if(array.length%2 == 0)
+		{
+			if(array[0] &lt; array[1])
+			{
+				min = array[0];
+				max = array[1];
+			}
+			else
+			{
+				min = array[1];
+				max = array[0];
+			}
+			index = 2;
+
+		}
+		else
+		{
+			min = max = array[0];
+			index = 1;
+		}
+
+		for(int i = index; i &lt; array.length-1; i++)
+		{
+			if(array[i] &lt; array[i+1])
+			{
+				if(min &gt; array[i])
+					min = array[i];
+				if(array[i+1] &gt; max)
+					max = array[i+1];
+			}
+			else
+			{
+				if(min &gt; array[i+1])
+					min = array[i+1];
+				if(max &lt; array[i])
+					max = array[i];
+			}
+		}
+
+		return (new Pair&lt;Integer, Integer&gt;(min, max));
+	}
+
+	public static int [] getArray(int n)
+	{
+		int [] array = new int[n];
+		Random r = new Random();
+
+		for(int i = 0; i &lt; n; i++)
+			array[i] = r.nextInt(100);
+
+		return array;
+	}
+
+	public static void main(String args[])
+	{
+		int [] array = getArray(100);
+
+		Pair&lt;Integer, Integer&gt; p = getMinMax(array);
+
+		System.out.println("Min: "+p.getKey()+" Max: "+p.getValue());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li>CLRS Chapter 9</li>
+			</ul>
+		</div>
+	</body>
+</html>

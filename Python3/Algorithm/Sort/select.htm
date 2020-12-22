@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Selection sort</div>
+		<div class = "block">
+			<li>Best Case, O(n^2)</li>
+			<li>Worst Case, Ω(n^2)</li>
+			<li>Memory Complexity, O(1)</li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import random
+
+def select_sort(l):
+    n = len(l)
+
+    for i in range(n-1):
+        min_index = i
+	# Find the minimum element in unsorted array
+        for j in range(i+1, n):
+            if l[j] &lt; l[min_index]:
+                min_index = j
+        l[i], l[min_index] = l[min_index], l[i]
+
+def get_list():
+    random.seed()
+    l = random.choices(range(10), k=10)
+
+    return l
+
+def main():
+    l = get_list()
+    print(l)
+
+    select_sort(l)
+    print(l)
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+	</body>
+</html>

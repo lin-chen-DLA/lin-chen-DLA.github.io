@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			create-react-app
+		</div>
+
+		<div class = "subtitle">Create React Project</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+npx create-react-app my-app // creat react application
+// npm init react-app my-app, available in npm 6+
+cd my-app
+npm start //default domain http://localhost:3000/
+		</pre>
+		</div>
+		<div class = "subtitle">Components</div>
+		<div class = "block">
+			<li>put any JS and CSS files inside src</li>
+			<li>Only files inside public can be used from public/index.html</li>
+		<pre class = "prettyprint linenums">
+/Project
+	README.md
+	node_modules/
+	package.json
+	package-lock.json
+	public/
+		index.html //page template
+	src/
+		App.css
+		App.js
+		App.test.js
+		index.css
+		index.js //JavaScript entry point
+		logo.svg
+		</pre>
+		</div>
+		<div class = "subtitle">Build</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+npm run build // Builds the app for production to the build folder
+cp -r ./build/* /Application/AMPPS/www // copy content in build folder to the root of the website
+		</pre>
+		</div>
+		<div class = "subtitle">Test</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/create-react-app_1.png" width=20% /></p>
+		</div>
+		<div class = "block">
+			<li>test files have .test.js or .spec.js suffix</li>
+			<li>add test file and code together under /src folder</li>
+		<pre class = "prettyprint linenums">
+//temp.js
+function hello()
+{
+	console.log("Hello World!");
+}
+
+function sum(a, b)
+{
+	return a+b;
+}
+
+export {hello, sum};
+		</pre>
+		<pre class = "prettyprint linenums">
+//temp.test.js
+import {hello, sum} from "./temp.js"
+
+it('hello test', () =&gt; {
+	hello();
+});
+
+it('sums numbers', () =&gt; {
+  expect(sum(1, 2)).toEqual(3);
+  expect(sum(2, 2)).toEqual(4);
+});
+
+		</pre>
+		<pre class = "prettyprint linenums">
+npm test // under the root directory of the project
+		</pre>
+		</div>
+		<div class = "subtitle">Copy Project</div>
+		<div class = "block">
+			<li>Directly copy a project created by create-react-app will cause launching errors</li>
+		<pre class = "prettyprint linenums">
+$ npm install -g npm@latest  # or, npm install -g npm@latest --prefix "C:\Program Files\nodejs"
+$ rm -rf node_modules        # or, `cmd /c rmdir /s /q node_modules` on Windows
+$ npm install
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://github.com/facebook/create-react-app/issues/200">npm start fails after copying a generated project to a new directory</a></li>
+			<li><a href = "https://www.codecademy.com/articles/how-to-create-a-react-app">Tutorial</a></li>
+			<li><a href = "https://create-react-app.dev/docs/getting-started">Documentation</a></li>
+		</div>
+	</body>
+</html>

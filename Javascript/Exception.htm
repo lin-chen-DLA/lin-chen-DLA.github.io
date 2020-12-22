@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Exception
+		</div>
+
+		<div class = "block">
+			<li>try ... catch ... finally</li>
+			<li>throw, throw exception</li>
+		</div>
+		<div class = "subtitle">try ... catch ... finally</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+try
+{
+	addalert("Welcome to Javascript ...");
+}
+catch(err)
+{
+	console.log("Catch error ...");
+	console.log(err);
+}
+finally
+{
+	console.log("Finally statements ...");
+}
+		</pre>
+		</div>
+		<div class = "subtitle">throw</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;input id="demo" type="text" onchange="validate()"&gt;
+&lt;script type="text/javascript"&gt;
+function f()
+{
+	var x = document.getElementById("demo").value;
+	if (x == "") throw "Empty";
+	if (isNaN(x)) throw "Not a Number ...";
+}
+
+function validate()
+{
+	try{
+		f();
+	}
+	catch(err)
+	{
+		console.log(err);
+		return;
+	}
+		console.log("Input is legal ...");
+	}
+&lt;/script&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Error Properties</div>
+		<div class = "block">
+			<li>name, error name</li>
+			<li>message, error message</li>
+		</div>
+		<div class = "subtitle">onerror( ) Method</div>
+		<div class = "block">
+			<li>The onerror event handler was the first feature to facilitate error handling in JavaScript</li>
+			<li>The error event is fired on the window object whenever an exception occurs on the page</li>
+		<pre class = "prettyprint linenums">
+&lt;html&gt; 
+   &lt;head&gt; 
+      &lt;script type = "text/javascript"&gt; 
+         function myFunc()
+         {
+            throw new Error("Erorr ...");
+         }
+
+         window.onerror  =  function (msg, url, line) {  
+            document.write ("An error occurred.");
+            console.log(msg); // Error Message
+            console.log(url); // URL
+            console.log(line); // Line Number
+         } 
+      &lt;/script&gt; 
+   &lt;/head&gt; 
+
+   &lt;body&gt; 
+      &lt;p&gt;Click the following to see the result:&lt;/p&gt; 
+      &lt;form&gt; 
+         &lt;input type = "button" value = "Click Me" onclick = "myFunc();" /&gt; 
+      &lt;/form&gt; 
+   &lt;/body&gt; 
+&lt;/html&gt; 
+		</pre>
+		</div>
+		<div class = "subtitle">Custom Errors</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function MyError(message) { 
+   this.name = 'MyError'; 
+   this.message = message || 'Error raised with default message'; 
+}
+
+function f() {throw new MyError("Error ...");}
+function f2() {throw new MyError();} // use the default error message
+
+try
+{
+	f();
+}
+catch (e)
+{
+	console.log(e.name);
+	console.log(e.message);
+}
+
+try
+{
+	f2();
+}
+catch (e)
+{
+	console.log(e.name);
+	console.log(e.message);
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Error Types</div>
+		<div class = "block">
+			<li><span>EvalError</span>, An error has occurred in the eval() function</li>
+			<li><span>RangeError</span>, A number "out of range" has occurred</li>
+			<li><span>ReferenceError</span>, An illegal reference has occurred</li>
+			<li><span>SyntaxError</span>, A syntax error has occurred</li>
+			<li><span>TypeError</span>, A type error has occurred</li>
+			<li><span>URIError</span>, An error in encodeURI() has occurred</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.tutorialspoint.com/es6/es6_error_handling.htm">Tutorialspoint</a></li>
+		</div>
+	</body>
+</html>

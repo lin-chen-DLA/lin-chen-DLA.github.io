@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MATLAB</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Overload
+		</div>
+
+		<div class = "subtitle">Overload Functions</div>
+		<div class = "block">
+			<ul>
+				<li>In MATLAB, overloadding does not mean several class methods have the same function name</li>
+				<li>Overloadding in MATLAB means overload functions in MATLAB or operators</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+classdef Num
+    properties
+        value
+    end
+    methods
+        % Constructor
+        function self = Num(n)
+            self.value = n;
+        end
+        
+        % Accessor
+        function disp(self)
+            fprintf('Num: %d\n', self.value);
+        end
+        
+        % Overloadding
+        function self = sqrt(self)
+            self.value = 10*sqrt(self.value);
+        end
+    end
+end
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function numTest()
+    % Create a Num Object
+    n = Num(10);
+    
+    n = n.sqrt();    
+    n.disp();
+    
+    n = sqrt(n);
+    n.disp();
+end
+		</pre>
+	</div>
+	<div class = "subtitle">Overload Operators</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+classdef Num
+    properties
+        value
+    end
+    methods
+        % Constructor
+        function self = Num(n)
+            self.value = n;
+        end
+        
+        % Accessor
+        function disp(self)
+            fprintf('Num: %d\n', self.value);
+        end
+        
+        % Overloadding Operators
+        % +
+        function self = plus(self, right)
+            self.value = self.value + right.value;
+        end
+        % &lt;
+        function l = lt(self, right)
+            if self.value &lt; right.value
+                l = true;
+            else
+                l = false;
+            end
+        end
+    end
+end
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function numTest()
+    % Create a Num Object
+    n = Num(10);
+    n2 = Num(80);
+    
+    temp = n + n2;
+    disp(temp);
+    
+    if n &lt; n2
+        fprintf('n < n2\n');
+    end
+end
+		</pre>
+	</div>
+	</body>
+</html>

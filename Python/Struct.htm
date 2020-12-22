@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Struct
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>Conversion between Python values and C structs represented as Python strings</li>
+				<li>it is typically more efficient to do it once when creating a Struct instance and call methods on the instance instead of using the module-level functions</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import struct
+import binascii
+
+# Create Struct instance
+s = struct.Struct('hhl');
+
+# Pack information
+packed = s.pack(1, 2, 3);#pack data into a string
+print s.format
+print s.size
+print binascii.hexlify(packed)
+
+# Unpack information
+unpacked = s.unpack(packed);
+print unpacked, type(unpacked);
+			</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://pymotw.com/2/struct/">PyMOTW</a></li>
+				<li><a href = "https://docs.python.org/2/library/struct.html#format-characters">Documentation</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Class
+		</div>
+
+		<div class = "subtitle">Define Class</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//accessor
+		double getWidth() const;
+		double getLength() const;
+		double getArea() const;
+
+		//mutator
+		void setWidth(double w);
+		void setLength(double l);
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+//Rectangle.cpp
+#include "Rectangle.h"
+
+double Rectangle::getWidth() const
+{
+	return width;
+}
+
+double Rectangle::getLength() const
+{
+	return length;
+}
+
+double Rectangle::getArea() const
+{
+	return width*length;
+}
+
+void Rectangle::setWidth(double w)
+{
+	width = w;
+}
+
+void Rectangle::setLength(double l)
+{
+	length = l;
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//main.cpp
+#include &lt;iostream&gt;
+#include "Rectangle.h"
+
+int main(int argc, char *argv[])
+{
+	Rectangle r;
+
+	r.setWidth(5);
+	r.setLength(10);
+
+	std::cout&lt;&lt;"Area: "&lt;&lt;r.getArea()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>private, cannot be accessed outside the class</li>
+				<li>public, can be accessed by code outside the class</li>
+				<li>const after the parentheses in a member function specifies that the function will not change any data stored in the calling object, must appear in both the declaration and the function header</li>
+				<li>accessor, member functions that get value from a class's member variable but not make any change</li>
+				<li>mutator, member functions that stores a value in member variable or changes the value of member variable</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Pointers to Objects</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "Rectangle.h"
+
+int main(int argc, char *argv[])
+{
+	Rectangle *r;
+
+	r = new Rectangle();
+
+	r-&gt;setWidth(5);
+	r-&gt;setLength(10);
+
+	std::cout&lt;&lt;"Area: "&lt;&lt;r-&gt;getArea()&lt;&lt;std::endl;
+
+	delete r;
+	r = 0;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>call member function by -&gt; operator</li>
+				<li>(*r).getWidth() equals to r-&gt;getWidth()</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Object Array</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "Rectangle.h"
+
+int main(int argc, char *argv[])
+{
+	const int size = 2;
+	Rectangle array[size] = {Rectangle(), Rectangle()};
+
+	for(int i = 0; i &lt; size; i++)
+	{
+		array[i].setWidth(i+1);
+		array[i].setLength(2*(i+1));
+	}
+
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;"Area "&lt;&lt;i&lt;&lt;": "&lt;&lt;array[i].getArea()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+				<div class = "subtitle">Array of Pointers to Objects</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "Rectangle.h"
+
+int main(int argc, char *argv[])
+{
+	const int size = 2;
+	Rectangle *array[size];
+
+	for(int i = 0; i &lt; size; i++)
+		array[i] = new Rectangle();
+
+	for(int i = 0; i &lt; size; i++)
+	{
+		array[i]-&gt;setWidth(i+1);
+		array[i]-&gt;setLength(2*(i+1));
+	}
+
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;"Area "&lt;&lt;i&lt;&lt;": "&lt;&lt;array[i]-&gt;getArea()&lt;&lt;std::endl;
+
+	for(int i = 0; i &lt; size; i++)
+	{
+		delete array[i];
+		array[i] = 0;
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Class Template</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef V_H
+#define V_H
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		//constructor
+		V(int s):size(s)
+		{
+			std::cout&lt;&lt;"Constructor ..."&lt;&lt;std::endl;
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+			std::cout&lt;&lt;"----End Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//copy constructor
+		V(const V &right):size(right.size), array(size?new int [size]:nullptr)
+		{
+			std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+			std::cout&lt;&lt;"----End Copy Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//move constructor
+		V(V && right):size(0), array(nullptr)
+		{
+			std::cout&lt;&lt;"Move Constructor ..."&lt;&lt;std::endl;
+			size = right.size;
+			array = right.array;
+			right.size = 0;
+			right.array =  nullptr;
+			std::cout&lt;&lt;"----End Move Constructor ..."&lt;&lt;std::endl;
+		}
+
+		int *getAddress() const {return array;}
+		int getSize() const {return size;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		V & time(int n)
+		{
+			for(int i = 0; i &lt; size; i++)
+				array[i] *= n;
+			return *this;
+		}
+
+		//copy assignment
+		const V& operator=(const V &right)
+		{
+			std::cout&lt;&lt;"Copy Assignment ..."&lt;&lt;size&lt;&lt;std::endl;
+			if(this != &right)
+			{
+				V temp(right);
+				//std::swap(size, temp.size);
+				//std::swap(array, temp.array);
+				std::swap(*this, temp);
+			}
+			std::cout&lt;&lt;"----End Assignment ..."&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		//move assignment
+		V & operator=(V&& right)
+		{
+			std::cout&lt;&lt;"Move Assignment ..."&lt;&lt;std::endl;
+			if(this != &right)
+			{
+				delete [] array;
+				array = 0;
+				size = 0;
+
+				size = right.size;
+				array = right.array;
+
+				right.size = 0;
+				right.array = nullptr;
+			}
+			std::cout&lt;&lt;"----End Move Assignment ..."&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		~V()
+		{
+			std::cout&lt;&lt;"Destructor ..."&lt;&lt;size&lt;&lt;std::endl;
+			delete array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+			</pre>
+		</div>
+	</body>
+</html>

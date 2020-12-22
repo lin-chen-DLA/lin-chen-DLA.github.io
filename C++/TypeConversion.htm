@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Type Conversion
+		</div>
+
+		<div class = "subtitle">Type Coercion</div>
+		<div class = "block">
+			<ul>
+				<li>When an operator's operands are of different data types, C++ will automatically convert them to the same data type. The automatic conversion is known as type coercion.</li>
+				<li>Promote, a value is converted to a higher data type</li>
+				<li>Demote, a value is converted to a lower data type</li>
+				<li>long double &gt; double &gt; float &gt; unsigned long &gt; long &gt; unsigned int &gt; int</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ol>
+				<li>chars, shorts, and unsigned shorts are automatically promoted to int</li>
+				<li>When an operator works with two values of different data type, the lower ranking value is promoted to the type of the higher ranking value</li>
+				<li>When the final value of an expression is assigned to a variable, it will be converted to the data type of that variable</li>
+				<li>If a negative integer value is converted to an unsigned type, the resulting value corresponds to its 2's complement bitwise representation</li>
+				<li>The conversions from/to bool consider false equivalent to zero; true is equivalent to all other values and is converted to the equivalent of 1</li>
+				<li>If the conversion is from a floating-point type to an integer type, the value is truncated (the decimal part is removed). If the result lies outside the range of representable values by the type, the conversion causes undefined behavior</li>
+				<li>Otherwise, if the conversion is between numeric types of the same kind (integer-to-integer or floating-to-floating), the conversion is valid, but the value is implementation-specific (and may not be portable).</li>
+			</ol>
+		</div>
+		<div class = "subtitle">Implicit Conversion</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;typeinfo&gt;
+
+int main(int argc, char *argv[])
+{
+	//char
+	char c = 'a';
+	std::cout&lt;&lt;typeid(c+1).name()[0]&lt;&lt;std::endl;
+
+	//float and integer
+	float a = 10.5;
+	int b = 10;
+	std::cout&lt;&lt;typeid(a+b).name()[0]&lt;&lt;std::endl;
+
+	//negative integer to unsigned integer
+	unsigned int d = -1;
+	std::cout&lt;&lt;d&lt;&lt;std::endl;
+
+	//bool to integer
+	bool e = true, f = false;
+	std::cout&lt;&lt;"True: "&lt;&lt;e&lt;&lt;" False: "&lt;&lt;f&lt;&lt;std::endl;
+
+	//integer to bool
+	std::cout&lt;&lt;std::boolalpha&lt;&lt;"1: "&lt;&lt;bool(1)&lt;&lt;" 0: "&lt;&lt;bool(0)&lt;&lt;" -1: "&lt;&lt;bool(-1)&lt;&lt;std::endl;
+	std::cout&lt;&lt;std::noboolalpha;
+
+	//float to integer
+	float g = 3.14;
+	int h = g;
+	std::cout&lt;&lt;"Float to Int: "&lt;&lt;h&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Null pointers can be converted to pointers of any type</li>
+				<li>Pointers to any type can be converted to void pointers</li>
+				<li>Pointer upcast: pointers to a derived class can be converted to a pointer of an accessible and unambiguous base class, without modifying its const or volatile qualification.</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Implicit Conversion with Classes</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+// implicit conversion of classes:
+#include &lt;iostream&gt;
+
+class A {};
+
+class B {
+public:
+  // conversion from A (constructor):
+  B (const A& x) {
+	  std::cout&lt;&lt;"Constructor ..."&lt;&lt;std::endl;
+  }
+  // conversion from A (assignment):
+  B& operator= (const A& x) {
+	  std::cout&lt;&lt;"Assignment ..."&lt;&lt;std::endl;
+	  return *this;
+  }
+  // conversion to A (type-cast operator)
+  operator A() {
+	  std::cout&lt;&lt;"Type-cast Operator ..."&lt;&lt;std::endl;
+	  return A();
+  }
+};
+
+int main ()
+{
+  A foo;
+  B bar = foo;    // calls constructor
+  bar = foo;      // calls assignment
+  foo = bar;      // calls type-cast operator
+  return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Explicit</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Vehicle.h
+#ifndef VEHICLE_H
+#define VEHICLE_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Vehicle
+{
+	private:
+		std::string producer;
+	public:
+		//constructor
+		Vehicle(std::string s);
+
+		std::string getProducer() const {return producer;}
+		void setProducer(std::string producer);
+
+		std::string toString();
+
+		~Vehicle();
+};
+#endif
+			</pre>
+
+			<pre class = "prettyprint linenums">
+//Vehicle.cpp
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+
+//constructor
+Vehicle::Vehicle(std::string s):producer(s)
+{
+	std::cout&lt;&lt;"Vehicle Constructor ..."&lt;&lt;std::endl;
+}
+
+void Vehicle::setProducer(std::string producer)
+{
+	this-&gt;producer = producer;
+}
+
+std::string Vehicle::toString()
+{
+	std::string temp;
+	temp = "Vehicle Producer: "+producer;
+	return temp;
+}
+
+Vehicle::~Vehicle()
+{
+	std::cout&lt;&lt;"Vehicle Destructor ..."&lt;&lt;std::endl;
+}
+			</pre>
+
+			<pre class = "prettyprint linenums">
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+
+void display(Vehicle v)
+{
+	std::cout&lt;&lt;v.toString()&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	Vehicle v("Buick");
+	display(v);
+
+	std::string temp = "Honda";
+	display(temp);//due to implicit conversion, string will converted to Vehicle automatically
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				Implicit conversions automatically convert string to Vehicle. However, it may lead unexpected results. To prevent the implicit conversion, use keyword explicit with constructor
+			</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#ifndef VEHICLE_H
+#define VEHICLE_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Vehicle
+{
+	private:
+		std::string producer;
+	public:
+		//constructor
+		explicit Vehicle(std::string s);
+
+		std::string getProducer() const {return producer;}
+		void setProducer(std::string producer);
+
+		std::string toString();
+
+		~Vehicle();
+};
+#endif
+		</pre>
+	</div>
+		<div class = "subtitle">Type Cast of Built-int Data Types</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	double x = 3.14;
+	int temp;
+
+	temp = int(x);//C++ Style 
+	temp = (int) x;//C Style
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">const_cast</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+void display(int *number)
+{
+	std::cout&lt;&lt;*number&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	int i = 10;
+	const int *a = &i;
+
+	display(const_cast&lt;int *&gt;(a));
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Convert constant pointer to non-constant pointer</li>
+				<li><a href = "http://www.geeksforgeeks.org/casting-operators-in-c-set-1-const_cast/">geeksforgeeks.org</a></li>
+			</ul>
+		</div>
+				<div class = "subtitle">dynamic_cast</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Vehicle.h
+#ifndef VEHICLE_H
+#define VEHICLE_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Vehicle
+{
+	private:
+		std::string producer;
+	public:
+		//constructor
+		Vehicle() {}
+		Vehicle(std::string s);
+
+		std::string getProducer() const {return producer;}
+		void setProducer(std::string producer);
+
+		virtual std::string toString();
+
+		virtual ~Vehicle();
+};
+#endif
+
+//Vehicle.cpp
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+
+//constructor
+Vehicle::Vehicle(std::string s):producer(s)
+{
+	std::cout&lt;&lt;"Vehicle Constructor ..."&lt;&lt;std::endl;
+}
+
+void Vehicle::setProducer(std::string producer)
+{
+	this-&gt;producer = producer;
+}
+
+std::string Vehicle::toString()
+{
+	std::string temp;
+	temp = "Vehicle Producer: "+producer;
+	return temp;
+}
+
+Vehicle::~Vehicle()
+{
+	std::cout&lt;&lt;"Vehicle Destructor ..."&lt;&lt;std::endl;
+}
+
+//Car.h
+#ifndef CAR_H
+#define CAR_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+
+class Car : public Vehicle
+{
+	private:
+		std::string model;
+	public:
+		//constructor
+		Car() {};
+		Car(std::string p, std::string m);
+
+		std::string getModel() const {return model;}
+		void setModel(std::string model);
+
+		std::string toString();
+
+		~Car();
+};
+#endif
+
+//Car.h
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+#include "Car.h"
+
+//constructor
+Car::Car(std::string p, std::string m):Vehicle(p), model(m)
+{
+	std::cout&lt;&lt;"Car Constructor ..."&lt;&lt;std::endl;
+}
+
+void Car::setModel(std::string model)
+{
+	this-&gt;model = model;
+}
+
+std::string Car::toString()
+{
+	std::string temp;
+	temp = "Car Producer: "+getProducer()+" Model: "+model;
+	return temp;
+}
+
+Car::~Car()
+{
+	std::cout&lt;&lt;"Car Destructor ..."&lt;&lt;std::endl;
+}
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;exception&gt;
+#include "Vehicle.h"
+#include "Car.h"
+
+int main(int argc, char *argv[])
+{
+	std::exception ep;
+
+	Vehicle *v;
+	Car *c = new Car("Honda", "Accord");
+	
+	//upcast
+	//Convert Car to Vehicle
+	std::cout&lt;&lt;"Upcast, Car to Vehicle ..."&lt;&lt;std::endl;
+	try
+	{
+		v = dynamic_cast&lt;Vehicle *&gt;(c);
+		std::cout&lt;&lt;v-&gt;toString()&lt;&lt;std::endl;
+	} catch (std::exception & e)
+	{
+		std::cout&lt;&lt;"Upcast Error: "&lt;&lt;e.what()&lt;&lt;std::endl;
+	}
+
+	delete v;
+	//delete c;
+
+	//downcast
+	Vehicle *v2 = new Vehicle("Buick");
+	Vehicle *v3 = new Car("Buick", "Rendezvous");
+	Car *c2;
+
+	//Convert Car to Car
+	std::cout&lt;&lt;"Downcast, Car to Car ..."&lt;&lt;std::endl;
+	try
+	{
+		c2 = dynamic_cast&lt;Car*&gt;(v3);
+		std::cout&lt;&lt;c2-&gt;toString()&lt;&lt;std::endl;
+	} catch (std::exception &e)
+	{
+		std::cout&lt;&lt;"Downcast Error, Car to Car: "&lt;&lt;e.what()&lt;&lt;std::endl;
+	}
+
+	//Convert Vehicle to Car
+	std::cout&lt;&lt;"Downcast, Vehicle to Car ..."&lt;&lt;std::endl;
+	try
+	{
+		c2 = dynamic_cast&lt;Car*&gt;(v2);
+		if (c2 == nullptr)
+			throw ep;
+		std::cout&lt;&lt;c2-&gt;toString()&lt;&lt;std::endl;
+	} catch (std::exception &e)
+	{
+		std::cout&lt;&lt;"Downcast Error, Vehicle to Car: "&lt;&lt;e.what()&lt;&lt;std::endl;
+	}
+
+	delete v2;
+	delete v3;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// bad_cast example
+#include &lt;iostream&gt;       // std::cout
+#include &lt;typeinfo&gt;       // std::bad_cast
+
+class Base {virtual void member(){}};
+class Derived : Base {};
+
+int main () {
+  try
+  {
+    Base b;
+    Derived& rd = dynamic_cast&lt;Derived&&gt;(b);
+  }
+  catch (std::bad_cast& bc)
+  {
+     std::cerr &lt;&lt; "bad_cast caught: " &lt;&lt; bc.what() &lt;&lt; '\n';
+  }
+  return 0;
+}
+		</pre>
+	</div>
+		<div class = "block">
+			<ul>
+				<li>dynamic_cast can only be used with <span style = "color:red">pointers and reference</span> of related classes, such as parent and child, require run time check to ensure that the converted pointers pointint to a valid object</li>
+				<li>Upcast, same as an implicit conversion</li>
+				<li>Downcast, need polymorphism
+				<ul>
+					<li>Vehicle(Car) to Car, object type match</li>
+					<li>Vehicle(Vehicle) to Car, object type does not match, return a null pointer, <span style = "color:red">if dynamic_cast is used to convert to a reference type, a bad_cast is thrown</span></li>
+				</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">static_cast</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;exception&gt;
+#include "Vehicle.h"
+#include "Car.h"
+
+int main(int argc, char *argv[])
+{
+	std::exception ep;
+
+	Vehicle *v;
+	Car *c = new Car("Honda", "Accord");
+	
+	//upcast
+	//Convert Car to Vehicle
+	std::cout&lt;&lt;"Upcast, Car to Vehicle ..."&lt;&lt;std::endl;
+	try
+	{
+		v = static_cast&lt;Vehicle *&gt;(c);
+		std::cout&lt;&lt;v-&gt;toString()&lt;&lt;std::endl;
+	} catch (std::exception & e)
+	{
+		std::cout&lt;&lt;"Upcast Error: "&lt;&lt;e.what()&lt;&lt;std::endl;
+	}
+
+	delete v;
+	//delete c;
+
+	//downcast
+	Vehicle *v2 = new Vehicle("Buick");
+	Vehicle *v3 = new Car("Buick", "Rendezvous");
+	Car *c2;
+
+	//Convert Car to Car
+	std::cout&lt;&lt;"Downcast, Car to Car ..."&lt;&lt;std::endl;
+	try
+	{
+		c2 = static_cast&lt;Car*&gt;(v3);
+		std::cout&lt;&lt;c2-&gt;toString()&lt;&lt;std::endl;
+	} catch (std::exception &e)
+	{
+		std::cout&lt;&lt;"Downcast Error, Car to Car: "&lt;&lt;e.what()&lt;&lt;std::endl;
+	}
+
+	//Convert Vehicle to Car
+	std::cout&lt;&lt;"Downcast, Vehicle to Car ..."&lt;&lt;std::endl;
+	try
+	{
+		c2 = static_cast&lt;Car*&gt;(v2);
+		if (c2 == nullptr)
+			throw ep;
+		std::cout&lt;&lt;c2-&gt;toString()&lt;&lt;std::endl;
+	} catch (std::exception &e)
+	{
+		std::cout&lt;&lt;"Downcast Error, Vehicle to Car: "&lt;&lt;e.what()&lt;&lt;std::endl;
+	}
+
+	delete v2;
+	delete v3;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	//convert integer to float
+	float temp = static_cast&lt;float&gt;(9)/5;
+	std::cout&lt;&lt;temp&lt;&lt;std::endl;
+
+	//convert integer to enum
+	enum season {spring, summer, autumn, winter};
+	season s = static_cast&lt;season&gt;(3);
+
+	//convert *void to any pointer type
+	char *a;
+	unsigned char *b;
+
+	//b = static_cast&lt;unsigned char *&gt;(a);//error
+	b = static_cast&lt;unsigned char *&gt;(static_cast&lt;void*&gt;(a));
+	//b = reinterpret_cast&lt;unsigned char *&gt;(a);
+
+	return 0;
+}
+		</pre>
+	</div>
+		<div class = "block">
+			<ul>
+				<li>Being used to cast between <span style = "color:red">the integer types</span>, such as char-&gt;long, int-&gt;short etc.</li>
+				<li>Is also used to cast <span style = "color:red">pointers</span> to related types, no runtime checking to guarantee the object being converted to the destination type, programmer should ensure that the conversion is safe</li>
+				<li>For casting to and from <span style = "color:red">void*</span>, static_cast should be preferred</li>
+				<li>Upcast, same as an implicit conversion</li>
+				<li>Downcast
+				<ul>
+					<li>Vehicle(Car) to Car, object type match</li>
+					<li>Vehicle(Vehicle) to Car, object type match, <span style = "color:red">no error is thrown</span></li>
+				</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://en.cppreference.com/w/cpp/language/static_cast">cppreference.com</a></li>
+				<li><a href = "http://stackoverflow.com/questions/28002/regular-cast-vs-static-cast-vs-dynamic-cast">stackoverflow.com</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">reinterpret_cast</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "Vehicle.h"
+#include "Car.h"
+
+int main(int argc, char *argv[])
+{
+	//convert *void to any pointer type
+	char *a = new char();
+	a[0] = 'A';
+	unsigned char *b;
+
+	b = reinterpret_cast&lt;unsigned char *&gt;(a);
+	std::cout&lt;&lt;b&lt;&lt;std::endl;
+
+	delete a;
+
+	//convert Car to Car
+	Vehicle *v = new Car("Honda", "Accord");
+	Car *c;
+
+	c = reinterpret_cast&lt;Car *&gt;(v);
+
+	std::cout&lt;&lt;c-&gt;toString()&lt;&lt;std::endl;
+
+	delete v;
+
+	//convert Vehicle to Car
+	Vehicle *v2 = new Vehicle("Buick");
+	Car *c2;
+
+	c2 = reinterpret_cast&lt;Car *&gt;(v2);
+	std::cout&lt;&lt;c2-&gt;toString()&lt;&lt;std::endl;
+
+	delete v2;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Converts any pointer type to any other pointer type, even of unrelated classes</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://stackoverflow.com/questions/103512/why-use-static-castintx-instead-of-intx">stackoverflow.com</a></li>
+				<li><a href = http://www.geeksforgeeks.org/g-fact-93/">geeksforgeeks.org</a></li>
+				<li><a href = "http://www.cplusplus.com/doc/tutorial/typecasting/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

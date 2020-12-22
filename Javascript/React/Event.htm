@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Event in React
+		</div>
+
+		<div class = "block">
+			<li>onClick={activateLasers}, instead of onclick="activateLasers()" in HTML</li>
+			<li>cannot return false to prevent default behavior in React, must call preventDefault explicitly</li>
+			<li>not need to call addEventListener to add listeners to a DOM element after it is created, instead, just provide a listener when the element is initially rendered</li>
+		</div>
+		<div class = "subtitle">Use Event in React</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/React_1.png" width=20% /></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//index.html
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div id = "root"&gt;&lt;/div&gt;
+	&lt;script src="https://fb.me/react-0.14.3.js"&gt;&lt;/script&gt;
+	&lt;script src="https://fb.me/react-dom-0.14.3.js"&gt;&lt;/script&gt;
+	&lt;script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"&gt;&lt;/script&gt;
+	&lt;script src="script.js" type = "text/babel"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var Product = React.createClass({
+	buy: function(){
+		alert("Buy ...");
+	},
+	render: function(){
+		return (
+			&lt;div&gt; // add into div, only can return one element
+				&lt;p&gt;Android&lt;/p&gt;
+				&lt;button onClick={this.buy}&gt;Buy&lt;/button&gt;
+			&lt;/div&gt;
+		);
+	}
+});
+
+ReactDOM.render(&lt;Product /&gt;, document.getElementById("root"));
+		</pre>
+		</div>
+		<div class = "subtitle">Why Need Bind Function</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var module = {
+  x: 42,
+  getX: function() {
+    return this.x;
+  }
+}
+
+console.log(module.getX()); //this refer to module
+
+var unboundGetX = module.getX;
+console.log(unboundGetX()); // The function gets invoked at the global scope, this refers to window object or undefined in the strict mode
+// expected output: undefined
+
+//explicit hard binding
+var boundGetX = unboundGetX.bind(module); //bind function to module object
+console.log(boundGetX());
+// expected output: 42
+		</pre>
+		</div>
+		<div class = "subtitle">Bind Function in React</div>
+		<div class = "block">
+			<li>class methods are not bound by default</li>
+			<li>If you forget to bind this.handleClick and pass it to onClick, this will be undefined when the function is actually called</li>
+		<pre class = "prettyprint linenums">
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {isToggleOn: true};
+
+    // This binding is necessary to make `this` work in the callback
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState(state =&gt; ({
+      isToggleOn: !state.isToggleOn
+    }));
+  }
+
+  render() {
+    return (
+      &lt;button onClick={this.handleClick}&gt;
+        {this.state.isToggleOn ? 'ON' : 'OFF'}
+      &lt;/button&gt;
+    );
+  }
+}
+
+ReactDOM.render(
+  &lt;Toggle /&gt;,
+  document.getElementById('root')
+);
+		</pre>
+		</div>
+		<div class = "subtitle">Avoid Bind</div>
+		<div class = "block">
+			<li>using the experimental public class fields syntax</li>
+			<li>This syntax is enabled by default in Create React App</li>
+		<pre class = "prettyprint linenums">
+class LoggingButton extends React.Component {
+  // This syntax ensures `this` is bound within handleClick.
+  // Warning: this is *experimental* syntax.
+  handleClick = () =&gt; {
+    console.log('this is:', this);
+  }
+
+  render() {
+    return (
+      &lt;button onClick={this.handleClick}&gt;
+        Click me
+      &lt;/button&gt;
+    );
+  }
+}
+
+ReactDOM.render(
+  &lt;LoggingButton /&gt;,
+  document.getElementById('root')
+);
+		</pre>
+		</div>
+		<div class = "block">
+			<li>use an arrow function in the callback</li>
+		<pre class = "prettyprint linenums">
+class LoggingButton extends React.Component {
+  handleClick() {
+    console.log('this is:', this);
+  }
+
+  render() {
+    // This syntax ensures `this` is bound within handleClick
+    return (
+      &lt;button onClick={(e) =&gt; this.handleClick(e)}&gt;
+        Click me
+      &lt;/button&gt;
+    );
+  }
+}
+
+ReactDOM.render(
+  &lt;LoggingButton /&gt;,
+  document.getElementById('root')
+);
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.freecodecamp.org/news/this-is-why-we-need-to-bind-event-handlers-in-class-components-in-react-f7ea1a6f93eb/">This is why we need to bind event handlers in Class Components in React</a></li>
+		</div>
+	</body>
+</html>

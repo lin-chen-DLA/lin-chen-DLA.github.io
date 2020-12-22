@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Chrono
+		</div>
+
+		<div class = "subtitle">Durations</div>
+		<div class = "block">
+			<ul>
+				Measure time spans, such as one minute, two hours, or ten milliseconds
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+
+int main(int argc, char *argv[])
+{
+	//milliseconds
+	//std::chrono::milliseconds m(10);
+	//std::cout&lt;&lt;std::chrono::milliseconds::period::num&lt;&lt;std::endl;//1
+	//std::cout&lt;&lt;std::chrono::milliseconds::period::den&lt;&lt;std::endl;/1000
+
+	typedef std::chrono::duration&lt;int, std::ratio&lt;1, 1&gt;&gt; seconds_t;
+	typedef std::chrono::duration&lt;int, std::milli&gt; millis_t;
+	typedef std::chrono::duration&lt;int, std::ratio&lt;3600, 1&gt;&gt; hours_t;
+
+	hours_t h(24);//24 hours
+	seconds_t s(3600*24);//3600*24 seconds
+	millis_t m(s);//3600*24*1000 ms
+
+	std::cout&lt;&lt;"One day is "&lt;&lt;h.count()&lt;&lt;" hours"&lt;&lt;std::endl;
+	std::cout&lt;&lt;"One day is "&lt;&lt;s.count()&lt;&lt;" seconds"&lt;&lt;std::endl;
+	std::cout&lt;&lt;"One day is "&lt;&lt;m.count()&lt;&lt;" milliseconds"&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+
+int main(int argc, char *argv[])
+{
+	auto t1 = std::chrono::steady_clock::now();
+	std::cout&lt;&lt;"Interval between two time points ..."&lt;&lt;std::endl;
+	auto t2 = std::chrono::steady_clock::now();
+
+	auto d = t2 - t1;
+
+	if(d == std::chrono::steady_clock::duration::zero())
+	{
+		std::cout&lt;&lt;"The internal clock did not tick ..."&lt;&lt;std::endl;
+	}
+
+	std::cout&lt;&lt;d.count()&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "subtitle">Time Points</div>
+		<div class = "block">
+			<ul>
+				A refernce to a specific point in time
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+
+int main(int argc, char *argv[])
+{
+	std::chrono::system_clock::time_point tp = std::chrono::system_clock::now();
+	std::chrono::system_clock::duration dtn = tp.time_since_epoch();
+
+	std::cout&lt;&lt;"Current time since epoch: "&lt;&lt;dtn.count()&lt;&lt;" microseconds ..."&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+#include &lt;ctime&gt;
+
+int main(int argc, char *argv[])
+{
+	std::chrono::system_clock::time_point tp = std::chrono::system_clock::now();
+	std::time_t tt = std::chrono::system_clock::to_time_t(tp);//convert time point to time
+	std::cout&lt;&lt;"Time: "&lt;&lt;ctime(&tt)&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "subtitle">System_clock</div>
+		<div class = "block">
+			<ul>
+				A system-wide realtime clock
+			</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+#include &lt;ctime&gt;
+
+int main(int argc, char *argv[])
+{
+	if(std::chrono::system_clock::is_steady)
+		std::cout&lt;&lt;"Steady ..."&lt;&lt;std::endl;
+	else
+		std::cout&lt;&lt;"System time is not steady ..."&lt;&lt;std::endl;
+
+	//now and to_time_t
+	auto t = std::chrono::system_clock::now();
+	auto tt = std::chrono::system_clock::to_time_t(t);
+	std::cout&lt;&lt;"Time: "&lt;&lt;ctime(&tt)&lt;&lt;std::endl;
+
+	//from_time_t
+	time_t tt2;
+	time(&tt2);
+	std::cout&lt;&lt;"Time: "&lt;&lt;ctime(&tt2)&lt;&lt;std::endl;
+	auto t2 = std::chrono::system_clock::from_time_t(tt2);
+
+	auto d =  std::chrono::system_clock::now() - t;
+	std::cout&lt;&lt;"Count: "&lt;&lt;d.count()&lt;&lt;std::endl;
+	std::cout&lt;&lt;decltype(d)::period::den&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+		<div class = "subtitle">Steady_clock</div>
+		<div class = "block">
+			<ul>
+				Specifically designed to calculated time intervals
+			</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+#include &lt;ctime&gt;
+
+int main(int argc, char *argv[])
+{
+	//now
+	auto t = std::chrono::steady_clock::now();
+
+	for(int i = 0; i &lt; 100; i++)
+		std::cout&lt;&lt;"*"&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+
+	auto d =  std::chrono::steady_clock::now() - t;
+	std::cout&lt;&lt;"Count: "&lt;&lt;d.count()&lt;&lt;std::endl;
+	std::cout&lt;&lt;decltype(d)::period::den&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "subtitle">Reference</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "http://www.cplusplus.com/reference/chrono/">cplusplus.com</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

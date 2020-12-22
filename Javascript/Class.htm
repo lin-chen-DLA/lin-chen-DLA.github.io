@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Class
+		</div>
+
+		<div class = "subtitle">Define a Class</div>
+		<div class = "block">
+			<li>A class may have only one constructor</li>
+		<pre class = "prettyprint linenums">
+class Car{
+	constructor(maker)
+	{
+		this.maker = maker;
+	}
+
+	getMaker()
+	{
+		return this.maker;
+	}
+
+	setMaker(m)
+	{
+		this.maker = m;
+	}
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;script src="car.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+	const car = new Car("Honda");
+
+	console.log(car.getMaker())
+
+	car.setMaker("Toyota");
+
+	console.log(car.getMaker());
+&lt;/script&gt;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// instanceof
+class Person
+{
+	constructor(n)
+	{
+		this.name = n;
+	}
+}
+
+var p = new Person();
+
+console.log(p instanceof Person); //true
+		</pre>
+		</div>
+
+		<div class = "subtitle">Keyword Arguments in Constructor</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Car{
+	constructor({maker = 'Honda', year = 2016})
+	{
+		this.maker = maker;
+		this.year = year;
+	}
+
+	getMaker()
+	{
+		return this.maker;
+	}
+
+	getYear()
+	{
+		return this.Year;
+	}
+
+	setMaker(m)
+	{
+		this.maker = m;
+	}
+
+	setYear(y)
+	{
+		this.year = y;
+	}
+}
+
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;script src="car.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+	const c0 = new Car('Honda', 2016); // const c0 = new Car({maker: 'Honda', year: 2016});
+	const c1 = new Car("Honda"); // const c1 = new Car({maker: "Honda"});
+	const c2 = new Car(2016); // const c2 = new Car({year: 2016});
+
+	console.log(c0);
+	console.log(c1);
+	console.log(c2);
+&lt;/script&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Static Method</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Car{
+	constructor(maker)
+	{
+		this.maker = maker;
+	}
+
+	static info()
+	{
+		console.log('Hello World!');
+	}
+}
+
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;script src="car.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+	const car = new Car("Honda");
+
+	Car.info();
+&lt;/script&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Inheritance</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Vehicle
+{
+	constructor(maker)
+	{
+		this.maker = maker;
+	}
+
+	getMaker() {return this.maker;}
+
+	setMaker(m) {this.maker = m;}
+}
+
+class Car extends Vehicle{
+	constructor(maker, year)
+	{
+		super(maker);
+		this.year = year;
+	}
+
+	getYear() {return this.year;}
+
+	setYear(y) {this.year = y;}
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+			<script src="car.js"></script>
+&lt;script type="text/javascript"&gt;
+	const v = new Vehicle("Honda");
+
+	const c = new Car("Honda", 2016);
+
+	console.log(v.getMaker());
+
+	console.log(c.getMaker(), c.getYear());
+&lt;/script&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Method Overriding</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Vehicle
+{
+	constructor(maker)
+	{
+		this.maker = maker;
+	}
+
+	print() {console.log(this.maker);}
+	getMaker() {return this.maker;}
+
+	setMaker(m) {this.maker = m;}
+}
+
+class Car extends Vehicle{
+	constructor(maker, year)
+	{
+		super(maker);
+		this.year = year;
+	}
+
+	print() {console.log(this.maker+' '+this.year);}
+	getYear() {return this.year;}
+
+	setYear(y) {this.year = y;}
+}
+
+var v = new Vehicle('Honda');
+v.print();
+
+var c = new Car('Honda', 2016);
+c.print();
+		</pre>
+		</div>
+		<div class = "subtitle">Getter and Setter</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Car{
+	constructor(maker)
+	{
+		this.maker = maker;
+	}
+
+	get carmaker() // the function name should not be same as the attribute name to avoid the recursively call
+	{
+		return this.maker;
+	}
+
+	set carmaker(m)
+	{
+		this.maker = m;
+	}
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;script src="car.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+	const car = new Car("Honda");
+
+	console.log(car.carmaker);
+
+	car.carmaker = "Toyota";
+
+	console.log(car.carmaker);
+&lt;/script&gt;
+		</pre>
+		</div>
+	</body>
+</html>

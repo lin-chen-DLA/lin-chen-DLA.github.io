@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			unordered_set
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Each value must be unique</li>
+				<li>Keys are immutable, cannot be modified, but can be inserted and removed</li>
+				<li>Store elements in no particular order</li>
+				<li>Elements are organized into buckets depending on their <span style = "color:red">hash</span> values</li>
+				<li>Implemented as hash table</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<p style="text-align:center;"><img src = "img/Hash.png" width=50% /></p>
+		</div>
+		<div class = "subtitle">Container Iterator</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;unordered_set&gt;
+
+int main(int argc, char *argv[])
+{
+	std::unordered_set&lt;std::string&gt; s = {"Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"};
+
+	std::cout&lt;&lt;"#Bucket: "&lt;&lt;s.bucket_count()&lt;&lt;std::endl;
+
+	//begin and end
+	for(auto it = s.begin(); it != s.end(); ++it)
+		std::cout&lt;&lt;*it&lt;&lt;"|";
+	std::cout&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Tranverse elements in the hash table</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Bucket Iterator</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;unordered_set&gt;
+
+int main(int argc, char *argv[])
+{
+	std::unordered_set&lt;std::string&gt; s = {"Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"};
+
+	std::cout&lt;&lt;"#Bucket: "&lt;&lt;s.bucket_count()&lt;&lt;std::endl;
+
+	//begin and end
+	for(int i = 0; i &lt; s.bucket_count(); i++)
+	{
+		std::cout&lt;&lt;"Bucket "&lt;&lt;i&lt;&lt;": ";
+		for(auto it = s.begin(i); it != s.end(i); ++it)
+			std::cout&lt;&lt;*it&lt;&lt;"|";
+		std::cout&lt;&lt;std::endl;
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Tranverse elements in a bucket</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Buckets</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;unordered_set&gt;
+
+int main(int argc, char *argv[])
+{
+	std::unordered_set&lt;std::string&gt; s = {"Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"};
+
+	//bucket_count
+	std::cout&lt;&lt;"Bucket_Count: "&lt;&lt;s.bucket_count()&lt;&lt;std::endl;
+
+	//max_bucket_count
+	std::cout&lt;&lt;"Max_Bucket_Count: "&lt;&lt;s.max_bucket_count()&lt;&lt;std::endl;
+
+	//bucket_size
+	for(int i = 0; i &lt; s.bucket_count(); i++)
+		std::cout&lt;&lt;"#"&lt;&lt;i&lt;&lt;" Bucket_Size: "&lt;&lt;s.bucket_size(i)&lt;&lt;std::endl;
+
+	//bucket
+	std::cout&lt;&lt;"Bucket: "&lt;&lt;s.bucket("Mars")&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Operations</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;unordered_set&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::unordered_set&lt;std::string&gt; s = {"Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"};
+
+	//insert
+	s.insert("Unknown");
+
+	//size
+	std::cout&lt;&lt;"Size: "&lt;&lt;s.size()&lt;&lt;std::endl;
+
+	//find
+	auto it = s.find("Earth");
+
+	//erase
+	s.erase(it);
+
+	display(s.begin(), s.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Hash</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Comparison struct operator()
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;string&gt;
+#include &lt;unordered_set&gt;
+
+struct StringHash
+{
+	size_t operator()(const std::string &str) const
+	{
+		size_t t = 0;
+		for(int i = 0; i &lt; str.size(); i++)
+			t += str[i];
+		return t%10;
+	}
+};
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::unordered_set&lt;std::string, StringHash&gt; s;
+	s.insert("Mercury");
+	s.insert("Venus");
+	s.insert("Earth");
+	s.insert("Mars");
+	s.insert("Jupiter");
+	s.insert("Saturn");
+	s.insert("Uranus");
+	s.insert("Neptune");
+
+	std::cout&lt;&lt;"Size: "&lt;&lt;s.size()&lt;&lt;std::endl;
+
+	for(int i = 0; i &lt; s.bucket_count(); i++)
+	{
+		std::cout&lt;&lt;"Bucket "&lt;&lt;i&lt;&lt;": ";
+		for(auto it = s.begin(i); it != s.end(i); ++it)
+			std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::cout&lt;&lt;std::endl;
+	}
+
+	display(s.begin(), s.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//Comparison function
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;string&gt;
+#include &lt;unordered_set&gt;
+
+
+size_t h(const std::string &str)
+{
+	size_t t = 0;
+	for(int i = 0; i &lt; str.size(); i++)
+		t += str[i];
+	return t%10;
+}
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::unordered_set&lt;std::string, std::function&lt;decltype(h)&gt;&gt; s(10, h);
+	s.insert("Mercury");
+	s.insert("Venus");
+	s.insert("Earth");
+	s.insert("Mars");
+	s.insert("Jupiter");
+	s.insert("Saturn");
+	s.insert("Uranus");
+	s.insert("Neptune");
+
+	std::cout&lt;&lt;"Size: "&lt;&lt;s.size()&lt;&lt;std::endl;
+
+	for(int i = 0; i &lt; s.bucket_count(); i++)
+	{
+		std::cout&lt;&lt;"Bucket "&lt;&lt;i&lt;&lt;": ";
+		for(auto it = s.begin(i); it != s.end(i); ++it)
+			std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::cout&lt;&lt;std::endl;
+	}
+
+	display(s.begin(), s.end());
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+//Lambda
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;string&gt;
+#include &lt;unordered_set&gt;
+
+auto h = [](const std::string &a){return a[0];};
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::unordered_set&lt;std::string, std::function&lt;size_t (const std::string &a)&gt;&gt; s(26, h);
+	s.insert("Mercury");
+	s.insert("Venus");
+	s.insert("Earth");
+	s.insert("Mars");
+	s.insert("Jupiter");
+	s.insert("Saturn");
+	s.insert("Uranus");
+	s.insert("Neptune");
+
+	std::cout&lt;&lt;"Size: "&lt;&lt;s.size()&lt;&lt;std::endl;
+
+	for(int i = 0; i &lt; s.bucket_count(); i++)
+	{
+		std::cout&lt;&lt;"Bucket "&lt;&lt;i&lt;&lt;": ";
+		for(auto it = s.begin(i); it != s.end(i); ++it)
+			std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::cout&lt;&lt;std::endl;
+	}
+
+	display(s.begin(), s.end());
+
+	return 0;
+}
+	</pre>
+</div>
+	<div class = "subtitle">Hash with Objects</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Hash, struct; Equality, operator== in class
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle(){}
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const;
+		double getLength() const;
+		double getArea() const;
+
+		//mutator
+		void setWidth(double w);
+		void setLength(double l);
+
+		//operator==
+		bool operator==(const Rectangle &right) const
+		{
+			return (getArea() == right.getArea());
+		}
+};
+#endif
+
+//Rectangle.cpp
+#include "Rectangle.h"
+
+double Rectangle::getWidth() const
+{
+	return width;
+}
+
+double Rectangle::getLength() const
+{
+	return length;
+}
+
+double Rectangle::getArea() const
+{
+	return width*length;
+}
+
+void Rectangle::setWidth(double w)
+{
+	width = w;
+}
+
+void Rectangle::setLength(double l)
+{
+	length = l;
+}
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;unordered_set&gt;
+#include "Rectangle.h"
+
+struct RectangleHash
+{
+	size_t operator()(const Rectangle &r) const
+	{
+		std::hash&lt;double&gt; h;
+		return (h(r.getWidth()) ^ h(r.getLength()));
+	}
+};
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;getArea()&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::unordered_set&lt;Rectangle, RectangleHash&gt; s;
+	s.insert(Rectangle(1, 2));
+	s.insert(Rectangle(2, 3));
+	s.insert(Rectangle(3, 4));
+	s.insert(Rectangle(4, 5));
+
+	std::cout&lt;&lt;"Size: "&lt;&lt;s.size()&lt;&lt;std::endl;
+
+	for(int i = 0; i &lt; s.bucket_count(); i++)
+	{
+		std::cout&lt;&lt;"Bucket "&lt;&lt;i&lt;&lt;": ";
+		for(auto it = s.begin(i); it != s.end(i); ++it)
+			std::cout&lt;&lt;it-&gt;getArea()&lt;&lt;" ";
+		std::cout&lt;&lt;std::endl;
+	}
+
+	display(s.begin(), s.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li><span style = "color:red">hash function</span></li>
+				<li><span style = "color:red">comparison function for equality</span></li>
+				<li><a href = "https://stackoverflow.com/questions/17016175/c-unordered-map-using-a-custom-class-type-as-the-key">stackoverflow.com</a></li>
+			</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//Hash, struct; Equality, struct
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle(){}
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const;
+		double getLength() const;
+		double getArea() const;
+
+		//mutator
+		void setWidth(double w);
+		void setLength(double l);
+};
+#endif
+
+//Rectangle.cpp
+#include "Rectangle.h"
+
+double Rectangle::getWidth() const
+{
+	return width;
+}
+
+double Rectangle::getLength() const
+{
+	return length;
+}
+
+double Rectangle::getArea() const
+{
+	return width*length;
+}
+
+void Rectangle::setWidth(double w)
+{
+	width = w;
+}
+
+void Rectangle::setLength(double l)
+{
+	length = l;
+}
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;unordered_set&gt;
+#include "Rectangle.h"
+
+struct comp{
+	bool operator()(const Rectangle &a, const Rectangle &b) const
+	{
+		return (a.getArea() == b.getArea());
+	}
+};
+
+struct RectangleHash
+{
+	size_t operator()(const Rectangle &r) const
+	{
+		std::hash&lt;double&gt; h;
+		return (h(r.getWidth()) ^ h(r.getLength()));
+	}
+};
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;getArea()&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::unordered_set&lt;Rectangle, RectangleHash, comp&gt; s;
+	s.insert(Rectangle(1, 2));
+	s.insert(Rectangle(2, 3));
+	s.insert(Rectangle(3, 4));
+	s.insert(Rectangle(4, 5));
+
+	std::cout&lt;&lt;"Size: "&lt;&lt;s.size()&lt;&lt;std::endl;
+
+	for(int i = 0; i &lt; s.bucket_count(); i++)
+	{
+		std::cout&lt;&lt;"Bucket "&lt;&lt;i&lt;&lt;": ";
+		for(auto it = s.begin(i); it != s.end(i); ++it)
+			std::cout&lt;&lt;it-&gt;getArea()&lt;&lt;" ";
+		std::cout&lt;&lt;std::endl;
+	}
+
+	display(s.begin(), s.end());
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.drdobbs.com/windows/user-defined-hash-functions-for-unordere/231600210?pgno=1">User-Defined Hash Functions for Unordered Maps</a></li>
+				<li><a href = "https://prateekvjoshi.com/2014/06/05/using-hash-function-in-c-for-user-defined-classes/">Using Hash Function In C++ For User-Defined Classes</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

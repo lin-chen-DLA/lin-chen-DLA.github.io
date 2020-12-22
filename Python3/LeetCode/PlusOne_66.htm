@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>LeetCode</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title"><a href = "https://leetcode.com/problems/plus-one/">66. Plus One</a></div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+from typing import List
+
+class Solution:
+    def plusOne(self, digits: List[int]) -&gt; List[int]:
+        digits.reverse()
+
+        digits[0] += 1
+
+        rd = 0 # round fromt the previous digit
+        for index, d in enumerate(digits):
+            if rd+digits[index] &gt; 9:
+                digits[index] = digits[index] + rd - 10
+                rd = 1
+            else:
+                digits[index] = digits[index] + rd
+                rd = 0
+
+        if rd &gt; 0:
+            digits.append(1)
+
+        digits.reverse()
+
+        return digits
+
+def main():
+    s = Solution()
+
+    print(s.plusOne([1,2,3]))
+    print(s.plusOne([9,9,9]))
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Flex</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Flex
+		</div>
+
+		<div class = "subtitle">FLEX (Fast LEXical analyzer generator) is a tool for generating scanners</div>
+		<div class = "block">
+			<li>flex filename.lex // run flex to generate lex.yy.c</li>
+			<li>gcc lex.yy.c –lfl // compile lex.yy.c to an executable file</li>
+			<li>./a.out // run scanner</li>
+		</div>
+		<div class = "block">
+			format of *.lex files
+			<pre class = "prettyprint linenums">
+definitions
+%%
+pattern action
+…
+%%
+user code
+			</pre>
+		</div>
+		<div class = "block">
+			<li>An unindented comment (/*) is copied verbatim to output, untill to the next */</li>
+			<li>Any indented text or text enclosed in %{ … %} is also copied with %{ … %} removed</li>
+			<li>% top matches sure things are copied to top of output (for example, for #includes)</li>
+			<li>Pattern is unindented, action is on the same line</li>
+			<li>User code is just copied directly to the output</li>
+
+		</div>
+		<div class = "subtitle">How it works</div>
+		<div class = "block">
+			<li>Find longest pattern match possible</li>
+			<li>That match (or token) is made available to a global char pointer yytext w/ length in yyleng</li>
+			<li>The the action is performed</li>
+			<li>If no match, next char go to stdout</li>
+			<li>Action can be arbitrary code, including a return</li>
+		</div>
+		<div class = "subtitle">Scanning digits and strings</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/* 
+ * Sample Scanner1: 
+ */
+
+%%
+[0-9]+	printf("Input %s are digits\n", yytext);
+[a-z]+	printf("Input %s are characters\n", yytext);
+%%
+
+main()
+{
+  yylex();
+}
+			</pre>
+			&gt;&gt;&gt; aa # print "aa"<br>
+			&gt;&gt;&gt; 12 # print "12"<br>
+			&gt;&gt;&gt; 1a1a # print "1", "a", "1", "a"
+		</div>
+		<div class = "subtitle">Hexadeciaml integer</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/* 
+ * Description: Recognize the 32-bit hexadecimal integer from stdin
+ * Pattern: 0[xX]([0-9a-fA-F]{1,8})
+ */
+
+%{
+/* need this for the call to getlogin() below */
+#include &lt;unistd.h&gt;
+%}
+
+digit		[0-9]
+alpha		[a-fA-F]
+hextail		({digit}|{alpha}){1,8}
+hex		0[xX]{hextail}
+
+%%
+{hex}	printf("Found a HEX number %s !", yytext);
+.	printf("");
+%%
+
+main()
+{
+  printf("Give me your input:\n");
+  yylex();
+}
+			</pre>
+			&gt;&gt;&gt; 0x1234abcd
+		</div>
+		<div class = "subtitle">Word count</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/* 
+ * Sample Scanner3: 
+ */
+
+%{
+int word_count = 0;
+%}
+
+%%
+disp	return;
+[^ \t\n]+ word_count++;
+
+%%
+
+main()
+{
+  yylex();
+  printf("%d words are found in the input\n", word_count);
+}
+			</pre>
+			&gt;&gt;&gt; ad for loop ( ada 12 /* # print "7 words are found in the input"
+		</div>
+		<div class = "subtitle">Count lines and characters</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+%{
+int num_lines = 0, num_chars = 0;
+%}
+
+%%
+\n       ++num_lines; ++num_chars;
+.       ++num_chars;
+te	yyterminate();
+
+%%
+main()
+{
+	yylex();
+        printf( "# of lines = %d, # of chars = %d\n",
+        num_lines, num_chars );
+}
+			</pre>
+			&gt;&gt;&gt; ad<br>
+			&gt;&gt;&gt; bc<br>
+			&gt;&gt;&gt; 12<br>
+			&gt;&gt;&gt; ada<br>
+			&gt;&gt;&gt; te # print "# of lines = 4, # of chars = 13"
+		</div>
+		<div class = "subtitle">Reading from a file</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+%{
+%}
+%%
+[ \t\n]          ;
+[0-9]+\.[0-9]+   printf("Found a floating-point number: %s\n", yytext);
+[0-9]+           printf("Found an integer: %s\n", yytext);
+[a-zA-Z0-9]+     printf("Found a string: %s\n", yytext);
+.                ;
+%%
+int main()
+{
+	// open a file handle to a particular file:
+	FILE *myfile = fopen("a.snazzle.file", "r");
+	// make sure it's valid:
+	if (!myfile) {
+		printf("I can't open a.snazzle.file!");
+		return -1;
+	}
+	// set lex to read from it instead of defaulting to STDIN:
+	yyin = myfile;
+	
+	// lex through the input:
+	yylex();
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+# a.snazzle.file
+90
+23.4
+4 5 6
+this is text!
+			</pre>
+		</div>
+		<div class = "subtitle">Special actions</div>
+		<div class = "block">
+			<li>ECHO, copies yytext to the scanner's output</li>
+			<li>BEGIN, followed by name of a start condition, places scanner in that condition</li>
+			<li>REJECT, tells scanner to go to second best rule</li>
+			<li>yymore(), tells  the  scanner that the next time it
+	      matches a rule, the corresponding token  should  be
+	      appended	onto  the  current value of yytext rather
+	      than replacing it</li>
+			<li>yyterminate(), it terminates the  scanner
+	      and returns a 0 to the scanner's caller, indicating
+	      "all done"</li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+%%
+a|ab|abc|abcd ECHO; REJECT
+.|\n
+%%
+
+main()
+{
+  yylex();
+}
+			</pre>
+			&gt;&gt;&gt; xyzabcd # print "abcdabcaba"
+		</div>
+		<div class = "subtitle">Conditions</div>
+		<div class = "block">
+			<li>Define start conditions in definition section
+				<ul>
+					<li>INITIAL, is there by default</li>
+					<li>%s, inclusive start condition, rules	 with  no
+						start  conditions  at  all  will also be active</li>
+					<li>%x, exclusive start condition, only rules qualified with the start condi-
+						tion  will  be  active</li>
+					<li>&lt;INITIAL,STRING,QUOTE&gt;, will  be	 active	 only when the current start condition is
+						either "INITIAL", "STRING", or "QUOTE"</li>
+				</ul>
+			</li>
+			<li>A start condition  is activated  using the  BEGIN  action, until  the next BEGIN action is executed, rules with the given start condition will be active and rules with other start conditions will be inactive</li>
+			<pre class = "prettyprint linenums">
+%x comment
+%%
+[0-9]+	ECHO;
+[a-zA-Z]+	ECHO;
+
+"/*"	BEGIN(comment);
+
+&lt;comment&gt;[^*\n]*	 printf("Comment: %s\n", yytext);
+&lt;comment&gt;"*"+"/"	 BEGIN(INITIAL);
+%%
+ 
+main()
+{
+  yylex();
+}
+			</pre>
+			&gt;&gt;&gt; adfa # print "adfa"
+			&gt;&gt;&gt; /*121*/ # print "Comment: 121"
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "http://dinosaur.compilertools.net/flex/manpage.html">Flex</a></li>
+			<li><a href = "http://alumni.cs.ucr.edu/~lgao/teaching/flex.html">Flex tutorial</a></li>
+			<li><a href = "http://aquamentus.com/flex_bison.html">Flex vs bison</a></li>
+		</div>
+	</body>
+</html>

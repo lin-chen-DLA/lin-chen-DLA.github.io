@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MATLAB</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Class
+		</div>
+
+		<div class = "subtitle">Define Class</div>
+		<div class = "block">
+		<ul>
+			<li><span style = "color:red">Derive class from handle to make mutators work</span>, to make class more like class in Python</li>
+			<li><a href = "https://www.mathworks.com/help/matlab/matlab_oop/a-class-code-listing.html">Representative Class Code</a></li>
+		</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+classdef Num &lt; handle
+    properties
+        value
+    end
+    methods
+        % Constructor
+        function self = Num(n)
+            self.value = n;
+        end
+        
+        % Accessor
+        function disp(self)
+            fprintf('Num: %d\n', self.value);
+        end
+        
+        % Mutator
+        function add(self, v)
+            self.value = self.value + v;
+        end
+        function multiply(self, v)
+            self.value = self.value*v;
+        end
+    end
+end
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function numTest()
+    % Create a Num Object
+    n = Num(1);
+    
+    % Access Properties
+    n.value %1
+    n.value = 10; %10
+    n.disp(); %Num: 10
+    
+    % Access Mutators
+    n.add(10); %20
+    n.disp(); %Num: 20
+    n.multiply(10); %200
+    n.disp; %Num: 200
+
+    % Access object
+    disp(n); %Num: 200
+    add(n, 10);
+    disp(n); %Num: 210
+    multiply(n, 10);
+    disp(n); %Num: 2100
+    
+end
+		</pre>
+	</div>
+		<div class = "block">
+			<ul>
+				<li>Each class has only one constructor, extra constructors cause errors</li>
+				<li>Class in MATLAB is more like struct in C/C++, use <span style = "color:red">obj.property</span> to access properties directly, not need get and set functions</li>
+			</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+classdef Num
+    properties
+        value
+    end
+    methods
+        % Constructor
+        function self = Num(n)
+            self.value = n;
+        end
+        
+        % Accessor
+        function disp(self)
+            fprintf('Num: %d\n', self.value);
+        end
+        
+        % Mutator
+        function self = add(self, v)
+            self.value = self.value + v;
+        end
+        function self = multiply(self, v)
+            self.value = self.value*v;
+        end
+    end
+end
+		</pre>
+	</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+function numTest()
+    % Create a Num Object
+    n = Num(10);
+
+    % Access Mutators
+    n = n.add(10); %20
+    n.disp(); %Num: 20
+    
+    n = n.multiply(10); %200
+    n.disp; %Num: 200
+
+    n = add(n, 10);
+    n.disp(); %Num: 210
+    
+    n = multiply(n, 10);
+    n.disp(); %Num: 2100
+    
+end
+	</pre>
+</div>
+	<div class = "block">
+		<li><span style = "color: red">n = n.add(10) or n = add(n, 100) to update the property of object n, if class is not derived from handle</span></li>
+	</div>
+	<div class = "subtitle">Destructor</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+classdef Num &lt; handle
+    properties
+        value
+    end
+    methods
+        % Constructor
+        function self = Num(n)
+            self.value = n;
+        end
+        
+        % Accessor
+        function disp(self)
+            fprintf('Num: %d\n', self.value);
+        end
+        
+        function delete(self)
+            fprintf('Destructor is called ...\n');
+        end
+    end
+end
+	</pre>
+</div>
+	<div class = "block">
+		<ul>
+			<li><span style = "color:red">Delete is only defined as class destructor for handle classes</span></li>
+			<li><a href = "https://www.mathworks.com/help/matlab/matlab_oop/handle-class-destructors.html">Handle Class Destructor</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

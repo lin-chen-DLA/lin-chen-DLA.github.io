@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			React CSS
+		</div>
+
+		<div class = "subtitle">Inline Styling</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//index.html
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div id = "root"&gt;&lt;/div&gt;
+	&lt;script src="https://fb.me/react-0.14.3.js"&gt;&lt;/script&gt;
+	&lt;script src="https://fb.me/react-dom-0.14.3.js"&gt;&lt;/script&gt;
+	&lt;script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"&gt;&lt;/script&gt;
+	&lt;script src="script.js" type = "text/babel"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>the style value must be a JavaScript object</li>
+			<li>CSS is written in a JavaScript object, properties with two names, like <span>background-color</span>, must be written with camel case syntax, <span>backgroundColor</span></li>
+			<li>delimit properties with <span>","</span> instead of <span>";"</span></li>
+		<pre class = "prettyprint linenums">
+//script.js
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {num: 0}
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+	  this.setState({num: this.state.num+1})
+  }
+
+  render() {
+    return (
+	    &lt;div&gt;
+	    	&lt;li style = {{backgroundColor: "red", color: "blue"}} onClick={this.handleChange}&gt;{this.state.num}&lt;/li&gt;
+	    &lt;/div&gt;
+    );
+  }
+}
+
+ReactDOM.render(
+	&lt;App /&gt;,
+	document.getElementById('root')
+)
+		</pre>
+		</div>
+		<div class = "subtitle">JavaScript Object</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//script.js
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {num: 0}
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+	  this.setState({num: this.state.num+1})
+  }
+
+  render() {
+    const liStyle = {backgroundColir: "red",
+	    color: "blue"};
+    return (
+	    &lt;div&gt;
+	    	&lt;li style = {liStyle} onClick={this.handleChange}&gt;{this.state.num}&lt;/li&gt;
+	    &lt;/div&gt;
+    );
+  }
+}
+
+ReactDOM.render(
+	&lt;App /&gt;,
+	document.getElementById('root')
+)
+		</pre>
+		</div>
+		<div class = "subtitle">JavaScript Object</div>
+		<div class = "block">
+			<li>write style with css style</li>
+			<li>name the css module to by myName.<span>module.css</span></li>
+		<pre class = "prettyprint linenums">
+//mystyle.module.css
+body {
+	background-color: #282c34;
+	text-align: center;
+}
+
+.listyle {
+	background-color: red;
+	color: blue;
+	font-size: 20pt;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import styles from "./mystyle.module.css"
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {num: 0}
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+	  this.setState({num: this.state.num+1})
+  }
+
+  render() {
+    return (
+	    &lt;div className = {styles.listyle}&gt;
+	    	&lt;li onClick={this.handleChange}&gt;{this.state.num}&lt;/li&gt;
+	    &lt;/div&gt;
+    );
+  }
+}
+
+ReactDOM.render(&lt;App /&gt;, document.getElementById('root'));
+		</pre>
+		</div>
+	</body>
+</html>

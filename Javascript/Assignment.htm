@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Assignment
+		</div>
+
+		<div class = "subtitle">Statements</div>
+		<div class = "block">
+			<li>Javascript is case sensitive</li>
+		<pre class = "prettyprint linenums">
+/* Block Comment
+ */
+var a = "Hello World!"; // Line Comment
+document.write(a+"&lt;br&gt;");
+
+var x = 1, y = 2;
+document.write(x+y)
+		</pre>
+		</div>
+
+		<div class = "subtitle">Arithmetic</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var a = 10, b = 100;
+
+document.write("a + b = " + (a+b) + "&lt;br&gt;"); // +
+document.write("a - b = " + (a-b) + "&lt;br&gt;"); // -
+document.write("a * b = " + (a*b) + "&lt;br&gt;"); // *
+document.write("a / b = " + (a/b) + "&lt;br&gt;"); // /
+document.write("a ** 2 = " + (a**2) + "&lt;br&gt;"); // **, exponentiation
+document.write("a % 3 = " + (a%b) + "&lt;br&gt;"); // / %, modulus
+document.write("++a = " + (++a) + "&lt;br&gt;"); // ++
+document.write("--a = " + (--a) + "&lt;br&gt;"); // --
+
+a += 1;
+a -= 1;
+a *= 2;
+a /= 2;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Assignment for Primitive and Object</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// primitive type, immutable
+var a = 10;
+var b = a; // create a copy of a, a and b point to the same object
+
+console.log("a: "+a+" b: "+b+"&lt;br&gt;"); // a: 10 b: 10
+
+b = 100; // create a new object, let b point to the created object
+console.log("a: "+a+" b: "+b+"&lt;br&gt;"); // a: 10 b: 100
+
+// object, mutable
+var car = {color: 'blue', maker: 'Honda'};
+var car2 = car; // car and car2 point to the same object
+
+console.log(car); // {color: "blue", maker: "Honda"}
+console.log(car2); // {color: "blue", maker: "Honda"}
+
+car2.color = 'red';
+
+console.log(car); // {color: "red", maker: "Honda"}
+console.log(car2); // {color: "red", maker: "Honda"}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Hoisting</div>
+		<div class = "block">
+			<li>A variable can be used before it has been declared</li>
+		<pre class = "prettyprint linenums">
+x = 10;
+
+console.log(x);
+
+var x;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Strict Mode</div>
+		<div class = "block">
+			<li>With strict mode, <span>can not</span> use undeclared variables</li>
+			<li>Strict mode is declared by adding "use strict"; to the beginning of a script or a function</li>
+			<li>Declared at the beginning of a script, it has global scope</li>
+		<pre class = "prettyprint linenums">
+"use strict";
+x = 3.14;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+"use strict";
+var obj = {};
+Object.defineProperty(obj, "x", {value:0, writable:false});
+
+console.log(obj);
+
+//obj.x = 3.14;   // This will cause an error
+		</pre>
+		</div>
+	</body>
+</html>

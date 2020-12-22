@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Interface
+		</div>
+
+		<div class = "subtitle">Abstract</div>
+		<div class = "block">
+			<ul>
+				<li>Abstract cannot be used to instantiate objects</li>
+				<li>An abstract class contains one or more abstract methods, abstract methods do not provide implementations</li>
+				<li>Constructors and static methods cannot be declared abstract, constructors are not inherited, static methods are not overrided</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Interface</div>
+		<div class = "block">
+			<ul>
+				<li>Interface the blueprint of the class, contains only constants, method signatures, default methods, static methods, and nested types</li>
+				<li>Interface specifies a set of methods that the class has to implement</li>
+				<li>All interface members must be public</li>
+				<li>All methods in an interface are implicitly public abstract</li>
+				<li>All fields in an interface are implicityly public, static and final</li>
+				<li>All abstract, default, and static methods in an interface are implicitly public, so you can omit the public modifier</li>
+				<li>If a class implements an interface and does not provide method bodies for all functions specified in the interface, then class must be declared abstract</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Difference</div>
+		<div class = "block">
+			<ul>
+				<li>Type of methods: Interface can have only abstract methods. Abstract class can have abstract and non-abstract methods. From Java 8, it can have default and static methods also</li>
+				<li>Final Variables: Variables declared in a Java interface are by default final. An abstract class may contain non-final variables</li>
+				<li>Type of variables: Abstract class can have final, non-final, static and non-static variables. Interface has only static and final variables</li>
+				<li>Implementation: Abstract class can provide the implementation of interface.	Interface can’t provide the implementation of abstract class</li>
+				<li>Inheritance vs Abstraction: A Java interface can be implemented using keyword “implements” and abstract class can be extended using keyword “extends”</li>
+				<li>Multiple implementation: An interface can extend another Java interface only, an abstract class can extend another Java class and implement multiple Java interfaces</li>
+				<li>Accessibility of Data Members: Members of a Java interface are public by default. A Java abstract class can have class members like private, protected, etc.</li>
+			</ul>
+		</div>
+		<div class = "subtitle">When to use what?</div>
+		<div class = "block">
+			<ul>
+				<li>Abstract
+					<ul>
+						<li>In java application, there are some related classes that need to share some lines of code then you can put these lines of code within abstract class and this abstract class should be extended by all these related classes</li>
+						<li>You can define non-static or non-final field(s) in abstract class, so that via a method you can access and modify the state of Object to which they belong</li>
+						<li>You can expect that the classes that extend an abstract class have many common methods or fields, or require access modifiers other than public (such as protected and private)</li>
+					</ul>
+				</li>
+				<li>Interface
+					<ul>
+						<li>It is total abstraction, All methods declared within an interface must be implemented by the class(es) that implements this interface</li>
+						<li>A class can implement more than one interface. It is called multiple inheritance</li>
+						<li>You want to specify the behavior of a particular data type, but not concerned about who implements its behavior</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Abstract and Interface</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Interface.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public interface Drivable
+{
+	// Constant
+	int wheel = 4;
+
+	// Abstract methods
+	String getMaker();
+	void setMaker(String m);
+
+	// Static methods
+	static String getType()
+	{
+		return "Wheel: "+4;
+	}
+
+	// Default methods
+	default void display()
+	{
+		System.out.println("Wheel: "+wheel);
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public abstract class Car implements Drivable
+{
+	private String maker;
+
+	public Car(String m)
+	{
+		maker = m;
+	}
+
+	public String getMaker()
+	{
+		return maker;
+	}
+
+	public void setMaker(String m)
+	{
+		maker = m;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Maker: "+maker;
+	}
+
+	public abstract void display();
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Buick extends Car
+{
+	private String color;
+
+	public Buick(String m, String c)
+	{
+		super(m);
+		color = c;
+	}
+
+	public String getColor()
+	{
+		return color;
+	}
+
+	public void setColor(String c)
+	{
+		color = c;
+	}
+
+	public String toString()
+	{
+		return super.toString()+" "+"Color: "+color;
+	}
+
+	@Override
+	public void display()
+	{
+		System.out.println("Buick display ...");
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Test
+{
+	public static void main(String args[])
+	{
+		Drivable d = new Buick("Buick", "White");
+
+		System.out.println(d.wheel);//static field
+		System.out.println(Drivable.getType());//static method
+		d.display();//default method
+		System.out.println(d);//toString
+
+		Buick b = new Buick("Honda", "Buick");
+
+		System.out.println(b.getMaker()+" "+b.getColor());//abstract methods
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Static fields are able to be inherited</li>
+				<li>Static methods are not able to be inherited</li>
+				<li>Default methods
+					<ul>
+						<li>Not mention the default method at all, which lets your extended interface inherit the default method</li>
+						<li>Redeclare the default method, which makes it abstract</li>
+						<li>Redefine the default method, which overrides it</li>
+					</ul>
+				</li>
+				<li>Abstract methods must be implemented or by a class, if not, the class has to be declared as abstract class</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Interface2.png" width = "20%"></p>
+		</div>
+		<div class = "subtitle">Multiple Inheritance</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public interface Drivable
+{
+	// Constant
+	int wheel = 4;
+
+	// Abstract methods
+	String getMaker();
+	void setMaker(String m);
+
+	// Default methods
+	default void display()
+	{
+		System.out.println("Wheel: "+wheel);
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public interface Paintable
+{
+	String getColor();
+	void setColor(String c);
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Car implements Drivable, Paintable
+{
+	private String maker;
+	private String color;
+
+	public Car(String m, String c)
+	{
+		maker = m;
+		color = c;
+	}
+
+	public String getColor()
+	{
+		return color;
+	}
+
+	public String getMaker()
+	{
+		return maker;
+	}
+
+	public void setColor(String c)
+	{
+		color = c;
+	}
+
+	public void setMaker(String m)
+	{
+		maker = m;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Maker: "+maker+" Color: "+color;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Test
+{
+	public static void main(String args[])
+	{
+		Drivable c = new Car("Buick", "White");
+
+		System.out.println(c.getMaker());
+
+		Paintable c2 = new Car("Honda", "Blue");
+
+		System.out.println(c2.getColor());
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Interface3.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle">Implements Interfaces Containing Same Functions</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public interface Drivable
+{
+	// Constant
+	int wheel = 4;
+
+	// Abstract methods
+	String getMaker();
+	void setMaker(String m);
+
+	// Default methods
+	default void display()
+	{
+		System.out.println("Driable ...");
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public interface Paintable
+{
+	String getColor();
+	void setColor(String c);
+
+	default void display()
+	{
+		System.out.println("Paintable ...");
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Car implements Drivable, Paintable
+{
+	private String maker;
+	private String color;
+
+	public Car(String m, String c)
+	{
+		maker = m;
+		color = c;
+	}
+
+	public String getColor()
+	{
+		return color;
+	}
+
+	public String getMaker()
+	{
+		return maker;
+	}
+
+	public void setColor(String c)
+	{
+		color = c;
+	}
+
+	public void setMaker(String m)
+	{
+		maker = m;
+	}
+
+	@Override
+	public void display()
+	{
+		Drivable.super.display();
+		Paintable.super.display();
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Maker: "+maker+" Color: "+color;
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.geeksforgeeks.org/difference-between-abstract-class-and-interface-in-java/">Difference at Geeksforgeeks</a></li>
+				<li><a href = "http://tutorials.jenkov.com/java/interfaces-vs-abstract-classes.html">Jenkov</a></li>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/java/IandI/index.html">Oracle Tutorial</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

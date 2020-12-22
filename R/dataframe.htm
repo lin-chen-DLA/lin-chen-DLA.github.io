@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>R</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Data Frame
+		</div>
+
+		<div class = "block">
+			<li>A data frame is a table
+				<ul>
+					<li>The column names should be non-empty</li>
+					<li>The row names should be unique</li>
+					<li>The data stored in a data frame can be of numeric, factor or character type</li>
+					<li>Each column should contain same number of data items</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Create Data Frame</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+emp.data &lt;- data.frame(
+   emp_id = c (1:5), 
+   emp_name = c("Rick","Dan","Michelle","Ryan","Gary"),
+   salary = c(623.3,515.2,611.0,729.0,843.25), 
+   
+   start_date = as.Date(c("2012-01-01", "2013-09-23", "2014-11-15", "2014-05-11",
+      "2015-03-27")),
+   stringsAsFactors = FALSE
+)
+
+print(emp.data)
+str(emp.data) # structure
+print(summary(emp.data)) # summary
+		</pre>
+		</div>
+
+		<div class = "subtitle">Accesing</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+emp.data &lt;- data.frame(
+   emp_id = c (1:5), 
+   emp_name = c("Rick","Dan","Michelle","Ryan","Gary"),
+   salary = c(623.3,515.2,611.0,729.0,843.25), 
+   
+   start_date = as.Date(c("2012-01-01", "2013-09-23", "2014-11-15", "2014-05-11",
+      "2015-03-27")),
+   stringsAsFactors = FALSE
+)
+
+print(emp.data$emp_name) # get column, vector
+print(emp.data[1, ]) # get row, dataframe
+print(emp.data[1, 2]) # get a specific element
+		</pre>
+		</div>
+
+		<div class = "subtitle">Operations</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+emp.data &lt;- data.frame(
+   emp_id = c (1:5), 
+   emp_name = c("Rick","Dan","Michelle","Ryan","Gary"),
+   salary = c(623.3,515.2,611.0,729.0,843.25), 
+   
+   start_date = as.Date(c("2012-01-01", "2013-09-23", "2014-11-15", "2014-05-11",
+      "2015-03-27")),
+   stringsAsFactors = FALSE
+)
+
+print(names(emp.data)) # names
+print(dim(emp.data)) # dim
+
+emp.data$dept &lt;- c("IT","Operations","IT","HR","Finance") # add a column
+print(emp.data)
+
+emp.data = emp.data[, names(emp.data) != "dept"] # remove a column
+print(emp.data)
+
+# add a row
+new.emp.data &lt;- data.frame(
+	emp_id = 6,
+	emp_name = "Mike",
+	salary = 700,
+	start_date = as.Date("2010-01-01"),
+	stringsAsFactors = FALSE
+			   )
+emp.data = rbind(emp.data, new.emp.data)
+print(emp.data)
+
+# remove a row
+print(emp.data[c(1:2, 4:dim(emp.data)[1]),])
+
+# add a column
+library(dplyr)
+emp.data &lt;- emp.data %&gt;% mutate(salary_year = salary*12)
+print(emp.data)
+
+# filter
+emp.data = emp.data %&gt;% filter(salary &gt; 700)
+print(emp.data)
+		</pre>
+		</div>
+	</body>
+</html>

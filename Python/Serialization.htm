@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Object Serialization
+		</div>
+
+		<div class = "subtitle">Picklable Types</div>
+		<div class = "block">
+			<ul>
+				<li>None, True, and False</li>
+				<li>integers, long integers, floating point numbers, complex numbers</li>
+				<li>normal and Unicode strings</li>
+				<li>tuples, lists, sets, and dictionaries containing only picklable objects</li>
+				<li>functions defined at the top level of a module</li>
+				<li>built-in functions defined at the top level of a module</li>
+				<li>classes that are defined at the top level of a module</li>
+				<li>instances of such classes whose __dict__ or the result of calling __getstate__() is picklable (see section The pickle protocol for details).</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Write and Read</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import cPickle
+
+f = open('temp.pkl', 'wb');
+
+l = range(10);
+
+cPickle.dump(l, f, 0); #default, ASCII protocol
+#cPickle.dump(l, f, 1); #old binary format
+#cPickle.dump(l, f, 2); #efficient pickling of new-style classes
+#cPickle.dump(l, f, -1); #highest available protocol
+
+f.close();
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import cPickle
+
+f = open('temp.pkl', 'rb');
+
+l = cPickle.load(f);
+
+print l;
+
+f.close();
+		</pre>
+		</div>
+
+		<div class = "subtitle">Pickle String</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import cPickle
+
+l = range(10);
+
+s = cPickle.dumps(l);
+
+t = cPickle.loads(s);
+print t;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Define picklable class</div>
+		<div class = "block">
+			<li>__getstate__, if the class defines the method __getstate__(), it is called and the return state is pickled as the contents for the instance, if there is no __getstate__() method, the instance's __dict__ is pickled</li>
+			<li>__setstate__, if the class also defines the method __setstate__(), it is called with the unpickled state, if there is no __setstate__() method, the pickled state must be a dictionary and its items are assigned to the new instance's dictionary</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+class Vehicle(object):
+
+    def __init__(self, brand):
+        self.__brand = brand
+
+    def __str__(self):
+        return "Brand: %s" % self.__brand
+
+    def __getstate__(self):
+        print('Call __getstate__ for pickling ...')
+        state = self.__dict__.copy()
+        # Remove the unpicklable entries.
+        #del state['file']
+        return state
+
+    def __setstate__(self, state):
+        # Restore instance attributes
+        print('Call __setstate__ for unpickling ...')
+        self.__dict__.update(state)
+        #self.__dict
+
+def main():
+    v = Vehicle("Buick")
+
+    import cPickle
+
+    # pickling
+    f = open('temp.pkl', 'wb');
+    cPickle.dump(v, f, 0);
+    f.close();
+
+    # unpickling
+    f = open('temp.pkl', 'rb');
+    l = cPickle.load(f);
+    print(l);
+    f.close();
+
+    v2 = [Vehicle("Buick"), Vehicle("Honda")]
+
+    # pickling
+    f = open('temp.pkl', 'wb');
+    cPickle.dump(v2, f, 0);
+    f.close();
+
+    # unpickling
+    f = open('temp.pkl', 'rb');
+    l = cPickle.load(f);
+    for e in l:
+        print(e)
+    f.close();
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+class MyRange:
+    def __init__(self, start, stop, step):
+        self.__sequence = range(start, stop, step);
+ 
+    def __str__(self):
+        s = '[';
+        for i in self.__sequence:
+            s = s + ' ' + str(i)
+
+        return s + ' ]'
+
+    def __getstate__(self):
+        print('Call __getstate__ for pickling ...')
+        state = self.__dict__.copy()
+        print(state)
+        # Remove the unpicklable entries.
+        #del state['file']
+        return state
+
+    def __setstate__(self, state):
+        # Restore instance attributes
+        print('Call __setstate__ for unpickling ...')
+        self.__dict__.update(state)
+
+def main():
+    l = MyRange(0, 10, 1);
+
+    import cPickle
+
+    # pickling
+    f = open('temp.pkl', 'wb');
+    cPickle.dump(l, f, 0);
+    f.close();
+
+    # unpickling
+    f = open('temp.pkl', 'rb');
+    l = cPickle.load(f);
+    print(l);
+    f.close();
+
+if __name__ == '__main__':
+    main();
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.python.org/3/library/pickle.html">pickle — Python object serialization</a></li>
+				<li><a href = "https://docs.python.org/2/library/pickle.html">Documentation</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

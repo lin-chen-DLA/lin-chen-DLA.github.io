@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Logging
+		</div>
+
+		<div class = "subtitle">Levels</div>
+		<div class = "block">
+			<ul>
+				<li>DEBUG</li>
+				<li>INFO</li>
+				<li>WARNING, default level, only events of this level and above will be tracked</li>
+				<li>ERROR</li>
+				<li>CRITICAL</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#WARNING is defalut level
+import logging
+
+logging.warning('Watch out!')  # will print a message to the console
+logging.info('I told you so')  # will not print anything
+			</pre>
+			<pre class = "prettyprint linenums">
+import logging
+logging.basicConfig(level=logging.DEBUG);
+
+logging.warning('Watch out!') # will print
+logging.info('I told you so') # will print
+			</pre>
+		</div>
+		<div class = "subtitle">Logging into file</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import logging
+
+logging.basicConfig(filename='log.txt', level=logging.DEBUG);
+
+logging.warning('Watch out!')
+logging.info('I told you so')
+			</pre>
+		</div>
+		<div class = "subtitle">Multiple modules</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import logging
+
+def doSomething():
+    logging.info('Logging in lib ...');
+			</pre>
+			<pre class = "prettyprint linenums">
+import lib
+import logging
+
+logging.basicConfig(filename='log.txt', level=logging.DEBUG);
+
+lib.doSomething()
+logging.warning('Watch out!')
+logging.info('I told you so')
+			</pre>
+		</div>
+		<div class = "subtitle">Logging format</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import logging
+
+logging.basicConfig(format='[%(levelname)s]: %(message)s', level=logging.DEBUG);
+
+logging.warning('Watch out!')
+logging.info('I told you so')
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.python.org/2/howto/logging.html">Tutorial</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

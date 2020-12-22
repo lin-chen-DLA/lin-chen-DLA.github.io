@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Copy Assignment
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>By default, each member of one object is copied to its counterpart in the other object</li>
+				<li><span style = "color:red">Called when two objects have been already exist</span>
+				<ul>
+					<li>Object o1;</li>
+					<li>Object o2;</li>
+					<li>o2 = o1;</li>
+				</ul>
+				</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">No pointer</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef V_H
+#define V_H
+class V
+{
+	private:
+		int size;
+	public:
+		V(int s):size(s){}
+		int getSize() const {return size;}
+};
+#endif
+
+#include &lt;iostream&gt;
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	V v(10);
+	V v2(20);
+
+	std::cout&lt;&lt;"Size: "&lt;&lt;v.getSize()&lt;&lt;" "&lt;&lt;v2.getSize()&lt;&lt;std::endl;
+
+	v2 = v;
+	std::cout&lt;&lt;"Size: "&lt;&lt;v.getSize()&lt;&lt;" "&lt;&lt;v2.getSize()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Have Pointer Attributes</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//V.h
+#ifndef V_H
+#define V_H
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		V(int s):size(s)
+		{
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+		}
+
+		int *getAddress() const {return array;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		~V()
+		{
+			delete [] array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	V *v = new V(10);
+	V *v2 = new V(20);
+
+	*v2 = *v;
+
+	//both objects have same dynamic memory
+	std::cout&lt;&lt;"Address: "&lt;&lt;v-&gt;getAddress()&lt;&lt;" "&lt;&lt;v2-&gt;getAddress()&lt;&lt;std::endl;
+
+	v-&gt;display();
+	v2-&gt;display();
+
+	delete v;
+
+	v2-&gt;display();
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Default assignmetn constructor does not work anymore, copy assignment cause two objects share the same memory</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Initialize Objects</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//g++ *.cpp -std=c++11
+//V.h
+#ifndef V_H
+#define V_H
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		//constructor
+		V(int s):size(s)
+		{
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+		}
+
+		//copy constructor
+		V(const V &right):size(right.size), array(size?new int[size]:nullptr)
+		{
+			std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+			std::cout&lt;&lt;"End Constructor ..."&lt;&lt;std::endl;
+		}
+
+		int *getAddress() const {return array;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		//copy assignment
+		const V & operator=(const V &right)//not calll copy constructor
+		//const V operator=(const V &right)//calll copy constructor
+		{
+			std::cout&lt;&lt;"Copy Assignment ..."&lt;&lt;std::endl;
+			delete [] array;//release the current memory
+			array = new int[right.size];
+			for(int i = 0; i &lt; right.size; i++)
+				array[i] = right.array[i];
+			size = right.size;
+			return *this;
+		}
+
+		~V()
+		{
+			std::cout&lt;&lt;"Destructor ..."&lt;&lt;std::endl;
+			delete [] array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+
+//main.cpp
+#include &lt;iostream&gt;
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	V *v = new V(10);
+	V *v2 = new V(20);
+	V *v3 = new V(30);
+
+	*v3 = *v2 = *v;
+
+	v-&gt;display();
+	v2-&gt;display();
+	v3-&gt;display();
+	
+	delete v;
+	delete v2;
+	delete v3;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Return from Function</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+
+V getObject()
+{
+	std::cout&lt;&lt;"Inside function ..."&lt;&lt;std::endl;
+	V v(10);
+
+	std::cout&lt;&lt;"Return from function ..."&lt;&lt;std::endl;
+	return v;
+}
+
+int main(int argc, char *argv[])
+{
+	std::cout&lt;&lt;"Before calling function ..."&lt;&lt;std::endl;
+	V v(20);
+	v = getObject();
+	std::cout&lt;&lt;"After calling function ..."&lt;&lt;std::endl;
+
+	v.display();
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Why copy-and-swap idiom?</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//g++ *.cpp -std=c++11
+#ifndef V_H
+#define V_H
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		//constructor
+		V(int s):size(s)
+		{
+			std::cout&lt;&lt;"Constructor ..."&lt;&lt;std::endl;
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+		}
+
+		//copy constructor
+		V(const V &right):size(right.size), array(size?new int[size]:nullptr)
+		{
+			std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+			std::cout&lt;&lt;"End Copy Constructor ..."&lt;&lt;std::endl;
+		}
+
+		int *getAddress() const {return array;}
+		int getSize() const {return size;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		//copy assignment
+		const V& operator=(const V &right)
+		{
+			std::cout&lt;&lt;"Copy Assignment ..."&lt;&lt;size&lt;&lt;std::endl;
+			if (this != &right)//sef-assignment check
+			{
+				delete [] array;
+				array = nullptr;
+
+				//code duplication
+				size = right.size;
+				array = size?new int[size]:nullptr;
+				std::copy(right.array, right.array+size, array);
+			}
+			std::cout&lt;&lt;"Return from Assignment ..."&lt;&lt;std::endl;
+			return *this;
+		}
+
+		~V()
+		{
+			std::cout&lt;&lt;"Destructor ..."&lt;&lt;size&lt;&lt;std::endl;
+			delete [] array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Self-assignment check</li>
+				<li>if new[size] fail, *this could have been modified; or copy only succesfully copied several elements and fail</li>
+				<li><a href = "http://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom">Stackoverflow</a></li>
+				<li><a href = "http://www.cplusplus.com/articles/y8hv0pDG/">cpluplus.com</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">A Successful Solution</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef V_H
+#define V_H
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		//constructor
+		V(int s):size(s)
+		{
+			std::cout&lt;&lt;"Constructor ..."&lt;&lt;std::endl;
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+		}
+
+		//copy constructor
+		V(const V &right):size(right.size), array(size?new int[size]:nullptr)
+		{
+			std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+			std::cout&lt;&lt;"End Copy Constructor ..."&lt;&lt;std::endl;
+		}
+
+		int *getAddress() const {return array;}
+		int getSize() const {return size;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		//copy assignment
+		const V& operator=(const V &right)
+		{
+			std::cout&lt;&lt;"Copy Assignment -----------------------"&lt;&lt;size&lt;&lt;std::endl;
+			V temp(right);
+			std::swap(size, temp.size);
+			std::swap(array, temp.array);
+			std::cout&lt;&lt;"Ending Assignment ---------------------"&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		~V()
+		{
+			std::cout&lt;&lt;"Destructor ..."&lt;&lt;size&lt;&lt;std::endl;
+			delete [] array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li>Starting out with C++, Tony Gaddis</li>
+			</ul>
+		</div>
+	</body>
+</html>

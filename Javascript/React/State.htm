@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			State
+		</div>
+
+		<div class = "subtitle">Create Component</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/React_1.png" width=20% /></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//index.html
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div id = "root"&gt;&lt;/div&gt;
+	&lt;script src="https://fb.me/react-0.14.3.js"&gt;&lt;/script&gt;
+	&lt;script src="https://fb.me/react-dom-0.14.3.js"&gt;&lt;/script&gt;
+	&lt;script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"&gt;&lt;/script&gt;
+	&lt;script src="script.js" type = "text/babel"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function Clock(props) {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Hello, world!&lt;/h1&gt;
+      &lt;h2&gt;It is {props.date.toLocaleTimeString()}.&lt;/h2&gt;
+    &lt;/div&gt;
+  );
+}
+
+function tick() {
+  ReactDOM.render(
+    &lt;Clock date={new Date()} /&gt;,
+    document.getElementById('root')
+  );
+}
+
+setInterval(tick, 1000);
+		</pre>
+		</div>
+		<div class = "subtitle">State</div>
+		<div class = "block">
+			<li><span>state</span> is often called local or encapsulated, is not accessible to any component other than the one that owns and sets it</li>
+			<li>Any state is always owned by some specific component, and any data or UI derived from that state can only affect components “below” them in the tree</li>
+			<li><span>setState()</span> change state and re-render a component</li>
+			<li>When you call setState(), React merges the object you provide into the current state</li>
+		<pre class = "prettyprint linenums">
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  //mounting, whenever the Clock is rendered to the DOM for the first time
+  componentDidMount() {
+	  this.timerID = setInterval(
+      () =&gt; this.tick(),
+      1000
+    );
+  }
+
+  //unmounting, whenever the DOM produced by the Clock is removed
+  componentWillUnmount() {
+	  clearInterval(this.timerID);
+  }
+
+  tick() {
+    this.setState({ //call setState() with an object containing the current time
+      date: new Date()
+    });
+  }
+
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;Hello, world!&lt;/h1&gt;
+        &lt;h2&gt;It is {this.state.date.toLocaleTimeString()}.&lt;/h2&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Clock /&gt;
+      &lt;Clock /&gt;
+      &lt;Clock /&gt;
+    &lt;/div&gt;
+  );
+}
+
+ReactDOM.render(
+  &lt;App /&gt;,
+  document.getElementById("root")
+);
+		</pre>
+		</div>
+		<div class = "subtitle">Single Source of Truth</div>
+		<div class = "block">
+			<li>In many React applications, group all state data in the root component</li>
+			<li><span>State data</span> can be <span>passed down</span> the component tree via properties</li>
+			<li>Data can be <span>passed back up</span> the tree to the root via two-way function binding</li>
+		</div>
+	</body>
+</html>

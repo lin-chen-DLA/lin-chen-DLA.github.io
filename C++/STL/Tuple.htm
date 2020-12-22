@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Tuple
+		</div>
+
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;tuple&gt;
+#include &lt;string&gt;
+#include &lt;typeinfo&gt;
+
+int main(int argc, char *argv[])
+{
+	//initialization
+	std::tuple&lt;std::string, int&gt;  planet("Earth", 4);
+	auto address = std::make_tuple("US", "VA", "Yorktown", 1);
+
+	//access
+	std::cout&lt;&lt;std::get&lt;0&gt;(planet)&lt;&lt;" "&lt;&lt;std::get&lt;1&gt;(planet)&lt;&lt;std::endl;
+	std::cout&lt;&lt;std::get&lt;0&gt;(address)&lt;&lt;" "&lt;&lt;std::get&lt;1&gt;(address)&lt;&lt;" "&lt;&lt;std::get&lt;2&gt;(address)&lt;&lt;" "&lt;&lt;std::get&lt;3&gt;(address)&lt;&lt;std::endl;
+
+	//tie
+	std::string city;
+	int index;
+	std::tie(std::ignore, std::ignore, city, index) = address;
+	std::cout&lt;&lt;city&lt;&lt;" "&lt;&lt;index&lt;&lt;std::endl;
+
+	//tuple_size
+	std::cout&lt;&lt;std::tuple_size&lt;decltype(address)&gt;::value&lt;&lt;std::endl;
+
+	//tuple_element
+	std::cout&lt;&lt;typeid(decltype(address)).name()&lt;&lt;std::endl;
+	std::cout&lt;&lt;typeid(std::tuple_element&lt;3, decltype(address)&gt;::type).name()&lt;&lt;std::endl;
+
+	//forward_as_tuple, constructs a tuple object with rvalue references
+	std::string greeting = "Hello";
+	std::tuple&lt;std::string, int&gt; person = std::forward_as_tuple(greeting+" World!", 20);
+	std::cout&lt;&lt;std::get&lt;0&gt;(person)&lt;&lt;" "&lt;&lt;std::get&lt;1&gt;(person)&lt;&lt;std::endl;
+
+	//tuple_cat, construct a tuple by concatenate tuples
+	auto merge = std::tuple_cat(planet, address);
+	std::cout&lt;&lt;std::get&lt;0&gt;(merge)&lt;&lt;" "&lt;&lt;std::get&lt;1&gt;(merge)&lt;&lt;" "&lt;&lt;std::get&lt;2&gt;(merge)&lt;&lt;" "&lt;&lt;std::get&lt;3&gt;(merge)&lt;&lt;" "&lt;&lt;std::get&lt;4&gt;(merge)&lt;&lt;" "&lt;&lt;std::get&lt;5&gt;(merge)&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/tuple/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

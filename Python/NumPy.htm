@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			NumPy
+		</div>
+
+		<div class = "subtitle">Array Info</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import numpy as np
+
+a = np.arange(15).reshape(3, 5);
+
+print a.ndim; # number of axes
+print a.shape; # the dimension of array
+print a.size; # the total number of elements
+print a.dtype; # the type of the elements
+print len(a); # 3
+print (4 in a); # True
+		</pre>
+		</div>
+
+		<div class = "subtitle">Create Array</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import numpy as np
+
+a = np.array([1, 2, 3, 4]); # convert list to numpy array, array() is similar as asarray()
+a2 = np.array(range(10), float)
+b = np.array([(1, 2), (3, 4)]); # create two-dimensional array
+b2 = np.array([[1, 2], [4, 5]])
+c = np.array([((1, 2), (3, 4)), ((5, 6), (7, 8))], dtype=np.int16); # create three-dimensional array
+d = np.zeros((3, 4));
+d2 = np.zeros_like(d); # create an zero array with the same dimension as d
+e = np.ones((3, 4));
+e2 = np.ones_like(a); # create an one array with the same dimension as e
+emptyArray = np.empty([2, 2]); # create an array with random numbers, be faster than zeros() or ones()
+f = np.arange(10, 30, 5); # create an array containing elements from 10 to 30 with step 5
+g = np.linspace(0, 2, 9); # create an array containing 9 elements from 0 to 2
+h = np.arange(15).reshape(3, 5); # create a 3*5 array
+h2 = np.array([1, 2, 3, 4, 5], ndmin = 2); # create a 1*5 array
+i = np.identity(4, dtype=float); # identify matrix
+k = np.eye(4, k=0, dtype=float); # create a matrix with ones along the kth diagonal
+
+l = np.array([2, 4, 6, 8], float)
+m = np.array([0, 0, 1, 3, 2, 1], int)
+n = l[m]; # [ 2.  2.  4.  8.  6.  4.]
+n = l.take(m)
+l2 = l[l&gt;6]; # create an array, in which elements satisfy some conditions
+l3 = l[np.logical_and(l&gt;3, l&lt;7)]; # compound selection 
+
+2 in l; # return True, check if an element in the array
+
+it = iter(range(10));
+x = np.fromiter(it, dtype = float); # create an array from iter
+
+# append
+a = np.array([[1,2,3],[4,5,6]]); # create a 2*3 array
+b = np.append(a, np.arange(4).reshape(2, 2), axis = 1); # append a 2*2 array along the second axis 
+
+# insert
+a = np.array([[1,2],[3,4],[5,6]]);
+b = np.insert(a, 2, [11, 12], axis = 0); # inserts values in the input array along the given axis and before the given index
+
+# delete
+a = np.arange(12).reshape(3,4);
+b = np.delete(a,1,axis = 1); # delete the second column
+		</pre>
+		</div>
+		<div class = "subtitle">Array Slicing</div>
+		<div class = "block">
+			<li>Slicing return a view of an array</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import numpy as np
+
+a = np.arange(15);
+print a;
+print a[1:4]; # [1 2 3]
+print a[1:8:2]; # [1 3 5 7]
+print a[:4]; # [0 1 2 3]
+print a[10:]; # [10 11 12 13 14]
+print a[::-1] # reversed array
+
+b = np.arange(15).reshape(3, 5);
+print b[1, 2];
+print b[1][2];
+print b[:, 1]; # 1st column, (3,)
+print b[:, :1]; # 1st column, (3, 1)
+print b[:, -1]; # last column, (3,)
+print b[:, -1:], # last column, (3, 1)
+
+a = np.arange(15).reshape(3, 5);
+a[0,::2] = -1; # change the first row to be [-1 1 -1 3 -1]
+rev_arr = a[::-1, ::-1]; # reverse rows and columns
+print rev_arr
+
+a = np.arange(10);
+a[[1, 2, 3, 4]] = 10; # set 2nd-5th elements to be 10
+
+c = np.array( [[[  0,  1,  2], [ 10, 12, 13]], [[100,101,102], [110,112,113]]]);
+print c, c[0, 1, 2]; # 2*2*3 matrix, z axis is the first axis
+for page in c:
+        print page;
+        print
+
+print c[1, ...]; # dots ... represent as many colons as needed to produce a complete indexing tuple
+		</pre>
+		</div>
+
+		<div class = "subtitle">Array Operations</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+#Elementwise operations
+
+import numpy as np
+
+a = np.array([1, 2, 3, 4]);
+b = np.arange(1, 12, 3);
+
+print a+b; # addition
+print b-a; # substraction
+print a*b; # elementwise product
+print b/a; # division
+print b%a; # mod
+print a**2; # power
+print 18*np.sin(a); # sin
+print np.sqrt(a); # sqrt
+print a&lt;3; # less than, a boolean matrix
+print a+3;
+print a*3;
+
+a = np.array([1.1, 1.5, 1.9], float)
+print np.floor(a); # floor, [1., 1., 1.]
+print np.ceil(a); # ceil, [2., 2., 2.]
+print np.rint(a); # nearest integer, [1., 2., 2.]
+
+# random
+e = np.random.random((2, 3));
+print e; # create a 2*3 array
+print e.sum(); # sum
+print e.max(); # max
+print e.min(); # min
+print e.sum(axis = 0); # sum of each column
+print e.min(axis = 1); # min of each row
+ind = e.argmax(axis=0); # get the index of maximum along axis 0
+print e.cumsum(axis = 1); # cumulative sum of each row
+e.sort(axis = 0); # sort along each column
+print e
+e = np.random.random((2, 3));
+f = e.clip(0, 0.1); # values in an array can be "clipped" to be within a prespecified range
+print f
+a = np.array([1, 1, 4, 5, 5, 5, 7], float); # choose the unique values
+print np.unique(a)
+
+# Comparison
+a = np.array([1, 2, 3, 4]);
+b = np.arange(0, 8, 2);
+c = a &gt; b; # [ True False False False]
+any(c); # True
+all(c); # False
+d = np.logical_and(a &gt; 0, a &lt; 3); #[ True  True False False]
+np.logical_not(c); #[False,  True,  True,  True]
+np.logical_or(c, d); #[ True,  True, False, False]
+
+a = np.array([[0, 1], [3, 0]], float)
+print a.nonzero(); # get the index of none-zero elements
+
+a = np.array([1, np.NaN, np.Inf], float)
+print np.isnan(a); # [False, True, False]
+print np.isfinite(a); # [True, False, False]
+		</pre>
+		</div>
+
+		<div class = "subtitle">Broadcasting</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+a = np.arange(10);
+b = 10;
+print a*b;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Switching Columns</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import numpy as np
+
+a = np.arange(15).reshape(3, 5);
+print a;
+
+b = a[:, (1, 0, 2, 3, 4)]; # switch first and second column
+print b;
+
+b = np.rollaxis(a, 1); # roll the second axis to the first axis
+b = np.swapaxes(a, 0, 1); # swap the first axis and the second axis
+
+		</pre>
+		</div>
+
+		<div class = "subtitle">Shape Manipulation</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+a = np.array([1, 2, 3], float); # (3,), vector
+print a.shape
+b = a[:,np.newaxis]; # (3, 1), matrix
+print b.shape
+c = a[np.newaxis, :]; # (1, 3), matrix
+print c.shape
+d = np.expand_dims(a, axis = 0); # create a (1, 3) array
+e = np.squeeze(d); # remove one-dimensional entry
+a = np.arange(30)
+a.shape = 2,-1,3  # -1 means "whatever is needed"
+print a.shape; # (2, 5, 3)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import numpy as np
+
+# create array
+a = np.floor(10*np.random.random(10));
+a.shape = (2, 5);
+
+print a.flatten(); # return a deep copy
+print a.ravel(); # return a view
+for e in a.flat: # flat return an iterator
+    print e;
+
+print a.T; # transpose, return a view of a
+print a.reshape(5, 2); # return a reshaped view of a
+
+a.shape = (5, 2); # physically change array size
+a.resize(5, 2); # physically resize array, same as setting value for a.shape
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+a = np.arange(15).reshape(3, 5);
+b = a.tolist(); # convert numpy array to list
+
+a = np.array([1, 2, 3], float)
+s = a.tostring(); # convert numpy array to string
+print s
+b = np.fromstring(s);
+print b
+		</pre>
+		</div>
+
+		<div class = "subtitle">Stacking</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import numpy as np
+
+a = np.arange(4);
+b = np.arange(1, 12, 3);
+
+c = np.vstack((a, b));
+
+d = a[:, np.newaxis];
+e = b[:, np.newaxis]
+
+e = np.hstack((d, e));
+
+f = np.r_[np.array([1, 2, 3, 4]), 0, 0, np.arange(4)]; # stack vector or matrix horizontally
+
+g = np.r_['0, 2, 1', np.array([1, 2, 3, 4]), np.arange(4)];
+# string '0, 2, 1' specify the shape
+# first number specify the axis to concatenate along
+# second number specify the minimum number of dimensions to force the entries to
+# third number specify which axis should contain the first array
+print g
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+a = np.array([[1, 2], [3, 4]], float)
+b = np.array([[5, 6], [7,8]], float)
+print np.concatenate((a,b), axis=0); # vertical concatenation
+print np.concatenate((a,b), axis=1); # horizontal concatenation
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+print np.tile(arr,2); # tileing over one axis
+print np.tile(arr, (2,2)); # tileing over multipled dimensions
+		</pre>
+		</div>
+
+		<div class = "subtitle">Splitting</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+a = np.floor(10*np.random.random((2,12)));
+np.hsplit(a, 3); # split array horizontally to equal subarrays
+np.hsplit(a, (3, 5)); # split array horizontally after third column and fifth column
+np.vsplit(a, 2); # split array into two equal subarrays horizontally
+		</pre>
+		</div>
+
+		<div class = "subtitle">View and Copy</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import numpy as np
+
+a = np.arange(4);
+
+b = a.view();
+b.shape = (2, 2);
+b[1, 1] = 10; # changing b also changes a
+print a, b
+print b.flags; # OWNDATA : determine if an array owns its own data, False for view or slicing 
+
+c = a.copy(); # deep copy
+c.shape = (2, 2);
+c[1, 1] = 100; # changing c does not change a
+print a, c;
+print c.flags; # OWNDATA : False, determine if an array owns its own data
+		</pre>
+		</div>
+
+		<div class = "subtitle">Set Value</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+# where(boolarray, truearray, falsearray), the where function forms a new array from two arrays of equivalent size using a Boolean filter to choose between elements of the two
+
+import numpy as np
+
+a = np.arange(15).reshape(3, 5);
+
+a[np.where(a &gt; 5)] = 0; # where returns the indices
+print a
+
+temp = np.where(a &gt; 5, True, False); # set as True for elements greater than 4; Flase, otherwise
+print a[temp]
+
+b = np.arange(15).reshape(3, 5);
+b = np.where(b &lt;= 5, b, 0);
+print b;
+
+c = np.arange(15).reshape(3, 5);
+np.putmask(c, c&gt;5, 0);
+print c;
+
+a = np.array([0, 1, 2, 3, 4, 5], float)
+a.put([0, 3], 10); # set the first and third elements to be 10
+print a; # [10., 1., 2., 10., 4., 5.]
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+a = np.arange(10)**2;
+b = np.array([1, 1, 4, 4])
+# set value
+a[b] = 0;
+print a;
+
+a[a &gt; 5] = 0;
+print a;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+a = np.array([1, 2, 3], float)
+a.fill(0)
+print a
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+a = np.array([1.1, 2.5, 3.14], float)
+b = a.astype(int); # create a deep copy and cast to a specified type
+print b.dtype; # int
+		</pre>
+		</div>
+
+		<div class = "subtitle">Linear Algebra</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import numpy as np
+
+a = np.arange(4).reshape(2, 2);
+b = np.arange(1, 12, 3).reshape(2, 2);
+print a.dot(b); # matrix multiplication
+print np.matmul(a, b); # returns the matrix product of two arrays
+
+print np.vdot(a, b); # returns the dot product of the two vectors
+
+a = np.array([[4, 2, 0], [9, 3, 7], [1, 2, 1]], float)
+print np.linalg.det(a); # determinant
+
+a = np.arange(4).reshape(2, 2);
+print a;
+print a.transpose(); # return a view
+print a.T; # save as above, return a view
+print np.linalg.inv(a);
+y = np.array([[5.], [7.]])
+print np.linalg.solve(a, y);
+print np.linalg.eig(a);
+		</pre>
+		</div>
+
+		<div class = "subtitle">Array iteration</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+a = np.array([1, 4, 5], int)
+for e in a:
+    print e, # 1, 4, 5
+
+# [1. 2.]
+# [3. 4.]
+# [5. 6.]
+a = np.array([[1, 2], [3, 4], [5, 6]], float)
+for e in a:
+    print e
+
+a = np.array([[1, 2], [3, 4], [5, 6]], float)
+for (x, y) in a:
+    print x*y, # 2.0 12.0 30.0
+
+for x in np.nditer(a):
+    print x; # iterate over an array by the memory layout
+		</pre>
+		</div>
+		<div class = "subtitle">Matrix Operations</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+a = np.array([1, 2, 3, 4]);
+b = np.arange(1, 12, 3);
+print a.dot(b); # 70, dot product
+print np.outer(a, b); # outer product
+print np.inner(a, b); # inner product
+
+a = np.array([1, 4, 0], float)
+b = np.array([2, 2, 1], float)
+print np.cross(a, b); # cross product
+
+a = np.array([[0, 1], [2, 3]], float)
+b = np.array([2, 3], float)
+print np.dot(b, a); # matrix multiplication
+
+a = np.array([[4, 2, 0], [9, 3, 7], [1, 2, 1]], float)
+b = np.linalg.inv(a); # inverse matrix
+print b
+
+b = np.array([[-3, 4], [2, -1]])
+vals, vecs = np.linalg.eig(b); # calculate eigen value and eigen vector
+print vals
+print vecs
+
+a = np.array([[1, 3, 4], [5, 2, 3]], float)
+U, s, Vh = np.linalg.svd(a); # svd
+
+a = np.array([[1, 2], [3, 4]], float)
+print a.diagonal(); # get diagonal
+		</pre>
+		</div>
+
+		<div class = "subtitle">Polynomial Operations</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+a = np.array([-1, -1]); # calcualte coefficients for given roots
+print np.poly(a)
+
+a = np.array([1, 2, 1]); # calculate roots for given coeffients
+print np.roots(a)
+
+np.polyint([1, 1, 1, 1]); # integrate
+
+np.polyder([1./4., 1./3., 1./2., 1., 0.]); # derivate
+
+np.polyval([1, -2, 0, 2], 4); # evaluates a polynomial at a particular point
+
+p = np.poly1d([1, 2, 3]); # construct the polynomial x^2 + 2x + 3
+print(np.poly1d(p));
+p(0.5); # calculate the value at this point
+
+x = [1, 2, 3, 4, 5, 6, 7, 8]
+y = [0, 2, 1, 3, 7, 10, 11, 19]
+z = np.polyfit(x, y, 2); # fit x and y to single variable polynomial with degree 2
+import matplotlib.pyplot as plt
+p = np.poly1d(z); # create a polynomial object 
+plt.plot(x, y, '.')
+plt.plot(x, p(x), '-')
+plt.show()
+		</pre>
+		</div>
+<div class = "block">
+				<p style = "text-align:center;"><img src = "img/fit.png" width = "40%"></p>
+		</div>
+
+		<div class = "subtitle">Random</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+np.random.seed(); # use the time as the random seed
+np.random.rand(3,2); # generate random between 0 and 1
+np.random.randint(5, 10); # generate random integer number from [5, 10)
+np.random.randint(5, size=(2, 4))
+
+mu, sigma = 0, 0.1 # mean and standard deviation
+s = np.random.normal(mu, sigma, 1000); # normal distribution
+count, bins, ignored = plt.hist(s, 30, normed=True)
+plt.show()
+		</pre>
+		</div>
+
+
+
+		<div class = "subtitle">Statistics</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import numpy as np
+
+a = np.arange(10);
+print a;
+print np.average(a);
+print np.median(a);
+print np.std(a);
+print np.var(a);
+
+a = np.array([[1, 2, 1, 3], [5, 3, 1, 8]], float)
+c = np.corrcoef(a); # Pearson product-moment correlation coefficients
+np.cov(a); # calculate covariance
+
+a = np.array([[3,7,5],[8,4,3],[2,4,9]])
+b = np.ptp(a, axis = 1); # returns the range (maximum-minimum) of values along an axis
+
+a = np.arange(10)
+b = np.percentile(a, 50); # indicate the value below which a given percentage
+
+c = np.array([1, 4, 9, 10, 11]);
+d = np.median(c); # return the median number if the number is odd; return the average of the middle two elements if the number is even
+		</pre>
+		</div>
+
+		<div class = "subtitle">Vectorizing Functions</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import numpy as np
+
+def time10(a):
+    return 10*a;
+
+vecTime10 = np.vectorize(time10);
+
+a = np.arange(10);
+b = vecTime10(a);
+print b;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Structured Array</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import numpy as np
+
+x = np.array([(1,2.,'Hello'), (2,3.,"World")], dtype=[('foo', 'i4'),('bar', 'f4'), ('baz', 'S10')]);
+print x
+print x['foo']; # 1, 2.
+print x['bar']; # 2, 3.
+print x['baz']; # 'Hello', 'World'
+
+d = x.dtype;
+print d.names; # ('foo', 'bar', 'baz')
+		</pre>
+		</div>
+		<div class = "subtitle">IO</div>
+		<div class = "block">
+			<li>delimiter=',', set delimiter as ','</li>
+			<li>dtype=None, automatically decide data type</li>
+			<li>autostrip, automatically strip strings</li>
+			<li>usecols(0, -1), read the first column and the last column</li>
+			<li>skipheader, skip the first n lines</li>
+			<li>skipfooter, skip the last n lines</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import numpy as np
+
+# read the first column and the last column
+# build a structured array
+a = np.genfromtxt('ARG.csv', delimiter=',', dtype=None, autostrip=True, usecols=(0, -1));
+print a.shape, a.dtype; # [('f0', 'S4'), (f1', '&lt;f8')]
+print a[0]; # ('3j6k', 88.7512)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+a = np.arange(10);
+
+np.save('temp.npy', a); # save numpy array to a binary file
+b = np.load('temp.npy'); # read a numpy array from a binary fille
+
+x = np.arange(10);
+y = np.sin(x);
+np.savez('temp.npz', x, y); # save several arrays to a uncompressed npz file
+npzfile = np.load('temp.npz');
+print npzfile.files; # ['arr_1', 'arr_0']
+print npzfile['arr_1']; # output elements in y
+
+np.savetxt('temp.txt', a); # save a numpy array to a txt file
+c.loadtxt('temp.txt'); # load a numpy array from a txt file
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.scipy-lectures.org/">Scipy Lecture Notes</a></li>
+				<li><a href = "https://docs.scipy.org/doc/numpy/user/quickstart.html">Quick Start</a></li>
+				<li><a href = "https://engineering.ucsb.edu/~shell/che210d/numpy.pdf">UCSB Tutorial</a></li>
+				<li><a href = "http://mathesaurus.sourceforge.net/matlab-numpy.html">NumPy for MATLAB users</a></li>
+				<li><a href = "https://docs.scipy.org/doc/numpy/user/">NumPy User Guide</a></li>
+				<li><a href = "https://docs.scipy.org/doc/numpy/reference/">NumPy Reference</a></li>
+				<li><a href = "NumPyChapter.html">An Introduction to NumPy</a></li>
+				<li><a href = "http://scipy.github.io/old-wiki/pages/Numpy_Example_List">NumPy Functions</a></li>
+				<li><a href = "https://www.tutorialspoint.com/numpy/numpy_string_functions.htm">Tutorialspoint</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

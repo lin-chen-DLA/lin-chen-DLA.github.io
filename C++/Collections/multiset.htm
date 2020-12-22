@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			multiset
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Multiple elements can have equivalent values</li>
+				<li>Elements are always const</li>
+				<li>Can be inserted or removed</li>
+				<li>Sorted by a specific order indicated by comparison object</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Initialization</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;set&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::multiset&lt;int&gt; s = {1, 2, 2, 3, 4};//containing repeat elements
+
+	std::multiset&lt;int&gt; s2(s);
+
+	std::multiset&lt;int&gt; s3(s.begin(), s.end());
+
+	int array[] = {1, 1, 2, 2};
+	std::multiset&lt;int&gt; s4(array, array+4);
+
+	display(s4.begin(), s4.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Multiset with Objects</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const;
+		double getLength() const;
+		double getArea() const;
+
+		//mutator
+		void setWidth(double w);
+		void setLength(double l);
+};
+#endif
+
+//Rectangle.cpp
+#include "Rectangle.h"
+
+double Rectangle::getWidth() const
+{
+	return width;
+}
+
+double Rectangle::getLength() const
+{
+	return length;
+}
+
+double Rectangle::getArea() const
+{
+	return width*length;
+}
+
+void Rectangle::setWidth(double w)
+{
+	width = w;
+}
+
+void Rectangle::setLength(double l)
+{
+	length = l;
+}
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+#include &lt;typeinfo&gt;
+#include &lt;algorithm&gt;
+#include "Rectangle.h"
+
+struct comp{
+	bool operator()(const Rectangle & a, const Rectangle &b) const
+	{
+		return (a.getArea() &lt; b.getArea());
+	}
+};
+
+void display(const std::multiset&lt;Rectangle, comp&gt; &c)
+{
+	for(auto it = c.begin(); it != c.end(); ++it)
+	{
+		std::cout&lt;&lt;it-&gt;getArea()&lt;&lt;std::endl;
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::multiset&lt;Rectangle, comp&gt; s;
+	Rectangle r1(1, 2);
+	Rectangle r2(2, 3);
+	Rectangle r3(1, 2);
+	s.insert(r1);
+	s.insert(r2);
+	s.insert(r3);
+	display(s);
+
+	Rectangle r4(1, 2);
+	auto it = s.find(r4);
+	std::cout&lt;&lt;it-&gt;getArea()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/set/multiset/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

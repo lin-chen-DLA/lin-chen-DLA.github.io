@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Iterator
+		</div>
+		<div class = "subtitle">advance</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include &lt;list&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+template &lt;class T&gt;
+void rDisplay(T start, T it)
+{
+	std::advance(it, -1);
+	while(it != start)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, -1);
+	}
+	std::cout&lt;&lt;*it&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::list&lt;int&gt; l = {1, 2, 3, 4};
+	display(l.begin(), l.end());// 1 2 3 4
+	rDisplay(l.begin(), l.end());// 4 3 2 1
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">distance</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include &lt;list&gt;
+
+int main(int argc, char *argv[])
+{
+	std::list&lt;int&gt; l = {1, 2, 3, 4};
+
+	auto start = l.begin();
+	auto end = l.end();
+	std::advance(start, 1);
+
+	std::cout&lt;&lt;"Distance: "&lt;&lt;std::distance(start, end)&lt;&lt;std::endl;//3
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">begin and end</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include &lt;list&gt;
+
+int main(int argc, char *argv[])
+{
+	std::list&lt;int&gt; l = {1, 2, 3, 4};
+
+	for(auto it = std::begin(l); it != std::end(l); ++it)// 1 2 3 4
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">prev and next</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include &lt;list&gt;
+
+int main(int argc, char *argv[])
+{
+	std::list&lt;int&gt; l = {1, 2, 3, 4};
+	auto it = l.begin();
+	std::advance(it, 2);
+
+	std::cout&lt;&lt;"Prev: "&lt;&lt;*std::prev(it)&lt;&lt;std::endl;//2
+	std::cout&lt;&lt;"Current: "&lt;&lt;*it&lt;&lt;std::endl;//3
+	std::cout&lt;&lt;"Next: "&lt;&lt;*std::next(it)&lt;&lt;std::endl;//4
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">back_inserter</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; v1 = {1, 2, 3, 4};
+	std::vector&lt;int&gt; v2 = {10, 20, 30, 40};
+
+	std::copy(v2.begin(), v2.end(), std::back_inserter(v1));//1 2 3 4 10 20 30 40
+	std::fill_n(std::back_inserter(v1), 4, 100);//1 2 3 4 10 20 30 40 100 100 100 100
+
+	display(v1.begin(), v1.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>back_insert iterator allows algorithmss that overwrite elements, such as copy, to insert new elements at the end of the container</li>
+				<li>Container type needs <span style = "color:red">push_back</span> function, such as vector, deque, and list</li>
+			</ul>
+		</div>
+		<div class = "subtitle">front_inserter</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include &lt;list&gt;
+#include &lt;algorithm&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::list&lt;int&gt; v1 = {1, 2, 3, 4};
+	std::list&lt;int&gt; v2 = {10, 20, 30, 40};
+
+	std::copy(v2.begin(), v2.end(), std::front_inserter(v1));//40 30 20 10 1 2 3 4
+	std::fill_n(std::front_inserter(v1), 4, 100);//100 100 100 100 40 30 20 10 1 2 3 4
+
+	display(v1.begin(), v1.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>front_insert iterator allows algorithmss that overwrite elements, such as copy, to insert new elements at the beginning of the container</li>
+				<li>Container type needs <span style = "color:red">push_front</span> function, such as deque, and list</li>
+			</ul>
+		</div>
+		<div class = "subtitle">inserter</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include &lt;list&gt;
+#include &lt;algorithm&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::list&lt;int&gt; v1 = {1, 2, 3, 4};
+	std::list&lt;int&gt; v2 = {10, 20, 30, 40};
+
+	auto it = v1.begin();
+	std::advance(it, 1);
+
+	std::copy(v2.begin(), v2.end(), std::inserter(v1, it));//1 10 20 30 40 2 3 4
+	std::fill_n(std::inserter(v1, it), 4, 100);//1 10 20 30 40 100 100 100 100 2 3 4
+
+	display(v1.begin(), v1.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>insert iterator allows algorithmss that overwrite elements, such as copy, to insert new elements at a specific position of the container</li>
+				<li>Container type needs <span style = "color:red">insert</span> function, such as vector, deque, and list</li>
+			</ul>
+		</div>
+		<div class = "subtitle">make_move_inserter</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include &lt;list&gt;
+#include &lt;algorithm&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::list&lt;int&gt; v1 = {1, 2, 3, 4};
+	std::list&lt;int&gt; v2 = {10, 20, 30, 40, 50};
+
+	std::copy(std::make_move_iterator(v2.begin()), std::make_move_iterator(v2.end()), std::begin(v1));
+
+	display(v1.begin(), v1.end());//only the first four elements of v2 are moved to v1, since v1 only has four elements
+	v2.clear();//v2 has been moved to v1, clear it
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>make_move_iterator dereference an iterator to a rvalue reference</li>
+			</ul>
+		</div>
+		<div class = "subtitle">reverse_iterator</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include &lt;list&gt;
+#include &lt;algorithm&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::list&lt;int&gt; v = {1, 2, 3, 4};
+
+	display(v.rbegin(), v.rend());//only the first four elements of v2 are moved to v1, since v1 only has four elements
+
+	auto from = v.begin();
+	auto until = v.end();
+
+	std::reverse_iterator&lt;decltype(from)&gt; rev_until(from);
+	std::reverse_iterator&lt;decltype(until)&gt; rev_from(until);
+
+	display(rev_from, rev_until);
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<p style="text-align:center;"><img src = "http://upload.cppreference.com/mwiki/images/3/39/range-rbegin-rend.svg" width=50% /></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://en.cppreference.com/w/cpp/iterator/reverse_iterator">cppreference.com</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">istream_iterator</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;iterator&gt;
+#include &lt;fstream&gt;
+
+int main(int argc, char *argv[])
+{
+	std::ifstream inputFile("main.cpp");
+	std::vector&lt;std::string&gt; container;
+
+	std::istream_iterator&lt;std::string&gt; in(inputFile);
+	std::istream_iterator&lt;std::string&gt; eof;
+
+	while(in != eof)
+	{
+		std::cout&lt;&lt;*in&lt;&lt;std::endl;
+		++in;
+	}
+
+	inputFile.close();
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;iterator&gt;
+#include &lt;fstream&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::ifstream inputFile("main.cpp");
+	std::vector&lt;std::string&gt; container;
+
+	std::istream_iterator&lt;std::string&gt; in(inputFile);
+	std::istream_iterator&lt;std::string&gt; eof;
+
+	std::copy(in, eof, std::back_inserter(container));
+
+	inputFile.close();
+
+	display(container.begin(), container.end());//display whole file word by word
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "subtitle">ostream_iterator</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;iterator&gt;
+#include &lt;fstream&gt;
+#include &lt;algorithm&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::ofstream outputFile("temp.txt");
+	std::vector&lt;int&gt; container = {1, 2, 3, 4};
+
+	std::ostream_iterator&lt;int&gt; out(outputFile, ", ");
+	//std::ostream_iterator&lt;int&gt; out(std::cout, ", ");
+
+	std::copy(container.begin(), container.end(), out);
+	outputFile&lt;&lt;"Temp"&lt;&lt;std::endl;
+
+	outputFile.close();
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/iterator/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

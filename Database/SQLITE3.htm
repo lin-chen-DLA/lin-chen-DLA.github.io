@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SQLITE3</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			SQLITE3
+		</div>
+
+		<div class = "subtitle">Basics</div>
+		<div class = "block">
+			<ul>
+				<li>General
+					<ul>
+						<li>case insensitive</li>
+						<li>- or /*...*/, comments</li>
+						<li>all statements end with a semicolon</li>
+					</ul>
+				</li>
+				<li>Database
+					<ul>
+						<li><span>sqlite3 databaseName.db, create a database</span></li>
+						<li>.databases, view the databases in the list, by default, the directly opened database is labeled as "main"</li>
+						<li>.open fileName, open a persistent database</li>
+						<li>.save fileName, save database to a file</li>
+						<li>.quit, quit from sqlite interactive environment</li>
+						<li>.show, show database setup</li>
+						<li>.mode, setup display mode</li>
+						<li><span>sqlite3 database.db .dump &gt; database.sql, export database</span></li>
+						<li><span>sqlite3 database.db &lt; database.sql, import database</span></li>
+						<li>attach database 'temp.db' as team, <a href = "http://www.sqlitetutorial.net/sqlite-attach-database/">attach an extra database</a></li>
+						<li>detach database team, detach a database</li>
+					</ul>
+				</li>
+				<li>Table
+					<ul>
+						<li><span>create table tableName, create database table</span></li>
+			<pre class = "prettyprint linenums">
+create table Student(
+ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+firstName text NOT NULL,
+lastName text NOT NULL);
+			</pre>
+						<li>.tables, list all tables in the database</li>
+						<li>.schema tableName, display table schema</li>
+						<li>drop table tableName, remove table</li>
+						<li><span>insert into tableName (...) values (...), insert record into table</span></li>
+			<pre class = "prettyprint linenums">
+insert into Student (firstName, lastName) values ('Lin', 'Chen');
+insert into Student (firstName, lastName) values ('Yanhua', 'Feng');
+			</pre>
+						<li>select * from sqlite_master, sqlite_master table saves all table information in a database</li>
+						<li><span>select (...) from tableName where condition, select records from a table</span></li>
+			<pre class = "prettyprint linenums">
+select firstName, lastName from Student where id == 1;
+			</pre>
+						<li>display
+							<ul>
+								<li>.mode column, display by columns</li>
+								<li>.header on, display headers</li>
+							</ul>
+						</li>
+						<li>.width w1, w2, setting output column width</li>
+						<li><span>update tableName set columnName = value where, update record</span></li>
+			<pre class = "prettyprint linenums">
+update Student
+set firstName = 'Hannah'
+where id == 1;
+			</pre>
+						<li>delete from tableName where, remove a record</li>
+			<pre class = "prettyprint linenums">
+delete from Student where id == 1;
+			</pre>
+			<li><span>LIKE, case insensitve</span>
+							<ul>
+								<li>%, zero, one or multiple character</li>
+								<li>_, one character</li>
+							</ul>
+						</li>
+						<li>GLOB, case sensitive
+							<ul>
+								<li>*, zero, one, or multiple characters</li>
+								<li>?, one character</li>
+							</ul>
+						</li>
+						<li>select (...) from tableName <span>limit</span> number <span>offset</span> n, limit the number of display records and figure out the start record</li>
+			<pre class = "prettyprint linenums">
+SELECT * FROM COMPANY LIMIT 2 OFFSET 2;
+			</pre>
+						<li>order by [ASC|DESC], sort records</li>
+						<li>group by columnName, group records</li>
+						<li>having, set up conditions</li>
+						<li>distinct, eliminate all duplicate records</li>
+					</ul>
+				</li>
+				<li>Constraints
+					<ul>
+						<li>Not Null, ensures that a column cannot have NULL value</li>
+						<li>Default, provides a default value for a column when none is specified</li>
+						<li>Unique, ensures that all values in a column are different</li>
+						<li>Primary Key, uniquely identifies</li>
+						<li>Check, ensures that all values in a column satisfies certain conditions</li>
+						<li><span>Not allowed to add or remove contraints from a table</span></li>
+			<pre class = "prettyprint linenums">
+create table Info(
+id int autoincrement,
+name text,
+age int,
+constraint c1 primary key (id, name),
+constraint c2 check (age &gt; 20),
+constraint c3 foreign key (id) references Team(id));
+			</pre>
+					</ul>
+				</li>
+				<li>Insert from a sql file
+					<ul>
+						<li>sqlite3 temp.db &lt; info.sql</li>
+			<pre class = "prettyprint linenums">
+BEGIN TRANSACTION;
+insert into Info values (2, 'Yanhua', 37);
+COMMIT;
+			</pre>
+					</ul>
+				</li>
+				<li><span>Trigger</span>
+					<ul>
+						<li>SQLite supports only FOR EACH ROW triggers, not FOR EACH STATEMENT triggers</li>
+						<li>Use references of the form NEW.column-name and OLD.column-name</li>
+						<li>Reference tables by tablename not database.tablename</li>
+						<li>Function RAISE() may be used within a trigger-program to raise an exception</li>
+						<li>drop trigger triggerName, drop trigger</li>
+			<pre class = "prettyprint linenums">
+create trigger teamInfo after insert on Info
+begin
+	insert into Team values (new.id, new.name);
+end;
+			</pre>
+					</ul>
+				</li>
+				<li><span>Index</span>
+					<ul>
+						<li>create index indexName on tableName (column1, column2, ...), create an index</li>
+						<li>create unique on tableName (column1), create a unique</li>
+						<li><span>Indexes are automatically created for primary key constraints and unique constraints</span></li>
+						<li>.index tableName, list down all the indices available of a table</li>
+						<li>drop index indexName, drop an index</li>
+			<pre class = "prettyprint linenums">
+create index nameIndex on Student (lastName);
+			</pre>
+			<pre class = "prettyprint linenums">
+select * from Student indexed by nameIndex where lastName &gt; '';
+			</pre>
+					</ul>
+				</li>
+				<li><span>Alter table</span>
+					<ul>
+			<pre class = "prettyprint linenums">
+alter table Student add column age INTEGER;
+			</pre>
+			<pre class = "prettyprint linenums">
+update Student
+set age = 38;
+where ID = 3;
+			</pre>
+					</ul>
+				</li>
+				<li><span>Delete</span>, delete rows from a table
+					<ul>
+			<pre class = "prettyprint linenums">
+delete
+from Student
+where ID = 4;
+			</pre>
+					</ul>
+				</li>
+				<li><span>View</span>, sqlite view is read-only
+					<ul>
+			<pre class = "prettyprint linenums">
+create view nameView as
+select firstName, lastName
+from Student
+			</pre>
+					</ul>
+				</li>
+				<li><span>Transaction control</span>
+					<ul>
+			<pre class = "prettyprint linenums">
+begin transaction;
+delete from Student where ID = 2;
+rollback;
+			</pre>
+					</ul>
+				</li>
+				<li>Explain, is intended for interactive analysis and troubleshooting only</l>
+				<li>Vacuum, eliminates free pages, aligns table data to be contiguous</li>
+				<li>Limitations
+					<ul>
+						<li>Only LEFT OUTER JOIN is implemented</li>
+						<li>DROP COLUMN, ALTER COLUMN, ADD CONSTRAINT are not supported</li>
+						<li>FOR EACH ROW triggers are supported but not FOR EACH STATEMENT triggers</li>
+						<li>VIEWs in SQLite are read-only</li>
+						<li>GRANT and REVOKE are not needed, use the access permissions of underlying operating system</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">phpliteadmin</div>
+		<div class = "block">
+			<ul>
+				<li>Download <a href = "https://www.phpliteadmin.org/download/">phpliteadmin</a></li>
+				<li>sudo apt-get install php7.0-sqlite3</li>
+				<li>sudo service apache2 restart</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.sqlitetutorial.net/">SQLite tutorial</a></li>
+				<li><a href = "https://www.sqlite.org/lang.html">SQLite.org</a></li>
+				<li><a href = "https://www.sqlite.org/docs.html">Documentation</a></li>
+				<li><a href = "https://www.tutorialspoint.com/sqlite/index.htm">Tutorialspoint</a></li>
+				<li><a href = "https://www.sqlite.org/cli.html">Command Line Shell For SQLite</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

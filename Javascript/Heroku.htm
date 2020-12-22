@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Heroku
+		</div>
+
+		<div class = "subtitle">Publish Project</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//login heroku CLI
+heroku login
+
+//add https://git.heroku.com/projectName.git to the remote repository
+heroku git:remote -a projectName
+
+//deploy application
+git add .
+git commit -am "make it better"
+git push heroku master
+
+//default domain
+https://projectName.herokuapp.com/
+		</pre>
+		</div>
+		<div class = "subtitle">CLI</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+heroku login // login CLI
+
+heroku create // create a heroku app with random name
+
+//Heroku Builds
+heroku plugins:install heroku-builds // install
+heroku builds:create -a example-app // archive, upload and build
+heroku builds:create --source-url https://github.com/heroku/node-js-sample/archive/master.tar.gz -a exam // Create build from tarball URL
+heroku builds:create --source-tar master.tar.gz -a example-app //Create build from local tarball
+
+//Heroku Repo plugin
+heroku plugins:install heroku-repo // install
+heroku repo:clone -a appname // clone app to local
+heroku repo:download -a appname // download
+heroku repo:reset -a appname // empty the remote repository
+
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://devcenter.heroku.com/categories/reference">Documentation</a></li>
+		</div>
+	</body>
+</html>

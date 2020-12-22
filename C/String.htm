@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			String
+		</div>
+
+		<div class = "subtitle">String with Array</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main()
+{
+	char array [] = "Hello"; // array has 6 characters
+
+	printf("Length: %lu\n", strlen(array)); // 5
+	printf("String: %s\n", array); // Hello
+
+	for(int i = 0; i &lt; 6; i++)
+		printf("|%c|\n", array[i]);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/string.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	char str[100];
+
+	printf("Enter a string: \n");
+
+	scanf("%s", str); // read the first token
+
+	printf("%s\n", str);
+
+	return 0;
+}
+
+//Hello World
+//Hello
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	char str[100];
+
+	printf("Enter a string:\n");
+
+	fgets(str, sizeof(str), stdin); // read the whole line
+	printf("%s\n", str);
+
+	return 0;
+}
+
+//Hello World
+//Hello World
+//
+		</pre>
+		</div>
+		<div class = "subtitle">String with Pointer</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+char *getString()
+{
+	char *str = "Hello World";
+
+	return str;
+}
+
+int main()
+{
+	char *str = getString();
+
+	printf("Length: %lu\n", strlen(str)); // 5
+	printf("String: %s\n", str);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+char *getString()
+{
+	char *str = (char *) malloc(100*sizeof(char));
+	scanf("%s", str); // read the first token
+
+	return str;
+}
+
+int main()
+{
+	char *str = getString();
+
+	printf("Length: %lu\n", strlen(str)); // 5
+	printf("String: %s\n", str);
+
+	free(str);
+
+	return 0;
+}
+
+//Hello World
+//Hello
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+char *getString()
+{
+	char *str = (char *) malloc(100*sizeof(char));
+	fgets(str, 100, stdin);
+
+	return str;
+}
+
+int main()
+{
+	char *str = getString();
+
+	printf("Length: %lu\n", strlen(str)); // 5
+	printf("String: %s\n", str);
+
+	free(str);
+
+	return 0;
+}
+
+//Hello World
+//Hello World
+//
+		</pre>
+		</div>
+		<div class = "subtitle">string.h</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main()
+{
+	char *str1 = "Hello";
+	char *str2 = "Hello";
+	char *str3 = "World";
+
+	// strlen
+	printf("Length: %lu\n", strlen(str1)); // 5
+
+	// strcmp
+	// equal, 0; less than, negative integer; greater than, positive integer
+	printf("Compare: %d\n", strcmp(str1, str2)); // 0
+	printf("Compare: %d\n", strcmp(str1, str3)); // -15
+	//printf("String: %s\n", str);
+	
+	// memcpy
+	char *str4 = (char *)malloc(strlen(str1)+1);
+	memcpy(str4, str1, strlen(str1)+1);
+	printf("Copy: %s\n", str4);
+
+	// strcat
+	char *str5 = (char *)malloc(strlen(str1)+strlen(str3)+1);
+	memcpy(str5, str1, strlen(str1));
+	strcat(str5, str3); // append str2 to str1
+	printf("Concatnate: %s\n", str5); // HelloWorld
+
+	// sub string
+	char *str6 = (char *) malloc(3);
+	memcpy(str6, &amp;str5[5], 2);
+	str6[2] = '\0';
+	printf("Substring: %s\n", str6); // Wo
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Type Casting</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int getInteger()
+{
+	printf("Enter an integer number:\n");
+	char str[100];
+	scanf("%s", str); // read the first token
+
+	return atoi(str);
+}
+
+double getDouble()
+{
+	printf("Enter a double number:\n");
+	char *str = (char *) malloc(100*sizeof(char));
+	scanf("%s", str); // read the first token
+
+	double num = atof(str);
+
+	free(str);
+
+	return num;
+}
+
+int main()
+{
+	int age = getInteger();
+
+	double pi = getDouble();
+
+	printf("%d\n", age);
+	printf("%f\n", pi);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Change String</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+	// pointer
+	char * str = "Hello"; // constant char data, do not free
+
+	//str[0] = 'W'; // bus error
+	str = "World";
+	printf("%s\n", str); //World
+
+	// array
+	char str2 [] = "Hello";
+	str2[0] = 'W';
+	//str2 = "World"; // not allowed
+	printf("%s\n", str2); //Wello
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.tutorialspoint.com/c_standard_library/string_h.htm">string.h</a></li>
+		</div>
+	</body>
+</html>

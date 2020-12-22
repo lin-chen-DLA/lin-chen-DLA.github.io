@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Loop
+		</div>
+
+		<div class = "subtitle">While</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+n = 10;
+while n &gt; 0:
+    print n;
+    n = n-1;
+else:
+    print "End of Loop ...";
+		</pre>
+		</div>
+
+		<div class = "subtitle">For</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+l = [1, 2, 3, 4];
+
+#list elements and id
+for i in l:
+    print i, id(i);
+
+for i in l:
+    i = i*10; #i is immutable
+    print i, id(i);
+
+print l;#[1, 2, 3, 4]
+
+for index, ele in enumerate(l):
+    l[index] = l[index]*10;
+    print index, l[index], id(l[index]), ele, id(ele);
+
+print l;#[10, 20, 30, 40]
+		</pre>
+		</div>
+
+		<div class = "subtitle">Break</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+for i in range(10):
+    if i == 5:
+        break;
+    print i;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Continue</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+for i in range(10):
+    if i%2 == 0:
+        continue;
+    print i;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Pass</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+for i in range(10):
+    if i%2 == 0:
+        pass; # do nothing
+    else:
+        print i;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://www.tutorialspoint.com/python/python_loops.htm">Tutorialspoint.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

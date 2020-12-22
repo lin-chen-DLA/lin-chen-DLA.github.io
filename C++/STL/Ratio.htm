@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Ratio
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>num, Numerator</li>
+				<li>den, Denominator</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;ratio&gt;
+
+int main(int argc, char *argv[])
+{
+	std::ratio&lt;1, 3&gt; oneThird;//variable
+	std::cout&lt;&lt;oneThird.num&lt;&lt;"/"&lt;&lt;oneThird.den&lt;&lt;std::endl;
+
+	typedef std::ratio&lt;2, 4&gt; twoFourth;//variable type
+	std::cout&lt;&lt;twoFourth::num&lt;&lt;"/"&lt;&lt;twoFourth::den&lt;&lt;std::endl;
+
+	//ratio_add
+	typedef std::ratio_add&lt;decltype(oneThird), twoFourth&gt; sum;
+	std::cout&lt;&lt;sum::num&lt;&lt;"/"&lt;&lt;sum::den&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<table>
+				<tr><th>Type</th><th>Description</th></tr>
+				<tr><th>std::nano</th><th>10<sup>-9</sup></th></tr>
+				<tr><th>std::micro</th><th>10<sup>-6</sup></th></tr>
+				<tr><th>std::milli</th><th>10<sup>-3</sup></th></tr>
+				<tr><th>std::centi</th><th>10<sup>-2</sup></th></tr>
+				<tr><th>std::deci</th><th>10<sup>-1</sup></th></tr>
+				<tr><th>std::kilo</th><th>10<sup>3</sup></th></tr>
+				<tr><th>std::mega</th><th>10<sup>6</sup></th></tr>
+			</table>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;ratio&gt;
+
+int main(int argc, char *argv[])
+{
+	//std::milli
+	std::cout&lt;&lt;std::milli::num&lt;&lt;"/"&lt;&lt;std::milli::den&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/ratio/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

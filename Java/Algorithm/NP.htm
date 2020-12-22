@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">NP-Completeness</div>
+		<div class = "subtitle">Decision Problems and Optimization Problems</div>
+		<div class = "block">
+			<ul>
+				<li>Optimization problems, each feasible solution has an associated value, and wish to find a feasible solution with the best value. For example, Shortest-Path problem</li>
+				<li>Decision problems, answer is simply "Yes" or "No"</li>
+				<li>An optimization problem can ben casted to a decision problem by imposing a bound on the value to be optimized. For example, in Shortest-Path problem, find a path from u to v consisting of at most k edges</li>
+			</ul>
+		</div>
+		<div class = "subtitle">P</div>
+		<div class = "block">
+			<ul>
+				<li>P is a complexity class that represents the set of all decision problems that can be solved in polynomial time, O(n<sup>k</sup>)</li>
+			</ul>
+		</div>
+		<div class = "subtitle">NP</div>
+		<div class = "block">
+			<ul>
+				<li>NP is a complexity class that represents the set of all decision problems for which the instances where the answer is "yes" have proofs that can be verified in polynomial time</li>
+			</ul>
+		</div>
+		<div class = "subtitle">NP-Complete</div>
+		<div class = "block">
+			<ul>
+				<li>NP-Complete is a complexity class which represents the set of all problems X in NP for which it is possible to reduce any other NP problem Y to X in polynomial time</li>
+				<li>So what makes NP-Complete so interesting is that if any one of the NP-Complete problems was to be solved quickly then all NP problems can be solved quickly</li>
+			</ul>
+		</div>
+		<div class = "subtitle">P = NP?</div>
+		<div class = "block">
+			<ul>
+				<li>one million dollars question at <a href = "http://www.claymath.org/millennium-problems/p-vs-np-problem">Clay Institute</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">NP-hard</div>
+		<div class = "block">
+			<ul>
+				<li>Intuitively, these are the problems that are at least as hard as the NP-complete problems. Note that NP-hard problems do not have to be in NP, and they do not have to be decision problems</li>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "https://upload.wikimedia.org/wikipedia/commons/a/a0/P_np_np-complete_np-hard.svg" width = "60%"></p>
+		</div>
+		<div class = "block">
+			<table border>
+				<tr><th>Problem Type</th><th>Verifiable in P time</th><th>Solvable in P time</th><th>Increasing Difficulty</th></tr>
+				<tr><th>NP-Hard</th><th><abbr title = "Ye, if NP-Hard is also a NP-Complete problem; No, otherwise">Yes or No</abbr></th><th><abbr title = "Yes, NP-Hard and NP-Complete problem; No, otherwise">Unknown</abbr></th><th>&uarr;</th></tr>
+				<tr><th>NP-Complete</th><th>Yes</th><th>Unknown</th><th>|</th></tr>
+				<tr><th>NP</th><th>Yes</th><th><abbr title = "Yes, if NP is also a P; No, if NP but not a P">Yes or No</abbr></th><th>|</th></tr>
+				<tr><th>P</th><th>Yes</th><th>Yes</th><th>|</th></tr>
+			</table>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li>CLRS Chapter 34</li>
+				<li><a href = "https://stackoverflow.com/questions/1857244/what-are-the-differences-between-np-np-complete-and-np-hard">StackOverflow</a></li>
+				<li><a href = "https://www.cis.upenn.edu/~matuszek/cit596-2012/Powerpoint/NP-Complete.ppt">UPenn CIT596</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

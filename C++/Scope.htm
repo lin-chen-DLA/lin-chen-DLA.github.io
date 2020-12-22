@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Scope
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Scope, determine where a variable is accessible</li>
+				<li>Duration, determine where it is created and destroyed</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Storage Class</div>
+		<div class = "block">
+			<ul>
+				<li>Define the scope and life-time of variables and/pr functions within a C++ program</li>
+				<li><span style = "color:red">auto</span>, default storage class for all local variables, can only be used within functions</li>
+				<li><span style = "color:red">register</span>, was designed to save variables in a register instead of memory, to most of compiler, regiser has the same semantics a auto</li>
+				<li><span style = "color:red">static</span>, keep a local variable existing during the life-time of the program, cause a global variable to be restricted to the file in which it is declared</li>
+				<li><span style = "color:red">extern</span>, give a reference of a global variable that is visible to all the program files, to tell the compiler the global variable or function has been defined in another file</li>
+				<li><span style = "color:red">mutable</span>, make a data member of class to be modifiable through const function</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//static
+#include &lt;iostream&gt;
+
+static int count = 0;
+
+void increase()
+{
+	static int index = 0;
+	index++;
+	count++;
+	std::cout&lt;&lt;index&lt;&lt;" "&lt;&lt;count&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	increase();
+	increase();
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//util.h
+#ifndef UTIL_H
+#define UTIL_H
+
+extern const float pi;
+
+float getArea(int r)
+{
+	return pi*r*r;
+}
+#endif
+
+//main.cpp
+#include &lt;iostream&gt;
+#include "util.h"
+
+extern const float pi = 3.14;
+
+int main(int argc, char *argv[])
+{
+	std::cout&lt;&lt;pi&lt;&lt;std::endl;
+	std::cout&lt;&lt;getArea(10)&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Customer
+{
+	private: 
+		mutable std::string name;
+	public:
+		Customer(std::string n):name(n){}
+
+		void changeName(std::string n) const
+		{
+			name = n;
+		}
+
+		std::string getName() const {return name;}
+};
+
+int main(int argc, char *argv[])
+{
+	Customer c("Lin Chen");
+	c.changeName("Yanhua Feng");
+
+	std::cout&lt;&lt;c.getName()&lt;&lt;std::endl;
+
+	return 0;
+}
+	</pre>
+</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "https://www.tutorialspoint.com/cplusplus/cpp_storage_classes.htm">tutorialspoint.com</a></li>
+			<li><a href = "http://www.geeksforgeeks.org/c-mutable-keyword/">geeksforgeeks.org</a></li>
+		</ul>
+	</div>
+
+		<div class = "subtitle">Local Scope</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	int a = 0;
+
+	{
+		int b = 10;
+		std::cout&lt;&lt;a&lt;&lt;" "&lt;&lt;b&lt;&lt;std::endl;
+	}
+
+	std::cout&lt;&lt;a&lt;&lt;std::endl;
+	//std::cout&lt;&lt;b&lt;&lt;std::endl;//error
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Local variable, defined inside a block, have automatic duration, which means they are created at the point of definition, and destroyed when the block are define in is exited</li>
+				<li>variable defined outer block can be seen inside a nested block</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Shadowing</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int main(int argc, char *argv[])
+{
+	int a = 0;
+
+	{
+		int a = 10;
+		std::cout&lt;&lt;a&lt;&lt;std::endl;
+	}
+
+	std::cout&lt;&lt;a&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>A variable inside a nested block have the same name as a variable inside a ouiter block</li>
+				<li><span style = "color:red">Variables should be defined in the most limited scope possible</span></li>
+			</ul>
+		</div>
+		<div class = "subtitle">Global Scope</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int count = 0;
+
+void increase()
+{
+	count++;
+	std::cout&lt;&lt;"Global variable: "&lt;&lt;count&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	increase();
+
+	int count = 10;//shadow the global variable
+	std::cout&lt;&lt;"Local variable: "&lt;&lt;count&lt;&lt;std::endl;
+	std::cout&lt;&lt;"Global variable: "&lt;&lt;::count&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>static duration, created when the program starts and are destroyed when it ends</li>
+				<li>file scope, visible until the end of the file in which they are declared</li>
+				<li>Variable in an inner block with the same name as a global varialbe shadow the global variable</li>
+				<li>Global variable can be accessed by <span style = "color:red">the global scope operator (::)</span></li>
+			</ul>
+		</div>
+		<div class = "subtitle">Function Linkage</div>
+		<div class = "block">
+			<ul>
+				Function always default to external linkage, can be set to internal linkage via the static keyword
+			</ul>
+		</div>
+		<div class = "subtitle">File Scope and Global Scope</div>
+		<div class = "block">
+			<ul>
+				<li>All global variables in C++ have file scope</li>
+				<li>File scope is applied to file scope varaiable with internal linkage only</li>
+				<li>Global scope is applied to file scope variables with external linkage</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.learncpp.com/">learncpp.com</a>, Chapter 4</li>
+			</ul>
+		</div>
+	</body>
+</html>

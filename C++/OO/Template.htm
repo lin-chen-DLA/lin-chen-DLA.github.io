@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Template
+		</div>
+
+	<div class = "subtitle">Simple Template Class</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Array.h
+#ifndef ARRAY_H
+#define ARRAY_H
+#include &lt;iostream&gt;
+template &lt;class T&gt;
+class Array
+{
+	private:
+		T num;
+	public:
+		Array(T);
+
+		T getNum() const {return num;}
+
+		void setNum(T n);
+
+		~Array();
+};
+#endif
+
+template &lt;class T&gt;
+Array&lt;T&gt;::Array(T n):num(n)
+{
+	std::cout&lt;&lt;"Constructor ..."&lt;&lt;std::endl;
+}
+
+template &lt;class T&gt;
+void Array&lt;T&gt;::setNum(T n)
+{
+	num = n;
+}
+
+template &lt;class T&gt;
+Array&lt;T&gt;::~Array()
+{
+	std::cout&lt;&lt;"Destructor ..."&lt;&lt;std::endl;
+}
+
+//main.cpp
+#include &lt;iostream&gt;
+#include "Array.h"
+
+int main(int argc, char *argv[])
+{
+	Array&lt;int&gt; array(4);
+
+	array.setNum(10);
+	std::cout&lt;&lt;"Num: "&lt;&lt;array.getNum()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Template Class with Pointer</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//V.h
+#ifndef V_H
+#define V_H
+#include &lt;iostream&gt;
+#include &lt;new&gt;
+#include &lt;cstdlib&gt;
+#include &lt;string&gt;
+
+template &lt;class T&gt;
+class V
+{
+	private:
+		int size;
+		T *array;
+	public:
+		//constructor
+		V(int s);
+
+		//copy constructor
+		V(const V &right);
+
+		//move constructor
+		V(V && right);
+
+		T *getAddress() const {return array;}
+		int getSize() const {return size;}
+
+		void display() const;
+
+		std::string toString() const;
+
+		//copy assignment
+		const V& operator=(const V &right);
+
+		//move assignment
+		V & operator=(V&& right);
+
+		//Overloading
+		//Operator +
+		V operator+(const V &right);
+
+		//Prefix ++ Operator
+		V operator++();
+
+		//Postfix ++ Operator
+		V operator++(int);
+
+		//Operator &lt;
+		bool operator&lt;(const V &right);
+
+		~V();
+};
+
+//constructor
+template &lt;class T&gt;
+V&lt;T&gt;::V(int s):size(s)
+{
+	std::cout&lt;&lt;"Constructor ..."&lt;&lt;std::endl;
+	try
+	{
+		array = new T[size];
+	}
+	catch (std::bad_alloc &ba)
+	{
+		std::cerr&lt;&lt;ba.what()&lt;&lt;std::endl;
+		std::cerr&lt;&lt;"Error: Cannot allocate memory ..."&lt;&lt;std::endl;
+		exit(1);
+	}
+
+	for(int i = 0; i &lt; size; i++)
+		array[i] = 10*i;
+	std::cout&lt;&lt;"----End Constructor ..."&lt;&lt;std::endl;
+}
+
+//copy constructor
+template &lt;class T&gt;
+V&lt;T&gt;::V(const V &right):size(right.size), array(size?new T [size]:nullptr)
+{
+	std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+	std::copy(right.array, right.array+size, array);
+	std::cout&lt;&lt;"----End Copy Constructor ..."&lt;&lt;std::endl;
+}
+
+//move constructor
+template &lt;class T&gt;
+V&lt;T&gt;::V(V && right):size(0), array(nullptr)
+{
+	std::cout&lt;&lt;"Move Constructor ..."&lt;&lt;std::endl;
+	size = right.size;
+	array = right.array;
+	right.size = 0;
+	right.array =  nullptr;
+	std::cout&lt;&lt;"----End Move Constructor ..."&lt;&lt;std::endl;
+}
+
+template &lt;class T&gt;
+void V&lt;T&gt;::display() const
+{
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;array[i]&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+template &lt;class T&gt;
+std::string V&lt;T&gt;::toString() const
+{
+	std::string str = "V: ";
+	for(int i = 0; i &lt; size; i++)
+		str += std::to_string(array[i])+" ";
+	return str;
+}
+
+//copy assignment
+template &lt;class T&gt;
+const V&lt;T&gt;& V&lt;T&gt;::operator=(const V &right)
+{
+	std::cout&lt;&lt;"Copy Assignment ..."&lt;&lt;size&lt;&lt;std::endl;
+	if(this != &right)
+	{
+		V temp(right);
+		std::swap(*this, temp);
+	}
+	std::cout&lt;&lt;"----End Assignment ..."&lt;&lt;std::endl;
+
+	return *this;
+}
+
+//move assignment
+template &lt;class T&gt;
+V&lt;T&gt; & V&lt;T&gt;::operator=(V&& right)
+{
+	std::cout&lt;&lt;"Move Assignment ..."&lt;&lt;std::endl;
+	if(this != &right)
+	{
+		delete [] array;
+		array = 0;
+		size = 0;
+
+		size = right.size;
+		array = right.array;
+
+		right.size = 0;
+		right.array = nullptr;
+	}
+	std::cout&lt;&lt;"----End Move Assignment ..."&lt;&lt;std::endl;
+
+	return *this;
+}
+
+//Overloading
+//Operator +
+template &lt;class T&gt;
+V&lt;T&gt; V&lt;T&gt;::operator+(const V &right)
+{
+	std::cout&lt;&lt;"Operator + ..."&lt;&lt;std::endl;
+	V temp(size+right.size);
+	std::copy(array, array+size, temp.array);
+	std::copy(right.array, right.array+right.size, temp.array+size);
+	std::cout&lt;&lt;"End Operator + ..."&lt;&lt;std::endl;
+
+	return temp;
+}
+
+//Prefix ++ Operator
+template &lt;class T&gt;
+V&lt;T&gt; V&lt;T&gt;::operator++()
+{
+	std::cout&lt;&lt;"Prefix ++ ..."&lt;&lt;std::endl;
+	for(int i = 0; i &lt; size; i++)
+		array[i] += 1;
+	std::cout&lt;&lt;"End Prefix ++ ..."&lt;&lt;std::endl;
+	return *this;
+}
+
+//Postfix ++ Operator
+template &lt;class T&gt;
+V&lt;T&gt; V&lt;T&gt;::operator++(int)
+{
+	std::cout&lt;&lt;"Postfix ++ ..."&lt;&lt;std::endl;
+	V temp(*this);
+	for(int i = 0; i &lt; size; i++)
+		array[i] += 1;
+	std::cout&lt;&lt;"End Postfix ++ ..."&lt;&lt;std::endl;
+	return temp;
+}
+
+//Operator &lt;
+template &lt;class T&gt;
+bool V&lt;T&gt;::operator&lt;(const V &right)
+{
+	if(size &lt; right.size)
+		return true;
+	else
+		return false;
+}
+
+template &lt;class T&gt;
+V&lt;T&gt;::~V()
+{
+	std::cout&lt;&lt;"Destructor ..."&lt;&lt;size&lt;&lt;std::endl;
+	delete array;
+	array = 0;
+	size = 0;
+}
+#endif
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;V&lt;double&gt;&gt; container;
+	V&lt;double&gt; v(10), v2(2), v3(4), v4(20);
+	container.push_back(v);
+	container.push_back(v2);
+	container.push_back(v3);
+	container.push_back(v4);
+
+	std::sort(container.begin(), container.begin()+4);
+
+	for(int i = 0; i &lt; container.size(); i++)
+		std::cout&lt;&lt;container[i].toString()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<li style = "color:red">Put #endif after the function declarations to avoid redefinement in .h files</li>
+			<li>V&lt;T&gt; V&lt;T&gt;::operator+(), specify the return type</li>
+		</div>
+		<div class = "subtitle">Template Default Arguments</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//g++ *.cpp -std=c++11
+#ifndef V_H
+#define V_H
+#include &lt;iostream&gt;
+#include &lt;new&gt;
+#include &lt;cstdlib&gt;
+#include &lt;string&gt;
+
+template &lt;class T = int&gt;
+class V
+{
+	private:
+		int size;
+		T *array;
+	public:
+		//constructor
+		V(int s);
+
+		//copy constructor
+		V(const V &right);
+
+		//move constructor
+		V(V && right);
+
+		T *getAddress() const {return array;}
+		int getSize() const {return size;}
+
+		void display() const;
+
+		std::string toString() const;
+
+		//copy assignment
+		const V& operator=(const V &right);
+
+		//move assignment
+		V & operator=(V&& right);
+
+		//Overloading
+		//Operator +
+		V operator+(const V &right);
+
+		//Prefix ++ Operator
+		V operator++();
+
+		//Postfix ++ Operator
+		V operator++(int);
+
+		//Operator &lt;
+		bool operator&lt;(const V &right);
+
+		~V();
+};
+#endif
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;V&lt;&gt;&gt; container;
+	V&lt;&gt; v(10), v2(2), v3(4), v4(20);
+	container.push_back(v);
+	container.push_back(v2);
+	container.push_back(v3);
+	container.push_back(v4);
+
+	std::sort(container.begin(), container.begin()+4);
+
+	for(int i = 0; i &lt; container.size(); i++)
+		std::cout&lt;&lt;container[i].toString()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Template Inheritance</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef SEARCH_H
+#define SEARCH_H
+#include &lt;iostream&gt;
+#include "V.h"
+
+template &lt;class T&gt;
+class Search : public V&lt;T&gt;
+{
+	public:
+		Search(int s);
+		bool findItem(const T &);
+};
+
+template &lt;class T&gt;
+Search&lt;T&gt;::Search(int s):V&lt;T&gt;(s)
+{
+	std::cout&lt;&lt;"Search Constructor ..."&lt;&lt;std::endl;
+}
+
+template &lt;class T&gt;
+bool Search&lt;T&gt;::findItem(const T &n)
+{
+	T *temp;
+	temp = V&lt;T&gt;::getAddress();//Explicitly select function template
+	for(int i = 0; i &lt; V&lt;T&gt;::getSize(); i++)
+		if(n == temp[i])
+			return true;
+	return false;
+}
+#endif
+			</pre>
+		</div>
+		<div class = "block">
+			Explicitly select function template
+			<ul>
+				<li>T does not appear in the function's parameter list</li>
+				<li>Specify the actual arguments before the compiler deduces the template type</li>
+			</ul>
+		</div>
+		<div class = "block">
+		<ul>
+			<li>Starting out with C++, Tony Gaddis</li>
+		</ul>
+	</div>
+	</body>
+</html>

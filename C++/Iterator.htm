@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Iterator
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Operators
+				<ul>
+					<li>*, dereferenceing the iterator</li>
+					<li>++/--, moves the iterator to the next/previous element</li>
+					<li>==/!=, comparison operators to determine if two iterators point to the same element</li>
+					<li>=, assign the iterator to a new position</li>
+				</ul>
+				</li>
+				<li>Data Types
+				<ul>
+					<li>iterator, begin()/end(), begin points to the beginning of the elements in the container, end doesn't point to the last element in the list</li>
+					<li>const_iterator, cbegin()/cend()</li>
+				</ul>
+				</li>
+				<li>Iterators are a generalization of pointers, a pointer is an iterator, but not necessarily the other way round</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">begin() and end()</div>
+		<div class = "block">
+			<ul>
+				<li>begin(), returns an iterator pointing to the first element in the sequence</li>
+				<li>end(), returns an iterator pointing to the past-the-end element in the sequence</li>
+			</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; c = {1, 2, 3, 4};
+
+	//iterator points to elements in the list
+	for(auto it = std::begin(c); it != std::end(c); ++it)
+		*it = *it*10;
+
+	//const_iterator points to const value
+	for(auto it = std::begin(c); it != std::end(c); ++it)
+		std::cout&lt;&lt;*it&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "subtitle">Iterating through by Index</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; c = {1, 2, 3, 4};
+
+	for(int i = 0; i &lt; c.size(); i++)
+		c.begin()[i] *= 10;
+
+	for(int i = 0; i &lt; c.size(); i++)
+		std::cout&lt;&lt;c.begin()[i]&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Iterating through a vector</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; c = {1, 2, 3, 4};
+
+	//iterator points to elements in the list
+	for(std::vector&lt;int&gt;::iterator it = c.begin(); it != c.end(); ++it)
+		*it = *it*10;
+
+	//const_iterator points to const value
+	for(std::vector&lt;int&gt;::const_iterator it = c.cbegin(); it != c.cend(); ++it)
+		std::cout&lt;&lt;*it&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Iterating through a list</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;list&gt;
+
+int main(int argc, char *argv[])
+{
+	std::list&lt;int&gt; l = {1, 2, 3, 4};
+
+	for(std::list&lt;int&gt;::iterator it = l.begin(); it != l.end(); ++it)
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Iterating through a set</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;set&gt;
+
+int main(int argc, char *argv[])
+{
+	std::set&lt;int&gt; l = {1, 2, 3, 4};
+
+	for(std::set&lt;int&gt;::iterator it = l.begin(); it != l.end(); ++it)
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Iterating through a map</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+
+int main(int argc, char *argv[])
+{
+	std::map&lt;std::string, int&gt; m;
+
+	m.insert(std::make_pair("apple", 4));
+	m.insert(std::make_pair("orange", 2));
+	m.insert(std::make_pair("banana", 1));
+	m.insert(std::make_pair("grapes", 3));
+	m.insert(std::make_pair("mango", 6));
+	m.insert(std::make_pair("peach", 5));
+
+	for(std::map&lt;std::string, int&gt;::iterator it = m.begin(); it != m.end(); ++it)
+		std::cout&lt;&lt;it-&gt;first&lt;&lt;" "&lt;&lt;it-&gt;second&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Container Template</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+template &lt;class Iter&gt;
+void display(Iter it, Iter end)
+{
+	for(; it != end; ++it)
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; c = {1, 2, 3, 4};
+	display(c.begin(), c.end());
+	//display(&c[0], c.size());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Convert Iterator to Pointer</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+void display(int *ptr, int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;*ptr++&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; c = {1, 2, 3, 4};
+
+	std::vector&lt;int&gt;::iterator it = c.begin();
+	decltype(&*it) ptr;
+	//int *ptr;
+	ptr = &*it;
+
+	if(ptr == nullptr)
+		std::cout&lt;&lt;"nullptr ..."&lt;&lt;std::endl;
+
+	display(ptr, c.size());
+
+	return 0;
+}
+			</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MySQL</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			MySQL
+		</div>
+
+		<div class = "subtitle"></div>
+		<div class = "block">
+			<ul>
+				<li>User
+					<ul>
+						<li>INSERT INTO user (host, user, password, select_priv) VALUES('%', 'lin', PASSWORD('password'), 'Y'), add a user into mysql.user table, % means all host, PASSWORD to encrypt the password, create user and grant global privileges</li>
+						<li><span>CREATE USER 'lin'@'%' IDENTIFIED BY 'password')</span></li>
+						<li>DROP USER 'lin'@'%', remove a user</li>
+						<li><span>FLUSH PRIVILEGES</span>, make the privileges work</li>
+						<li><span>GRANT ALL PRIVILEGES ON databaseName.tableName to 'lin'@'%'</span>; setup privileges to a user</li>
+						<li>REVOKE ALL PRIVILEGES ON *.* FROM 'lin'@'localhost'; revoke privileges from a user</li>
+						<li>SHOW GRANTS FOR 'lin'@'%', show the privileges of a user</li>
+					</ul>
+				</li>
+				<li>Database
+					<ul>
+						<li>/Applications/AMPPS/mysql/bin/mysql -u root -p, login mysql system</li>
+						<li><span>show databases;</span>, show all available databases</li>
+						<li><span>use databaseName</span>, switch database</li>
+						<li><span>select database()</span>, show the current database</li>
+						<li><span>show tables;</span>, list all tables in a database</li>
+						<li>database mysql contains all database information</li>
+						<li><span>create database</span> databaseName, create a database</li>
+						<li><span>drop database</span> databaseName, remove a database</li>
+					</ul>
+				</li>
+				<li>Data type
+					<ul>
+						<li>Numeric</li>
+						<li>Data and Time</li>
+						<li>VARCHAR(M)</li>
+						<li>BLOB or TEXT, save images or other types of files
+							<ul>
+								<li>BLOB: up to 64KBytes</li>
+								<li>MEDIUMBLOB: up to 16MBytes</li>
+								<li>LONGBOLB: up to 4GBytes</li>
+							</ul>
+						</li>
+						<li>ENUM
+							<ul>
+								<li>associated with an index, beginning with 1 for the first allowable value</li>
+								<li>the empty string has index of 0</li>
+							</ul>
+						</li>
+						<li>SET
+							<ul>
+								<li>could choose zero (empty string) or more values from the allowable values</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>Table
+					<ul>
+						<li><span>describe</span> tableName, show table structure</li>
+						<li><span>show columns from</span> tableName, show the definition of columns</li>
+						<li><span>show index from</span> tableName, show the index of a table</li>
+						<li><span>select</span> * from databae.table, select all column from a table</li>
+						<li><span>explain select</span> * from database.table, explain records</li>
+						<li>drop table, remove table</li>
+						<li>insert into tableName (...) values (...), insert record into table</li>
+						<li>update tableName set columnName = value where, update record</li>
+						<li>delete from tableName where, remove a record</li>
+						<li>LIKE, case insensitve
+							<ul>
+								<li>%, zero, one or multiple character</li>
+								<li>_, one character</li>
+							</ul>
+						</li>
+						<li>REGEXP, regular expression</li>
+						<li>select (...) from tableName limit number offset n, limit the number of display records and figure out the start record</li>
+						<li>order by [ASC|DESC], sort records</li>
+						<li>group by columnName, group records</li>
+						<li>having, set up conditions</li>
+						<li>distinct, eliminate all duplicate records</li>
+						<li>create table, create database table</li>
+					<pre class = "prettyprint linenums">
+USE University;
+
+DROP TABLE IF EXISTS Department;
+CREATE TABLE Department (
+	Dname VARCHAR(15) NOT NULL,
+	Dnumber INT NOT NULL,
+	Mgr_ssn CHAR(9) NOT NULL,
+	Mgr_start_date DATE,
+	PRIMARY KEY(Dnumber),
+	UNIQUE(Dname),
+	INDEX (Mgr_ssn)
+	-- FOREIGN Key(Mgr_ssn) REFERENCES Employee(Ssn) ON DELETE RESTRICT ON UPDATE CASCADE, not able to add foreign due to that Employee table is not created yet
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Department table';
+
+DROP TABLE IF EXISTS Employee;
+CREATE TABLE Employee(
+	Fname VARCHAR(15) NOT NULL,
+	Minit CHAR(1),
+	Lname VARCHAR(15) NOT NULL,
+	Ssn CHAR(9) NOT NULL,
+	Bdate DATE,
+	Address VARCHAR(30),
+	Sex CHAR(1),
+	Salary DECIMAL(10, 2),
+	Super_ssn CHAR(9),
+	Dno INT NOT NULL,
+	PRIMARY KEY(Ssn),
+	FOREIGN KEY(Super_ssn) REFERENCES Employee(Ssn) ON DELETE SET NULL ON UPDATE CASCADE,
+	FOREIGN KEY(Dno) REFERENCES Department(Dnumber) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Employee table';
+
+ALTER TABLE Department
+    ADD CONSTRAINT mgrEmp
+    FOREIGN KEY(Mgr_ssn)
+    REFERENCES Employee(Ssn) ON DELETE RESTRICT ON UPDATE CASCADE
+					</pre>
+					<pre class = "prettyprint linenums">
+USE University;
+
+DROP TABLE IF EXISTS Dept_locations;
+CREATE TABLE Dept_locations (
+	Dnumber INT NOT NULL,
+	Dlocation VARCHAR(15) NOT NULL,
+	PRIMARY KEY(Dnumber, Dlocation)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Department locations';
+
+ALTER TABLE Dept_locations
+    ADD CONSTRAINT DepLoc
+    FOREIGN KEY(Dnumber)
+    REFERENCES Department(Dnumber) ON DELETE RESTRICT ON UPDATE CASCADE
+					</pre>
+					<pre class = "prettyprint linenums">
+USE University;
+
+DROP TABLE IF EXISTS Project;
+CREATE TABLE Project (
+	Pname VARCHAR(15) NOT NULL,
+	Pnumber INT NOT NULL,
+	Plocation VARCHAR(15),
+	Dnum INT NOT NULL,
+	PRIMARY KEY(Pnumber),
+	UNIQUE(Pname)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Project table';
+
+ALTER TABLE Project
+    ADD CONSTRAINT ProjDept
+    FOREIGN KEY(Dnum)
+    REFERENCES Department(Dnumber) ON DELETE RESTRICT ON UPDATE CASCADE
+					</pre>
+					<pre class = "prettyprint linenums">
+USE University;
+
+DROP TABLE IF EXISTS Works_on;
+CREATE TABLE Works_on (
+	Essn CHAR(9) NOT NULL,
+	Pno INT NOT NULL,
+	Hours DECIMAL(3,1) NOT NULL,
+	PRIMARY KEY(Essn, Pno)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Works_on table';
+
+ALTER TABLE Works_on
+    ADD CONSTRAINT EmpWorks
+    FOREIGN KEY(Essn)
+    REFERENCES Employee(Ssn) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+ALTER TABLE Works_on
+    ADD CONSTRAINT WorkProj
+    FOREIGN KEY(Pno)
+    REFERENCES Project(Pnumber) ON DELETE RESTRICT ON UPDATE CASCADE;
+					</pre>
+					<pre class = "prettyprint linenums">
+USE University;
+
+DROP TABLE IF EXISTS Dependent;
+CREATE TABLE Dependent (
+	Essn CHAR(9) NOT NULL,
+	Name VARCHAR(15) NOT NULL,
+	Sex CHAR,
+	Bdate DATE,
+	Relationship VARCHAR(8),
+	PRIMARY KEY(Essn, Name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Works_on table';
+
+ALTER TABLE Dependent
+    ADD CONSTRAINT EmpDep
+    FOREIGN KEY(Essn)
+    REFERENCES Employee(Ssn) ON DELETE RESTRICT ON UPDATE CASCADE;
+					</pre>
+						<li>FOREIGN KEY (foreignKey) REFERENCES tableName(primaryKey) ON DELETE deleteOption ON UPDATE options
+							<ul>
+								<li>SET NULL, set as NULL</li>
+								<li>RESTRICT, rejects the delete or update operation for the parent table</li>
+								<li>NO ACTION, equivalent to RESTRICT</li>
+								<li>CASCADE, delete or update the row from the parent table, and automatically delete or update the matching rows in the child table</li>
+								<li>InnoDB permits a foreign key to reference any <span>index</span> column or group of columns</li>
+							</ul>
+						</li>
+						<li>Constraints
+						<ul>
+							<li>Not Null</li>
+							<li>Default</li>
+							<li>Unique</li>
+							<li>Primary Key</li>
+							<li>Foreign Key</li>
+							<li>Check</li>
+						</ul>
+						</li>
+					</ul>
+					<li>CHECK, are not supported by MySQL, use trigger instead</li>
+					<li>Assertion, MySQL doesn't support assertions, use trigger instead</li>
+				</li>
+				<li>Input and output
+					<ul>
+						<li><span>Create tables, insert records, then put constraints</span> to avoid the reference key contains of <span>ON UPDATE</span> from loop contraints</li>
+					<pre class = "prettyprint linenums">
+# insert Employee
+use University;
+
+LOCK TABLES Employee WRITE;
+insert into Employee values
+('John','B','Smith','123456789','1965-01-09',"731 Fondren, Houston, TX",'M',30000,333445555,5);
+('Franklin','T','Wong','333445555','1955-12-08',"638 Voss, Houston, TX",'M',40000,888665555,5),
+('Alicia','J','Zelaya','999887777','1968-01-19',"3321 Castle, Spring, TX",'F',25000,987654321,4),
+('Jennifer','S','Wallace','987654321',1941-06-20,"291 Berry, Bellaire, TX",'F',43000,888665555,4),
+('Ramesh','K','Narayan','666884444','1962-09-15',"975 Fire Oak, Humble, TX",'M',38000,333445555,5),
+('Joyce','A','English','453453453','1972-07-31',"5631 Rice, Houston, TX",'F',25000,333445555,5),
+('Ahmad','V','Jabbar','987987987','1969-03-29',"980 Dallas, Houston, TX",'M',25000,987654321,4),
+('James','E','Borg','888665555','1937-11-10',"450 Stone, Houston, TX",'M',55000,NULL,1);
+UNLOCK TABLES;
+					</pre>
+					</ul>
+				</li>
+			<li>Backup and recovery
+				<ul>
+					<pre class = "prettyprint linenums">
+mysqldump -u root -p databaseName &gt; backup.sql #backup a database
+					</pre>
+					<pre class = "prettyprint linenums">
+mysqldump -u root -p databaseName tableName &gt; backupTable.sql #backup a table
+					</pre>
+					<pre class = "prettyprint linenums">
+create database databaseName
+mysql -u root -p databaseName &lt; backup.sql # read the backup to the database
+					</pre>
+				</ul>
+			</li>
+			<li>Script
+				<ul>
+					<li>Write sql script in a .sql file</li>
+					<li>mysql -u userName -p -t -vvv &lt; fileName.sql</li>
+			<pre class = "prettyprint linenums">
+use mysql;
+select user from user;
+			</pre>
+			<li>mysql -u myuser -p -vvv -e "Use mysql; SELECT user, host FROM user; SHOW databases", implement scripts on the command line</li>
+			<li>mysql&gt; <span>SOURCE</span> d:/myproject/sqlscripts/mytestscript.sql, implement *.sql file in the mysql environment</li>
+			<li>Comments
+				<ul>
+					<li>/* ... */, multiple line comment</li>
+					<li>#, single line comment</li>
+				</ul>
+			</li>
+			<li>Case sensitive
+				<ul>
+					<li>MySQL keywords are not case-sensitive</li>
+					<li>identifiers are case-sensitive</li>
+				</ul>
+			</li>
+			<li>Variables
+				<ul>
+					<li>User-defined variables</li>
+			<pre class = "prettyprint linenums">
+# s2.sql
+SET @a := 1;
+select @a; # print out the value @a
+
+select @b := user from mysql.user; # fetch user from table mysql.user
+select @b; # b contains the last value of user
+			</pre>
+			<li>System variables
+				<ul>
+					<li>global variables, affect the overall operation of the server</li>
+					<li>session variables, affect individual client connections</li>
+			<pre class = "prettyprint linenums">
+SET GLOBAL sort_buffer_size = 1000000;
+
+show GLOBAL VARIABLES; # show all global variables
+show session variables; # show all session variables
+
+select @@global.sort_buffer_size;
+select @@session.sort_buffer_size;
+			</pre>
+				</ul>
+			</li>
+			<li>Local variables</li>
+				</ul>
+			</li>
+			<li>Character sets and collations
+				<ul>
+					<li>character set, defines a set of character and maps each character to a unique numeric code
+						<ul>
+							<li>SHOW CHARACTER SET;</li>
+						</ul>
+					</li>
+					<li>collating Sequences, refers to the orders in which individual characters should be ranked in comparing or sorting the strings
+						<ul>
+							<li>SHOW COLLATION;</li>
+						</ul>
+					</li>
+					<pre class = "prettyprint linenums">
+CREATE DATABASE databaseName
+DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+					</pre>
+					<pre class = "prettyprint linenums">
+CREATE TABLE IF NOT EXISTS StringArena (
+   cString1 VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_general_cs,  -- case-sensitive 'A' -&gt; 'a' -&gt; 'B' -&gt; 'b'
+   cString2 CHAR(10) CHARACTER SET latin1,                               -- default collation of latin1_swedish_ci
+   cString3 TEXT
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;                    -- case-insensitive 'A' and 'a' are the same
+					</pre>
+				</ul>
+			</li>
+			<li>Procedure
+				<ul>
+					<li><span>SHOW PROCEDURE</span>, show procedures</li>
+					<pre class = "prettyprint linenums">
+# a simple procedure
+use mysql;
+
+drop procedure if exists getUser;
+
+DELIMITER //
+
+create procedure getUser()
+begin
+	select host from user;
+end//
+
+DELIMITER ;
+
+call getUser();
+					</pre>
+					<pre class = "prettyprint linenums">
+# s5.sql
+use mysql;
+
+#show procedure status;
+drop procedure if exists getCurrentHost;
+
+DELIMITER //
+
+create procedure getCurrentHost(IN userName varchar(15), OUT hostName varchar(15))
+begin
+	select @hostName = host as host from user where user = userName;
+end//
+
+DELIMITER ;
+
+call getCurrentHost('root', @hostName);
+select @hostName;
+					</pre>
+					<pre class = "prettyprint linenums">
+source s5.sql; # import s5.sql
+call getCurrentHost('lin', @hostName);
+select @hostName;
+					</pre>
+				</ul>
+			</li>
+			<li>Function
+				<ul>
+					<li>a function returns a scalar value, via the statement RETURN. All parameters are IN parameters</li>
+					<pre class = "prettyprint linenums">
+use mysql;
+
+#show function status;
+drop function if exists getCurrentHost;
+
+DELIMITER //
+CREATE FUNCTION getCurrentHost (name VARCHAR(20)) RETURNS VARCHAR(30)
+BEGIN
+	declare test varchar(20);
+	select host into test from user where user = name;
+	return test;
+END//
+DELIMITER ;
+
+select getCurrentHost('lin');
+					</pre>
+				</ul>
+			</li>
+			<li>Views
+				<ul>
+					<li>a view is a preset query stored in a database</li>
+					<pre class = "prettyprint linenums">
+use mysql;
+
+drop view if exists users;
+
+create view users
+as
+select * from user;
+
+select host from users;
+					</pre>
+				</ul>
+			</li>
+			<li>Trigger
+				<ul>
+					<li>a event handler that executes in response to an event</li>
+					<pre class = "prettyprint linenums">
+use Temp;
+
+drop trigger if exists employeeID;
+
+DELIMITER //
+CREATE TRIGGER employeeID
+BEFORE INSERT ON Temp.employee FOR EACH ROW
+BEGIN
+  if new.ID &gt; 10 then
+	set new.ID := 100;
+   end if;
+END//
+
+DELIMITER ;
+
+insert into Temp.employee values(20, 'test', 19, 970124678);
+					</pre>
+				</ul>
+			</li>
+			<li>Events
+				<ul>
+					<li>a set of stored SQL statements that get executed at the scheduled date and time</li>
+					<pre class = "prettyprint linenums">
+use Temp;
+SET @@global.event_scheduler = ON;
+CREATE EVENT updateEmployeeID
+   ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 30 SECOND
+   DO
+      UPDATE employee SET ID = id * 10;
+					</pre>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Example</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "mySQL/Key.png" width = "50%"></p>
+			<li><a href = "mySQL/UniversityConstraint.sql">Download University Database SQL</a></li>
+		</div>
+		<div class = "subtitle">phpmyadmin</div>
+		<div class = "block">
+			<ul>
+				<li>Create table</li>
+				<img src = "phpmyadmin.png" width = "100%" >
+				<li>Create foreign key</li>
+				<img src = "phpmyadmin2.png" width = "100%">
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://www.sqlteaching.com/">SQL Teaching</a></li>
+				<li><a href = "https://gist.github.com/hofmannsven/9164408">Cheatsheet</a></li>
+				<li><a href = "https://www.ntu.edu.sg/home/ehchua/programming/sql/MySQL_Intermediate.html">Script</a></li>
+				<li><a href = "https://dev.mysql.com/doc/refman/5.7/en/">Reference Manual for MySQL 5.7</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

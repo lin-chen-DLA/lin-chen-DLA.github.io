@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Function
+		</div>
+
+		<div class = "subtitle">Static Method</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Fun
+{
+	private static int num = 0;
+	private int index;
+	public Fun(int i)
+	{
+		num++;
+		index = i;
+	}
+
+	int getIndex()
+	{
+		//instance method call static method
+		System.out.println(getNum());
+		//instance method access static attributes
+		System.out.println(num);
+		return index;
+	}
+
+	public static int getNum()
+	{
+		return num;
+	}
+
+	public static void main(String args[])
+	{
+		// create two objects
+		Fun f1 = new Fun(1);
+		Fun f2 = new Fun(2);
+
+		// call instance method
+		System.out.println(f1.getIndex());
+
+		// call static method
+		System.out.println(f1.getNum());
+		System.out.println(Fun.getNum());
+		System.out.println(getNum());
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Static.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle">Mutable and Immutable</div>
+		<div class = "block">
+			<ul>
+				<li>Mutable Objects: When you have a reference to an instance of an object, the contents of that instance can be altered</li>
+				<li>Immutable Objects: When you have a reference to an instance of an object, the contents of that instance cannot be altered
+					<ul>
+						<li>Primitive data types and all of the java.lang package wrapper: Boolean, Byte, Character, Double, Float, Integer, Long, Short, String</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Fun
+{
+	public static void changeStr(String s)
+	{
+		System.out.println("----------------");
+		System.out.println(System.identityHashCode(s));//201869954
+		s = "temp";//changing value creates a new object
+		System.out.println(System.identityHashCode(s));//1311053135
+		System.out.println("-----------------");
+	}
+
+	public static void main(String args[])
+	{
+		String s = "Hello World!";//201869954
+		System.out.println(System.identityHashCode(s));
+
+		changeStr(s);//not change s
+
+		System.out.println(s);
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Car
+{
+	private String maker;
+
+	public Car(String s)
+	{
+		maker = s;
+	}
+
+	public String getMaker() {return maker;}
+
+	public void setMaker(String m) {maker = m;}
+
+	public String toString()
+	{
+		return "Car: "+maker;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Fun
+{
+	public static void changeCar(Car c)
+	{
+		System.out.println("----------------");
+		System.out.println(System.identityHashCode(c));//2018699554
+		c.setMaker("Honda");//changing value does not create a new object
+		System.out.println(System.identityHashCode(c));//2018699554
+		System.out.println("-----------------");
+	}
+
+	public static void main(String args[])
+	{
+		Car c = new Car("Buick");//2018699554
+		System.out.println(System.identityHashCode(c));
+
+		changeCar(c);//changed c
+
+		System.out.println(c);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Scope</div>
+		<div class = "block">
+			<ul>
+				<li>The scope of a parameter is the body of the mthod in which the declaration appears</li>
+				<li>The scope of a local-variable declaration is from the point at which the declaration appears to the end of that block</li>
+				<li>The scope of a local-variable in the initialization section of a for statement is the body of the for statement and the other expressions in the header</li>
+				<li>The scope of a method or field of a class is the entire body of the class</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Overloading</div>
+		<div class = "block">
+			<ul>
+				<li>Signature, a combination of the method's name and the number, types and order of its parameters, not include the return type</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Fun
+{
+	public static int square(int n)
+	{
+		return n*n;
+	}
+
+	public static double square(double n)
+	{
+		return n*n;
+	}
+
+	public static void main(String args[])
+	{
+		System.out.println(square(10));
+		System.out.println(square(3.14));
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Variable number of parameters</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Fun
+{
+	public static void getStr(String ... args)
+	{
+		for(String s : args)
+			System.out.println(s);
+	}
+
+	public static void main(String args[])
+	{
+		getStr("Hello", "World", "!");
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Recursive</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//factorial
+public class Fun
+{
+	public static int factorial(int n)
+	{
+		if(n &lt;= 1)
+			return 1;
+		return n*factorial(n-1);
+	}
+
+	public static void main(String args[])
+	{
+		System.out.println(factorial(10));
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//fibonacci
+public class Fun
+{
+	public static int fib(int n)
+	{
+		if(n == 0 || n == 1)
+			return n;
+		return fib(n-1)+fib(n-2);
+	}
+
+	public static void main(String args[])
+	{
+		System.out.println(fib(10));
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Hanoi
+public class Fun
+{
+	public static void Hanoi(int n, int source, int temp, int dest)
+	{
+		if(n == 1)
+		{
+			System.out.printf("%d --&gt; %d\n", source, dest);
+			return;
+		}
+		Hanoi(n-1, source, dest, temp);//move n-1 disk from 1 to 2, using 3 as temporary holding area
+		System.out.printf("%d --&gt; %d\n", source, dest);//move the last disk from 1 to 3
+		Hanoi(n-1, temp, source, dest);//move n-1 disk from 2 to 3, using 1 as temporary holding area
+	}
+
+	public static void main(String args[])
+	{
+		Hanoi(3, 1, 2, 3);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://javaranch.com/journal/2003/04/immutable.htm">Mutable and Immutable Objects</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

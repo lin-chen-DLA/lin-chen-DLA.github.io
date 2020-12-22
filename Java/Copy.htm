@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Copy
+		</div>
+
+		<div class = "subtitle">Assignment</div>
+		<div class = "block">
+			<ul>
+				<li>Copy reference instead of making a real copy for both mutable objects and immutable objects</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Immutable.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//immutable
+public class Copy
+{
+	public static void main(String args[])
+	{
+		//copy i to j
+		int i = 10;
+		int j;
+
+		j = i;
+
+		//i and j are pointing to the same address
+		System.out.println(System.identityHashCode(i));//2018699554
+		System.out.println(System.identityHashCode(j));//2018699554
+
+		//changing value causes that j points to a new address
+		j = 100;
+		System.out.println(System.identityHashCode(j));//1311053135
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Mutable.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Car
+{
+	private String maker;
+
+	public Car(String m)
+	{
+		maker = m;
+	}
+
+	public void setMaker(String m)
+	{
+		maker = m;
+	}
+
+	public String getMaker(String m)
+	{
+		return maker;
+	}
+
+	public String toString()
+	{
+		return "Car: "+maker;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Copy
+{
+	public static void main(String args[])
+	{
+		Car c1 = new Car("Buick");
+		Car c2;
+
+		c2 = c1;
+
+		System.out.println(c1);//Buick
+		System.out.println(c2);//Buick
+
+		c2.setMaker("Honda");
+
+		System.out.println(c1);//Honda
+		System.out.println(c2);//Honda
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Shallow Copy -- Clone</div>
+		<div class = "block">
+			<ul>
+				<li>Bitwise copy all attributes in an object</li>
+				<li><span style = "color:red">The address of both mutable and immutable objects are copied to the new object</span></li>
+				<li>Changing immutable attributes causes that a new immutable attributes are created, which means changing the immutable atttributes of the original object <span style = "color: red">does not</span> change the counterpart of the cloned object</li>
+				<li>Changing mutable attributes does not create a new mutable attribute,  which means changing the mutable atttributes of the original object <span style = "color: red">change</span> the counterpart of the cloned object</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Shallow.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Part
+{
+	private String name;
+
+	public Part(String n)
+	{
+		name = n;
+	}
+
+	public void setName(String n)
+	{
+		name = n;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public String toString()
+	{
+		return name;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Car implements Cloneable
+{
+	private String maker;
+	private Part part;
+
+	public Car(String m, Part p)
+	{
+		maker = m;
+		part = p;
+	}
+
+	public void setMaker(String m)
+	{
+		maker = m;
+	}
+
+	public String getMaker(String m)
+	{
+		return maker;
+	}
+
+	public Part getPart()
+	{
+		return part;
+	}
+
+	public void displayID()
+	{
+		System.out.println(System.identityHashCode(maker));
+		System.out.println(System.identityHashCode(part));
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException
+	{
+		return super.clone();
+	}
+
+	public String toString()
+	{
+		return "Car: "+maker+" "+part;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Copy
+{
+	public static void main(String args[])
+	{
+		Part p = new Part("Tire");
+		Car c1 = new Car("Buick", p);
+		Car c2 = null;
+
+		try{
+			c2 = (Car) c1.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			e.printStackTrace();
+		}
+
+		System.out.println(c1);//Car: Buick Tire
+		System.out.println(c2);//Car: Buick Tire
+
+		c1.displayID();//2018699554 1211053135
+		c2.displayID();//2018699554 1211053135
+
+		c2.setMaker("Honda");
+		//p.setName("Filter");
+		c2.getPart().setName("Filter");
+
+		System.out.println(c1);//Buick Filter
+		System.out.println(c2);//Honda Filter
+		c1.displayID();//2018699554 1211053135
+		c2.displayID();//118352462 1311053135
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Deep Copy -- Clone</div>
+		<div class = "block">
+			<ul>
+				<li>Immutable attributes, copy the address to the new object</li>
+				<li>Mutable attributes, create a new copy to the new object</li>
+				<li>Changing immutable attributes causes that a new immutable attributes are created, which means changing the immutable atttributes of the original object <span style = "color: red">does not</span> change the counterpart of the cloned object</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Deep.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Part implements Cloneable
+{
+	private String name;
+
+	public Part(String n)
+	{
+		name = n;
+	}
+
+	public void setName(String n)
+	{
+		name = n;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException
+	{
+		return super.clone();
+	}
+
+	public String toString()
+	{
+		return name;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Car implements Cloneable
+{
+	private String maker;
+	private Part part;
+
+	public Car(String m, Part p)
+	{
+		maker = m;
+		part = p;
+	}
+
+	public void setMaker(String m)
+	{
+		maker = m;
+	}
+
+	public String getMaker(String m)
+	{
+		return maker;
+	}
+
+	public Part getPart()
+	{
+		return part;
+	}
+
+	public void displayID()
+	{
+		System.out.println(System.identityHashCode(maker));
+		System.out.println(System.identityHashCode(part));
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException
+	{
+		Car c = (Car) super.clone();
+		c.part = (Part) part.clone();
+
+		return c;
+	}
+
+	public String toString()
+	{
+		return "Car: "+maker+" "+part;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Copy
+{
+	public static void main(String args[])
+	{
+		Part p = new Part("Tire");
+		Car c1 = new Car("Buick", p);
+		Car c2 = null;
+
+		try{
+			c2 = (Car) c1.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			e.printStackTrace();
+		}
+
+		System.out.println(c1);//Car: Buick Tire
+		System.out.println(c2);//Car: Buick Tire
+
+		c1.displayID();//2018699554 1311053135
+		c2.displayID();//2018699554 118352462
+
+		c2.setMaker("Honda");
+		//p.setName("Filter");
+		c2.getPart().setName("Filter");
+
+		System.out.println(c1);//Car: Buick Tire
+		System.out.println(c2);//Car: Honda Filter
+		c1.displayID();//2018699554 1311053135
+		c2.displayID();//1550089733 118352462
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Deep Copy -- Copy Constructor</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Part
+{
+	private String name;
+
+	public Part(String n)
+	{
+		name = n;
+	}
+
+	public Part(Part p)
+	{
+		this(p.name);
+	}
+
+	public void setName(String n)
+	{
+		name = n;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public String toString()
+	{
+		return name;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Car
+{
+	private String maker;
+	private Part part;
+
+	public Car(String m, Part p)
+	{
+		maker = m;
+		part = p;
+	}
+
+	public Car(Car c)
+	{
+		this(c.maker, new Part(c.part));
+	}
+
+	public void setMaker(String m)
+	{
+		maker = m;
+	}
+
+	public String getMaker(String m)
+	{
+		return maker;
+	}
+
+	public Part getPart()
+	{
+		return part;
+	}
+
+	public void displayID()
+	{
+		System.out.println(System.identityHashCode(maker));
+		System.out.println(System.identityHashCode(part));
+	}
+
+	public String toString()
+	{
+		return "Car: "+maker+" "+part;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Copy
+{
+	public static void main(String args[])
+	{
+		Part p = new Part("Tire");
+		Car c1 = new Car("Buick", p);
+		Car c2 = new Car(c1);
+
+		System.out.println(c1);//Car: Buick Tire
+		System.out.println(c2);//Car: Buick Tire
+
+		c1.displayID();//2018699554 1311053135
+		c2.displayID();//2018699554 118352462
+
+		c2.setMaker("Honda");
+		//p.setName("Filter");
+		c2.getPart().setName("Filter");
+
+		System.out.println(c1);//Buick Tire
+		System.out.println(c2);//Honda Filter
+		c1.displayID();//2018699554 1311053135
+		c2.displayID();//1550089733 118352462
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.javapractices.com/topic/TopicAction.do?Id=71">Avoid Clone</a></li>
+				<li><a href = "http://javaconceptoftheday.com/difference-between-shallow-copy-vs-deep-copy-in-java/">Java Concept Of The Day</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			priority_queue
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Sorted by some strict weak ordering criterion, the first element is always the greatest of the elements</li>
+				<li>Container adapters are interfaces that provide limited functionalities regardless of the underlying structures</li>
+				<li>Container adapters do not inherited from the underlying container type</li>
+				<li>Underlying structures can be <span style = "color:red">vector</span> or <span style = "color:red">deque</span>, vector is default structure</li>
+				<li><a href = "http://www.tenouk.com/Module30.html">The C++ STL Container Adaptor</a></li>
+				<li><a href = "https://stackoverflow.com/questions/13428618/trying-to-access-an-index-of-an-stdstack">stackoverflow.com</a></li>
+				<li><a href = "https://stackoverflow.com/questions/3873802/what-are-containers-adapters-c">What are Containers/Adaptors</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">Initialization</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;queue&gt;
+
+int main(int argc, char *argv[])
+{
+	std::priority_queue&lt;int&gt; q;//use the default underlying structure
+	q.push(1);
+	q.push(2);
+	std::cout&lt;&lt;"Top: "&lt;&lt;q.top()&lt;&lt;std::endl;//2
+
+	std::priority_queue&lt;int, std::vector&lt;int&gt;, std::less&lt;int&gt;&gt; q2;
+	q2.push(3);
+	q2.push(4);
+	std::cout&lt;&lt;"Top: "&lt;&lt;q2.top()&lt;&lt;std::endl;//4
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Priority_Queue with Objects</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle(){}
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const;
+		double getLength() const;
+		double getArea() const;
+
+		//mutator
+		void setWidth(double w);
+		void setLength(double l);
+
+		//operator
+		bool operator&lt;(const Rectangle &right) const
+		{
+			if(getArea() &lt; right.getArea())
+				return true;
+			else
+				return false;
+		}
+};
+#endif
+
+//Rectangle.cpp
+#include "Rectangle.h"
+
+double Rectangle::getWidth() const
+{
+	return width;
+}
+
+double Rectangle::getLength() const
+{
+	return length;
+}
+
+double Rectangle::getArea() const
+{
+	return width*length;
+}
+
+void Rectangle::setWidth(double w)
+{
+	width = w;
+}
+
+void Rectangle::setLength(double l)
+{
+	length = l;
+}
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;queue&gt;
+#include "Rectangle.h"
+
+int main(int argc, char *argv[])
+{
+	std::priority_queue&lt;Rectangle&gt; q;//use the default underlying structure
+	q.push(Rectangle(1, 2));
+	q.push(Rectangle(2, 3));
+
+	std::cout&lt;&lt;q.top().getArea()&lt;&lt;std::endl;//6
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>overload <span style = "color:red">operator &lt;</span></li>
+			</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle(){}
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const;
+		double getLength() const;
+		double getArea() const;
+
+		//mutator
+		void setWidth(double w);
+		void setLength(double l);
+};
+#endif
+
+//Rectangle.cpp
+#include "Rectangle.h"
+
+double Rectangle::getWidth() const
+{
+	return width;
+}
+
+double Rectangle::getLength() const
+{
+	return length;
+}
+
+double Rectangle::getArea() const
+{
+	return width*length;
+}
+
+void Rectangle::setWidth(double w)
+{
+	width = w;
+}
+
+void Rectangle::setLength(double l)
+{
+	length = l;
+}
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;queue&gt;
+#include &lt;vector&gt;
+#include "Rectangle.h"
+
+struct Comparison
+{
+	bool operator()(const Rectangle &a, const Rectangle &b) const
+	{
+		return (a.getArea() &lt; b.getArea());
+	}
+};
+
+int main(int argc, char *argv[])
+{
+	std::priority_queue&lt;Rectangle, std::vector&lt;Rectangle&gt;, Comparison&gt; q;//use the default underlying structure
+	q.push(Rectangle(1, 2));
+	q.push(Rectangle(2, 3));
+
+	std::cout&lt;&lt;q.top().getArea()&lt;&lt;std::endl;//6
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+			<ul>
+				<li>Insert objects in priority queue, use compare <span style = "color:red">struct operator()</span></li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/queue/priority_queue/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

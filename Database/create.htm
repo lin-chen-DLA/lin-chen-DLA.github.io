@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SQL Creation</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			div.question {color: navy; font-weight: bold; width: 75%; margin: auto 10px; border-left: 1px dotted; position: relative; padding: 10px 5px 10px 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "subtitle">Step 1. Mapping of Regular Entity Types</div>
+		<div class = "block">
+			<ul>
+				For each regular entity type E in the ER schema, create a relation R that includes all the simple attributes of E. Choose one of the key attributes of E as the primary key for R.
+			</ul>
+		</div>
+				<div class = "subtitle">Step 2. Mapping of Weak Entity Types</div>
+		<div class = "block">
+			<ul>
+				Create a relation R and include all simple attributes. Combine the primary key of the owner and the partial key of the weak entity as the key</li>
+			</ul>
+		</div>
+				<div class = "subtitle">Step 3. Mapping of Binary 1:1 Relationship Types</div>
+		<div class = "block">
+			For relations S and T
+			<ul>
+				<li>Foreign key approach, set the key in S as the foreign key in T</li>
+				<li>Merged relation approach</li>
+				<li>Cross-reference or relationship relation approach</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Step 4. Mapping of Binary 1:N Relationship Types</div>
+		<div class = "block">
+			<ul>
+				For 1:N relation of T and S, S is the N-side. Include as foreign key in S the primary key of T
+			</ul>
+		</div>
+				<div class = "subtitle">Step 5. Mapping of Binary M:N Relationship Types</div>
+		<div class = "block">
+			<ul>
+				For M:N relation of T and S, create a new relation R. Include as foreign key in R the primary keys of T and S. The primary key is the combination of the foreign key attributes.
+			</ul>
+		</div>
+		<div class = "subtitle">Step 6. Mapping of Multivalued Attributes</div>
+		<div class = "block">
+			<ul>
+				For each multivalued attribute A, create a new relation R.
+			</ul>
+		</div>
+				<div class = "subtitle">Step 7. Mapping of N-ary Relationship Types</div>
+		<div class = "block">
+			<ul>
+				For each n-ary relationship type R, where n &gt; 2, create a new relation R.
+			</ul>
+		</div>
+	</body>
+</html>

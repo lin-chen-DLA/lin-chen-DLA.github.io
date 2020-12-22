@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			stack
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Container adapters are interfaces that provide limited functionalities regardless of the underlying structures</li>
+				<li>Container adapters do not inherited from the underlying container type</li>
+				<li>Underlying structures can be <span style = "color:red">vector</span>, <span style = "color:red">deque</span>, and <span style = "color:red">list</span>, default is deque</li>
+				<li><a href = "http://www.tenouk.com/Module30.html">The C++ STL Container Adaptor</a></li>
+				<li><a href = "https://stackoverflow.com/questions/13428618/trying-to-access-an-index-of-an-stdstack">stackoverflow.com</a></li>
+				<li><a href = "https://stackoverflow.com/questions/3873802/what-are-containers-adapters-c">What are Containers/Adaptors</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">Stack with Vector</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;list&gt;
+#include &lt;vector&gt;
+#include &lt;stack&gt;
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; v = {1, 2, 3, 4};
+	std::stack&lt;int, std::vector&lt;int&gt;&gt; s(v);
+	v.clear();//remove vector
+
+	//size
+	std::cout&lt;&lt;"Size: "&lt;&lt;s.size()&lt;&lt;std::endl;
+
+	//push
+	s.push(5);
+	std::cout&lt;&lt;"Top: "&lt;&lt;s.top()&lt;&lt;std::endl;
+
+	//pop
+	s.pop();
+	std::cout&lt;&lt;"Top: "&lt;&lt;s.top()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Stack with List</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;list&gt;
+#include &lt;stack&gt;
+
+int main(int argc, char *argv[])
+{
+	std::list&lt;int&gt; v = {1, 2, 3, 4};
+	std::stack&lt;int, std::list&lt;int&gt;&gt; s(v);
+	v.clear();//remove vector
+
+	std::cout&lt;&lt;"Top: "&lt;&lt;s.top()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Stack with Objects</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle(){}
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const;
+		double getLength() const;
+		double getArea() const;
+
+		//mutator
+		void setWidth(double w);
+		void setLength(double l);
+};
+#endif
+
+//Rectangle.cpp
+#include "Rectangle.h"
+
+double Rectangle::getWidth() const
+{
+	return width;
+}
+
+double Rectangle::getLength() const
+{
+	return length;
+}
+
+double Rectangle::getArea() const
+{
+	return width*length;
+}
+
+void Rectangle::setWidth(double w)
+{
+	width = w;
+}
+
+void Rectangle::setLength(double l)
+{
+	length = l;
+}
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;list&gt;
+#include &lt;stack&gt;
+#include "Rectangle.h"
+
+int main(int argc, char *argv[])
+{
+	std::list&lt;Rectangle&gt; l;
+
+	//insert elements
+	auto it = l.begin();
+	l.insert(it, Rectangle(1, 2));
+	++it;
+	l.insert(it, Rectangle(2, 3));
+	++it;
+	l.insert(it, Rectangle(3, 4));
+
+	//list to stack
+	std::stack&lt;Rectangle, std::list&lt;Rectangle&gt;&gt; s(l);//12
+	std::cout&lt;&lt;s.top().getArea()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/stack/stack/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

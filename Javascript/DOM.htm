@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			DOM
+		</div>
+
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "https://www.w3schools.com/js/pic_htmltree.gif" width=60% /></p>
+		</div>
+		<div class = "subtitle">Document</div>
+		<div class = "block">
+			<li>The document object represents the web page</li>
+			<li>Finding HTML Elements
+				<ul>
+					<li>document.getElementById(id)</li>
+					<li>document.getElementsByTagName(name)</li>
+					<li>document.getElementsByClassName(name)</li>
+				</ul>
+			</li>
+			<li>Changing HTML Elements
+				<ul>
+					<li>element.innerHTML =  new html content</li>
+					<li>element.attribute = new value</li>
+					<li>element.style.property = new style</li>
+					<li>element.setAttribute(attribute, value)</li>
+				</ul>
+			</li>
+			<li>Adding and Deleting Elements
+				<ul>
+					<li>document.createElement(element)</li>
+					<li>document.removeChild(element)</li>
+					<li>document.appendChild(element)</li>
+					<li>document.replaceChild(new, old)</li>
+					<li>document.write(text)</li>
+				</ul>
+			</li>
+			<li>Adding Events Handlers
+				<ul>
+					<li>document.getElementById(id).onclick = function(){code}</li>
+				</ul>
+			</li>
+			<li>Finding HTML Objects
+				<ul>
+					<li>document.anchors</li>
+					<li>document.baseURI</li>
+					<li>document.body</li>
+					<li>document.cookie</li>
+					<li>document.doctype</li>
+					<li>document.documentElement</li>
+					<li>document.documentMode</li>
+					<li>document.documentURI</li>
+					<li>document.domain</li>
+					<li>document.embeds</li>
+					<li>document.forms</li>
+					<li>document.head</li>
+					<li>document.images</li>
+					<li>document.implementation</li>
+					<li>document.inputEncoding</li>
+					<li>document.lastModified</li>
+					<li>document.links</li>
+					<li>document.readyState</li>
+					<li>document.referrer</li>
+					<li>document.scripts</li>
+					<li>document.strictErrorChecking</li>
+					<li>document.title</li>
+					<li>document.URL</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Animation</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;html&gt; 
+   &lt;head&gt; 
+      &lt;title&gt;JavaScript Animation&lt;/title&gt; 
+      &lt;script type = "text/javascript"&gt; 
+         &lt;!--  
+            var imgObj = null; function init(){  
+               imgObj = document.getElementById('myImage');
+               imgObj.style.position = 'relative';     
+               imgObj.style.left = '0px';   
+            }     
+            function moveRight(){  
+               imgObj.style.left = parseInt(
+               imgObj.style.left) + 10 + 'px';  
+            }  
+            window.onload = init;  
+            //
+         --&gt; 
+      &lt;/script&gt; 
+   &lt;/head&gt; 
+   
+   &lt;body&gt; 
+      &lt;form&gt; 
+         &lt;img id = "myImage" src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Valdosta_State_Blazers_logo.svg/1200px-Valdosta_State_Blazers_logo.svg.png" width = 20% /&gt; 
+         &lt;p&gt;Click button below to move the image to right&lt;/p&gt; 
+         &lt;input type = "button" value = "Click Me" onclick = "moveRight();" /&gt; 
+      &lt;/form&gt;
+   &lt;/body&gt;
+   
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;html&gt; 
+   &lt;head&gt; 
+      &lt;title&gt;JavaScript Animation&lt;/title&gt; 
+      &lt;script type = "text/javascript"&gt; 
+         &lt;!--  
+            var imgObj = null; 
+            var animate ; 
+            function init(){  
+               imgObj = document.getElementById('myImage');     
+               imgObj.style.position = 'relative';    
+               imgObj.style.left = '0px'; 
+            }  
+            function moveRight(){  
+               imgObj.style.left = parseInt(imgObj.style.left) + 10 + 'px';
+               position = parseInt(imgObj.style.left);
+               if (position &gt; 600)
+                  imgObj.style.left = 0+'px';  
+               animate = setTimeout(moveRight,20); 
+               // call moveRight in 20msec  
+            }  
+            function stop() {     
+               clearTimeout(animate);    
+               imgObj.style.left = '0px';   
+            }  
+            window.onload = init;  
+            //
+         --&gt; 
+      &lt;/script&gt; 
+   &lt;/head&gt; 
+
+   &lt;body&gt; 
+      &lt;form&gt; 
+         &lt;img id = "myImage" src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Valdosta_State_Blazers_logo.svg/1200px-Valdosta_State_Blazers_logo.svg.png" width = 20% /&gt; 
+         &lt;p&gt;Click the buttons below to handle animation&lt;/p&gt; 
+         &lt;input type="button" value="Start" onclick = "moveRight();" /&gt; 
+         &lt;input type = "button" value="Stop" onclick = "stop();" /&gt; 
+      &lt;/form&gt;    
+   &lt;/body&gt; 
+&lt;/html&gt;
+		</pre>
+		</div>
+	</body>
+</html>

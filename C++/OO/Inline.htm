@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Inline
+		</div>
+
+		<div class = "subtitle">Pros and Cons</div>
+		<div class = "block">
+			<ul>
+				<li>compiler replaces the call to an inline function with the code of the function itself, the overhead for setting the stage for a function call isn't necessary</li>
+				<li>the size of compiled program increases</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Inside class</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef CAR_H
+#define CAR_H
+#include &lt;string&gt;
+
+class Car
+{
+	private:
+		std::string model;
+	public:
+		std::string getModel() {return model;}
+};
+
+#endif
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Member functions defined in the declaration of a class are inline function by default</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Outside class</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef CAR_H
+#define CAR_H
+#include &lt;string&gt;
+
+class Car
+{
+	private:
+		std::string model;
+	public:
+		std::string getModel();
+};
+
+inline std::string Car::getModel()
+{
+	return model;
+}
+
+#endif
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Inline functions should be put in the header file</li>
+			</ul>
+		</div>
+	</body>
+</html>

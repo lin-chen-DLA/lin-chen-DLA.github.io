@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Algorithm
+		</div>
+
+		<div class = "subtitle">Move</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" "&lt;&lt;&*it&lt;&lt;std::endl;
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; a = {1, 2, 3, 4};
+	std::vector&lt;int&gt; b;
+
+	std::cout&lt;&lt;"Before move ..."&lt;&lt;std::endl;
+	display(a.begin(), a.end());//1 2 3 4
+	display(b.begin(), b.end());//empty
+
+	b = std::move(a);
+
+	std::cout&lt;&lt;"After move ..."&lt;&lt;std::endl;
+	display(a.begin(), a.end());//empty
+	display(b.begin(), b.end());//1 2 3 4
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<p style="text-align:center;"><img src = "img/move.png" width = 75%></p>
+	</div>
+		<div class = "block">
+			<ul>
+				<li>Before move, a contains four elements, b is empty, after move, b take over the memory, a is empty</li>
+			</ul>
+		</div>
+		
+		<div class = "subtitle">Move a Range</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" "&lt;&lt;&*it&lt;&lt;std::endl;
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; a = {1, 2, 3, 4};
+	std::vector&lt;int&gt; b(4);
+
+	std::cout&lt;&lt;"Before move ..."&lt;&lt;std::endl;
+	display(a.begin(), a.end());
+	display(b.begin(), b.end());
+
+	std::move(a.begin(), a.end(), b.begin());
+
+	std::cout&lt;&lt;"After move ..."&lt;&lt;std::endl;
+	a.clear();
+
+	a[0] = 10;
+	display(a.begin(), a.end());//10 2 3 4
+	display(b.begin(), b.end());//1 2 3 4
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<p style="text-align:center;"><img src = "img/move2.png" width = 75%></p>
+	</div>
+		<div class = "block">
+			<ul>
+				Move a range from a container, the container still holds the place that were once occupied by these values. Use vector::erase to remove the range out of the container
+			</ul>
+		</div>
+		<div class = "subtitle">Sort</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+#include &lt;vector&gt;
+
+template &lt;class T&gt;
+void init(T it, T end)
+{
+	srand(time(NULL));
+	for(; it != end; ++it)
+		*it = rand()%100;
+}
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; array(5);
+
+	init(array.begin(), array.end());
+	display(array.begin(), array.end());
+
+	std::sort(array.begin(), array.end());
+	display(array.begin(), array.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+				<div class = "block">
+		<pre class = "prettyprint linenums">
+//sort vector by convert vector to pointer
+#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+#include &lt;vector&gt;
+
+template &lt;class T&gt;
+void init(T array[], int size)
+{
+	srand(time(NULL));
+	for(int i = 0; i &lt; size; i++)
+		array[i] = T(rand()%100);
+}
+
+template &lt;class T&gt;
+void display(T array[], int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;array[i]&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; array(5);
+
+	init(&array[0], array.size());
+	display(&array[0], array.size());
+
+	std::sort(array.begin(), array.end());
+	display(&array[0], array.size());
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+//sort by convert iterator to pointer
+#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+#include &lt;vector&gt;
+
+template &lt;class T&gt;
+void init(T *array, int size)
+{
+	srand(time(NULL));
+	for(int i = 0; i &lt; size; i++)
+		array[i] = T(rand()%100);
+}
+
+template &lt;class T&gt;
+void display(T *array, int size)
+{
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;array[i]&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; array(5);
+
+	init(&*array.begin(), array.size());
+	display(&*array.begin(), array.size());
+
+	std::sort(array.begin(), array.end());
+	display(&*array.begin(), array.size());
+
+	return 0;
+}
+<pre>
+</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle():Rectangle(0, 0){}
+		Rectangle(double w):Rectangle(w, 2*w){}
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const {return width;}
+		double getLength() const {return length;}
+		double getArea() const {return width*length;}
+
+		//mutator
+		void setWidth(double w) {width = w;}
+		void setLength(double l) {length = l;}
+};
+#endif
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include "Rectangle.h"
+
+struct comp
+{
+	bool operator()(const Rectangle &a, const Rectangle &b) const
+	{
+		return (a.getArea() &lt; b.getArea());
+	}
+};
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;getArea()&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;Rectangle&gt; v;
+	v.push_back(Rectangle(3, 4));
+	v.push_back(Rectangle(1, 2));
+	v.push_back(Rectangle(2, 3));
+
+	std::sort(v.begin(), v.end(), comp());
+
+	display(v.begin(), v.end());
+
+	return 0;
+}
+	</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			<li>Sorting with <span style = "color:red">Comparison struct</span></li>
+		</ul>
+	</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include "Rectangle.h"
+
+bool comp(const Rectangle &a, const Rectangle &b)
+{
+	return (a.getArea() &lt; b.getArea());
+}
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;getArea()&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;Rectangle&gt; v;
+	v.push_back(Rectangle(3, 4));
+	v.push_back(Rectangle(1, 2));
+	v.push_back(Rectangle(2, 3));
+
+	std::sort(v.begin(), v.end(), comp);
+
+	display(v.begin(), v.end());
+
+	return 0;
+}
+	</pre>
+</div>
+	<div class = "block">
+		<ul>
+			<li>Sorting with <span style = "color:red">Comparison function</span></li>
+		</ul>
+	</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle():Rectangle(0, 0){}
+		Rectangle(double w):Rectangle(w, 2*w){}
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const {return width;}
+		double getLength() const {return length;}
+		double getArea() const {return width*length;}
+
+		//mutator
+		void setWidth(double w) {width = w;}
+		void setLength(double l) {length = l;}
+};
+#endif
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include "Rectangle.h"
+
+bool comp(const Rectangle &a, const Rectangle &b)
+{
+	return (a.getArea() &lt; b.getArea());
+}
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;getArea()&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;Rectangle&gt; v;
+	v.push_back(Rectangle(3, 4));
+	v.push_back(Rectangle(1, 2));
+	v.push_back(Rectangle(2, 3));
+
+	std::sort(v.begin(), v.end(), comp);
+
+	display(v.begin(), v.end());
+
+	return 0;
+}
+	</pre>
+</div>
+	<div class = "block">
+		<ul>
+			<li>Sorting with <span style = "color:red">operator &lt;</span></li>
+		</ul>
+	</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include "Rectangle.h"
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;getArea()&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;Rectangle&gt; v;
+	v.push_back(Rectangle(3, 4));
+	v.push_back(Rectangle(1, 2));
+	v.push_back(Rectangle(2, 3));
+
+	std::sort(v.begin(), v.end(), [](const Rectangle &a, const Rectangle &b){return a.getArea() &lt; b.getArea();});
+
+	display(v.begin(), v.end());
+
+	return 0;
+}
+	</pre>
+</div>
+	<div class = "block">
+		<ul>
+			<li>Sorting with <span style = "color:red">lambda</span></li>
+		</ul>
+	</div>
+	<div class = "subtitle">Partial_sort_copy</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; v = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+	std::vector&lt;int&gt; c(5);
+
+	std::partial_sort_copy(v.begin(), v.end(), c.begin(), c.end());
+
+	display(c.begin(), c.end());//1 2 3 4 5
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Copies the smallest elements in the range [first,last) to [result_first,result_last), sorting the elements copied</li>
+				<li>Overload <span style = "color:red">operator &lt;</span></li>
+			</ul>
+		</div>
+		<div class = "subtitle">Is_sorted</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; v = {1, 2, 3, 4, 5};
+	std::vector&lt;int&gt; v2 = {5, 4, 3, 2, 1};
+
+	if(std::is_sorted(v.begin(), v.end()))
+	{
+		std::cout&lt;&lt;"v is sorted ..."&lt;&lt;std::endl;
+	}
+
+	if(std::is_sorted(v2.begin(), v2.end()))
+	{
+		std::cout&lt;&lt;"v2 is sorted ..."&lt;&lt;std::endl;
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Overload <span style = "color:red">operator &lt;</span></li>
+			</ul>
+		</div>
+		<div class = "subtitle">Random_shuffle</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; v = {1, 2, 3, 4, 5};
+
+	std::random_shuffle(v.begin(), v.end());
+
+	display(v.begin(), v.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle():Rectangle(0, 0){}
+		Rectangle(double w):Rectangle(w, 2*w){}
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const {return width;}
+		double getLength() const {return length;}
+		double getArea() const {return width*length;}
+
+		//mutator
+		void setWidth(double w) {width = w;}
+		void setLength(double l) {length = l;}
+};
+#endif
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstdlib&gt;
+#include "Rectangle.h"
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;getArea()&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;Rectangle&gt; v;
+	v.push_back(Rectangle(1, 2));
+	v.push_back(Rectangle(2, 3));
+	v.push_back(Rectangle(3, 4));
+	v.push_back(Rectangle(4, 5));
+
+	std::random_shuffle(v.begin(), v.end(), [](int i){return std::rand()%i;});
+	display(v.begin(), v.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+	</body>
+</html>

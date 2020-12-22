@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>R</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Test
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+usethis::use_testthat()
+		</pre>
+		</div>
+
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/r5.png" width = "30%"></p>
+		</div>
+
+		<div class = "block">
+			<li>Add test files in testthat folder, the names <span>should starts with test</span></li>
+			<li>test for equality
+				<ul>
+					<li>expect_equal(), check for equality within a numerical tolerance</li>
+					<li>expect_identical(), test for exact equivalence</li>
+					<li>expect_true, test for logic true</li>
+					<li>expect_equivalent, ignores attributes</li>
+					<li>skip(), skip a test</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+# test_getRand.R
+context("Test functions in getRand.R ...")
+library(myPackage)
+
+test_that("test getRand ...", {
+	set.seed(42)
+	expect_equal(getRand(1), 0.914806, tolerance = .0001)
+	expect_equal(getRand(2), c(0.9370754, 0.2861395), tolerance = 0.0001);
+})
+
+test_that("test getRandN ...", {
+	expect_equal(getRandN(1, 2), 1.660895, tolerance = 0.0001)
+})
+		</pre>
+		<pre class = "prettyprint linenums">
+# test_getHello.R
+context("Test functions in getHello.R ...")
+library(myPackage)
+
+test_that("test getHello ...", {
+	expect_identical(getHello(), "Hello World!")
+})
+		</pre>
+		</div>
+
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/r6.png" width = "40%"></p>
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+devtools::test() # implement test
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://cran.r-project.org/web/packages/testthat/testthat.pdf">Package ‘testthat’</a></li>
+		</div>
+	</body>
+</html>

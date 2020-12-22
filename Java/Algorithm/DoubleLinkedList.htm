@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Double Linked List</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Node
+{
+	private int data;
+	private Node prev;
+	private Node next;
+
+	public Node()
+	{
+		data = 0;
+		prev = null;
+		next = null;
+	}
+
+	public int getData()
+	{
+		return data;
+	}
+
+	public Node getPrev()
+	{
+		return prev;
+	}
+
+	public Node getNext()
+	{
+		return next;
+	}
+
+	public void setData(int d)
+	{
+		data = d;
+	}
+
+	public void setPrev(Node p)
+	{
+		prev = p;
+	}
+
+	public void setNext(Node l)
+	{
+		next = l;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class List
+{
+	private Node head;
+	private Node tail;
+	private int count;
+
+	public List()
+	{
+		head = null;
+		tail = null;
+		count = 0;
+	}
+
+	public boolean isEmpty()
+	{
+		return (count == 0);
+	}
+
+	public int getSize()
+	{
+		return count;
+	}
+
+	public int getElement(int index)
+	{
+		if(index &lt; 0 || index &gt; count) return -1;
+		Node walker;
+		if(index &lt; (count/2))
+		{
+			walker = head;
+			for(int i = 0; i &lt; index; i++)
+				walker = walker.getNext();
+		}
+		else
+		{
+			walker = tail;
+			for(int i = 0; i &lt; (count-index-1); i++)
+				walker = walker.getPrev();
+		}
+
+		return walker.getData();
+	}
+
+	public String toString()
+	{
+		String str = "[";
+		Node walker = head;
+		while(walker != null)
+		{
+			str = str + " " + walker.getData();
+			walker = walker.getNext();
+		}
+
+		return str+" ]";
+	}
+
+	public boolean search(int element)
+	{
+		Node walker = head;
+		while(walker != null && walker.getData() != element)
+			walker = walker.getNext();
+		if(walker == null)
+			return false;
+		else
+			return true;
+	}
+
+	public boolean insert(int element, int index)
+	{
+		if(index &lt; 0 || index &gt; count)
+			return false;
+
+		Node newNode = new Node();
+		newNode.setData(element);
+
+		//insert the first node
+		if(count == 0)
+		{
+			head = newNode;
+			tail = newNode;
+			count++;
+			return true;
+		}
+
+		//insert in the front
+		if(index == 0)
+		{
+			newNode.setNext(head);
+			head.setPrev(newNode);
+			head = newNode;
+			count++;
+			return true;
+		}
+
+		//insert in the end
+		if(index == count)
+		{
+			newNode.setPrev(tail);
+			tail.setNext(newNode);
+			tail = newNode;
+			count++;
+			return true;
+		}
+
+		//insert in the middle
+		Node walker;
+		if(index &lt; (count/2))
+		{
+			walker = head;
+			for(int i = 0; i &lt; index-1; i++)
+				walker = walker.getNext();
+		}
+		else
+		{
+			walker = tail;
+			for(int i = 0; i &lt; (count-index); i++)
+				walker = walker.getPrev();
+		}
+		System.out.println("Walk to the destnition ...");
+		newNode.setNext(walker.getNext());
+		newNode.setPrev(walker);
+		walker.getNext().setPrev(newNode);
+		walker.setNext(newNode);
+		count++;
+		return true;
+	}
+
+	public boolean delete(int index)
+	{
+		if(index &lt; 0 || index &gt; count-1)
+			return false;
+		//delete the last node
+		if(count == 1)
+		{
+			head = tail = null;
+			count--;
+			return true;
+		}
+
+		//delete the first node
+		if(index == 0)
+		{
+			head = head.getNext();
+			head.setPrev(null);
+			count--;
+			return true;
+		}
+
+		//delete the last node
+		if(index == count-1)
+		{
+			tail = tail.getPrev();
+			tail.setNext(null);
+			count--;
+			return true;
+		}
+
+		//delete the middle node
+		Node walker;
+		if(index &lt; (count/2))
+		{
+			walker = head;
+			for(int i = 0; i &lt; index-1; i++)
+				walker = walker.getNext();
+		}
+		else
+		{
+			walker = tail;
+			for(int i = 0; i &lt; (count-index); i++)
+				walker = walker.getPrev();
+		}
+		walker.getNext().getNext().setPrev(walker);
+		walker.setNext(walker.getNext().getNext());
+		count--;
+		return true;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.util.Random;
+
+public class ListTest
+{
+	public static void main(String args[])
+	{
+		Random r = new Random();
+
+		List l = new List();
+
+		//insert elements
+		for(int i = 0; i &lt; 10; i++)
+			l.insert(r.nextInt(100), i);
+
+		System.out.println("Size: "+l.getSize()+" - "+l);
+
+		//insert
+		l.insert(100, 0);//insert in the front
+		l.insert(200, 5);//insert in the middle
+		l.insert(300, 12);//insert in the end
+		System.out.println("Size: "+l.getSize()+" - "+l);
+
+		//delete
+		l.delete(12);//delete the end
+		l.delete(0);//delete the front
+		l.delete(5);//delete the middle
+		System.out.println("Size: "+l.getSize()+" - "+l);
+
+		for(int i = 0, len = l.getSize(); i &lt; len; i++)
+		{
+			l.delete(0);
+			System.out.println("Size: "+l.getSize()+" - "+l);;
+		}
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>

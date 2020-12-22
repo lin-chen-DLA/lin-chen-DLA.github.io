@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			IO
+		</div>
+
+		<div class = "subtitle">raw_input and input</div>
+		<div class = "block">
+			<li>raw_input, return a string, has been removed and renamed as input in Python 3</li>
+			<li>input, return the result of the input expression, has been removed in Python 3, in which can be simulated by eval(input())</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# return a string
+a = raw_input("Input an integer:\n");
+print type(a), a;
+
+# return the value of python expression
+b = input ("Input an integer:\n");
+print type(b), b;
+		</pre>
+		</div>
+		<div class = "subtitle">Read</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# open file
+f = open('Generator.htm', 'rb');
+
+# read line by line
+for index, line in enumerate(f):
+    print index, line,
+
+# back to starting position
+f.seek(0, 0);
+
+# display the current position
+print f.tell();
+
+# read line by line
+try:
+    while True:
+        print f.next(), # raise StopIteration when hit EOF
+except StopIteration:
+    pass;
+
+f.seek(0, 0)
+# read character by character
+while True:
+    c = f.read(1);
+    if not c:
+        break;
+    print "%10s, %10d" % (c, ord(c));
+
+# close file
+f.close();
+		</pre>
+		</div>
+
+		<div class = "subtitle">Write</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# open file
+f = open('Generator.htm', 'rb');
+o = open('temp.htm', 'wb');
+
+# read line by line
+for index, line in enumerate(f):
+    s = '{:10d} {}'.format(index, line);
+    o.write(s);
+
+f.close();
+o.close();
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://www.tutorialspoint.com/python/file_methods.htm">Tutorialspoint.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

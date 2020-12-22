@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			TwtitterAPI
+		</div>
+
+		<div class = "subtitle">Install</div>
+		<div class = "block">
+			<li>pip install TwitterAPI</li>
+		</div>
+		<div class = "subtitle">Create API</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from TwitterAPI import TwitterAPI
+from t import ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET, CONSUMER_KEY, CONSUMER_SECRET
+
+api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
+		</pre>
+		</div>
+		<div class = "subtitle">request</div>
+		<div class = "block">
+			<li>param resource, valid data endpoint</li>
+			<li>param params, dictionary with endpoint parameters or None</li>
+			<li>param files, dictionary with multipart-encoded file or None</li>
+			<li>param method_override, request method to override or None</li>
+		<pre class = "prettyprint linenums">
+		</pre>
+		</div>
+		<div class = "subtitle">Tweet</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+r = api.request('statuses/update', {'status':'This is a tweet!'})
+		</pre>
+		</div>
+		<div class = "subtitle">Search</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+r = api.request('search/tweets', {'q':'valdosta state'})
+for item in r:
+        print(item['id'])
+		</pre>
+		</div>
+		<div class = "subtitle">Search by Geocode</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+r = api.request('statuses/filter', {'locations':'-74,40,-73,41', 'q': 'valdosta state'})
+r = api.request('search/tweets', {'geocode':'30.4433237,-84.2777568,1mi', 'q':'FSU'})
+		</pre>
+		</div>
+		<div class = "subtitle">Premium Search</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+r = api.request('tweets/search/%s/:%s' % ('30day', 'SearchThirtyDays'), {'query':'valdosta state'})
+r = api.request('tweets/search/%s/:%s' % ('30day', 'SearchThirtyDays'), {'query':'valdosta state', 'fromDate':'201910200000', 'toDate': '201910310000', 'maxResults':100})
+
+		</pre>
+		</div>
+		<div class = "subtitle">Search more than 100 tweets</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+curl -X POST "https://api.twitter.com/1.1/tweets/search/30day/SearchThirtyDays.json" -d '{"query":"Valdosta State","maxResults":"100","fromDate":"201910200000","toDate":"201910310000"}' -H "Authorization: Bearer AAAAAAAAAAAAAAAAAAAAAIRWAwEAAAAALRrtvjL3wDGnv%2FuA0EO463TjzLc%3DzuLJ3ypKMwrp59WQ4fY6TuAKXN1jqq4VEj4TDx9AFAzWj9qeg4" &gt; junk
+		</pre>
+		<pre class = "prettyprint linenums">
+import json
+
+with open('junk') as json_file:
+    data = json.load(json_file)
+    print(data['next']) # read the next token
+		</pre>
+		<pre class = "prettyprint linenums">
+curl -X POST "https://api.twitter.com/1.1/tweets/search/30day/SearchThirtyDays.json" -d '{"query":"Valdosta State","maxResults":"100","fromDate":"201910200000","toDate":"201910310000", "next":"eyJtYXhJZCI6MTE4OTU2OTIzNjAyNjQ3ODU5M30="}' -H "Authorization: Bearer AAAAAAAAAAAAAAAAAAAAAIRWAwEAAAAALRrtvjL3wDGnv%2FuA0EO463TjzLc%3DzuLJ3ypKMwrp59WQ4fY6TuAKXN1jqq4VEj4TDx9AFAzWj9qeg4" &gt; junk_2
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://developer.twitter.com/en/docs/api-reference-index">Data Endpoint</a></li>
+			<li><a href = "https://github.com/geduldig/TwitterAPI">Tutorial</a></li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			IMAP
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>Download e-mail from Google</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import imaplib
+mail = imaplib.IMAP4_SSL('imap.gmail.com')
+mail.login('eagletiger1@gmail.com', 'Kingstonct507!')
+mail.list()
+# Out: list of "folders" aka labels in gmail.
+mail.select("inbox") # connect to inbox.
+
+result, data = mail.uid('search', None, '(FROM "danielsammons@gmail.com")') # search and return uids instead
+
+latest_email_uid = data[0].split()[-1]
+result, data = mail.uid('fetch', latest_email_uid, '(RFC822)')
+
+raw_email = data[0][1]
+
+import email
+email_message = email.message_from_string(raw_email)
+
+print email_message['To']
+
+print email.utils.parseaddr(email_message['From'])
+
+maintype = email_message.get_content_maintype()
+if maintype == 'multipart':
+    for part in email_message.get_payload():
+        if part.get_content_maintype() == 'text':
+            print part.get_payload()
+            break
+elif maintype == 'text':
+    email_message.get_payload()
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Download e-mail from ECSU e-mail</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import imaplib
+mail = imaplib.IMAP4_SSL('pod51004.outlook.com')
+mail.login('lchen@ecsu.edu', 'Eagle19800311!')
+mail.list()
+# Out: list of "folders" aka labels in gmail.
+mail.select("inbox") # connect to inbox.
+
+result, data = mail.uid('search', None, '(FROM "lchen@ecsu.edu")') # search and return uids instead
+#result, data = mail.uid('search', None, '(FROM "danielsammons@gmail.com")') # search and return uids instead
+
+latest_email_uid = data[0].split()[-1]
+result, data = mail.uid('fetch', latest_email_uid, '(RFC822)')
+
+raw_email = data[0][1]
+
+import email
+email_message = email.message_from_string(raw_email)
+
+print email_message['To']
+
+print email.utils.parseaddr(email_message['From']) # for parsing "Yuji Tomita" <yuji@grovemade.com>
+
+maintype = email_message.get_content_maintype()
+if maintype == 'multipart':
+    for part in email_message.get_payload():
+        if part.get_content_maintype() == 'text':
+            print part.get_payload()
+            break
+elif maintype == 'text':
+    email_message.get_payload()
+			</pre>
+		</div>
+	</body>
+</html>

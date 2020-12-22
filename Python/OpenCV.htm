@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			OpenCV
+		</div>
+
+		<div class = "subtitle">Submodules</div>
+		<div class = "block">
+			<ul>
+				<li>data, standard test images</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Dimension and Order Conventions</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://scikit-image.org/docs/stable/user_guide/numpy_images.html">Image Convention in Scikit-Image</a></li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Image Read</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import matplotlib.pyplot as plt
+import skimage
+from skimage import data
+
+camera = data.camera()
+print camera.shape
+print len(camera);
+
+plt.imshow(camera);
+plt.show();
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://docs.opencv.org/2.4/doc/tutorials/tutorials.html">Tutorial 2.4</a></li>
+				<li><a href = "http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html">Tutorial 3.0</a></li>
+				<li><a href = "http://docs.opencv.org/2.4.13.2/">Documentation</a></li>
+				<li><a href = "http://docs.opencv.org/3.0-beta/index.html">Reference</a></li>
+				<li><a href = "http://answers.opencv.org/questions/">OpenCV Forum</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

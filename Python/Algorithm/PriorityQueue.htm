@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Priority Queue</div>
+
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+""" A modeule containing Priority Queue class and corresponding functions"""
+
+def getList():
+    return [16, 14, 10, 8, 7, 9, 3, 2, 4, 1]
+
+def getRandomList():
+    import random
+
+    random.seed()
+
+    l = []
+    for i in range(10):
+        l.append(random.choice(range(10)))
+
+    return l
+
+class PriorityQueue(object):
+    def __init__(self, l):
+        self._l = l
+        self.buildMaxHeap()
+
+    @property
+    def l(self):
+        return self._l
+
+    @l.setter
+    def l(self, l):
+        self._l = l
+
+    @l.deleter
+    def l(self):
+        del self._l
+
+    def getLeft(self, index):
+        """Get the index of left child
+
+        Args:
+            index (int), index of current node
+
+        Returns:
+            int, index of the left child
+        """
+        return index*2+1
+
+    def getRight(self, index):
+        """Get the index of right child
+
+        Args:
+            index (int), index of current node
+
+        Returns:
+            int, index of the right child
+        """
+        return index*2+2
+
+    def getParent(self, index):
+        return int((index-1)/2)
+
+    def maxHeapify(self, index, n):
+        """Max heapify the tree
+
+        Args:
+            i (int), index of current node
+            n (int), index of the last node
+        """
+        left = self.getLeft(index)
+        right = self.getRight(index)
+
+        largest = index
+        if left &lt;= n and self._l[left] &gt; self._l[index]:
+            largest = left
+
+        if right &lt;= n and self._l[right] &gt; self._l[largest]:
+            largest = right
+
+        if largest != index:
+            self._l[largest], self._l[index] = self._l[index], self._l[largest]
+            self.maxHeapify(largest, n)
+
+    def buildMaxHeap(self):
+        for i in range(len(self._l)/2 - 1, -1, -1):
+            self.maxHeapify(i, len(self._l)-1)
+
+    def heapMax(self):
+        """Returns the largest node"""
+        if len(self._l) &lt;= 0:
+            return None
+        return self._l[0]
+
+    def extractMax(self):
+        """Removes and returns the largest node"""
+        if len(self._l) &lt;= 0:
+            return None
+        self._l[0], self._l[len(self._l)-1] = self._l[len(self._l)-1], self._l[0]
+        self.maxHeapify(0, len(self._l)-2)
+        return self._l.pop()
+
+    def increaseKey(self, i, key):
+        """Increase the value of a node"""
+        if self._l[i] &gt; key:
+            return
+        self.l[i] = key
+
+        while i &gt; 0 and self._l[self.getParent(i)] &lt; self._l[i]:
+            self._l[self.getParent(i)], self._l[i] = self._l[i], self._l[self.getParent(i)]
+            i = self.getParent(i)
+
+    def insert(self, v):
+        import sys
+        self._l.append(-sys.maxint-1)
+        self.increaseKey(len(self._l)-1, v)
+
+    def dequeue(self):
+        return self.extractMax()
+
+    def enqueue(self, v):
+        self.insert(v)
+
+    def __str__(self):
+        return str(self._l)
+
+def main():
+    # Generate a random list
+    l = getRandomList()
+    print(l)
+
+    # Build a priority queue
+    queue = PriorityQueue(l)
+    print(queue)
+
+    # dequeue
+    m = queue.dequeue()
+    print(queue)
+
+    # enqueue
+    queue.enqueue(10)
+    print(queue)
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li>CLRS Chapter 6.5</li>
+		</div>
+	</body>
+</html>

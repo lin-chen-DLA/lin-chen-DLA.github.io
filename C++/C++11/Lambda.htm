@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Lambda
+		</div>
+		<div class = "subtitle">Lambda Expression</div>
+		<div class = "block">
+			<ul>
+				<li>[capture clause](parameters) -&gt; return-type {body}</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Pass Parameters by Value</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+	auto f = [](int x){if(x%2 == 0) std::cout&lt;&lt;x&lt;&lt;std::endl;};
+
+	for_each(v.begin(), v.end(), [](int x){if(x%2 == 0) std::cout&lt;&lt;x&lt;&lt;std::endl;});
+
+	for_each(v.begin(), v.end(), f);
+
+	return 0;
+}
+		</pre>
+	</div>
+		<div class = "subtitle">Pass Parameters by Reference</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+	for_each(v.begin(), v.end(), [](int &x){if(x%2 == 0) x *= 10;});
+
+	for_each(v.begin(), v.end(), [](int x) {std::cout&lt;&lt;x&lt;&lt;std::endl;});
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">External Reference</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+	int num = 3;
+
+	//capture by value
+	std::cout&lt;&lt;"Capture by Value: "&lt;&lt;std::endl;
+	for_each(v.begin(), v.end(), [=](int &x){if(x%num == 0) std::cout&lt;&lt;num&lt;&lt;std::endl;});
+
+	//capture by reference
+	std::cout&lt;&lt;"Capture by Reference: "&lt;&lt;std::endl;
+	for_each(v.begin(), v.end(), [&](int &x){if(x%num == 0) {num++; std::cout&lt;&lt;num&lt;&lt;std::endl;}});
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>[=], capture all of the variables from the enclosing scope by value</li>
+				<li>[&], capture all of the variables from the enclosing scope by reference</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Lambda in Member Function of Class</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const {return width;}
+		double getLength() const {return length;}
+		double getArea() const {return width*length;}
+
+		void display()
+		{
+			auto f = [this](int i){if (i&gt;10) std::cout&lt;&lt;getArea()&lt;&lt;std::endl;};
+			f(20);
+		}
+};
+#endif
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>[this], capture all of the data members of the enclosing class</li>
+				<li><a href = "http://pages.cs.wisc.edu/~gerald/cs368/resources/Lambda.pdf">Using C++ Lambdas</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">External Capture by both Value and Reference</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "Rectangle.h"
+
+int main(int argc, char *argv[])
+{
+	Rectangle r(5, 10);
+
+	double minWidth = 2;
+	double minLength =5;
+
+	auto f = [minWidth, &minLength](const Rectangle &r){std::cout&lt;&lt;minWidth&lt;&lt;std::endl; if(r.getLength() &gt; minLength) minLength = r.getLength();};
+
+	f(r);
+
+	std::cout&lt;&lt;"Min Width: "&lt;&lt;minWidth&lt;&lt;std::endl;
+	std::cout&lt;&lt;"Min Length: "&lt;&lt;minLength&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>[minWidth, &minLength], minWidth pass by value, minLength pass by reference</li>
+			</ul>
+		</div>
+		<div class = "subtitle">No External Reference</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; v = {1, 2, 3, 4};
+
+	for_each(v.begin(), v.end(), [](int i){std::cout&lt;&lt;i&lt;&lt;std::endl;});
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://blog.smartbear.com/c-plus-plus/c11-tutorial-lambda-expressions-the-nuts-and-bolts-of-functional-programming/">smartbear.com</a></li>
+				<li><a href = "http://www.drdobbs.com/cpp/lambdas-in-c11/240168241">drdobbs.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

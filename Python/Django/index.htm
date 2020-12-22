@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Django</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Django
+		</div>
+
+		<div class = "subtitle">Basics</div>
+		<div class = "block">
+			<ul>
+				<li>django-admin startproject myproject, create a Django project</li>
+				<li>python manage.py startapp app, create an application
+					<ul>
+						<li>admin.py, admin interface</li>
+						<li>models.py, application models</li>
+						<li>tests.py, unit test</li>
+						<li>views.py, application views</li>
+					</ul>
+				</li>
+				<li>Add u'172.28.0.12' to ALLOWED_HOSTS in setting.py</li>
+				<li>python manage.py migrate, create tables or collections for database</li>
+				<li>python manage.py runserver 172.28.0.12:8080, start server</li>
+				<li>Access 172.28.0.12:8080/admin, access admin interface</li>
+				<li>python manage.py createsuperuser, create admin account</li>
+				<li>Setup View
+					<ul>
+			<pre class = "prettyprint linenums">
+# add view function under app/views.py
+import django.http import HttpResponse
+
+def hello(request):
+	text = """&lt;h1&gt;Welcome to my app!&lt;/h1&gt;"""
+	return HTTPResponse(text)
+			</pre>
+			<pre class = "prettyprint linenums">
+# create urls.py under app/
+from django.conf.urls import url
+
+from . import views
+
+urlpatterns = [
+    url(r'^$', views.index, name='index'),
+]
+			</pre>
+			<pre class = "prettyprint linenums">
+# add url to project/project/urls.py
+urlpatterns = [
+	url(r'^admin/', admin.site.urls),
+	url(r'^hello/', include('app.urls')),
+]
+			</pre>
+					</ul>
+				</li>
+				<li>Access 172.28.0.12:8080/hello, access hello interface</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+			</pre>
+		</div>
+	</body>
+</html>

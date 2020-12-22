@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			ByteArray
+		</div>
+
+		<div class = "subtitle" id = "bytes">Bytes</div>
+		<div class = "block">
+			<li>an immutable (can be modified) sequence of integers in the range 0 &lt;=x &lt; 256, the elements of a bytes object cannot be changed</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+s = b'Hello World!'
+print(s, type(s))
+		</pre>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+s = 'Hello'
+
+b = bytes(s, encoding = 'utf-8')
+
+print(type(s), type(b)) # unicode, byte string
+print(s, b) # Hello b'Hello'
+
+print(b[0], b[1]) # 72 101
+		</pre>
+		</div>
+		<div class = "subtitle" id = "bytearray">ByteArray</div>
+		<div class = "block">
+			<li>a mutable (can be modified) sequence of integers in the range 0 &lt;=x &lt; 256</li>
+			<li>Bytes and bytearrays are an efficient, byte-based form of strings</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+ 
+# convert list to bytearray
+arr = bytearray([97, 98, 99, 99]);
+print(arr) # bytearray(b'abcc')
+ 
+# convert bytearray to bytes
+print(bytes(arr)); # b'abcc'
+ 
+# modify elements
+arr[0] = 10;
+ 
+# access element
+print(arr) # bytearray(b'\nbcc')
+ 
+# slicing
+print(arr[:2]); # bytearray(b'\nb')
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+ 
+arr = bytearray("Café", "utf-8");
+print(type(arr))
+ 
+# convert to string
+s = str(arr) # unicode
+print(type(s), s); # unicode, bytearray(b'Caf\xc3\xa9')
+
+u = arr.decode('utf-8')
+print(type(u), u) # unicode, Café
+ 
+#count
+print(arr.count(b'a'));
+
+# in
+if 97 in arr:
+    print('a in arr ...')
+
+# concatenation
+print(arr+bytearray(b'dddddddd'));
+
+#conver to list
+print(list(arr)); #[67, 97, 102, 195, 169]
+
+#append
+arr.append(97);
+print(arr)
+
+#delete
+del arr[:2];
+print(arr)
+
+#insert
+arr.insert(0, 98);
+print(arr);
+
+#replace
+arr = arr.replace(b'b', b'c');
+print(arr);
+		</pre>
+		</div>
+		<div class="subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.dotnetperls.com/bytes-python">Bytes and Bytearray</a></li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Unit Test
+		</div>
+
+		<div class = "subtitle">xUnit Principles</div>
+		<div class = "block">
+			<li>Write test suite for each unit in the program</li>
+			<li>All test can be executed (automatically) at any time</li>
+			<li>For each program modification all tests must be passed before the modification is regarded as complete - regression testing</li>
+			<li><span>Test First – implement later!</span></li>
+			<li>TDD (Test Driven Development) cycle
+				<ul>
+					<li>Write test case, and check it fails</li>
+					<li>Write the new code</li>
+					<li>Check that the test passes (and maybe refactor, re-test)</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">CUnit</div>
+		<div class = "block">
+			<ol>
+				<li>Write functions for tests (and suite init/cleanup if necessary)</li>
+				<li>Initialize the test registry - CU_initialize_registry()</li>
+				<li>Add suites to the test registry - CU_add_suite()</li>
+				<li>Add tests to the suites - CU_add_test()</li>
+				<li>Run tests using an appropriate interface, e.g. CU_console_run_tests</li>
+				<li>Cleanup the test registry - CU_cleanup_registry</li>
+			</ol>
+		</div>
+		<div class = "subtitle">Test Program</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/CS3335_37.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// hello.h
+#ifndef HELLO_H
+#define HELLO_H
+
+char * hello();
+
+#endif
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// util.h
+#ifndef UTIL_H
+#define UTIL_H
+
+int doubleNum(int);
+
+#endif
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// hello.c
+#include "hello.h"
+ 
+char * hello()
+{
+	return "Hello World!\n";
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// util.c
+#include "util.h"
+
+int doubleNum(int n)
+{
+		return 2*n;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// main.c
+#include &lt;stdio.h&gt;
+#include "hello.h"
+#include "util.h"
+
+int main()
+{
+	printf("%s\n", hello());
+	printf("%d\n", doubleNum(10));
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 1
+cmake_minimum_required(VERSION 2.6)
+
+project(Test)
+
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build/lib)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build/bin)
+
+include_directories(${PROJECT_SOURCE_DIR}/include /usr/include)
+
+link_directories(${PROJECT_SOURCE_DIR}/build/lib)
+
+add_subdirectory(src)
+
+file(COPY ${PROJECT_SOURCE_DIR}/README.md DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+file(COPY ${PROJECT_SOURCE_DIR}/LICENSE DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+enable_testing()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 2
+set(CMAKE_MACOSX_RPATH 1)
+
+add_library(hello_shared  SHARED hello.c util.c)
+
+add_executable(Hello main.c)
+target_link_libraries(Hello hello_shared)
+add_test(NAME test_Hello COMMAND Hello)
+
+INSTALL(TARGETS Hello
+	RUNTIME DESTINATION bin)
+
+INSTALL(TARGETS hello_shared
+     	LIBRARY DESTINATION lib)
+
+INSTALL(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include)
+
+enable_testing()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// add LD_LIBRARY_PATH to .bashrc or .bash_profile
+export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PAH"
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local ..
+make
+make test
+make install
+xargs rm &lt; install_manifest.txt, uninstall
+		</pre>
+		</div>
+		<div class = "subtitle">Unit Test</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// install CUnit
+sudo apt-get install libcunit1 libcunit1-doc libcunit1-dev
+		</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/CS3335_38.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// test_1.h
+#ifndef TEST_1_H
+#define TEST_1_H
+
+void test_hello();
+
+#endif
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// test_2.h
+#ifndef TEST_2_H
+#define TEST_2_H
+
+void test_doubleNum();
+
+#endif
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// test_1.c
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;CUnit/CUnit.h&gt;
+#include "hello.h"
+
+void test_hello()
+{
+	CU_ASSERT(strcmp(hello(), "Hello World\n") == 0);
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// test_2.c
+#include &lt;stdio.h&gt;
+#include &lt;CUnit/CUnit.h&gt;
+#include "util.h"
+
+void test_doubleNum()
+{
+	CU_ASSERT(doubleNum(10) == 20);
+	CU_ASSERT(doubleNum(0) == 0);
+	CU_ASSERT(doubleNum(-1) == -2);
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// test.c
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;CUnit/CUnit.h&gt;
+#include "CUnit/Basic.h"
+#include "CUnit/Automated.h"
+#include "hello.h"
+#include "util.h"
+#include "test_1.h"
+#include "test_2.h"
+
+int suitInit() {return 0;}
+int suitClean() {return 0;}
+
+int main()
+{
+	// initialize registry
+	if (CUE_SUCCESS != CU_initialize_registry())
+		return CU_get_error();
+
+	// add a suit to the registry
+	CU_pSuite pSuite = NULL;
+	pSuite = CU_add_suite("Suite_1", suitInit, suitClean);
+	if (NULL == pSuite) {
+	  	CU_cleanup_registry();
+	  	return CU_get_error();
+     	}
+
+	// add tests to the suit
+	if ((NULL == CU_add_test(pSuite, "test of hello()", test_hello)) || 
+			(NULL == CU_add_test(pSuite, "test of hello()", test_doubleNum)))
+   	{
+      		CU_cleanup_registry();
+      		return CU_get_error();
+   	}
+
+	// run all tests using the CUnit Basic interface, output report to stdout
+   	CU_basic_set_mode(CU_BRM_VERBOSE);
+   	CU_basic_run_tests();
+
+	// run all tests using the automated interface, output report to xml files
+   	CU_automated_run_tests();
+   	CU_list_tests_to_file();
+
+	// clean registry
+   	CU_cleanup_registry();
+   	return CU_get_error();
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 1
+cmake_minimum_required(VERSION 2.6)
+
+project(Test)
+
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build/lib)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build/bin)
+
+include_directories(${PROJECT_SOURCE_DIR}/include /usr/include)
+
+link_directories(${PROJECT_SOURCE_DIR}/build/lib)
+
+add_subdirectory(src)
+add_subdirectory(test)
+
+file(COPY ${PROJECT_SOURCE_DIR}/README.md DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+file(COPY ${PROJECT_SOURCE_DIR}/LICENSE DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+enable_testing()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 2
+set(CMAKE_MACOSX_RPATH 1)
+
+add_library(hello_shared  SHARED hello.c util.c)
+
+add_executable(Hello main.c)
+target_link_libraries(Hello hello_shared)
+add_test(NAME test_Hello COMMAND Hello)
+
+INSTALL(TARGETS Hello
+	RUNTIME DESTINATION bin)
+
+INSTALL(TARGETS hello_shared
+     	LIBRARY DESTINATION lib)
+
+INSTALL(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include)
+
+enable_testing()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 3
+file(GLOB_RECURSE c_files *.c)
+
+add_executable(my_unit_test ${c_files})
+find_library(TEST_LIBRARY cunit HINTS /usr/local/lib)
+message("Test: " ${TEST_LIBRARY})
+target_link_libraries(my_unit_test ${TEST_LIBRARY} hello_shared)
+
+add_test(NAME test_unit_test COMMAND my_unit_test)
+
+INSTALL(TARGETS my_unit_test
+	RUNTIME DESTINATION bin)
+
+enable_testing()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local ..
+make
+make test
+bin/my_unit_test
+make install
+xargs rm &lt; install_manifest.txt, uninstall
+		</pre>
+		</div>
+		<div class = "subtitle">Functions</div>
+		<div class = "block">
+			<li><span>CU_initialize_registry()</span>, initialize CUnit test
+				<ul>
+					<li><span>CUE_SUCCESS</span>, initialization was successful</li>
+					<li><span>CUE_NOMEMORY</span>, memory allocation failed</li>
+				</ul>
+			</li>
+			<li><span>CU_cleanup_registry()</span>, clean up and release memory used by the framework</li>
+			<li><span>CU_add_suite(name, initialization function, cleanup function)</span>
+				<ul>
+					<li>creates a new test collection (suite) having the specified name, initialization function, and cleanup function</li>
+					<li>the initialization and cleanup functions are optional, and are passed as pointers to functions to be called before and after running the tests contained in the suite</li>
+				</ul>
+			</li>
+			<li><span>CU_add_test(suit, name, test function)</span>
+				<ul>
+					<li>creates a new test having the specified name and test function, and registers it with the specified suite</li>
+				</ul>
+			</li>
+			<li><span>CU_get_error()</span>
+				<ul>
+					<li>set an error code indicating the framework error status</li>
+				</ul>
+			</li>
+			<li><span>CU_BasicRunMode()</span>
+				<ul>
+					<li>CU_BRM_NORMAL, normal mode, failures and run summary are printed</li>
+					<li>CU_BRM_SILENT, silent mode, no output is printed except framework error messages</li>
+					<li>CU_BRM_VERBOSE, verbose mode - maximum output of run details</li>
+				</ul>
+			</li>
+			<li><span>CU_basic_run_tests()</span>, runs all tests in all registered suites</li>
+			<li><span>CU_basic_run_suite(CU_pSuite pSuite)</span>, run tests in a specific suit</li>
+			<li><span>CU_basic_run_test(CU_pSuite pSuite, CU_pTest pTest)</span>, runs a single test in a specified suite</li>
+			<li><span>CU_basic_show_failures()</span>, print a summary of run failures to stdout</li>
+			<li><span>CU_get_failure_list()</span>, return a linked list of failures</li>
+			<li><span>CU_automated_run_tests()</span>, runs all tests in all registered suites, generate xml files</li>
+			<li><span>CU_list_tests_to_file()</span>, lists the registered suites and associated tests to file</li>
+			<li><span>CU_console_run_tests()</span>, the console interface is interactive</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/RPATH-handling">RPath</a></li>
+			<li><a href = "http://cunit.sourceforge.net/">CUnit</a></li>
+			<li><a href = "http://people.cs.aau.dk/~bnielsen/TOV07/lektioner/cunit-intro-07.pdf">C Language Unit Test</a></li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Package
+		</div>
+
+		<div class = "subtitle">Package is a directory containing modules and sub directories</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/Package_2.png" width = "40%"></p>
+		</div>
+		<div class = "subtitle">Empty __init__.py</div>
+		<div class = "block">
+<pre class = "prettyprint linenums">
+#__init__.py is empty
+
+import myPackage
+myPackage.m1.f_1() # Error, myPackage has no module m1
+
+import myPackage.m1 # myPackage.* is not allowed here, import myPackage.m1
+myPackage.m1.f_1()
+
+#import myPackage.m1.f_1, not allowed to import function
+
+import myPackage.m1 as m # rename imported module, import m, no myPackage
+m.f_1()
+
+from myPackage import m1 # import m1, no myPackage
+m1.f_1()
+
+from myPackage.m1 import f_1 # import f_1, no myPackage and m1
+f_1()
+</pre>
+		</div>
+		<div class = "subtitle">Import functions to its parent namespace</div>
+		<div class = "block">
+<pre class = "prettyprint linenums">
+#__init__.py
+from m1 import f_1
+
+import myPackage # import myPackage.m1 and myPackage.f_1
+myPackage.f_1()
+myPackage.m1.f_1()
+
+from myPackage import * # import m1 and f_1
+f_1()
+m1.f_1()
+
+from myPackage import f_1 # import f_1
+f_1()
+</pre>
+		</div>
+		<div class = "subtitle">Import functions from package root</div>
+		<div class = "block">
+<pre class = "prettyprint linenums">
+#__init__.py
+#access module from the root of the package, import m1 and f_1 to pyPackage namespace
+from myPackage.m1 import f_1
+
+from myPackage import f_1 # import f_1
+f_1()
+</pre>
+		</div>
+		<div class = "block">
+<pre class = "prettyprint linenums">
+#__init__.py
+from myPackage.m1 import f_1, f_2
+from m2 import f_3
+
+import myPackage # import f_1, f_2, f_3, m1 and m2
+
+from myPackage import * # import f_1, f_2, f_3, m1 and m2
+</pre>
+		</div>
+		<div class = "subtitle">__all__, the list of modules that should be imported by <span>from myPackage import *</span></div>
+		<div class = "block">
+<pre class = "prettyprint linenums">
+#__init__.py
+__all__ = ['m1', 'f_1']
+from myPackage.m1 import f_1, f_2
+from m2 import f_3
+
+from myPackage import * # import m1 and f_1
+</pre>
+		</div>
+		<div class = "block">
+<pre class = "prettyprint linenums">
+#__init__.py
+__all__ = ['m1']
+
+from myPackage import * # import m1
+</pre>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/Package_3.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle">Empty __init__.py</div>
+		<div class = "block">
+<pre class = "prettyprint linenums">
+#__init__.py #1, empty
+
+#__init__.py #2, empty
+
+import myPackage.sub_1.m3 # import myPackage.sub_1.m3
+myPackage.sub_1.m3.f_5()
+
+import myPackage.sub_1.m3 as m # import m
+m.f_5()
+
+from myPackage.sub_1 import m3 # import m3
+m3.f_5()
+
+from myPackage.sub_1.m3 import f_5 # import f_5
+f_5()
+</pre>
+		</div>
+		<div class = "block">
+<pre class = "prettyprint linenums">
+#__init__.py #1, empty
+
+#__init__.py #2
+from m3 import f_5, f_6
+
+import myPackage.sub_1 as sub # import sub.f_5, sub.f_6, and sub.m3
+sub.f_5()
+
+from myPackage import sub_1 # sub_1.f_5, sub_1.f_6, sub_1.m3
+sub_1.f_5()
+
+from myPackage.sub_1 import f_5 # import f_5
+f_5()
+</pre>
+		</div>
+		<div class = "subtitle">Recursive import functions to parent namespace</div>
+		<div class = "block">
+<pre class = "prettyprint linenums">
+#__init__.py #1
+from myPackage.m1 import f_1, f_2
+from m2 import f_3
+from sub_1 import f_5
+
+#__init__.py #2
+from m3 import f_5, f_6
+
+import myPackage # import myPackage.f_1, myPackage.f_2, myPackage.f_3, myPackage.f_5, myPackage.m1, myPackage.m2, myPackage.sub_1, myPackage.sub_1.f_5, myPackage.sub_1.f_6, myPackage.sub_1.m3
+
+from myPackage import * # import f_1, f_2, f_3, f_5, m1, m2, sub_1
+</pre>
+		</div>
+				<div class = "block">
+				<p style = "text-align:center;"><img src = "img/Package_5.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle">Intra-package References</i></div>
+		<div class = "block">
+			<li>absolute reference</li>
+<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from myPackage.sub_1.m3 import f_5
+
+def main():
+    f_5()
+
+if __name__ == "__main__":
+    main()
+</pre>
+			<li>Relative reference</li>
+<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from .m3 import f_5
+
+def main():
+    f_5()
+
+if __name__ == "__main__":
+    main()
+</pre>
+		</div>
+				<div class = "block">
+				<p style = "text-align:center;"><img src = "img/Package_4.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle">Inter-package References</i></div>
+		<div class = "block">
+			<li>absolute reference</li>
+<pre class = "prettyprint linenums">
+#__init__.py #1, empty
+
+#__init__.py #2, empty
+
+#__init__.py #3, empty
+</pre>
+<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from myPackage.sub_1 import m3
+
+def main():
+    m3.f_5()
+
+if __name__ == "__main__":
+    main()
+</pre>
+			<li>relative reference</li>
+<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from ..sub_1 import m3
+
+def main():
+    m3.f_5()
+
+if __name__ == "__main__":
+    main()
+</pre>
+			<pre class = "prettyprint linenums">
+			</pre>
+		</div>
+
+				<div class = "subtitle">Package is a directory containing modules and sub directories</div>
+		<div class = "block">
+			<li><a href = "https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/index.html">The Hitchhiker’s Guide to Packaging</a></li>
+			<li><a href = "https://docs.python.org/2/tutorial/modules.html#packages">Python Tutorial</a></li>
+		</div>
+	</body>
+</html>

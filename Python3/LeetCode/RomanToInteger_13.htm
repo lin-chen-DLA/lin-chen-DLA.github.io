@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>LeetCode</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title"><a href = "https://leetcode.com/problems/roman-to-integer/">13. Roman to Integer</a></div>
+		<div class = "block">
+			O(n)
+			<pre class = "prettyprint linenums">
+class Solution:
+    def romanToInt(self, s: str) -&gt; int:
+        d = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+
+        re = 0
+
+        i = 0
+        while i &lt; len(s):
+            if i+1 &lt; len(s) and d[s[i+1]] &gt; d[s[i]]:
+                re += d[s[i+1]]-d[s[i]]
+                i += 2
+                continue
+            re += d[s[i]]
+            i += 1
+
+        return re
+
+def main():
+    s = Solution()
+
+    print(s.romanToInt("III")) # 3
+    print(s.romanToInt("IV")) # 4
+    print(s.romanToInt("IX")) # 9
+    print(s.romanToInt("LVIII")) # 58
+    print(s.romanToInt("MCMXCIV")) # 1994
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+	</body>
+</html>

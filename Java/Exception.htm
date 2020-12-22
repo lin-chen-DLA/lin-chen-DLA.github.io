@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Exception
+		</div>
+
+		<div class = "subtitle">Hierarchy</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Exception.gif" width = "50%"></p>
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>Checked exception, compiler ensures that the checked exeption is caught or is declared in a throws clause
+					<ul>
+						<li>All classes that inherit from class Exception but not class RuntimeException</li>
+					</ul>
+				</li>
+				<li>Uncheck exception, Java compiler does not check the code to determine whether an unchecked exception is caught or declared
+					<ul>
+						<li>Errors and runtime exceptions</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Syntax</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+try
+{
+	//do something
+}
+catch (Exception1 e)
+{
+	//exception-handling statements
+}
+...
+catch (ExceptionN e)
+{
+	//exception-handling statements
+}
+finally
+{
+	//statements
+	//resource-release statements
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Finally Block</div>
+		<div class = "block">
+			<ul>
+				<li>finally block will execute if a try block exits by using a return, break or continue statement</li>
+				<li>finally block will not execute if the application exits earyly from a try block by calling method System.exit</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class E
+{
+	public static int quotient(int numerator, int denominator) throws ArithmeticException
+	{
+		return numerator/denominator;
+	}
+
+	public static void main(String args[])
+	{
+		try
+		{
+			quotient(10, 1);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e.getClass().getName());
+			System.out.println(e);
+			System.out.println(e.getMessage());
+			System.out.println(e.getStackTrace());
+		}
+		finally
+		{
+			System.out.println("Release resource ...");
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Throws Clause</div>
+		<div class = "block">
+			<ul>
+				<li>For a function, either catch exception inside the function, or throws exception in throws clause, which appears after the methods's parameter list and before the method's body</li>
+				<li>Checked exception requires throws clause, uncheck exception does not require a throws declaration as well</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.io.*;
+
+public class E
+{
+	public static void f1()
+	{
+		throw new ArithmeticException();//uncheck exception
+	}
+
+	public static void f2() throws IOException
+	{
+		throw new IOException();//checked exception
+	}
+
+	public static void main(String args[])
+	{
+		try
+		{
+			f1();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			System.out.println("Release resource ...");
+		}
+
+		try
+		{
+			f2();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			System.out.println("Release resource ...");
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Create Exception</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class ExceptionADT extends Exception
+{
+	@Override
+	public String getMessage()
+	{
+		Exception e = new Exception("Exception");
+		return "ExceptionADT: "+e;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class E
+{
+	public static void main(String args[])
+	{
+		try
+		{
+			throw new ExceptionADT();
+		}
+		catch (ExceptionADT e)
+		{
+			System.out.println(e.getMessage());
+		}
+		finally
+		{
+			System.out.println("Release resource ...");
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li>Java How to Program</li>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/essential/exceptions/index.html">Oracle Tutorial</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

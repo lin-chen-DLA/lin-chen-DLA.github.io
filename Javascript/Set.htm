@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Set
+		</div>
+
+		<div class = "subtitle">Initialization</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var set = new Set(['a', 'b', 'c', 'c']);
+
+console.log(set); //a, b, c
+
+var set2 = new Set('abcc');
+
+console.log(set2); //a, b, c
+
+var set3 = new Set([1, 2, 3, 3]);
+
+console.log(set3); //1, 2, 3
+		</pre>
+		</div>
+		<div class = "subtitle">Methods</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var set = new Set();
+
+//add
+set.add(1);
+set.add(2);
+set.add(3);
+set.add({name: 'Lin'});
+
+console.log(set);
+
+//entries
+var itr = set.entries(); //iterator object
+for (const [v, k] of itr)
+	console.log(v, k);
+
+//forEach
+set.forEach((value) =&gt; console.log(value));
+
+//has
+console.log(set.has(2));
+
+//values
+var itr2 = set.values(); // iterator object
+for (const v of itr2)
+	console.log(v);
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var set = new Set(['a', 'b', 'c', 'c']);
+
+set.delete('a');
+console.log(set); //{'b', 'c'}
+
+set.clear();
+console.log(set); //{}
+		</pre>
+		</div>
+		<div class = "subtitle">WeakSet</div>
+		<div class = "block">
+			<li>Weak sets can only contain objects</li>
+			<li>the objects they contain may be garbage collected</li>
+			<li>weak sets cannot be iterated</li>
+		<pre class = "prettyprint linenums">
+let weakSet = new WeakSet();
+
+let obj = {};
+let obj2 = {name: 'Lin'};
+
+weakSet.add(obj);
+weakSet.add(obj2);
+
+console.log(weakSet.has(obj));
+		</pre>
+		</div>
+	</body>
+</html>

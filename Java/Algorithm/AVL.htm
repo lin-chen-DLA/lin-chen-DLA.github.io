@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">AVL Tree</div>
+		<div class = "block">
+			<ul>
+				<li>Self-balancing Binary Search Tree</li>
+				<li>The difference between heights of left and right subtrees cannot be more than one for all nodes</li>
+				<li>AVL trees are more balanced compared to Red Black Trees</li>
+				<li>If your application involves many frequent insertions and deletions, then Red Black trees should be preferred</lI>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/AVL.png" width = "60%"></p>
+		</div>
+		<div class = "subtitle">Node</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/** Tree Node for Binary Search Tree
+ * Also see: {@link BST}, {@link BSTTest}
+ * @author Lin Chen
+ */
+public class Node
+{
+	private int data;
+	private Node left;
+	private Node right;
+	private Node parent;
+
+	/** Initialize an empty node
+	 */
+	public Node()
+	{
+		data = 0;
+		left = null;
+		right = null;
+		parent = null;
+	}
+
+	/** Initialize an node with an integer value
+	 * @param e value
+	 */
+	public Node(int e)
+	{
+		data = e;
+		left = null;
+		right = null;
+		parent = null;
+	}
+
+	/** Get the node value
+	 * @return {@code int}, node value
+	 */
+	public int getData()
+	{
+		return data;
+	}
+
+	/** Get the left node
+	 * @return {@code Node}, left node of the current node
+	 */
+	public Node getLeft()
+	{
+		return left;
+	}
+
+	/** Get the right node
+	 * @return {@code Node}, right node of the current node
+	 */
+	public Node getRight()
+	{
+		return right;
+	}
+
+	/** Get the parent node
+	 * @return {@code Node}, parent node of the current node
+	 */
+	public Node getParent()
+	{
+		return parent;
+	}
+
+	/** Set node value
+	 * @param d set node value
+	 */
+	public void setData(int d)
+	{
+		data = d;
+	}
+
+	/** Set the left node
+	 * @param l set left node
+	 */
+	public void setLeft(Node l)
+	{
+		left = l;
+	}
+
+	/** Set the right node
+	 * @param r set right node
+	 */
+	public void setRight(Node r)
+	{
+		right = r;
+	}
+
+	/** Set the parent node
+	 * @param p set parent node
+	 */
+	public void setParent(Node p)
+	{
+		parent = p;
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/AVLInsert.png" width = "60%"></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Perform the normal BST insertion</li>
+				<li>The current node must be one of the ancestors of the newly inserted node. Update the height of the current node</li>
+				<li>If balance factor is greater than 1, then the current node is unbalanced and we are either in Left Left case or left Right case. Set current node as z, it's left child as y, and x is the child of y, x is the ancester of new inserted node</li>
+				<li>If balance factor is less than -1, then the current node is unbalanced and we are either in Right Right case or Right Left case. Set current node as z, it's right child as y, and x is the child of y, x is the ancester of new inserted node</li>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/AVLDelete.png" width = "60%"></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Perform standard BST delete for w</li>
+				<li>Starting from w, travel up and find the first unbalanced node. Let z be the first unbalanced node, y be the larger height child of z, and x be the larger height child of y</li>
+				<li>Re-balance the tree by performing appropriate rotations on the subtree rooted with z</li>
+			</ul>
+		</div>
+		<div class = "subtitle">AVL Tree</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/** AVL tree using algorithms at geeksforgeeks
+ * Also see: {@link Node}, {@link AVLTest}
+ * @author Lin Chen
+ */
+public class AVL
+{
+	private Node root;
+
+	/** Initialize a tree
+	 */
+	public AVL()
+	{
+		root = null;
+	}
+
+	/** Return the root of the tree
+	 * @return {@code Node}, root of tree
+	 */
+	public Node getRoot()
+	{
+		return root;
+	}
+
+	/** Set a node for root
+	 * @param n node
+	 */
+	public void setRoot(Node n)
+	{
+		root = n;
+	}
+
+	/** Check if the tree is an empty tree
+	 * @return {@code bool}, tree if tree is empty; false otherwise
+	 */
+	public boolean isEmpty()
+	{
+		return (root == null);
+	}
+
+	/** Print elements in ascending ord
+	 */
+	public void inorderWalk()
+	{
+		if(root != null) printLDR(root);
+		System.out.println();
+	}
+
+	public void printLDR(Node n)
+	{
+		if(n == null) return;
+		printLDR(n.getLeft());
+		System.out.printf("%5d", n.getData());
+		if(n.getParent() != null)
+			System.out.printf("%10d\n", n.getParent().getData());
+		else
+			System.out.printf("null\n");
+		printLDR(n.getRight());
+	}
+
+	public Node rightRotate(Node y)
+	{
+		Node x = y.getLeft();
+		Node T = x.getRight();
+
+		x.setRight(y);
+		y.setLeft(T);
+		x.setParent(y.getParent());
+		y.setParent(x);
+		T.setParent(y);
+
+		return x;
+	}
+
+	public Node leftRotate(Node y)
+	{
+		Node x = y.getRight();
+		Node T = x.getLeft();
+
+		x.setLeft(y);
+		y.setRight(T);
+		x.setParent(y.getParent());
+		y.setParent(x);
+		T.setParent(y);
+
+		return x;
+	}
+
+	/** Insert an element into the tree with the algorithm in CLRS
+	 * @param e value of inserting element
+	 */
+	public void insert(int e)
+	{
+		if(search(e)) return;
+		root = insert(root, e);
+	}
+
+	public Node insert(Node n, int e)
+	{
+		if(n == null)
+			return (new Node(e));
+
+		if(e &lt; n.getData())
+		{
+			Node left = insert(n.getLeft(), e);
+			n.setLeft(left);
+			if(left != null)
+				left.setParent(n);
+		}
+		else
+		{
+			Node right = insert(n.getRight(), e);
+			n.setRight(right);
+			if(right != null)
+				right.setParent(n);
+		}
+
+		//LL
+		if(isAVL(n) &gt; 1 && e &lt; n.getData() && e &lt; n.getLeft().getData())
+		{
+			inorderWalk();
+			System.out.println("Insert LL ..."+n.getData());
+			return rightRotate(n);
+		}
+
+		//RR
+		if(isAVL(n) &lt; -1  && e &gt; n.getData() && e &gt; n.getRight().getData())
+		{
+			inorderWalk();
+			System.out.println("Insert RR ..."+n.getData());
+			return leftRotate(n);
+		}
+
+		//LR
+		if(isAVL(n) &gt; 1 && e &lt; n.getData() && e &gt; n.getLeft().getData())
+		{
+			inorderWalk();
+			System.out.println("Insert LR ..."+n.getData());
+			n.setLeft(leftRotate(n.getLeft()));
+			return rightRotate(n);
+		}
+
+		//RL
+		if(isAVL(n) &lt; -1 && e &gt; n.getData() && e &lt; n.getRight().getData())
+		{
+			inorderWalk();
+			System.out.println("Insert RL ..."+n.getData());
+			n.setRight(rightRotate(n.getRight()));
+			return leftRotate(n);
+		}
+
+		return n;
+	}
+
+	/** check if the BST is a AVL tree
+	 * @return {@code bool}, true, if the tree is a AVL tree; false, otherwise
+	 */
+	public int isAVL(Node n)
+	{
+		if(n == null)
+			return 0;
+		int l = getHeight(n.getLeft());
+		int r = getHeight(n.getRight());
+
+		return l-r;
+	}
+
+	public int height()
+	{
+		return getHeight(root);
+	}
+
+	public int getHeight(Node n)
+	{
+		if(n == null) return 0;
+		if(n.getLeft() == null && n.getRight() == null)
+			return 1;
+
+		int l = getHeight(n.getLeft());
+		int r = getHeight(n.getRight());
+
+		return (l&gt;r)?(1+l):(1+r);
+	}
+
+	public void transplant(Node u, Node v)
+	{
+		if(u.getParent() == null)
+			root = v;
+		else if(u == u.getParent().getLeft())
+			u.getParent().setLeft(v);
+		else
+			u.getParent().setRight(v);
+		if(v != null)
+			v.setParent(u.getParent());
+	}
+
+	public void printNode(Node n)
+	{
+		if(n == null)
+			System.out.println("Null");
+		else
+			System.out.println("Node: "+n.getData());
+	}
+
+	public void rotate()
+	{
+		root = rotateNode(root);
+	}
+
+	public Node rotateNode(Node n)
+	{
+		if(n == null)
+			return n;
+
+		n.setLeft(rotateNode(n.getLeft()));
+		n.setRight(rotateNode(n.getRight()));
+
+		//LL
+		if(isAVL(n) &gt; 1 && isAVL(n.getLeft()) &gt;= 0)
+		{
+			System.out.println("Delete rotate LL ..."+n.getData());
+			return rightRotate(n);
+		}
+
+		//RR
+		if(isAVL(n) &lt; -1  && isAVL(n.getRight()) &lt;= 0)
+		{
+			System.out.println("Delete rotate RR ...");
+			return leftRotate(n);
+		}
+
+		//LR
+		if(isAVL(n) &gt; 1 && isAVL(n.getLeft()) &lt; 0)
+		{
+			System.out.println("Delete rotate LR ...");
+			n.setLeft(leftRotate(n.getLeft()));
+			return rightRotate(n);
+		}
+
+		//RL
+		if(isAVL(n) &lt; -1 && isAVL(n.getRight()) &gt; 0)
+		{
+			System.out.println("Delete rotate RL ...");
+			n.setRight(rightRotate(n.getRight()));
+			return leftRotate(n);
+		}
+
+		return n;
+	}
+
+	public void delete(int e)
+	{
+		if(!search(e)) return;
+
+		Node n = searchNode(root, e);
+
+		//n has no child or only one child
+		if(n.getLeft() == null)
+			transplant(n, n.getRight());
+		else if(n.getRight() == null)
+			transplant(n, n.getLeft());
+		//z has two children
+		else
+		{
+			Node y = getMin(n.getRight());
+			if(y.getParent() != n)//y is not n's child
+			{
+				transplant(y, y.getRight());
+				y.setRight(n.getRight());
+				y.getRight().setParent(y);
+			}
+			transplant(n, y);
+			y.setLeft(n.getLeft());
+			y.getLeft().setParent(y);
+		}
+
+		rotate();
+	}
+
+	/** Search an element in tree
+	 * @param e the value of an element
+	 * @return {@code boolean}, true if the tree contains the element and false otherwise
+	 */
+	public boolean search(int e)
+	{
+		return searchNode(root, e) != null;
+	}
+
+	public Node searchNode(Node n, int e)
+	{
+		if(n == null) return null;
+		if(n.getData() == e) return n;
+		if(e &lt; n.getData())
+			return searchNode(n.getLeft(), e);
+		else
+			return searchNode(n.getRight(), e);
+	}
+
+	public int min()
+	{
+		Node n = getMin(root);
+		return n.getData();
+	}
+
+	public Node getMin(Node n)
+	{
+		if(n.getLeft() == null)
+			return n;
+		return getMin(n.getLeft());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">AVL Test</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/** Test AVL Tree
+ * @author Lin Chen
+ */
+public class AVLTest
+{
+	public static void main(String args[])
+	{
+		AVL t = new AVL();
+
+		// Create tree
+		t.insert(13);
+		t.insert(10);
+		t.insert(15);
+		t.insert(5);
+		t.insert(11);
+		t.insert(16);
+		t.insert(4);
+		t.insert(6);
+		//t.insert(14);
+		t.insert(3);
+
+		// Display tree
+		t.inorderWalk();
+
+		// Delete
+		t.delete(16);
+		t.inorderWalk();
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.geeksforgeeks.org/avl-tree-set-1-insertion/">Geeksforgeeks AVL Insertion</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/avl-tree-set-2-deletion/">Geeksforgeeks AVL Deletion</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

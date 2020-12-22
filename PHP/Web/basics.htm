@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>PDO</title>
+       <link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+       <script src = "../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+       <style>
+	       span {color: red}
+	</style>
+    </head>
+    <body bgcolor = white text = #4E6AAA link = silver alink = silver vlink = silver>
+	    <ol>
+		    <li>Hello World!, <a href = "src/hello.php">Code</a>
+		    <pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;title&gt;CSC 325&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+&lt;?php
+echo "Hello World\n";
+?&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+		    </pre>
+		    </li>
+		    <img src = "flowchart.png">
+		    <li>Table, <a href = "src/table.php">Code</a>
+		    <pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;title&gt;CSC 325&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+&lt;?php
+echo "&lt;table border&gt;\n";
+echo "&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;UIN&lt;/th&gt;&lt;/tr&gt;\n";
+echo "&lt;tr&gt;&lt;td&gt;David&lt;/td&gt;&lt;td&gt;0001&lt;/td&gt;&lt;/tr&gt;\n";
+echo "&lt;/table&gt;\n";
+?&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+		    </pre>
+		    </li>
+		    <li>Form, <a href = "src/form.php">form.php</a>, <a href = "src/welcome.php">welcome.php</a>
+		    <pre class = "prettyprint linenums">
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;form action="welcome.php" method="post"&gt;
+E-mail: &lt;input type="text" name="email"&gt;&lt;br&gt;
+&lt;input type="submit"&gt;
+&lt;/form&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+		    </pre>
+		    <pre class = "prettyprint linenums">
+&lt;html&gt;
+&lt;body&gt;
+
+Your email address is: &lt;?php echo $_POST["email"]; ?&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+		    </pre>
+		    </li>
+		    <li>Create connection
+			    <pre class = "prettyprint linenums">
+&lt;?php
+	try{
+		$hostname = 'localhost';
+		$dbname = 'employees';
+		$username = 'root';
+		$password = '';
+		$DBH = new PDO("mysql:host=$hostname; dbname=$dbname; charset=utf8mb4", $username, $password);
+		echo 'Connected';
+	}
+	catch(PDOException $e){
+		echo $e-&gt;getMessage();
+	}
+?&gt;;
+			    </pre>
+		    </li>
+		    <li>Query and fetch, <a href = "src/q2.php">Code</a>
+		    <pre class = "prettyprint linenums">
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;title&gt;Database&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+&lt;?php
+	// check if PDO has been installed
+	if(!defined('PDO::ATTR_DRIVER_NAME')){
+		echo 'PDO unavailable';
+	}
+
+	// connect database
+	try{
+		$hostname = 'localhost';
+		$databasename = 'employees';
+		$username = 'root';
+		$password = '';
+		$DBH = new PDO("mysql:host=$hostname; dbname=$databasename; charset=utf8mb4", $username, $password);
+		//$DBH-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+		//$DBH-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+		$DBH-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		echo 'Connected';
+	}
+	catch(PDOException $e){
+		echo $e-&gt;getMessage();
+	}
+
+	// prepare query and fetch
+	try{
+		$stmt = $DBH-&gt;query("select * from employees where gender = 'M'");
+
+		while($row = $stmt-&gt;fetch())
+		{
+			echo "&lt;li&gt;".$row['first_name'].' '.$row['last_name'].'&lt;/li&gt;';
+
+			//print_r($row);
+		}
+	}
+	catch(PDOException $e){
+		echo $e-&gt;getMessage();
+	}
+
+	// remove connection
+	$DBH = NULL;
+
+?&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+		    </pre>
+		    </li>
+		    <li>Prepare query and fetch, <a href = "src/q1.php">Code</a>
+			    <pre class = "prettyprint linenums">
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;title&gt;Database&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+&lt;?php
+	// check if PDO has been installed
+	if(!defined('PDO::ATTR_DRIVER_NAME')){
+		echo 'PDO unavailable';
+	}
+
+	// connect database
+	try{
+		$hostname = 'localhost';
+		$databasename = 'employees';
+		$username = 'root';
+		$password = '';
+		$DBH = new PDO("mysql:host=$hostname; dbname=$databasename; charset=utf8mb4", $username, $password);
+		//$DBH-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+		//$DBH-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+		$DBH-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		echo 'Connected';
+	}
+	catch(PDOException $e){
+		echo $e-&gt;getMessage();
+	}
+
+	// prepare query and fetch
+	try{
+		$stmt = $DBH-&gt;prepare("select * from employees where gender = ?");
+		$stmt-&gt;bindParam(1, $gen);
+		$gen = 'M';
+
+		//$stmt=$DBH-&gt;prepare("select * from departments");
+		$stmt-&gt;execute();
+		while($row = $stmt-&gt;fetch())
+		{
+			echo "&lt;li&gt;".$row['first_name'].' '.$row['last_name'].'&lt;/li&gt;';
+
+			//print_r($row);
+		}
+	}
+	catch(PDOException $e){
+		echo $e-&gt;getMessage();
+	}
+
+	// remove connection
+	$DBH = NULL;
+
+?&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+			    </pre>
+		    </li>
+	    </ol>
+    </body>
+</html>

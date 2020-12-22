@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Specificity
+		</div>
+
+		<div class = "subtitle">Specificity Hierarchy</div>
+		<div class = "block">
+			<li>If there are two or more conflicting CSS rules that point to the same element, the browser follows some rules to determine which one is <span>most specific</span> and therefore wins out</li>
+			<li><span>(+1000) Inline styles</span>, an inline style is attached directly to the element to be styled</li>
+			<li><span>(+100) IDs</span>, an ID is a unique identifier for the page elements</li>
+			<li><span>(+10) Classes, attributes and pseudo-classes</span>, includes .classes, [attributes] and pseudo-classes</li>
+			<li><span>(+1) Elements and pseudo-elements</span>, includes element names and pseudo-elements</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		div {color: red;} //1
+		.section {color: blue;} //10
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+		&lt;div class = "section"&gt;
+			Hello World! &lt;!-- blue color --&gt;
+		&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Specificity Rules</div>
+		<div class = "block">
+			<li><span>Equal specificity: the latest rule counts</span>, if the same rule is written twice into the external style sheet, then the lower rule in the style sheet is closer to the element to be styled</li>
+			<li><span>Contextual selectors are more specific than a single element selector</span>, the embedded style sheet is closer to the element to be styled</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		.section {color: blue;}
+		.section {color: red;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+		&lt;div class = "section"&gt;
+			Hello World!
+		&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>The <span>universal selector</span> and <span>inherited values</span> have a specificity of 0 - *, body * and similar have a zero specificity. Inherited values also have a specificity of 0</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		#content {color: red;}
+		.section {color: blue;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div id = "content"&gt;
+		&lt;div class = "section"&gt;
+			Hello World! &lt;-- blue color --&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+	</body>
+</html>

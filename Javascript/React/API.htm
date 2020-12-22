@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			API
+		</div>
+
+		<div class = "subtitle">setState</li>
+		<div class = "block">
+			<li>Enqueues changes to the component state and tells React that this component and its children need to be re-rendered with the updated state</li>
+		</div>
+		<div class = "subtitle">forceUpdate</li>
+		<div class = "block">
+			<li>Force a re-render of the component and its children in question. It does not mutate the state at all</li>
+		</div>
+		</div class = "block">
+		<pre class = "prettyprint linenums">
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+class App extends React.Component {
+   constructor() {
+      super();
+
+      this.state = {
+         data: []
+      }
+
+      this.setStateHandler = this.setStateHandler.bind(this);
+      this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+   };
+
+   setStateHandler() {
+      var item = "setState..."
+      var myArray = this.state.data.slice();
+	  myArray.push(item);
+      this.setState({data: myArray})
+   };
+
+   forceUpdateHandler() {
+	   this.state.data = [];
+      this.forceUpdate();
+   };
+
+   render() {
+      return (
+         &lt;div&gt;
+            &lt;button onClick = {this.setStateHandler}&gt;setState&lt;/button&gt;
+            &lt;button onClick = {this.forceUpdateHandler}&gt;foreceUpdate&lt;/button&gt;
+            &lt;h4&gt;State Array: {this.state.data}&lt;/h4&gt;
+         &lt;/div&gt;
+      );
+   }
+}
+
+ReactDOM.render(&lt;App /&gt;, document.getElementById('root'));
+		</pre>
+		</div>
+	</body>
+</html>

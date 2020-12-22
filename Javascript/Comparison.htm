@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Comparison
+		</div>
+
+		<div class = "subtitle">Operators</div>
+		<div class = "block">
+			<li>==, equal to</li>
+			<li>===, equal value and equal type</li>
+			<li>!=, not equal</li>
+			<li>!==, not equal value or not equal type</li>
+			<li>&gt;, &lt;, &gt;=, &lt;=</li>
+			<li><span>Primitives</span>, like strings and numbers, are compared by their value</li>
+			<li><span>Objects</span>, like arrays, dates, and plain objects, are compared by their reference</li>
+		<pre class = "prettyprint linenums">
+//Compare Numbers
+var a = 10;
+var b = 10;
+
+var c = new Number(10);
+
+console.log(a == b); //true
+console.log(a === b); //true
+
+console.log(a == c); //true
+console.log(a === c); //false
+		</pre>
+		</div>
+		<div class = "subtitle">Compare Objects</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//Compare Objects Addresses
+var jangoFett = {
+    	occupation: "Bounty Hunter",
+    	genetics: "superb"
+};
+
+var bobaFett = {
+    	occupation: "Bounty Hunter",
+    	genetics: "superb"
+};
+
+var callMeJango = jangoFett;
+
+console.log(jangoFett == bobaFett); //false
+console.log(callMeJango == jangoFett); //true
+
+console.log(jangoFett === bobaFett); //false
+console.log(callMeJango === jangoFett); //true
+		</pre>
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var person_1 = {name: 'Lin', age: 39};
+var person_2 = {name: 'Lin', age: 39};
+var person_3 = person_1
+
+function isEquivalent(a, b) {
+	// If two variables point to the same object
+	if (a === b)
+		return true;
+
+    // Create arrays of property names
+    var aProps = Object.getOwnPropertyNames(a);
+    var bProps = Object.getOwnPropertyNames(b);
+
+    // If number of properties is different,
+    // objects are not equivalent
+    if (aProps.length != bProps.length) {
+        return false;
+    }
+
+    for (var i = 0; i &lt; aProps.length; i++) {
+        var propName = aProps[i];
+
+        // If values of same property are not equal,
+        // objects are not equivalent
+        if (a[propName] !== b[propName]) {
+            return false;
+        }
+    }
+
+    // If we made it this far, objects
+    // are considered equivalent
+    return true;
+}
+
+console.log(isEquivalent(person_1, person_2)); // true
+console.log(isEquivalent(person_1, person_3)); // true
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "http://adripofjavascript.com/blog/drips/object-equality-in-javascript.html">Object Equality in JavaScript</a></li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Class
+		</div>
+
+		<div class = "subtitle">this</div>
+		<div class = "block">
+			<ul>
+				<li><span style = "color:red">this</span> references to itselft</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+public class Car
+{
+	private String maker;
+
+	public Car(String maker)
+	{
+		this.maker = maker;
+	}
+
+	public String toString()
+	{
+		return "Maker: "+this.maker;
+	}
+
+	public static void main(String args[])
+	{
+		Car c = new Car("Buick");
+
+		System.out.println(c);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Object Array</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Car
+{
+	private String maker;
+
+	public Car(String maker)
+	{
+		this.maker = maker;
+	}
+
+	public String toString()
+	{
+		return "Maker: "+this.maker;
+	}
+
+	public static void main(String args[])
+	{
+		Car [] c = new Car[10];
+
+		for(int i = 0; i &lt; 10; i++)
+			c[i] = new Car("Buick"+i);
+
+		for(int i = 0; i &lt; 10; i++)
+			System.out.println(c[i]);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Inner Class</div>
+		<div class = "block">
+			<ul>
+				<li>Inner class(or non-static nested class) can access both static and non-static members of Outer class</li>
+				<li>An instance of Inner class cannot be created without an instance of outer class and an Inner class can reference data and methods defined in Outer class in which it nests, so we don’t need to pass reference of an object to the constructor of the Inner class</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/NestedClass.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class S
+{
+	//non-static attribute
+	private int age;
+
+	//non-static methods
+	public int getAge() {return age;}
+	public void setAge(int a) {age = a;}
+
+	//static attribute
+	private static int count = 0;
+
+	//static method
+	public static int getCount() {return count;}
+
+	//inner class
+	public class D
+	{
+		private int year;
+
+		public D(int y) { year = y;}
+
+		public int getYear() { return year;}
+
+		//acess static attribute and static method
+		public String toString() { return "D: "+year+" "+count+" "+getCount();}
+
+		public void display()
+		{
+			//access instance method
+			System.out.println("D: "+age);
+		}
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class STest
+{
+	public static void main(String args[])
+	{
+		//create instance of S
+		S c = new S();
+		c.setAge(37);
+
+		//ceate instance of D
+		S.D d = c.new D(2018);
+
+		System.out.println(d);
+		d.display();
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.geeksforgeeks.org/nested-classes-java/">Nested Class at Geeksforgeeks</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/static-class-in-java/">Geeksforgeeks</a></li>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/java/javaOO/nested.html">Nested Class</a></li>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/java/javaOO/innerclasses.html">Inner Class</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Quick Sort</div>
+		<div class = "block">
+			<li>Best Case, O(nlgn)</li>
+			<li>Worst Case, &Omega;(n^2)</li>
+			<li>Memory Complexity, O(lgn)</li>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Quicksort.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			Ideal case
+			<p style = "text-align:center;"><img src = "img/Quicksort2.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			Worse case
+			<p style = "text-align:center;"><img src = "img/Quicksort3.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle">Use the fixed pivot</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import random
+
+def quick_sort(array, left, right):
+    if left &lt; right:
+        p = partition(array, left, right)
+        quick_sort(array, left, p-1)
+        quick_sort(array, p+1, right)
+
+def partition(array, left, right):
+    """partition unsorted array
+
+    Choose a pivot, move elements to make elements on the left hand side of pivot are less than pivot, elements on the right hand side of pivot are equal to or greater than pivot
+
+    Args:
+        array (list): an unsorted array
+        left (int): the index of the leftest element
+        right (int): the index of the rightest element
+
+    Returns:
+        int: index of pivot after moving
+    """
+    pivot = array[right]
+    i = left-1
+
+    for j in range(left, right):
+        if array[j] &lt; pivot:
+            i += 1
+            array[i], array[j] = array[j], array[i]
+
+    i += 1
+    array[i], array[right] = array[right], array[i]
+
+    return i
+
+def get_list():
+    random.seed()
+
+    l = []
+    for i in range(10):
+        l.append(random.choice(range(10)))
+
+    return l
+
+def main():
+    l = get_list()
+    print(l)
+
+    quick_sort(l, 0, len(l)-1)
+    print(l)
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "subtitle">Use a random pivot</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import random
+
+def quick_sort(array, left, right):
+    if left &lt;g right:
+        p = random_partition(array, left, right)
+        quick_sort(array, left, p-1)
+        quick_sort(array, p+1, right)
+
+def random_partition(array, left, right):
+    r = random.randint(left, right)
+
+    array[r], array[right] = array[right], array[r] # switch the select pivot with the right element
+
+    return partition(array, left, right)
+
+def partition(array, left, right):
+    """partition unsorted array
+
+    Choose a pivot, move elements to make elements on the left hand side of pivot are less than pivot, elements on the right hand side of pivot are equal to or greater than pivot
+
+    Args:
+        array (list): an unsorted array
+        left (int): the index of the leftest element
+        right (int): the index of the rightest element
+
+    Returns:
+        int: index of pivot after moving
+    """
+    pivot = array[right]
+    i = left-1
+
+    for j in range(left, right):
+        if array[j] &lt;g pivot:
+            i += 1
+            array[i], array[j] = array[j], array[i]
+
+    i += 1
+    array[i], array[right] = array[right], array[i]
+
+    return i
+
+def get_list():
+    random.seed()
+
+    l = []
+    for i in range(10):
+        l.append(random.choice(range(10)))
+
+    return l
+
+def main():
+    l = get_list()
+    print(l)
+
+    quick_sort(l, 0, len(l)-1)
+    print(l)
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+	</body>
+</html>

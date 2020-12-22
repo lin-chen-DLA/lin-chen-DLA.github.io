@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Class
+		</div>
+
+		<div class = "subtitle">Class</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Car
+{
+	private String maker;
+
+	public Car(String c)
+	{
+		maker = c;
+	}
+
+	public String toString()
+	{
+		return "Car: "+maker;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
+
+public class C
+{
+	public static void main(String args[]) throws ClassNotFoundException
+	{
+		//create class objects
+		Class c1 = Class.forName("java.lang.String");
+
+		Car car = new Car("Buick");
+		Class c2 = Car.class;
+
+		Class c3 = car.getClass();
+
+		//toString
+		System.out.println(c1);
+		System.out.println(c2);
+		System.out.println(c3);
+
+		//isInstance
+		System.out.println(c1.isInstance("Hello World!"));//true
+		System.out.println(c2.isInstance(new Car("Buick")));//true
+
+		//isInterface
+		Class c4 = Class.forName("java.lang.Runnable");//true
+		System.out.println(c4.isInterface());
+
+		//isPrimitive
+		int i = 10;
+		Integer i2 = new Integer(100);
+		System.out.println((int.class).isPrimitive());//true
+		System.out.println(i2.getClass().isPrimitive());//false
+
+		//isArray
+		int array[] = new int[10];
+		System.out.println(array.getClass().isArray());//true
+
+		//getName
+		System.out.println(c1.getName());
+
+		//getSuperclass
+		Class c5 = c1.getSuperclass();
+		System.out.println(c5);
+
+		//getPackage
+		System.out.println(c1.getPackage());
+
+		//getFields
+		Field f[] = (Math.class).getFields();
+		for(Field e: f)
+			System.out.println(e);
+
+		//getMethods
+		Method m[] = c2.getMethods();
+		for(Method e : m)
+			System.out.println(e);
+
+		//getConstructors
+		Constructor c[] = c2.getConstructors();
+		for(Constructor e : c)
+			System.out.println(e);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.geeksforgeeks.org/java-lang-class-class-java-set-1/">Class</a></li>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/reflect/class/index.html">Oracle Tutorial</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

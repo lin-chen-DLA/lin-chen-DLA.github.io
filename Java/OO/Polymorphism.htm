@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Polymorphism
+		</div>
+
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Polymorphism.png" width = "80%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Car
+{
+	public void f1()
+	{
+		System.out.println("f1 in Car ...");
+	}
+
+	public void f2()
+	{
+		System.out.println("f2 in Car ...");
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Buick extends Car
+{
+	public void f2()
+	{
+		System.out.println("f2 in Buick ...");
+	}
+
+	public void f3()
+	{
+		System.out.println("f3 in Buick ...");
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class CarTest
+{
+	public static void main(String args[])
+	{
+		Car c = new Car();
+		Buick b = new Buick();
+
+		c.f1();//f1 in Car ...
+		c.f2();//f2 in Car ...
+
+		b.f1();//f1 in Car ..., inherited from Car
+		b.f2();//f2 in Buick ..., dynamic binding
+		b.f3();//f3 in Buick ...
+
+		Car b2 = new Buick();
+
+		b2.f1();//f1 in Car ...
+		b2.f2();//f2 in Buick ...
+		//b2.f3();//error, Car has no f3
+		((Buick)b2).f3();//f3 in Buick ..., cast data type to Buick
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Static Binding</div>
+		<div class = "block">
+			<ul>
+				<li>Data type is defined during compiling time</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Car
+{
+	public static void display()
+	{
+		System.out.println("Car");
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Buick extends Car
+{
+	public static void display()
+	{
+		System.out.println("Buick");
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class CarTest
+{
+	public static void main(String args[])
+	{
+		Car c = new Car();
+		Car b = new Buick();
+
+		c.display();//Car
+		b.display();//Car
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Dynamic Binding</div>
+		<div class = "block">
+			<ul>
+				<li>Data type is defined during running time</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Car
+{
+	public void display()
+	{
+		System.out.println("Car");
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Buick extends Car
+{
+	public void display()
+	{
+		System.out.println("Buick");
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class CarTest
+{
+	public static void main(String args[])
+	{
+		Car c = new Car();
+		Car b = new Buick();
+
+		c.display();
+		b.display();
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://beginnersbook.com/2013/04/java-static-dynamic-binding/">Static binding and dynamic binding</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

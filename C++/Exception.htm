@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Exception
+		</div>
+		<div class = "block">
+			<ul>
+				<li><a href  ="http://stackoverflow.com/questions/1853243/do-you-really-write-exception-safe-code">Write Exception Safe Code</a></li>
+				<li>Not throw from destructor</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">try ... catch ...</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+try
+{
+	doSomething();//throw the exception
+}
+catch (exception1)
+{
+	throw;//rethrow the exception
+}
+catch (exception2)
+{
+}
+catch (...)
+{
+	//handle the rest of situations
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+double divide(double a, double b)
+{
+	if(b == 0)
+		throw "Zero Denominator ...";
+	else
+		return a/b;
+}
+
+int main(int argc, char *argv[])
+{
+	try
+	{
+		std::cout&lt;&lt;divide(10, 0)&lt;&lt;std::endl;
+	}
+	catch (const char *err)
+	{
+		std::cout&lt;&lt;err&lt;&lt;std::endl;
+	}
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+		<p style="text-align:center;"><img src = "img/Exception.png" width = 100%></p>
+	</div>
+		<div class = "subtitle">Open File</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+			</pre>
+		</div>
+		<div class = "subtitle">Exception</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+			</pre>
+		</div>
+		<div class = "subtitle">std::bad_cast</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;       // std::cout
+#include &lt;typeinfo&gt;       // std::bad_cast
+
+class Base {virtual void member(){}};
+class Derived : Base {};
+
+int main () {
+  try
+  {
+    Base b;
+    Derived& rd = dynamic_cast&lt;Derived&&gt;(b);
+  }
+  catch (std::bad_cast& bc)
+  {
+     std::cerr &lt;&lt; "bad_cast caught: " &lt;&lt; bc.what() &lt;&lt; '\n';
+  }
+  return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;       // std::cout
+#include &lt;typeinfo&gt;       // std::bad_cast
+
+class Base {virtual void member(){}};
+class Derived : Base {};
+
+int main () {
+  try
+  {
+    Base *b = new Base();
+    Derived *rd = dynamic_cast&lt;Derived*&gt;(b);
+    if(rd == nullptr)
+	    throw std::bad_cast();
+  }
+  catch (std::bad_cast& bc)
+  {
+     std::cerr &lt;&lt; "bad_cast caught: " &lt;&lt; bc.what() &lt;&lt; '\n';
+  }
+  catch (std::exception &e)
+  {
+	  std::cerr&lt;&lt;e.what()&lt;&lt;std::endl;
+  }
+  catch (...)
+  {
+	  std::cerr&lt;&lt;"Else ..."&lt;&lt;std::endl;
+  }
+
+  return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			<li><span style = "color:red">dynamic_cast</span> throw bad_cast for reference, but not for pointer</li>
+		</ul>
+	</div>
+		<div class = "subtitle">C Exception Handler</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;cerrno&gt;//include errno
+#include &lt;fstream&gt;
+#include &lt;cstring&gt;//includes strerror and perror
+#include &lt;cstdlib&gt;//defines EXIT_FAILURE and EXIT_SUCCESS
+
+extern int errno;
+
+int main(int argc, char *argv[])
+{
+	std::ifstream inputFile;
+	inputFile.open("temp.txt");
+
+	if(!inputFile)
+	{
+		std::cerr&lt;&lt;"Error ..."&lt;&lt;errno&lt;&lt;std::endl;
+		std::cerr&lt;&lt;std::strerror(errno)&lt;&lt;std::endl;
+		std::perror("Not able to open temp.txt ...");
+		exit(EXIT_FAILURE);
+	}
+
+	inputFile.close();
+	exit(EXIT_SUCCESS);
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/exception/exception/">cplusplus.com</a></li>
+				<li><a href = "https://isocpp.org/wiki/faq/exceptions">isocpp.org</a></li>
+				<li><a href = "https://www.codingunit.com/c-tutorial-error-handling-exception-handling">codingunit.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			iter & next
+		</div>
+
+		<div class = "subtitle">Python 2</div>
+		<div class = "block">
+			<li>__iter__ and next, called by iter() and next()</li>
+		<pre class = "prettyprint linenums">#!/usr/bin/python
+class MyRange:
+    def __init__(self, m = 0):
+        self.max = m
+        self.n = 0
+ 
+    def __iter__(self):
+        print('Call __iter__ ...')
+        self.n = 0
+        return self
+ 
+    def next(self):
+        print('Call __next__ ...')
+        if self.n &lt;= self.max:
+            result = 2 ** self.n
+            self.n += 1
+            return result
+        else:
+            raise StopIteration
+ 
+def main():
+    l = iter(MyRange(4)) # __iter__
+    while True:
+        try:
+            print(l.next()) # next
+        except StopIteration, err:
+            print(err)
+            break
+ 
+if __name__ == '__main__':
+    main();
+	
+		</pre>
+		</div>
+		<div class = "subtitle">Python 3</div>
+		<div class = "block">
+			<li>__iter__ and __next__, called by iter() and next()</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+class MyRange:
+    def __init__(self, m = 0):
+        self.max = m
+        self.n = 0
+
+    def __iter__(self):
+        print('Call __iter__ ...')
+        self.n = 0
+        return self
+
+    def __next__(self):
+        print('Call __next__ ...')
+        if self.n &lt;= self.max:
+            result = 2 ** self.n
+            self.n += 1
+            return result
+        else:
+            raise StopIteration('End of iteration ...')
+ 
+def main():
+    l = iter(MyRange(4))
+    while True:
+        try:
+            print(next(l))
+        except StopIteration as err:
+            print(err)
+            break
+
+if __name__ == '__main__':
+    main();
+		</pre>
+		</div>
+	</body>
+</html>

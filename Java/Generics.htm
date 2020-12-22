@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Generics
+		</div>
+
+		<div class = "subtitle"></div>
+		<div class = "block">
+			<ul>
+				<li>Type parameters are used to declare the return type, parameter types and local variable types</li>
+				<li>When the compiler translates generic method into bytecodes, it removes the ytpe parameter section and replaces the type parameters with actual types</li>
+				<li>By default all generic types are replaced with type Object</li>
+				<li>A Java compiler applies strong type checking to generic code and issues errors if the code violates type safety</li>
+				<li>Restrictions
+					<ul>
+						<li>Cannot Instantiate Generic Types with <span style = "color:red">Primitive Types</span></li>
+						<li>Cannot Create Instances of Type Parameters</li>
+						<li>Cannot Declare Static Fields Whose Types are Type Parameters</li>
+						<li>Cannot Use Casts or instanceof With Parameterized Types</li>
+						<li>Cannot Create Arrays of Parameterized Types</li>
+						<li>Cannot Create, Catch, or Throw Objects of Parameterized Types</li>
+						<li>Cannot Overload a Method Where the Formal Parameter Types of Each Overload Erase to the Same Raw Type</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Type Parameter Naming Conventions</div>
+		<div class = "block">
+			<ul>
+				<li>E - Element (used extensively by the Java Collections Framework)</li>
+				<li>K - Key</li>
+				<li>N - Number</li>
+				<li>T - Type</li>
+				<li>V - Value</li>
+				<li>S,U,V etc. - 2nd, 3rd, 4th types</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Type Casting</div>
+		<div class = "block">
+			<ul>
+				<li>Object o = new A()</li>
+				<li>((A)o).functionDefinedInA()</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Box
+{
+	private Object obj;
+
+	public Box(Object o)
+	{
+		obj = o;
+	}
+
+	public Object getObj()
+	{
+		return obj;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class G
+{
+	public static void main(String args[])
+	{
+		Box b = new Box("Hello World!");
+
+		String a = (String)b.getObj();//type casting
+
+		System.out.println(a.toLowerCase());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Generic Class</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Box&lt;T&gt;
+{
+	private T obj;
+
+	public Box(T o)
+	{
+		obj = o;
+	}
+
+	public T getObj()
+	{
+		return obj;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class G
+{
+	public static void main(String args[])
+	{
+		Box&lt;String&gt; b = new Box&lt;String&gt;("Hello World!");
+
+		String a = b.getObj();
+
+		System.out.println(a.toLowerCase());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Diamond</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class G
+{
+	public static void main(String args[])
+	{
+		Box&lt;String&gt; b = new Box&lt;&gt;("Hello World!");
+
+		String a = b.getObj();
+
+		System.out.println(a.toLowerCase());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Multiple Types</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Pair&lt;T, S&gt;
+{
+	private T name;
+	private S age;
+
+	public Pair(T n, S a)
+	{
+		name = n;
+		age = a;
+	}
+
+	public T getName()
+	{
+		return name;
+	}
+
+	public S getAge()
+	{
+		return age;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class G
+{
+	public static void main(String args[])
+	{
+		Pair&lt;String, Integer&gt; p = new Pair&lt;String, Integer&gt;("Lin", 37);
+
+		System.out.println(p.getName()+": "+p.getAge());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Generic Method</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class G
+{
+	public static &lt;T, S&gt; boolean compare(Pair&lt;T, S&gt; p1, Pair&lt;T, S&gt; p2)
+	{
+		if(p1.getName().equals(p2.getName()) && p1.getAge().equals(p2.getAge()))
+			return true;
+		else
+			return false;
+	}
+
+	public static void main(String args[])
+	{
+		Pair&lt;String, Integer&gt; p = new Pair&lt;String, Integer&gt;("Lin", 37);
+		Pair&lt;String, Integer&gt; p2 = new Pair&lt;String, Integer&gt;("Lin", 38);
+
+		Systemystem.out.println(G.&lt;String, Integer&gt;compare(p, p2));
+		System.out.println(compare(p, p2));//type interface
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Bounded Type Parameters</div>
+		<div class = "block">
+			<ul>
+				<li>Restrict the types that can be used as type arguments in a parameterized type</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Box&lt;T extends Number&gt;
+{
+	private T obj;
+
+	public Box(T o)
+	{
+		obj = o;
+	}
+
+	public T getObj()
+	{
+		return obj;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class G
+{
+	public static void main(String args[])
+	{
+		Box&lt;Integer&gt; b = new Box&lt;Integer&gt;(100);
+		//Box&lt;String&gt; b = new Box&lt;String&gt;("Hello World!");//compile erro
+
+		System.out.println(b.getObj());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Wildcard</div>
+		<div class = "block">
+			<ul>
+				<li>Use ? as the type of a parameter, field, or local variable; sometimes as a return type (though it is better programming practice to be more specific)</li>
+				<li>The wildcard is never used as a type argument for a generic method invocation, a generic class instance creation, or a supertype</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>The term List<Number> is more restrictive than List&lt;? extends Number&gt; because the former matches a list of type Number only, whereas the latter matches a list of type Number or any of its subclasses</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class G
+{
+	public static double sumOfList(List&lt;? extends Number&gt; list) {
+		double s = 0.0;
+	    	for (Number n : list)
+			s += n.doubleValue();
+	    	return s;
+	}
+
+	public static void main(String args[])
+	{
+		List&lt;Integer&gt; li = Arrays.asList(1, 2, 3);
+		System.out.println("sum = " + sumOfList(li));
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Generic Array</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class temp
+{
+	public static void main(String args[])
+	{
+		List[] l2 = new List&lt;?&gt;[2];
+
+		l2[0] = new ArrayList&lt;Integer&gt;();
+		l2[1] = new ArrayList&lt;Integer&gt;();
+
+		l2[0].add(1);
+		l2[0].add(2);
+
+		Object [] array = l2[0].toArray();
+
+		for(Object e : array)
+			System.out.println(e);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.ibm.com/developerworks/java/library/j-jtp01255/index.html">Generic Array</a></li>
+			<li><a href = "https://docs.oracle.com/javase/tutorial/java/generics/index.html">Oracle Tutorial</a></li>
+			<li><a href = "http://www.geeksforgeeks.org/generics-in-java/">Geekforgeek</a></li>
+		</div>
+	</body>
+</html>

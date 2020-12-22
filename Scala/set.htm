@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Set
+		</div>
+
+		<div class = "subtitle">Immutable Set</div>
+		<div class = "block">
+			<li>By default, Scala uses the immutable Set</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def main(args : Array[String])
+  {
+    var a = Set(1, 1, 2, 3, 4); // 1, 2, 3, 4
+    var b = Set(4, 6, 7, 8, 8);
+    println(a)
+
+    println(a.head) // head
+    println(a.tail) // tail
+
+    println(a ++ b) // 5 1 6 2 7 3 8 4
+
+    println(a+10) // add an element to set
+    println(a-1) // remove an element from set
+
+    println(a.apply(1)) // check if set contains a specific element
+
+    // intersect
+    println(a.&(b))
+    println(a.intersect(b))
+    // unit
+    println(a.union(b))
+    // difference
+    println(a.&~(b))
+
+    // foreach
+    a.foreach(println(_))
+    // max
+    println(a.max)
+    // min
+    println(a.min)
+    // mkString
+    println(a.mkString(" "))
+  }
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Mutable Set</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import scala.collection.mutable.{Set => mSet}
+object Demo
+{
+  def main(args : Array[String])
+  {
+    var a = mSet(1, 1, 2, 3, 4); // 1, 2, 3, 4
+    var b = mSet(4, 6, 7, 8, 8);
+
+    // intersect
+    println(a.&(b))
+    println(a.intersect(b))
+    // unit
+    println(a.union(b))
+    // difference
+    println(a.&~(b))
+  }
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">SortedSet</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import scala.collection.immutable.SortedSet
+object Demo
+{
+  def main(args : Array[String])
+  {
+    var a = SortedSet(1, 1, 4, 3, 2);
+    var b = SortedSet(4, 6, 7, 8, 8);
+
+    var c = a.toArray
+    println(c(1))
+
+    // intersect
+    println(a.&(b))
+    println(a.intersect(b))
+    // unit
+    println(a.union(b))
+    // difference
+    println(a.&~(b))
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.scala-lang.org/api/2.12.1/scala/collection/immutable/Set.html">Immutable Set</a></li>
+			<li><a href = "https://www.scala-lang.org/api/2.12.1/scala/collection/mutable/Set.html">Mutable Set</a></li>
+		</div>
+	</body>
+</html>

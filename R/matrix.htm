@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>R</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Matrix
+		</div>
+
+		<div class = "block">
+			<li>the elements are arranged in a two-dimensional rectangular layout</li>
+			<li>elements are the same atomic types</li>
+			<li>index starts from 1</li>
+		</div>
+		<div class = "subtitle">Create Matrix</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+M &lt;- matrix(c(3:14), nrow = 4, byrow = TRUE) # elements are arranged by row
+print(M)
+
+N &lt;- matrix(c(3:14), nrow = 4, byrow = FALSE) # elements are arranged by column
+print(N)
+
+rownames = c("row1", "row2", "row3", "row4")
+colnames = c("col1", "col2", "col3")
+P &lt;- matrix(c(3:14), nrow = 4, byrow = TRUE, dimnames = list(rownames, colnames))
+print(P)
+		</pre>
+		</div>
+
+		<div class = "subtitle">Accesing</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+rownames = c("row1", "row2", "row3", "row4")
+colnames = c("col1", "col2", "col3")
+
+P &lt;- matrix(c(3:14), nrow = 4, byrow = TRUE, dimnames = list(rownames, colnames))
+print(P)
+
+print(P[1, 2]) # 4, first row, second column
+print(P[1, ]) # first row
+print(P[, 2]) # second column
+		</pre>
+		</div>
+
+		<div class = "subtitle">Operations</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+M = matrix(1:12, nrow = 4)
+print(M)
+
+N = matrix(seq(2, 24, by = 2), nrow = 4)
+print(N)
+
+print(M+N) # addition
+print(N-M) # substraction
+print(M*N) # multiplication, elementwise
+print(M/N) # division, elementwise
+
+print(dim(M)) # dimension
+
+print(M %*% t(N)) # matrix multiplication
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.statmethods.net/advstats/matrix.html">Matrix Algebra</a></li>
+		</div>
+	</body>
+</html>

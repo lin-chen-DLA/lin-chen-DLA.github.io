@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Function
+		</div>
+
+		<div class = "subtitle">Define a Function</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;button type = "button" onclick="f()"&gt;Click&lt;/button&gt;
+&lt;script type="text/javascript"&gt;
+	function f()
+	{
+		document.write("Hello World!");
+	}
+&lt;/script&gt;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Return</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function f()
+{
+	return Math.PI;
+}
+
+document.write(f());
+		</pre>
+		</div>
+
+		<div class = "subtitle">Print the Function Definition</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function f()
+{
+	return Math.PI;
+}
+
+document.write(f); // Call without ()
+		</pre>
+		</div>
+
+		<div class = "subtitle">Mutable &amp; Immutable</div>
+		<div class = "block">
+			<li><span>Immutable</span> for primitive types, boolean/Boolean, null, undefined, string/String, and number/Number</li>
+			<li><span>Mutable</span> for Array, Function, and Object</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// immutable
+var a = 10;
+
+console.log('Before Calling the Function: '+a); // 10
+
+changeValue(a); // 100
+
+console.log('After Calling the Function: '+a); // 10
+
+function changeValue(v)
+{
+	v *= 10;
+	console.log('Inside Function: '+v);
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<li>both string and String are immutable, even the type of String is object</li>
+		<pre class = "prettyprint linenums">
+var s_1 = "Hello World!"; // immutalbe
+var s_2 = new String("Hello World!"); // immutable
+
+console.log(s_1 == s_2); //true
+console.log(s_1 === s_2); //false
+
+function change(s)
+{
+	s = s+"Changed";
+}
+
+change(s_1);
+change(s_2);
+
+console.log(s_1); // Hello World!
+console.log(typeof(s_1)); //string
+console.log(s_2); //String("Hello World!")
+console.log(typeof(s_2)); //object
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// mutable
+function change(ob)
+{
+	ob.name = 'Yanhua';
+	console.log(ob);
+}
+
+var a = {name: 'Lin', age: 39}
+console.log(a); // {name: 'Lin', age: 39}
+
+change(a); // {name: 'Yanhua', age: 39}
+
+console.log(a); // {name: 'Yanhua', age: 39}
+		</pre>
+		</div>
+		<div class = "subtitle">Anonymous Function</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var f = function (a, b) {return a+b;}
+
+console.log(f(10, 100));
+		</pre>
+		</div>
+		<div class = "subtitle">Arrow Function</div>
+		<div class = "block">
+			<li><span>Immutable</span> for primitive types, boolean/Boolean, null, undefined, string/String, and number/Number</li>
+			<li><span>Mutable</span> for Array, Function, and Object</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// regular function
+function add_1(a, b)
+{
+	return a+b;
+}
+
+console.log(add_1(1, 2));
+
+// arrow function
+add_2 = (a, b) =&gt; 
+{
+	return a+b;
+}
+
+console.log(add_2(1, 2));
+
+// single instruction in arrow function
+add_3 = (a, b) =&gt; a+b;
+
+console.log(add_3(1, 2));
+		</pre>
+		</div>
+		<div class = "block">
+			<li>With a <span>regular</span> function <span>this</span> represents the object that calls the function</li>
+			<li><span>this</span> keyword always represents the owner that of the <span>arrow</span> function</li>
+		<pre class = "prettyprint linenums">
+&lt;button id="btn_1"&gt;Button 1&lt;/button&gt;
+&lt;button id="btn_2"&gt;Button 2&lt;/button&gt;
+&lt;script type="text/javascript"&gt;
+//The window own the function:
+window.addEventListener("load", () =&gt; {console.log(this)}); // window
+
+document.getElementById("btn_1").addEventListener("click", () =&gt; {console.log(this)}); // window
+
+//The window object calls the function:
+function info()
+{
+	console.log(this);
+}
+
+window.addEventListener("load", info); // window
+
+document.getElementById("btn_2").addEventListener("click", info); // button
+&lt;/script&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Default Arguments</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function f(a = 1, b = 2)
+{
+	console.log(a+b);
+}
+
+f(10, 100); // 110
+
+f(10); // 12
+
+f(b = 10); // 12, 10 is assigned to a
+		</pre>
+		</div>
+		<div class = "subtitle">Keyword Arguments</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function f({a = 1, b = 2})
+{
+	console.log(a+b);
+}
+
+f({a:10, b:100}); // 110
+
+f({a:10}); // 12
+
+f({b :10}); // 11
+		</pre>
+		<pre class = "prettyprint linenums">
+const add = ({a = 1, b = 2}) =&gt;
+{
+	console.log(a+b);
+}
+
+add({a:10, b:100}); // 110
+
+add({a:10}); // 12
+
+add({b:10}); // 12, 10 is assigned to a
+		</pre>
+		</div>
+		<div class = "subtitle">Self-Invoking Function</div>
+		<div class = "block">
+			<li>A self-invoking expression is invoked (started) automatically, without being called</li>
+			<li>Function expressions will execute automatically if the expression is followed by ()</li>
+		<pre class = "prettyprint linenums">
+(function () {
+  	var x = "Hello!!";  // I will invoke myself
+})();
+		</pre>
+		<pre class = "prettyprint linenums">
+var loop = function() { 
+    for(var x = 0; x &lt; 5; x++) {
+       console.log(x); 
+    } 
+}();
+
+		</pre>
+		</div>
+		<div class = "subtitle"><span>Arguments</span> Object</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function f()
+{
+	if (arguments.length == 0) return 'undefined';
+
+	var min = arguments[0];
+
+	for(var i = 0; i &lt; arguments.length; i++)
+		if (arguments[i] &lt; min)
+			min = arguments[i];
+
+	return min;
+}
+
+console.log(f(-1, 0, 1, 2));
+		</pre>
+		</div>
+		<div class = "subtitle"><span>Rest Parameters</span></div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function f(p1, ...params)
+{
+	console.log(p1);
+
+	for(let i = 0; i &lt; params.length; i++)
+		console.log(params[i]);
+}
+
+f(1, 2, 3, 4)
+
+		</pre>
+		</div>
+		<div class = "subtitle"><span>call()</span></div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var person = {
+	info: function () {return this.name + " : " + this.age;},
+	setName: function (n) {this.name = n;}
+}
+
+var person1 = {name: 'Lin', age: 39};
+var person2 = {name: 'Yanhua', age: 39};
+
+person.setName.call(person1, 'Yanhua');
+console.log(person.info.call(person1));
+console.log(person.info.call(person2));
+		</pre>
+		</div>
+		<div class = "subtitle"><span>apply()</span></div>
+		<div class = "block">
+			<li>The call() method takes arguments separately</li>
+			<li>The apply() method takes arguments as an array</li>
+		<pre class = "prettyprint linenums">
+var a = [1, 2, 3];
+
+console.log(Math.max.apply(null, a)); // apply Math.max() method to array
+		</pre>
+		</div>
+		<div class = "subtitle"><span>Closure</span></div>
+		<div class = "block">
+			<li>Is assigned the return value of a self-invoking function</li>
+			<li>It can access the counter in the parent scope</li>
+		<pre class = "prettyprint linenums">
+&lt;button type="button" onclick="myFunction()"&gt;Count!&lt;/button&gt;
+
+&lt;p id="demo"&gt;0&lt;/p&gt;
+
+&lt;script&gt;
+var add = (function () {
+  var counter = 0;
+  return function () {counter += 1; return counter;}
+})();
+
+function myFunction(){
+  document.getElementById("demo").innerHTML = add();
+}
+&lt;/script&gt;
+		</pre>
+		</div>
+		<div class = "subtitle"><span>Recursive</span></div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+const fact = (n) =&gt;
+{
+	if (n == 1)
+		return n;
+	else
+		return n*fact(n-1);
+}
+
+console.log(fact(10));
+		</pre>
+		</div>
+		<div class = "subtitle"><span>Generator</span></div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function* g(n)
+{
+	for(let i = 0; i &lt; n; i++)
+		yield i;
+}
+
+for (e of g(10))
+	console.log(e);
+		</pre>
+		</div>
+		<div class = "subtitle"><span>Promises</span></div>
+		<div class = "block">
+			<li>Implement async programming in JavaScript</li>
+		<pre class = "prettyprint linenums">
+function divide (a, b)
+{
+	var p = new Promise(function(resolve, reject)
+		{
+			// do a thing, possibly async , then..
+			if(b == 0)
+				reject(Error("Denominator is Zero ..."));
+			else
+				resolve(a/b);
+		});
+
+	return p;
+}
+
+divide(10, 2).then(function(result)
+	{console.log("Result: "+result);},
+	function(error)
+	{console.log("Error: "+error);}
+);
+
+divide(6, 0).then(function(result)
+	{console.log("Result: "+result);},
+	function(error)
+	{console.log("Error: "+error);}
+);
+		</pre>
+		</div>
+		<div class = "block">
+			<li>XMLHttpRequest
+				<ol>
+					<li>request = new XMLHttpRequest(), synchronous and asynchronous</li>
+					<li>request.open(method, URL, [async, user, password])</li>
+					<li>xhr.send([body], GET do not have a body, POST use body to send the data to the server</li>
+					<li>Listen to request events for response
+						<ul>
+							<li>load – when the request is complete (even if HTTP status is like 400 or 500), and the response is fully downloaded</li>
+							<li>error – when the request couldn’t be made</li>
+							<li>progress – triggers periodically while the response is being downloaded, reports how much has been downloaded</li>
+						</ul>
+					</li>
+				</ol>
+			</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;script type="text/javascript"&gt;
+	const getFakeMembers = count =&gt; new Promise((resolves, rejects) =&gt; { 
+	const api = `https://api.randomuser.me/?nat=US&results=${count}` 
+	const request = new XMLHttpRequest()
+	request.open('GET', api)
+	request.onload = () =&gt;
+           (request.status === 200) ?
+            resolves(JSON.parse(request.response).results) :
+            reject(Error(request.statusText))
+	request.onerror = (err) =&gt; rejects(err)
+	request.onprogress = function(event) { // triggers periodically
+  		console.log(`Received ${event.loaded} of ${event.total}`);};
+	request.send()
+})
+
+ getFakeMembers(1).then(
+      resolves = (members) =&gt; console.log(members),
+      rejects = (err) =&gt; {
+	      console.error(new Error("cannot load members from randomuser.me"));
+      		console.log(err)
+      }
+ )
+	&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Chaining</li>
+		<pre class = "prettyprint linenums">
+var promise = job1();
+
+promise
+
+.then(function(data1) {
+    console.log('data1', data1);
+    return job2();
+})
+
+.then(function(data2) {
+    console.log('data2', data2);
+    return 'Hello world';
+})
+
+.then(function(data3) {
+    console.log('data3', data3);
+});
+
+function job1() {
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            resolve('result of job 1');
+        }, 1000);
+    });
+}
+
+function job2() {
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            resolve('result of job 2');
+        }, 1000);
+    });
+}
+		</pre>
+		</div>
+		<div class = "subtitle"><span>Functional Programming</span></div>
+		<div class = "block">
+			<li>JavaScript is a functional language because its functions are first-class citizens</li>
+			<li>Functions can be saved, retrieved, or flow through applications just like variables</li>
+		</div>
+		<div class = "block">
+			<li><span>Declarative programming</span> is a style of programming where applications are structured in a way that prioritizes describing <span>what</span> should happen over defining how it should happen</li>
+		</div>
+		<div class = "block">
+			<li><span>Immutability</span></li>
+		<pre class = "prettyprint linenums">
+let color_lawn = { 
+	title: "lawn",
+	color: "#00FF00",
+	rating: 0 
+}
+
+//mutable
+function rateColor(color, rating) { 
+	color.rating = rating
+	return color
+}
+
+console.log(rateColor(color_lawn, 5).rating); //5
+console.log(color_lawn.rating); //5
+
+//immutable
+function rateColor_2(color, rating){
+	return Object.assign({}, color, {rating:rating}) //Object.assign() merges all objects you pass it into the first one
+}
+
+console.log(rateColor_2(color_lawn, 10).rating); //10
+console.log(color_lawn.rating); //5
+
+//or arrow function with spread operator
+const rateColor_3 = (color, rating) =&gt; ({...color, rating})
+
+console.log(rateColor_3(color_lawn, 100).rating); //100
+console.log(color_lawn.rating); //5
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+let list=[
+	{ title: "Rad Red"}, 
+	{ title: "Lawn"},
+	{ title: "Party Pink"}
+]
+
+//mutable
+var addColor = function(title, colors) { 
+	colors.push({ title: title })
+	return colors;
+}
+
+console.log(addColor("Glam Green", list).length); //4
+console.log(list.length); //4
+
+//immutable
+var addColor_3 = (title, colors) =&gt; colors.concat({title})
+
+console.log(addColor_3("Blue", list).length); //5
+console.log(list.length); //4
+
+//or with spread operator
+var addColor_2 = (title, colors) =&gt; [...colors, {title}]
+
+console.log(addColor_2("Red", list).length); //5
+console.log(list.length); //4
+
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>Pure Function</span>
+				<ul>
+					<li>a function that returns a value that is computed based on its arguments</li>
+					<li>do not cause side effects, set global variables, or change any‐ thing about application state</li>
+					<li>treat their arguments as immutable data</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+const frederick = {
+	name: "Frederick Douglass", 
+	canRead: false,
+	canWrite: false
+}
+
+const selfEducate = person =&gt; ({
+	...person, 
+	canRead: true, 
+	canWrite: true
+})
+    
+console.log( selfEducate(frederick) )
+console.log( frederick )
+
+// {name: "Frederick Douglass", canRead: true, canWrite: true}
+// {name: "Frederick Douglass", canRead: false, canWrite: false}
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>Data Transformations</span></li>
+			<li>remove an item from an array we should use Array.filter over Array.pop or Array.splice because Array.filter is immutabl</li>
+		<pre class = "prettyprint linenums">
+const schools = [ "Yorktown", "Washington &amp; Lee", "Wakefield"]
+
+const wSchools = schools.filter(school =&gt; school[0] === "W");
+console.log( wSchools ) 
+// ["Washington &amp; Lee", "Wakefield"]
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+const schools = [ "Yorktown", "Washington &amp; Lee", "Wakefield"]
+
+const highSchools = schools.map(school =&gt; `${school} High School`);
+console.log(highSchools.join("\n")
+//  Yorktown High School
+//  Washington &amp; Lee High School
+//  Wakefield High School
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+const schools = [ "Yorktown", "Washington &amp; Lee", "Wakefield"]
+
+const highSchools = schools.map(school =&gt; ({ name: school }));
+console.log( highSchools )
+// [
+//   { name: "Yorktown" },
+//   { name: "Washington &amp; Lee" },
+//   { name: "Wakefield" }
+// ]
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>higher-order functions</span></li>
+		<pre class = "prettyprint linenums">
+const createScream = logger =&gt; message =&gt; logger(message.toUpperCase() + "!!!");
+
+const scream = createScream(message =&gt; console.log(message));
+scream('functions can be returned from other functions')
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>recursive</span></li>
+		<pre class = "prettyprint linenums">
+const countdown = (value, fn) =&gt; { 
+	fn(value)
+	return (value &gt; 0) ? countdown(value-1, fn) : value 
+}
+    
+countdown(10, value =&gt; console.log(value));
+		</pre>
+		</div>
+		<div class = "block">
+			<li><span>Composition</span></li>
+		<pre class = "prettyprint linenums">
+const template = "hh:mm:ss tt"
+const clockTime = template.replace("hh", "03")
+          .replace("mm", "33")
+          .replace("ss", "33")
+          .replace("tt", "PM")
+console.log(clockTime)
+		</pre>
+		</div>
+		<div class = "subtitle"><span>Helper Function</span></div>
+		<div class = "block">
+			<li>A helper function is a function help another function</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function helper(num)
+{
+	return help(num+5);
+}
+
+function help(num)
+{
+	console.log(num);
+}
+
+helper(5);
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://medium.com/dailyjs/named-and-optional-arguments-in-javascript-using-es6-destructuring-292a683d5b4e">Named and Optional Arguments in JavaScript</a></li>
+			<li><a href = "https://codeburst.io/explaining-value-vs-reference-in-javascript-647a975e12a0">Explaining Value vs. Reference in Javascript</a></li>
+		</div>
+	</body>
+</html>

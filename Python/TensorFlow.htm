@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			TensorFlow
+		</div>
+
+		<div class = "subtitle">Tutorial</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://learningtensorflow.com/">Learning TensorFlow</a></li>
+				<li><a href = "http://cv-tricks.com/tensorflow-tutorial/">TensorFlow Tutorial</a></li>
+				<li><a href = "https://www.udacity.com/course/deep-learning--ud730">Google Course</a></li>
+				<li><a href = "https://cognitiveclass.ai/courses/deep-learning-tensorflow/">Free Course</a></li>
+				<li><a href = "https://github.com/tensorflow/tensorflow/tree/r1.2/tensorflow/examples">TensorFlow Examples</a></li>
+				<li><a href = "https://github.com/vahidk/EffectiveTensorflow">Effective Tensorflow</a></li>
+				<li><a href = "https://research.googleblog.com/2016/01/teach-yourself-deep-learning-with.html">Teach Yourself Deep Learning with TensorFlow and Udacity</a></li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Data Types</div>
+		<div class = "block">
+			Constant
+		<pre class = "prettyprint linenums">
+node1 = tf.constant(3.0, dtype=tf.float32);
+sess = tf.Session();
+print(sess.run(node1);
+		</pre>
+		</div>
+		<div class = "block">
+			Placeholder
+		<pre class = "prettyprint linenums">
+a = tf.placeholder(tf.float32)
+b = tf.placeholder(tf.float32)
+adder_node = a + b  # + provides a shortcut for tf.add(a, b)
+print(sess.run(adder_node, {a: 3, b:4.5}))
+		</pre>
+		</div>
+		<div class = "block">
+			Variable
+		<pre class = "prettyprint linenums">
+W = tf.Variable([.3], dtype=tf.float32)
+b = tf.Variable([-.3], dtype=tf.float32)
+x = tf.placeholder(tf.float32)
+linear_model = W * x + b
+init = tf.global_variables_initializer()
+sess.run(init)
+print(sess.run(linear_model, {x:[1,2,3,4]}))
+		</pre>
+		</div>
+
+		<div class = "subtitle">Train a Model</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import tensorflow as tf
+
+# Create TensorFlow Session
+sess = tf.Session()
+
+# Create a Model
+W = tf.Variable([.3], dtype=tf.float32)
+b = tf.Variable([-.3], dtype=tf.float32)
+x = tf.placeholder(tf.float32)
+linear_model = W * x + b
+
+# Initialize Parameters
+init = tf.global_variables_initializer()
+sess.run(init)
+
+# Create Loss Function
+y = tf.placeholder(tf.float32)
+squared_deltas = tf.square(linear_model - y)
+loss = tf.reduce_sum(squared_deltas)
+
+# Train Model
+optimizer = tf.train.GradientDescentOptimizer(0.01)
+train = optimizer.minimize(loss)
+for i in range(1000):
+      sess.run(train, {x:[1,2,3,4], y:[0,-1,-2,-3]})
+      WTemp, bTemp, lossTemp = sess.run([W, b, loss], {x:[1, 2, 3, 4], y:[0,-1,-2,-3]});
+      print WTemp, bTemp, lossTemp
+		</pre>
+		</div>
+
+		<div class = "subtitle">MNIST</div>
+		<div class = "block">
+			<ul>
+				<li>mnist.train.images, mnist.train.labels</li>
+				<li>mnist.test.images, mnist.test.labels</li>
+				<li>mnist.validation.images, mnist.validation.labels</li>
+			</ul>
+		<pre class = "prettyprint linenums">
+		</pre>
+		</div>
+		<div class = "subtitle">TensorBoard</div>
+		<div class = "block">
+			<ul>
+				<li>tensorboard --logdir=path/to/log-directory</li>
+				<li>http://localhost:6006/, check tensorboard</li>
+			</ul>
+		</div>
+		<div class = "subtitle">TF-Slim</div>
+		<div class = "block">
+			<ul>
+			</ul>
+		</div>
+		<div class = "subtitle">API: tf.gfile, file and directory operation</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import tensorflow as tf
+import os
+
+# Create Directory
+tf.gfile.MkDir('temp');
+
+# Check if a path is a directory
+print tf.gfile.IsDirectory('temp');
+
+# List Directories
+print tf.gfile.ListDirectory('.');
+
+# List all .py files
+print tf.gfile.Glob('*.py');
+
+# Copy
+try:
+    tf.gfile.Copy('Tensor.py', 'temp/Tensor.py');
+except Exception, e:
+    print e
+
+# Exists
+print tf.gfile.Exists('temp/Tensor.py');
+
+# Recursively list all .py files
+for i, j, k in tf.gfile.Walk('.'):
+    print 'Directory: ', i;
+    files = tf.gfile.Glob(os.path.join(i, '*.py'));
+    print files;
+    #print 'SubDirectories: ', j;
+    #print 'Files: ', k;
+
+# Delete everything under dirname recursively
+tf.gfile.DeleteRecursively('temp');
+		</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>LeetCode</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title"><a href = "https://leetcode.com/problems/climbing-stairs/">70. Climbing Stairs</a></div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+class Solution:
+    def climbStairs(self, n: int) -&gt; int:
+        fact = [1]
+        for i in range(1, n+1):
+            fact.append(fact[i-1]*i)
+
+        l = int(n/2)+1
+
+        ways = 0
+        for i in range(l):
+            ways += fact[n-i]/fact[i]/fact[n-2*i]
+
+        return int(ways)
+
+def main():
+    s = Solution()
+
+    print(s.climbStairs(2)) # 2
+    print(s.climbStairs(3)) # 3
+    print(s.climbStairs(4)) # 5
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "block">
+			O(2^n), memory complexity O(n)
+			<pre class = "prettyprint linenums">
+class Solution:
+    def climbStairs(self, n: int) -&gt; int:
+        if n == 1 or n == 2:
+            return n
+
+        return self.climbStairs(n-1) + self.climbStairs(n-2)
+
+def main():
+    s = Solution()
+
+    print(s.climbStairs(2)) # 2
+    print(s.climbStairs(3)) # 3
+    print(s.climbStairs(4)) # 5
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "block">
+			Time complexity: O(n)<br>Memory complexity: O(n)
+			<pre class = "prettyprint linenums">
+from typing import List
+
+class Solution:
+    def climbStairs(self, n: int) -&gt; int:
+        l = [0]*(n+1)
+
+        return self.climb(n, l)
+
+    def climb(self, n: int, l: List[int]) -&gt; int:
+        if n == 1 or n == 2:
+            return n
+
+        if l[n] &gt; 0:
+            return l[n]
+
+        c = self.climb(n-1, l) + self.climb(n-2, l)
+
+        if l[n] == 0:
+            l[n] = c
+
+        return c
+
+def main():
+    s = Solution()
+
+    print(s.climbStairs(2)) # 2
+    print(s.climbStairs(3)) # 3
+    print(s.climbStairs(4)) # 5
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "block">
+			Time complexity: O(n)<br>Memory complexity: O(n)
+			<pre class = "prettyprint linenums">
+class Solution:
+    def climbStairs(self, n: int) -&gt; int:
+        l = [0]*(n+1)
+        l[1] = 1
+        l[2] = 2
+
+        for i in range(3, n+1):
+            l[i] = l[i-1] + l[i-2]
+
+        return l[n]
+
+def main():
+    s = Solution()
+
+    print(s.climbStairs(2)) # 2
+    print(s.climbStairs(3)) # 3
+    print(s.climbStairs(4)) # 5
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MATLAB</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Struct
+		</div>
+
+		<div class = "subtitle">Single Field, Single Value</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+% Single Field, Single Value
+field = 'array';
+value = 1:10;
+s = struct(field, value)
+s.array
+			</pre>
+		</div>
+		<div class = "subtitle">Single Field, Multiple Value</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+% Single Field, Single Value
+field = 'array';
+value = {'Name', 1:10}
+s = struct(field, value)
+s(1).array %access the first value
+s(2).array %access the second value
+			</pre>
+		</div>
+<div class = "subtitle">Multiple Fields, Multiple Values</div>
+<div class = "block">
+		<p style="text-align:center;"><img src = "img/Struct.png" width = 50%></p>
+	</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+% Single Field, Single Value
+field1 = 'f1';
+value1 = {'Name', 1:10};
+field2 = 'f2';
+value2 = 1:4;
+s = struct(field1, value1, field2, value2);
+s(1)
+s(2)
+s(1).f1 %'Name'
+s(2).f1 %1:10
+s(1).f2 %1:4 
+s(2).f2 %1:4
+	</pre>
+</div>
+	<div class = "subtitle">Reference</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "https://www.mathworks.com/help/matlab/ref/struct.html">MATLAB Documentation</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

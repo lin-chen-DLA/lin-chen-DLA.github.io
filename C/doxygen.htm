@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Basic Syntax</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Doxygen
+		</div>
+
+		<div class = "subtitle">Install</div>
+		<div class = "block">
+			<li>Mac, brew install doxygen</li>
+			<li>Linux, sudo apt-get install doxygen</li>
+		</div>
+		<div class = "subtitle">Sample Code</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/doxygen_1.png" width = "40%"></p>
+		</div>
+		<div class = "subtitle">Doc String</div>
+		<div class = "block">
+			<li>@file, present in the file header</li>
+			<li>@param, parameters</li>
+			<li>@page, Markdown page name</li>
+			<li>@mainpage, main Markdown page for the project</li>
+			<li>@tableofcontents, generate table of content for the Markdown page</li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/// @file hello.h
+#ifndef HELLO_H
+#define HELLO_H
+ 
+/** Return a string "Hello World\n"
+ * @param [out] a string
+ */
+char * hello();
+ 
+#endif
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/// @file util.h
+#ifndef UTIL_H
+#define UTIL_H
+ 
+/** Return a double value of an integer
+ * @param [in] n an integer number
+ * @param [out] an integer number
+ */
+int doubleNum(int n);
+ 
+#endif
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/// @file main.c
+#include <stdio.h>
+#include "hello.h"
+#include "util.h"
+ 
+/**
+ * Main entry point of the program.
+ */
+int main()
+{
+		printf("%s\n", hello());
+		printf("%d\n", doubleNum(10));
+			 
+		return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/// @file hello.c
+#include "hello.h"
+
+char * hello()
+{
+	return "Hello World\n";
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/// @file util.c
+#include "util.h"
+ 
+int doubleNum(int n)
+{
+		return 2*n;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Generate Documents</div>
+		<div class = "block">
+			<li>Doxyfile
+				<ul>
+					<li>INPUT, specify the files and/or directories that contain documented source files
+						<ul>
+							<li>INPUT = "../src" "../include"</li>
+						</ul>
+					</li>
+					<li>FILE_PATTERNS, specify the file types that will be searched</li>
+					<li>RECURSIVE, recrusively search the specified directories
+						<ul>
+							<li>RECURSIVE = YES</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<pre class = "prettyprint linenums">
+cd doc
+doxygen -g // generate "Doxyfile" which is a configuration file
+// edit Doxyfile
+doxygen // generate documentation
+			</pre>
+		</div>
+		<div class = "subtitle">Add Pages</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/doxygen_2.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+// main.md
+@mainpage Project title
+This is the main page for the project.
+
+1. item 1
+2. item 2
+3. item 3
+4. item 4
+			</pre>
+			<pre class = "prettyprint linenums">
+// page_1.md
+@page Page_1 Page 1
+@subpage Subpage_1
+
+**Author:** Author name
+**Date:**  Date
+## Module's Role
+Explain the module's role in the system in general
+			</pre>
+			<pre class = "prettyprint linenums">
+// page_2.md
+@page Page_2 Page 2
+
+**Author:** Lin Chen
+**Date:**  09.07.2020
+## Module's Role
+Explain the module's role in the system in general
+			</pre>
+			<pre class = "prettyprint linenums">
+// subpage_1.md
+@page Subpage_1 Sub Page 1
+
+**Author:** Yanhua Feng
+**Date:**  09.07.2020
+## Module's Role
+Explain the module's role in the system in general
+			</pre>
+		</div>
+		<div class = "block">
+			<li>Doxyfile
+				<ul>
+					<li>INPUT, specify the files and/or directories that contain documented source files
+						<ul>
+							<li>INPUT = "../page" "../src" "../include"</li>
+						</ul>
+					</li>
+					<li>FILE_PATTERNS, specify the file types that will be searched</li>
+					<li>RECURSIVE, recrusively search the specified directories
+						<ul>
+							<li>RECURSIVE = YES</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<pre class = "prettyprint linenums">
+cd doc
+doxygen -g // generate "Doxyfile" which is a configuration file
+// edit Doxyfile
+doxygen // generate documentation
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.doxygen.nl/manual/starting.html">Doxygen Documentation</a></li>
+			<li><a href = "https://embeddedinventor.com/guide-to-configure-doxygen-to-document-c-source-code-for-beginners/">Doxygen Tutorial</a></li>
+		</div>
+	</body>
+</html>

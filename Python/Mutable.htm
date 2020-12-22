@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Mutable & Immutable
+		</div>
+
+		<div class = "subtitle">Mutable</div>
+		<div class = "block">
+			<li>Change the value of a mutable variable will not create a new id</li>
+			<li><span style = "color:red">list, byte array, sets, dict, class instances</span></li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def changeMutable(v):
+	v[2] = 100 # change 3rd element of v in main program
+	v = [1, 2, 3, 4] # create a new object, not change v in main program
+ 
+l = range(10)
+ 
+changeMutable(l)
+print l# [0, 1, 100, 3, 4, 5, 6, 7, 8, 9]
+			</pre>
+		</div>
+		<div class = "subtitle">Immutable</div>
+		<div class = "block">
+			<li>Change the value of an immutable variable will create a new id</li>
+			<li>int, float, complex, str, tuples, bytes, frozensets</li>
+		</div>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def changeNum(n):
+	n *= 10 # create a new object, not change n in main program
+ 
+# python create 10 in memory, all three variable points to the same memory
+n = 10;
+n2 = n;
+n3 = 10;
+print id(n), id(n2), id(n3);
+ 
+changeNum(n)
+print n# 10
+ 
+# create a string
+s = 'Hello '
+print id(s)
+# create a new string object
+s = s+'World!'
+print id(s)
+ 
+print s# Hello World!
+			</pre>
+		</div>
+		<div class = "subtitle">Assignment</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# create an object and assign the reference to l
+l = range(10)
+ 
+# assignment the reference of l to l2
+l2 = l
+ 
+# create a new object and assign the reference to l3
+l3 = range(10) # mutable variable
+
+# l and l2 point to same object, l3 is a different object
+print id(l), id(l2), id(l3)
+ 
+# create an immutable object
+i = (1, 2, 3, 4)
+ 
+# i and i2 point to same object
+i2 = i
+ 
+# create a new object
+i3 = (1, 2, 3, 4)
+
+print id(i), id(i2), id(i3)
+			</pre>
+		</div>
+		<div class = "subtitle">User defined class</div>
+		<div class = "block">
+			<li>user defined class can be used as both mutable and immutable</li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# mutable
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+ 
+    def __init__(self, brand):
+        self._brand = brand;
+ 
+    def __str__(self):
+        return self._brand
+
+    def __hash__(self):
+        return hash(self._brand)
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self._brand == other._brand
+        return NotImplemented
+
+def change(v):
+    print('Inside function ...')
+    print(id(v)) # 4350403216
+    v._brand = 'Lincoln'
+
+def main():
+    v = Vehicle("Buick")
+    print(id(v)) # 4350403216
+    print(v) # Buick
+
+    change(v)
+    print('After call change function ...')
+    print(id(v)) # 4350403216
+    print(v) # Lincoln
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# immutable, need define __hash__ and __eq__
+# dictionary use immutable data type as key
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+ 
+    def __init__(self, brand):
+        self._brand = brand;
+ 
+    def __str__(self):
+        return self._brand
+
+    def __hash__(self):
+        return hash(self._brand)
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self._brand == other._brand
+        return NotImplemented
+
+def main():
+    v = Vehicle("Buick")
+    container = {v: 100} # use Vehicle instance as key
+
+    print(container[Vehicle("Buick")])
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "subtitle">Resource</div>
+		<div class = "block">
+			<li><a href = "https://codehabitude.com/2013/12/24/python-objects-mutable-vs-immutable/">CODEHABITUDE</a></li>
+		</div>
+		</div>
+	</body>
+</html>

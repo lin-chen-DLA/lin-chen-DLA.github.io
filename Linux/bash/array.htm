@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Linux</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Array
+		</div>
+
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+array=('Lin' 'Chen')
+array[2]="Yanhua"
+
+echo ${array[0]}
+echo ${array[1]}
+
+echo ${array[*]}
+echo ${array[@]}
+
+for i in ${array[*]}
+do
+	echo $i
+done
+
+array2=("${array[@]}") # create a copy
+array2[0]="Chen"
+echo ${array[@]}
+echo ${array2[@]}
+
+echo ${#array[@]} # 3, array size
+
+array=(a b c d e f g h i j)
+echo ${array[@]:3:2}         # prints d e
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://www.cyberciti.biz/faq/bash-for-loop-array/">Bash For Loop Array</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

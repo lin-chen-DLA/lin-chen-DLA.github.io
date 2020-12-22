@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Linked List</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/List.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# NodeModule.py
+#!/usr/bin/python
+""" A model containing Node class """
+
+__author__ = "Lin Chen"
+__version__ = "0.1"
+
+class Node:
+    """Single node in a data structure"""
+
+    def __init__(self, data):
+        """Initialize a Node
+        
+        Args:
+            data : data saved in the node
+        """
+        self._data = data
+        self._next = None
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, d):
+        self._data = d
+
+    @data.deleter
+    def data(self):
+        del self._data
+
+    @property
+    def next(self):
+        return self._next
+
+    @next.setter
+    def next(self, n):
+        self._next = n
+
+    @next.deleter
+    def next(self):
+        del self._next
+
+    def __str__(self):
+        return str(self._data)
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# ListModule.py
+#!/usr/bin/python
+""" A modeule containing List class"""
+ 
+from NodeModule import Node
+ 
+class List:
+    """Linked List class with a pre-defined Node class"""
+ 
+    def __init__(self):
+        """Initialize a List
+        """
+        self._head = None
+        self._count = 0
+ 
+    def __iter__(self):
+        return self
+ 
+    def __next__(self):
+        if self._head is not None:
+            temp = self._head
+            self._head = self._head.next
+            return temp
+        else:
+            raise StopIteration('End of iteration List ...')
+ 
+    def isEmpty(self):
+        """Check if the list is empty
+ 
+        Args:
+            None
+ 
+        Returns:
+            boolean : True, if list is empty; False, otherwise
+        """
+        return self._count == 0
+ 
+    def getSize(self):
+        """Return the size of the list
+        
+        Returns:
+            int : size of the list
+        """
+        return self._count
+ 
+    def contains(self, v):
+        """Check if a specific value is included in the list
+ 
+        Args:
+            v : a data which can be saved in a node
+ 
+        Returns:
+            boolean: True, if the value is contained in a node of the list; False, otherwise
+        """
+        current = self._head
+ 
+        while current is not None:
+            if current.data == v:
+                return True
+            else:
+                current = current.next
+ 
+        return False
+ 
+    def insert(self, index, v):
+        """Insert a valude to a specific location in the list
+ 
+        Args:
+            index (int): location of insertion, 0 is the location before the first element, 1 is the location after the first element
+            v : data which can be saved in a node
+ 
+        Returns:
+            boolean: True, if the value is inserted succefully; False, otherwise
+        """
+        if index &lt; 0 or index &gt; self._count:
+            return False
+ 
+        n = Node(v) # create a node
+ 
+        if index == 0:
+            n.next = self._head
+            self._head = n
+            self._count += 1
+            return True
+ 
+        current = self._head
+        for i in range(index-1):
+            current = current.next
+        n.next = current.next
+        current.next = n
+        self._count += 1
+        return True
+ 
+    def delete(self, index):
+        """Delete a valude located at a specific location in the list
+ 
+        Args:
+            index (int): location of deletion, 0 is the location before the first element, 1 is the location after the first element
+ 
+        Returns:
+            boolean: True, if the value is deleted succefully; False, otherwise
+        """
+        if index &lt; 0 or index &gt; self._count-1:
+            return False
+ 
+        if index == 0:
+            self._head = self._head.next
+            self._count -= 1
+            return True
+ 
+        current = self._head
+        for i in range(index-1):
+            current = current.next
+ 
+        current.next  = current.next.next
+        self._count -= 1
+        return True
+ 
+    def __str__(self):
+        """Convert the list to a string
+ 
+        Returns:
+            string : a string represents the list
+        """
+        if self.isEmpty():
+            return "Empty"
+ 
+        current = self._head
+        output = []
+ 
+        while current is not None:
+            output.append(str(current))
+            current = current.next
+ 
+        return " -&gt; ".join(output)
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+ 
+from ListModule import List
+ 
+def main():
+    l = List()
+ 
+    l.insert(0, 10)
+    l.insert(0, 20)
+    l.insert(0, 30)
+    print(l) # 30 -&gt; 20 -&gt; 10
+ 
+    l.insert(1, 40)
+    print(l) # 30 -&gt; 40 -&gt; 20 -&gt; 10
+ 
+    l.insert(4, 50)
+    print(l) # 30 -&gt; 40 -&gt; 20 -&gt; 10 -&gt; 50
+ 
+    l.delete(0)
+    print(l) # 40 -&gt; 20 -&gt; 10 -&gt; 50
+ 
+    l.delete(2)
+    print(l) # 40 -&gt; 20 -&gt; 50
+ 
+    if l.contains(20):
+        print("Contains 20 ...")
+    else:
+        print("Not contains 20 ...")
+ 
+    # convert List to iteration
+    l = iter(l)
+ 
+    while True:
+        try:
+            print(next(l))
+        except StopIteration as err:
+            print(err)
+            break
+ 
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<!-- <div class = "block">
+			<li><a href = "ListLab.htm">Lab</a></li>
+		</div> -->
+	</body>
+</html>

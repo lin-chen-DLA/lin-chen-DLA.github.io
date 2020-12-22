@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Lambda
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>Optional type declaration</li>
+				<li>Optional parenthesis around parameter</li>
+				<li>Optional curly braces</li>
+				<li>Optional return keyword</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Streams</div>
+		<div class = "block">
+			<ul>
+				<li>IntStream, LongStream, DoubleStream</li>
+				<li>Intermediate operations
+					<ul>
+						<li>filter, distinct, limit, map, sorted</li>
+					</ul>
+				</li>
+				<li>Terminal operations
+					<ul>
+						<li>forEach, average, count, max, min, reduce</li>
+					</ul>
+				</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+import java.util.*;
+import java.util.stream.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		int [] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+		System.out.println("Value: ");
+		IntStream.of(array).forEach(e -&gt; System.out.printf("%5d", e));
+		System.out.println();
+
+		//Terminal operations
+		System.out.println("Min: "+IntStream.of(array).min().getAsInt());
+		System.out.println("Max: "+IntStream.of(array).max().getAsInt());;
+		System.out.println("Average: "+IntStream.of(array).average().getAsDouble());;
+		System.out.println("Sum: "+IntStream.of(array).sum());
+
+		System.out.println("Reduce: "+IntStream.of(array).reduce(0, (x, y) -&gt; x+y));
+
+		//Intermediate operations
+		IntStream.of(array).peek(System.out::println).count();
+		System.out.println("Filter: "+IntStream.of(array).filter(e -&gt; e%2 == 0).sum());
+		IntStream.of(array).map(e -&gt; e*10).forEach(e -&gt; System.out.printf("%5d", e));
+		System.out.println();
+		IntStream.range(1, 5).forEach(e -&gt; System.out.printf("%5d", e));
+		System.out.println();
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.util.*;
+import java.util.stream.*;
+
+public class L
+{
+	public static void main(String args[])
+	{
+		Integer [] array = {2, 9, 5, 0, 3, 7, 1, 4, 8, 6};
+
+		System.out.println(Arrays.asList(array));
+
+		//array to stream
+		//stream to List
+		System.out.println(Arrays.stream(array).sorted().collect(Collectors.toList()));
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Streams</div>
+		<div class = "block">
+			<ul>
+				<li>BinaryOperator</li>
+				<li>Consumer</li>
+				<li>Function</li>
+				<li>Predicate</li>
+				<li>Supplier</li>
+				<li>UnaryOperator</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Car
+{
+	private String maker;
+
+	public Car(String m)
+	{
+		maker = m;
+	}
+
+	public String toString()
+	{
+		return "Car: "+maker;
+	}
+}
+import java.util.*;
+
+public class L
+{
+	public static void main(String args[])
+	{
+		List&lt;Car&gt; l = new ArrayList&lt;Car&gt;();
+
+		l.add(new Car("Buick"));
+		l.add(new Car("Honda"));
+
+		l.stream().forEach(System.out::println);
+	}
+}
+			</pre>
+	</body>
+</html>

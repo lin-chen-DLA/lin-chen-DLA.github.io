@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Inspect
+		</div>
+
+		<div class = "block">
+			<li>get information about live objects such as modules, classes, methods, functions, tracebacks, frame objects, and code objects</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    """ Vehicle class """
+
+    count = 0; # class attribute
+
+    def __init__(self, brand):
+        self.__brand = brand
+        Vehicle.count += 1
+
+    @property
+    def brand(self):
+        return self.__brand
+
+    @brand.setter
+    def brand(self, b):
+        self.__brand = b
+
+    @brand.deleter
+    def brand(self):
+        del self.__brand
+
+    def __str__(self):
+        return "Brand: %s" % self.__brand
+
+    def __getattr__(self, attr):
+        return "~"
+
+    def __del__(self):
+        Vehicle.count -= 1
+        print("Delete %s, %d vehicles left ..." % (self.__brand, Vehicle.count))
+
+def main():
+    v1 = Vehicle("Lincoln")
+
+    import inspect
+    from pprint import pprint
+
+    m = inspect.getmembers(v1, inspect.ismethod)
+    pprint(m)
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.python.org/3/library/inspect.html">Python STL Library</a></li>
+		</div>
+	</body>
+</html>

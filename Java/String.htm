@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			String
+		</div>
+
+		<div class = "subtitle">String</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Str
+{
+	public static void main(String args[])
+	{
+		String s = "abcdefghijk";
+
+		//substring
+		System.out.println(s.substring(0, 2));
+
+		//concat
+		String s2 = "lmnopqrst";
+		System.out.println(s.concat(s2));
+		System.out.println(s+s2);
+
+		//format
+		String s3;
+		s3 = String.format("Year: %d", 2017);
+		System.out.println(s3);
+
+		//float to string
+		String s4 = String.valueOf(3.14);
+		System.out.println(s4);
+
+		//string to float
+		float f = Float.valueOf("3.14");
+		System.out.println(f);
+
+		//split
+		s = "575-571-0350";
+		String [] array = s.split("-");
+		for(int i = 0; i &lt; array.length; i++)
+			System.out.println(array[i]);
+
+		//replace
+		System.out.println(s.replace('-', '.'));
+
+		//equals, ==
+		if(s.equals("575.571.0350"))
+			System.out.println("Equals");
+		else
+			System.out.println("Not Equals");
+
+		if(s == "575.571.0350")
+			System.out.println("==");
+		else
+			System.out.println("!=");
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>equals(), test equality of two objects</li>
+				<li>==, compare reference, whether they are the same object</li>
+			</ul>
+		</div>
+		<div class = "subtitle">StringBuilder</div>
+		<div class = "block">
+			<ul>
+				<li>String is immutable, StringBuilder is mutable</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+public class Str
+{
+	public static void main(String args[])
+	{
+		//String is immutable
+		String s = "Hello";
+
+		System.out.println(System.identityHashCode(s));
+
+		s = "World!";
+		System.out.println(System.identityHashCode(s));
+
+		//s[0] = 'H'; // not able to change a character
+
+		//StringBuilder is mutable
+		StringBuilder sb = new StringBuilder("Hello World!");
+
+		//append
+		sb.append(3.14);
+		System.out.println(sb);
+
+		//insert
+		sb.insert(0, 3.14);
+		System.out.println(sb);
+
+		//delete
+		sb.delete(0, 4);
+		System.out.println(sb);
+
+		//replace
+		sb.replace(0, 1, "Hello");
+		System.out.println(sb);
+
+		//reverse
+		System.out.println(sb.reverse());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">StringTokenizer</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.StringTokenizer;
+
+public class Token
+{
+	public static void main(String args[])
+	{
+		StringTokenizer t = new StringTokenizer("1, 2, 3, 4", ", ");//multiple delimiters
+
+		System.out.printf("Number of Tokens: %d%n", t.countTokens());
+
+		while(t.hasMoreTokens())
+		{
+			System.out.println(t.nextToken());
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Regular Expression</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Reg
+{
+	public static boolean validPhoneNumber(String s)
+	{
+		return s.matches("\\d{3}[=.]\\d{3}[-.]\\d{4}");
+	}
+
+	public static void main(String args[])
+	{
+		String phoneNumber = "575.571.0350";
+
+		System.out.println(validPhoneNumber(phoneNumber));
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Pattern and Matcher</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Reg
+{
+	public static void main(String args[])
+	{
+		Pattern p = Pattern.compile("\\d{3}[-.]\\d{3}[-.]\\d{4}");
+		String s = "575.571.0350, 575.571.1583";
+
+		//Pattern
+		System.out.println(Pattern.matches("\\d{3}[-.]\\d{3}[-.]\\d{4}.*", s));
+		System.out.println(Pattern.quote(s));
+
+		//Matcher
+		Matcher m = p.matcher(s);
+		while(m.find())
+		{
+			System.out.println(m.group());
+		}
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Text Boundary</div>
+		<div class = "block">
+			<ul>
+				<li>BreakIterator, natural text language</li>
+				<li>StreamTokenizer, programming language</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+import java.text.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		Locale currentLocale = new Locale ("en","US");
+
+		BreakIterator itr = BreakIterator.getWordInstance(currentLocale);
+
+		itr.setText("Hello Lin, how is everything going?");
+
+		//get the start and end of each word
+		int boundary = itr.first();
+
+		while(boundary != BreakIterator.DONE)
+		{
+			System.out.println(boundary);
+			boundary = itr.next();
+		}
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.oracle.com/javase/tutorial/java/data/buffers.html">Oracle</a></li>
+			<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html">Regular Express</a></li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Basic Syntax</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Arithmetics
+		</div>
+
+		<div class = "subtitle">Variable</div>
+		<div class = "block">
+			<li>Made up of letters and digits</li>
+			<li>The first character must be a letter</li>
+			<li>The underscore ‘‘_’’ counts as a letter</li>
+			<li>Don’t begin variable names with underscore, however, since library routines often use such names</li>
+			<li>Upper and lower case letters are distinct, so x and X are two different names</li>
+			<li>Traditional C practice is to use lower case for variable names, and all upper case for symbolic constants</li>
+		</div>
+		<div class = "subtitle">Constant</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+#define PI 3.14
+
+int main()
+{
+	const int j = 30;
+	//j = 100; // not allowed to change value
+
+	printf("%f\n", PI);
+
+	return 0;
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Arithmetic Operators</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int i = 10, j = 100;
+
+	int r;
+
+	r = i + j;
+	printf("%d\n", r); // 110
+
+	r = i - j;
+	printf("%d\n", r); // -90
+
+	r = i * j;
+	printf("%d\n", r); // 1000
+
+	r = j / i;
+	printf("%d\n", r); // 10
+
+	printf("%f\n", (float) i / j); // 0.1
+	printf("%f\n", (float) (i / j)); // 0.0
+
+	r = i % 3;
+	printf("%d\n", r); // 1
+
+	i++;
+	printf("%d\n", i); // 11
+
+	j--;
+	printf("%d\n", j); // 99
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int a = 10;
+
+	a += 1; // a = a + 1
+
+	a -= 1; // a = a - 1
+
+	a *= 2; // a = a * 2
+
+	a /= 2; // a = a / 2
+
+	a %= 3; // a = a % 3
+
+	return 0;
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Type Casting</div>
+		<div class = "block">
+			<li>implicit type casting, is performaed by compiler automatically</li>
+			<li>explict type casting, need to specify the cast operator</li>
+			<li>data type order: int &lt; unsigned int &lt;long &lt; unsigned long &lt; float &lt; double</li>
+			<li>Two different types in an arithmetic expersion, the lower rank data type will be converted to the higher rank data type</li>
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	float a = 3.14;
+	int b;
+
+	b = a; // implicit conversion
+	printf("%d\n", b); 
+
+	b = (int) a; // explicit conversion
+	printf("%d\n", b);
+
+	printf("%f\n", a + 1); // integer 1 is converted to float implicitly
+
+	return 0;
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Bitwise Operators</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/arithmetics.png" width=60% /></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int a = 10;
+	int b;
+
+	b = a &lt;&lt; 2;
+
+	printf("%d\n", b); // 40
+
+	b = a &gt;&gt; 1;
+
+	printf("%d\n", b); // 5
+
+	a &lt;&lt;= 2; // a = a &lt;&lt; 2
+	printf("%d\n", a); // 40
+
+	a &gt;&gt;= 1; // a = a &gt;&gt; 1
+	printf("%d\n", a); // 20
+
+	a = 5, b = 9;
+
+	printf("%d\n", a&amp;b); // 1,  0101 and 1001
+	printf("%d\n", a|b); // 13, 0101 or 1001
+	printf("%d\n", a^b); // 12, 0101 exclusive or 1001
+	printf("%d\n", ~a); // -6, not 0101
+
+	return 0;
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.tutorialspoint.com/cprogramming/c_variables.htm">Variable</a></li>
+			<li><a href = "https://www.tutorialspoint.com/cprogramming/c_constants.htm#:~:text=Constants%20refer%20to%20fixed%20values,are%20enumeration%20constants%20as%20well.">Constant</a></li>
+			<li><a href = "https://hikage.freeshell.org/books/theCprogrammingLanguage.pdf">C Programming Language</a></li>
+		</div>
+	</body>
+</html>

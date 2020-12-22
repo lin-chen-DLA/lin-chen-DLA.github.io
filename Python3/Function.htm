@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Function
+		</div>
+
+		<div class = "subtitle">Pass by reference</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# pass by reference
+def f2(m, im):
+    print('----------------Inside function-------------')
+    print(id(m), m) # 13977378998840, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    print(id(im), im) # 38097024, 10
+    m.append(100);
+    im = 100;
+    print(id(m), m) # 13977378998840, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100]
+    print(id(im), im) # 38098848, 100
+    print('---------------Leave function--------------')
+ 
+a = 10; # 38097024 10
+b = list(range(10)) # 13977378998840, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,]
+print(id(a), a)
+print(id(b), b)
+
+f2(b, a);
+print(id(a), a) # 38097024, 10
+print(id(b), b) # 13977378998840, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100]
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>All parameters (arguments) in the Python language are passed by reference</li>
+				<li>Mutable parameters, can be modified by function</li>
+				<li>Immutable parameters, cannot be modified by function</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Default arguments</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# default arguments
+def f1(p1, p2 = 10):
+    print(p1, p2)
+
+f1(1)
+			</pre>
+		</div>
+
+		<div class = "subtitle">Keyword arguments</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# keyword arguments
+def f3(p1 = 1, p2 = 2):
+    print(p1, p2)
+
+f3(p2 = 10)
+			</pre>
+		</div>
+
+		<div class = "subtitle">Variable-length arguments</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# variabel-length arguments
+def f4(*vartuple):
+    print('Lenght: ', len(vartuple))
+    print(type(vartuple), vartuple) # vartuple is a tuple
+    for i in vartuple:
+        print(i)
+ 
+f4(1, 2, 3, 'end')
+			</pre>
+		</div>
+
+		<div class = "subtitle">* in Function Calls</div>
+		<div class = "block">
+			<li>expands list or tuple into separate elements</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def f(a, b):
+    print(a, b)
+
+l = [10, 20]; # singularize list or tuple
+f(*l); # 10 20
+			</pre>
+		</div>
+
+		<div class = "subtitle">Arbitary Key Parameters</div>
+		<div class = "block">
+			<li>pass parameters and their values as a dict to function</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def f(**args):
+    print(args)
+    for k in args.keys():
+        print(k, args[k])
+
+f(inFile = 'input', outFile = 'output');
+			</pre>
+		</div>
+
+		<div class = "subtitle">** in Function Calls</div>
+		<div class = "block">
+			<li>pass keyworded variables as a dict to function</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def f(**args):
+    print(args)
+    for k in args.keys():
+        print(k, args[k])
+
+d = {'inFile':'input', 'outFile':'output'}; # singularize dict
+f(**d);
+			</pre>
+		</div>
+
+		<div class = "subtitle" id = "lambda">Lambda</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+ 
+#lambda
+sum = lambda arg1, arg2: arg1+arg2;
+ 
+print(sum(10, 20)) #30
+ 
+#map
+def t(arg):
+    return arg*10;
+ 
+l = [1, 2, 3, 4];
+r = map(t, l) #[10, 20, 30, 40], use function
+print(list(r))
+r = map(lambda x: x*10, l) #[10, 20, 30, 40], using lambda
+print(list(r))
+ 
+#filter
+r = filter(lambda x: x%2 == 0, l) #[2, 4]
+print(list(r))
+ 
+from functools import reduce
+#reduce
+r = reduce(lambda x, y: x+y, l) #10
+print(r)
+			</pre>
+		</div>
+
+		<div class = "subtitle">Return</div>
+		<div class = "block">
+			<li>return multiple values, which are saved in a tuple</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+ 
+def getNums():
+    return 1, 2
+ 
+a, b = getNums()
+print(a, b) # 1, 2
+ 
+_, b = getNums() # use _ to hold a place
+print(b) # 2
+ 
+t = getNums()
+print(t) # (1, 2), t is a tuple
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def getNum_1():
+    return 1 # return an integer
+
+def getNum_2():
+    return # return nothing
+
+def getNum_3():
+    return None # return None
+
+def getNum_4():
+    pass # no return will return None
+
+def main():
+    if getNum_1() is None:
+        print(getNum_1()) # not print
+    if getNum_2() is None:
+        print(getNum_2()) # None
+    if getNum_3() is None:
+        print(getNum_3()) # None
+    if getNum_4() is None:
+        print(getNum_4()) # None
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+
+		<div class = "subtitle">Recursive</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+ 
+# recursive
+def fib(n):
+    ''' Doc String
+    Args:
+        n (int), integer number
+    Return:
+        int, fib number
+    '''
+    if n &lt;= 1:
+        return 1
+    else:
+        return n*fib(n-1)
+
+print(fib(10))
+			</pre>
+		</div>
+
+		<div class = "subtitle">Functools</div>
+		<div class = "block">
+			<li>functools.partial, is used for partial function application which “freezes” some portion of a function’s arguments and/or keywords resulting in a new object with a simplified signature</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from functools import partial
+
+def f(a, b):
+    print(a, b)
+
+p = partial(f, b = 10)
+p(1) # 1 10, pass 1 to a, p() only need one argument
+			</pre>
+		</div>
+		<div class = "block">
+			<li>functools.update_wrapper, to allow access to the original function for introspection and other purposes</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from functools import partial, update_wrapper
+
+def f(a, b):
+    """ Docstring for f ..."""
+    print(a, b)
+
+p = partial(f, b = 10)
+p(1) # 1 10, pass 1 to a, p() only need one argument
+#print(p.__doc__, p.__name__) # partial object does not have __name__ or __doc__ attributes by default
+
+update_wrapper(p, f) # copies or adds attributes from the original function to the partial object
+print(p.__doc__, p.__name__)
+			</pre>
+		</div>
+		<div class = "block">
+			<li>functools.partialmethod, returns a callable ready to be used as an unbound method of an object</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from functools import partialmethod
+
+def getInfo(self, a, b):
+    """a partial function in class"""
+    print('  called standalone with:', (self, a, b))
+    if self is not None:
+        print('  self.attr =', self.attr)
+
+
+class MyClass:
+    "Demonstration class for functools"
+
+    def __init__(self):
+        self.attr = 'instance attribute'
+
+    method = partialmethod(getInfo, b = 10)
+
+c = MyClass()
+c.method(1)
+			</pre>
+		</div>
+		<div class = "block">
+			<li>functools.wraps, updating the properties of a wrapped callable when used in a decorator</i>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# use decorator
+
+def d(f):
+    def decorated(a=10, b=100):
+        return f(a, b=b)
+    return decorated
+
+@d
+def f(a, b):
+    """ Docstring for f ..."""
+    print(a, b)
+
+dwrapper = d(f)
+dwrapper() # 10 100
+print(dwrapper.__doc__, dwrapper.__name__) # None decorated
+
+f(b = 1) # 10 1
+			</pre>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# use wraps() to define a decorator
+
+from functools import wraps
+
+def d(f):
+    @wraps(f)
+    def decorated(a=10, b=100):
+        return f(a, b=b)
+    return decorated
+
+def f(a, b):
+    """ Docstring for f ..."""
+    print(a, b)
+
+dwrapper = d(f)
+dwrapper() # 10 100
+print(dwrapper.__doc__, dwrapper.__name__) # Docstring for f ... f
+			</pre>
+		</div>
+		<div class = "block">
+			<li>functools.lru_cache, wraps a function in a least-recently-used cache, subsequent calls with the same arguments will fetch the value from the cache instead of calling the function</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from functools import lru_cache
+
+@lru_cache()
+def f(a, b):
+    print('%d, %d' % (a, b))
+    return a * b
+
+f(1, 10)
+print(f.cache_info()) # print out the cache information
+
+f.cache_clear() # clear cache
+			</pre>
+		</div>
+
+		<div class = "subtitle">Overload</div>
+		<div class = "block">
+			<li>Python does not have real function overload, either use overloading module or isinstance to check and handle different type of inputs</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def info(m):
+    if isinstance(m, str):
+        return 'Str: '+m
+    elif isinstance(m, int):
+        return 'Int: '+str(m)
+    else:
+        raise TypeError('Take str or int types ...')
+
+print(info(100))
+print(info('Hello'))
+print(info(3.14)) # raise error
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# use default value to work as overloaded function
+def info(a, b = None):
+    if b is None:
+        return a
+    return a+b
+
+print(info(1, 2)) # 3
+print(info(1)) # 1
+			</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://www.python.org/dev/peps/pep-3124/#id5">Overloading</a></li>
+				<li><a href = "https://pymotw.com/3/functools/index.html">Python 3 Module of the Week</a></li>
+				<li><a href = "https://www.pythoncentral.io/python-null-equivalent-none/">Python’s null equivalent: None</a></li>
+				<li><a href = "https://www.python-course.eu/python3_recursive_functions.php">Recursive</a> at Python Course</li>
+				<li><a href = "https://www.python-course.eu/python3_lambda.php">Lambda</a> at Python Course</li>
+				<li><a href = "https://www.python-course.eu/python3_passing_arguments.php">Parameter Passing</a> at Python Course</li>
+			</ul>
+		</div>
+	</body>
+</html>

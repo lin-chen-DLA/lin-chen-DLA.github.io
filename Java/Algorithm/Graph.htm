@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Graph</div>
+		<div class = "block">
+			<ul>
+				<li style = "font-size: 24px">G = (V, E), V represents vertices and E represents edges</li>
+				<li style = "font-size: 24px">Adjacency list, sparse graph, for which |E| is much less than |V|<sup>2</sup></li>
+				<li style = "font-size: 24px">Adjacency matrix, dense graphs, for which |E| is close to |V|<sup>2</sup></li>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/Graph.png" width = "80%"></p>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/GraphDirected.png" width = "60%"></p>
+		</div>
+		<div class = "subtitle">Breadth First Search</div>
+		<div class = "block">
+			<ul>
+				<li style = "font-size: 24px">O(V+E)</li>
+				<li style = "font-size: 24px">Generate one BFS tree</li>
+			</ul>
+				<p style = "text-align:center;"><img src = "img/BFS.png" width = "80%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/** Node in CLRS Ch22.2
+ * @author Lin Chen
+ * @since 11.09.2017
+ */
+public class Node
+{
+	private String id;//vertex id
+	private int dist;//distance from source to current vertex
+	private String color;//vertex color, WHITE, not visited; GRAY, pushed into queue; BLACK, popped up from queue
+	private Node prev;//predecessor
+
+	public Node(String i)
+	{
+		id = i;
+		dist = -1;
+		color = "WHITE";
+		prev = null;
+	}
+
+	public String getID() {return id;}
+	public int getDist() {return dist;}
+	public String getColor() {return color;}
+	public Node getPrev() {return prev;}
+
+	public void setID(String i) {id = i;}
+	public void setDist(int d) {dist = d;}
+	public void setColor(String c) {color = c;}
+	public void setPrev(Node n) {prev = n;}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+/**
+ * Graph descript in CLRS Chapter 22.2
+ * @author Lin Chen
+ * @since 11.09.2017
+ */
+import java.util.*;
+
+public class Graph
+{
+	private int V;//number of vertices
+	private LinkedList&lt;LinkedList&lt;Node&gt;&gt; adjList;
+	private Node [] vertices;
+	private HashMap&lt;String, Integer&gt; id2index;
+
+	/** Initialize a graph with n node
+	 * @param n number of vertices
+	 */
+	public Graph(String ... args)
+	{
+		V = args.length;
+
+		//create adjacency list
+		adjList = new LinkedList&lt;LinkedList&lt;Node&gt;&gt;();
+		for(int i = 0; i &lt; V; i++)
+			adjList.add(new LinkedList&lt;Node&gt;());
+
+		//create vertices
+		vertices = new Node[V];
+		id2index = new HashMap&lt;String, Integer&gt;();
+		for(int i = 0; i &lt; V; i++)
+		{
+			vertices[i] = new Node(args[i]);
+			id2index.put(args[i], i);
+		}
+	}
+
+	/** Breadth First Search
+	 * @param s search from vertex s
+	 */
+	public void BFS(String s)
+	{
+		vertices[id2index.get(s)].setColor("GRAY");
+		vertices[id2index.get(s)].setDist(0);
+		vertices[id2index.get(s)].setPrev(null);
+		Queue&lt;Node&gt; q = new LinkedList&lt;Node&gt;();
+		q.add(vertices[id2index.get(s)]);
+
+		while(!q.isEmpty())
+		{
+			Node u = q.poll();
+			int uIndex = id2index.get(u.getID());
+			System.out.println("Pop "+u.getID()+" and set color to be BLACK");
+			for(Node e : adjList.get(uIndex))
+			{
+				int index = id2index.get(e.getID());
+				if(vertices[index].getColor().equals("WHITE"))
+				{
+					System.out.println("Push "+e.getID()+" into queue and set color to be GRAY");
+					vertices[index].setColor("GRAY");
+					vertices[index].setDist(vertices[uIndex].getDist()+1);
+					vertices[index].setPrev(vertices[uIndex]);
+					q.add(e);
+				}
+			}
+			vertices[uIndex].setColor("BLACK");
+		}
+	}
+
+	/** Add edge (u, v) to the graph
+	 * @param u start node
+	 * @param v end node
+	 */
+	public void addEdge(String u, String v)
+	{
+		adjList.get(id2index.get(u)).add(vertices[id2index.get(v)]);
+	}
+
+	/** List adjacency list
+	 * @return {@code String}, whole adjacency list
+	 */
+	public String adjList()
+	{
+		String s = "";
+		for(int i = 0; i &lt; vertices.length; i++)
+		{
+			s += vertices[i].getID()+" --&gt; ";
+			for(Node e : adjList.get(i))
+				s += e.getID()+" --&gt; ";
+			s += "\n";
+		}
+
+		return s;
+	}
+
+	/** Display Graph
+	 */
+	public void display()
+	{
+		System.out.println("---------BFS Graph------------");
+		for(int i = 0; i &lt; vertices.length; i++)
+		{
+			System.out.printf("ID: %5s Dist: %5d Color: %10s", vertices[i].getID(), vertices[i].getDist(), vertices[i].getColor());
+			if(vertices[i].getPrev() != null)
+				System.out.printf("%5s\n", vertices[i].getPrev().getID());
+			else
+				System.out.println();
+		}
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class BFS
+{
+	public static void main(String args[])
+	{
+		Graph g = new Graph("1", "2", "3", "4", "5");
+		g.addEdge("1", "2");
+		g.addEdge("1", "5");
+		g.addEdge("2", "3");
+		g.addEdge("2", "4");
+		g.addEdge("4", "3");
+		g.addEdge("5", "2");
+		g.addEdge("5", "4");
+
+		System.out.println(g.adjList());
+
+		g.BFS("1");
+
+		g.display();
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Depth First Search</div>
+		<div class = "block">
+			<ul>
+				<li style = "font-size: 24px">O(V+E)</li>
+				<li style = "font-size: 24px">Generate multiple DFS trees</li>
+			</ul>
+				<p style = "text-align:center;"><img src = "img/DFS.png" width = "80%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/** Node in CLRS Ch22.3
+ * @author Lin Chen
+ * @since 11.09.2017
+ */
+public class Node
+{
+	private String id;//vertex id
+	private int d;//first timestamp
+	private int f;//second teimstamp
+	private String color;//vertex color, WHITE, not visited; GRAY, pushed into queue; BLACK, popped up from queue
+	private Node prev;//predecessor
+
+	public Node(String i)
+	{
+		id = i;
+		d = -1;
+		f = -1;
+		color = "WHITE";
+		prev = null;
+	}
+
+	public String getID() {return id;}
+	public int getD() {return d;}
+	public int getF() {return f;}
+	public String getColor() {return color;}
+	public Node getPrev() {return prev;}
+
+	public void setID(String i) {id = i;}
+	public void setD(int d) {this.d = d;}
+	public void setF(int f) {this.f = f;}
+	public void setColor(String c) {color = c;}
+	public void setPrev(Node n) {prev = n;}
+
+	public String toString()
+	{
+		return id+"("+d+","+f+")";
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class TimeStamp
+{
+	private int t;
+
+	public TimeStamp()
+	{
+		t = 0;
+	}
+
+	public int getTimeStamp() {return t;}
+
+	public void setTimeStamp(int t) {this.t = t;}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+/**
+ * Graph descript in CLRS Chapter 22.3
+ * @author Lin Chen
+ * @since 11.09.2017
+ */
+import java.util.*;
+
+public class Graph
+{
+	private int V;//number of vertices
+	private LinkedList&lt;LinkedList&lt;Node&gt;&gt; adjList;
+	private Node [] vertices;
+	private HashMap&lt;String, Integer&gt; id2index;
+
+	/** Initialize a graph with n node
+	 * @param n number of vertices
+	 */
+	public Graph(String ... args)
+	{
+		V = args.length;
+
+		//create adjacency list
+		adjList = new LinkedList&lt;LinkedList&lt;Node&gt;&gt;();
+		for(int i = 0; i &lt; V; i++)
+			adjList.add(new LinkedList&lt;Node&gt;());
+
+		//create vertices
+		vertices = new Node[V];
+		id2index = new HashMap&lt;String, Integer&gt;();
+		for(int i = 0; i &lt; V; i++)
+		{
+			vertices[i] = new Node(args[i]);
+			id2index.put(args[i], i);
+		}
+	}
+
+	/** Depth First Search
+	 * @param s search from vertex s
+	 */
+	public void DFS()
+	{
+		TimeStamp t = new TimeStamp();
+
+		for(int i = 0; i &lt; V; i++)
+			if(vertices[i].getColor().equals("WHITE"))
+			{
+				DFSVisit(vertices[i], t);
+			}
+	}
+
+	/** DFS visit node
+	 * @param u start node
+	 * @param t time stamp
+	 */
+	public void DFSVisit(Node u, TimeStamp t)
+	{
+		t.setTimeStamp(t.getTimeStamp()+1);
+		u.setD(t.getTimeStamp());
+		u.setColor("GRAY");
+		for(Node v : adjList.get(id2index.get(u.getID())))
+			if(v.getColor().equals("WHITE"))
+			{
+				v.setPrev(u);
+				DFSVisit(v, t);
+			}
+		u.setColor("BLACK");
+		t.setTimeStamp(t.getTimeStamp()+1);
+		u.setF(t.getTimeStamp());
+	}
+
+	/** Add edge (u, v) to the graph
+	 * @param u start node
+	 * @param v end node
+	 */
+	public void addEdge(String u, String v)
+	{
+		adjList.get(id2index.get(u)).add(vertices[id2index.get(v)]);
+	}
+
+	/** List adjacency list
+	 * @return {@code String}, whole adjacency list
+	 */
+	public String adjList()
+	{
+		String s = "";
+		for(int i = 0; i &lt; vertices.length; i++)
+		{
+			s += vertices[i].getID()+" --&gt; ";
+			for(Node e : adjList.get(i))
+				s += e.getID()+" --&gt; ";
+			s += "\n";
+		}
+
+		return s;
+	}
+
+	/** Display Graph
+	 */
+	public void display()
+	{
+		System.out.println("---------DFS Graph------------");
+		for(int i = 0; i &lt; vertices.length; i++)
+		{
+			System.out.printf("ID: %5s D: %5d F: %5d, Color: %10s", vertices[i].getID(), vertices[i].getD(), vertices[i].getF(), vertices[i].getColor());
+			if(vertices[i].getPrev() != null)
+				System.out.printf("%5s\n", vertices[i].getPrev().getID());
+			else
+				System.out.println();
+		}
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class DFS
+{
+	public static void main(String args[])
+	{
+		Graph g = new Graph("1", "2", "3", "4", "5");
+		g.addEdge("1", "2");
+		g.addEdge("1", "5");
+		g.addEdge("2", "3");
+		g.addEdge("2", "4");
+		g.addEdge("4", "3");
+		g.addEdge("5", "2");
+		g.addEdge("5", "4");
+
+		System.out.println(g.adjList());
+
+		g.DFS();
+
+		g.display();
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Exercises</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/Graph1.png" width = "30%"></p>
+				<p style = "text-align:center;"><img src = "img/Graph2.png" width = "30%"></p>
+		</div>
+		<div class = "subtitle">Edge Types</div>
+		<div class = "block">
+			<ul>
+				<li>Tree edges, edges in the DFS forest</li>
+				<li>Back edges, edges (u, v), in which u connect to an ancester v in a DFS tree</li>
+				<li>Forward edges, nontree edges (u, v) connecting a vertex u to a descendant v in a DFS tree</li>
+				<li>Cross edges, other edges, (u, v) can be in the same DFS tree or in different DFS tree</li>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/DFS2.png" width = "70%"></p>
+		</div>
+		<div class = "subtitle">Classification of Edges</div>
+		<div class = "block">
+			<ul>
+				<li>First time explore an edge (u, v), the color of v tells the edges
+					<ul>
+						<li>WHITE, tree edge</li>
+						<li>GRAY, back edge</li>
+						<li>BLACK, forward or cross edges
+							<ul>
+								<li>forward edge, u.d &lt; v.d</li>
+								<li>cross edge, u.d &gt; v.d</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Topological Sort</div>
+		<div class = "block">
+			<ul>
+				<li>A directed graph has a cycle if and only if its DFS reveals a back edge</li>
+				<li>Topological sort, convert a directed acyclic graph to a linear dag</li>
+				<li>Call DFS</li>
+				<li>As each vertex is finished, insert it onto the front of a linked list</li>
+			</ul>
+				<p style = "text-align:center;"><img src = "img/Dag.png" width = "70%"></p>
+		</div>
+		<div class = "subtitle">Strongly Connected Components</div>
+		<div class = "block">
+			<ul>
+				<li>Two nodes u and v of a directed graph are connected if there is a path from u to v and a path from v to u</li>
+				<li>A strongly connected component of a directed graph is a maximal set of vertices such that every pair of u and v are connected</li>
+			</ul>
+				<p style = "text-align:center;"><img src = "img/SCC.png" width = "70%"></p>
+		</div>
+	</body>
+</html>

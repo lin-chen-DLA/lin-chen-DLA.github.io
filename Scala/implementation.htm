@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Implement Scala Program
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object HelloWorld {
+   def main(args: Array[String]) {
+      println("Hello, world!")
+   }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Mac</div>
+		<div class = "block">
+			<li>scalac HelloWorld.scala</li>
+			<li>scala -cp . HelloWorld</li>
+		</div>
+		<div class = "subtitle">Linux</div>
+		<div class = "block">
+			<li>scalac HelloWorld.scala</li>
+			<li>scala HelloWorld</li>
+		</div>
+	</body>
+</html>

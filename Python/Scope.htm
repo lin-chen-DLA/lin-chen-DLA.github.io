@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Scope
+		</div>
+
+		<div class = "subtitle">LEGB Rules</div>
+		<div class = "block">
+			Python search variable name by a hierarchy levels
+			<li>Local can be inside a function or class method</li>
+			<li>Enclosed can be its enclosing function</li>
+			<li>Global refers to the uppermost level of the executing script itself</li>
+			<li>Built-in are special names that Python reserves for itself</li>
+			<p>One sentence rule: the reference of a variable is visible to all its lower levels, thus <span>mutable variables</span> are visible and able to be modified in the lower levels, <span>immutable variables</span> are visible in the lower levels, but not able to be modified since the modification will create a local variable instead of modify the variable in the upper levels</p>
+		</div>
+		<div class = "block">
+			<li>dir() will give you the list of in scope variables</li>
+			<li>globals() will give you a dictionary of global variables</li>
+			<li>locals() will give you a dictionary of local variables</li>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+n = 10; #global variables
+
+def f():
+    m = 100;
+    print dir(); # ['m']
+    print globals(); # ['f', '__builtins__', '__file__', 'n', '__name__', '__main__', '__package__', '__doc__']
+    print locals(); {'m': 100}
+
+print dir(); # ['__builtins__', '__doc__', '__file__', '__name__', '__package__', 'f', 'n']
+f();
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+n = 10 # global variable
+print id(n), n
+ 
+# access local variable
+def f1():
+    n = 1;
+    print id(n), n;
+
+# access variable in enclosing function
+def f2():
+    n = 2;
+    def f3():
+        print id(n), n;
+    f3();
+
+# access global variable
+def f4():
+    def f5():
+        print id(n), n;
+    f5();
+
+f1();
+f2();
+f4();
+			</pre>
+		</div>
+
+		<div class = "subtitle">Immutable</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+a = 10 # global variable
+print id(a), a # 27193472, 10
+
+def f1():
+	# global variable is visible to the lower level
+	# globals: {'a': 10, ...}
+	print id(a), a # 27193472, 10
+
+def f2():
+	# create a local variable, which screens the global variable
+	# globals: {'a': 10, ...}
+	a = 100
+	# locals: {'a': 100}
+	print id(a), a # 27195296 100
+
+f1()
+f2()
+print id(a), a # 27193472, 10
+			</pre>
+		</div>
+
+		<div class = "subtitle">Mutable</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+l = range(10) # global variable
+print id(l), l # 140678046472600, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+def f3():
+	# the reference of the gocal variable is visible to the lower level
+	print id(l), l # 140678046472600, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+def f4():
+	# modify an element of the global variable
+	l[1] = 100
+	print id(l), l # 140678046472600, [0, 100, 2, 3, 4, 5, 6, 7, 8, 9]
+
+f3()
+f4()
+print id(l), l # 140678046472600, [0, 100, 2, 3, 4, 5, 6, 7, 8, 9]
+
+def f5():
+	# create a local variable, which screens the global variable
+	l = [1, 2, 3, 4]
+	print id(l), l # 139718240373432, [1, 2, 3, 4]
+
+f5()
+print id(l), l # 140678046472600, [0, 100, 2, 3, 4, 5, 6, 7, 8, 9]
+			</pre>
+		</div>
+
+		<div class = "subtitle">global keyword</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+t = 10
+print id(t), t # 140417416870688, 10
+
+def f8():
+	global t # t is a global variable
+	print id(t), t #140417416870688, 10
+	t = 100 # modify the global variable t
+	print id(t), t #140249594380832, 100
+	print 'globals: ', globals() # globals: {'t': 100}
+	print 'locals: ', locals() # locals: {}
+
+f8()
+print id(t), t # 140249594380832, 100
+			</pre>
+		</div>
+		<div class = "subtitle">import module</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/pyhton
+
+def f():
+    import math; # import math in local namespace
+    print math.pi;
+
+f();
+print math.pi; # not import math error
+			</pre>
+		</div>
+		<div class = "subtitle">module level variable</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# m1.py
+a = 10
+			</pre>
+			<pre class = "prettyprint linenums">
+# m2.py
+import m1
+
+print m1.a
+			</pre>
+		</div>
+
+		<div class = "subtitle">Resource</div>
+		<div class = "block">
+			<li><a href = "http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html">Beginner's Guide</a></li>
+			<li><a href = "http://www.python-course.eu/namespaces.php">Namespace</a> at Python Course</li>
+		</div>
+	</body>
+</html>

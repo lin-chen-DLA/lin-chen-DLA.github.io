@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Map
+		</div>
+
+		<div class = "subtitle">Initialization</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var roles = new Map([ 
+   ['r1', 'User'], 
+   ['r2', 'Guest'], 
+   ['r3', 'Admin'], 
+]);
+
+console.log(typeof(roles)); //object
+console.log(roles);
+		</pre>
+		</div>
+		<div class = "subtitle">Methods</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var m = new Map();
+
+// set
+m.set("name", "Lin");
+m.set("age", 39);
+
+// get
+console.log(m.get("name"));
+
+// size
+console.log(m.size);
+
+// has
+console.log(m.has("name"));
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var m = new Map();
+
+// set chains
+m.set("name", "Lin").set("age", 39);
+
+console.log(m)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var roles = new Map([ 
+   ['r1', 'User'], 
+   ['r2', 'Guest'], 
+   ['r3', 'Admin'], 
+]);
+
+// delete
+console.log(roles.delete('r1')); // true
+console.log(roles);
+
+// entries
+var itr = roles.entries(); // iterator object
+
+for (const [key, value] of itr) {
+  console.log(key, value);
+}
+
+// forEach
+roles.forEach((value, key) =&gt; console.log(value));
+
+// keys
+var keys = roles.keys(); // iterator object
+
+for (const key of keys)
+	console.log(roles.get(key));
+
+// values
+var values = roles.values(); // iterator object
+
+for (const value of values)
+	console.log(value);
+
+// clear
+roles.clear();
+		</pre>
+		</div>
+		<div class = "subtitle">WeakMap</div>
+		<div class = "block">
+			<li>Its keys must be <span>objects</span></li>
+			<li>Keys in a weak map can be Garbage collected. Garbage collection is a process of clearing the memory occupied by unreferenced objects in a program</li>
+			<li>A weak map cannot be iterated or cleared</li>
+		<pre class = "prettyprint linenums">
+let weakMap = new WeakMap();
+
+let obj = {};
+let obj2 = {name: 'Lin'};
+weakMap.set(obj, 'hello');
+weakMap.set(obj2, 39);
+
+console.log(weakMap);
+console.log(weakMap.has(obj));
+console.log(weakMap.get(obj2));
+		</pre>
+		</div>
+	</body>
+</html>

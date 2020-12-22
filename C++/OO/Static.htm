@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Static
+		</div>
+
+		<div class = "subtitle">Static Function and Static Attribues</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Object.h
+#ifndef OBJECT_H
+#define OBEJCT_H
+class Object
+{
+	private:
+		static int num;
+		int index;
+	public:
+		Object(int i)
+		{
+			num++;
+			index = i;
+		}
+		int getIndex() const {return index;}
+		static int getNum() {return num;}
+};
+int Object::num = 0;
+#endif
+
+//main.cpp
+#include &lt;iostream&gt;
+#include "Object.h"
+
+int main(int argc, char *argv[])
+{
+	Object o1(1);
+	std::cout&lt;&lt;Object::getNum()&lt;&lt;": "&lt;&lt;o1.getIndex()&lt;&lt;std::endl;
+
+	Object o2(10);
+	std::cout&lt;&lt;o2.getNum()&lt;&lt;": "&lt;&lt;o2.getIndex()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>static method can access static attribues</li>
+				<li>static method cannot access instance member functions and instance attributes</li>
+				<li>instance method can access both static member functions and static attributes</li>
+				<li>static member variables is shared by all instances of the class</li>
+				<li>in C++, initialization of static variable should be outside the class declaration, uninitialized static member variables will be automatically set as zero</li>
+				<li>Object::getNum(), call the static methods</li>
+				<li>a static method can be called before any instances of the class are created</li>
+				<li>static function cannot use const</li>
+			</ul>
+		</div>
+	</body>
+</html>

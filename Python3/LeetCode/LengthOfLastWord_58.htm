@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>LeetCode</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title"><a href = "https://leetcode.com/problems/length-of-last-word/">58. Length of Last Word</a></div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+class Solution:
+    def lengthOfLastWord(self, s: str) -&gt; int:
+        tokens = s.split()
+        if len(tokens) == 0:
+            return 0
+        return len(tokens[len(tokens)-1])
+
+def main():
+    s = Solution()
+
+    print(s.lengthOfLastWord("Hello World"))
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+	</body>
+</html>

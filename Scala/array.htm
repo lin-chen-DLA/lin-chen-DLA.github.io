@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Array
+		</div>
+
+		<div class = "subtitle">Create an Array</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def disp[A](a : Array[A]) : Unit = 
+  {
+    for( i &lt;- 0 to (a.length - 1))
+      println(a(i))
+  }
+
+  def disp2[A](a : Array[A]) : Unit = 
+  {
+    for( e &lt;- a)
+      println(e)
+  }
+
+  def main(args : Array[String])
+  {
+    var a = Array("Chen" ,"Lin");
+
+    var a2 : Array[String] = new Array[String](2);
+    var a3 = new Array[String](2);
+
+    a2(0) = "Yanhua"
+    a2(1) = "Feng"
+
+    disp(a)
+    disp2(a2)
+  }
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">Array Object</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  // display an 1d array
+  def disp[A](a : Array[A]) : Unit = 
+  {
+    for( e &lt;- a)
+      printf(s"$e ");
+    println();
+  }
+
+  // display an 2d array
+  def disp2d[A](a : Array[Array[A]])
+  {
+    for(row &lt;- a)
+    {
+      for(column &lt;- row)
+        printf("%5d", column)
+      println()
+    }
+  }
+
+  def doubleNum(n : Int) : Int = 2*n;
+
+  def main(args : Array[String])
+  {
+    // apply, generate array
+    var a = Array.apply("Chen" ,"Lin");
+    disp(a);
+
+    // concatenate
+    var b = Array(1, 2, 3, 4);
+    var c = Array(5, 6, 7, 8);
+    var d = Array.concat(b, c);
+    disp(d);
+
+    // copy
+    var e = new Array[Int](4);
+    Array.copy(d, 0, e, 0, 4);
+    disp(e);
+
+    // empty
+    var f = Array.empty[Int]
+    println(f.length);
+
+    // iterate
+    var g = Array.iterate[Int](10, 4)(doubleNum);
+    disp(g) // 10, 20, 40, 80
+
+    // fill
+    var h = Array.fill[Int](4)(1);
+    disp(h) // 1 1 1 1
+    var i = Array.fill[Int](2, 3)(1); // 2*3 array
+    disp2d(i)
+
+    // ofDim
+    var j = Array.ofDim[Int](2, 3)
+    disp2d(j)
+
+    // range
+    var k = Array.range(1, 10) // 1, 2, 3, 4, 5, 6, 7, 8, 9
+    disp(k)
+
+    // tabulate
+    var l = Array.tabulate[Int](10)(doubleNum);
+    disp(l)
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Array Class</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def disp[A](a : Array[A]) : Unit =
+  {
+    for (e &lt;- a)
+      printf(s"$e ");
+    println();
+  }
+
+  def main(args : Array[String])
+  {
+    // create an array
+    var a = Array(2, 1, 4, 3)
+    var d = Array(5, 6, 7, 8)
+    disp(a)
+    println("Size: "+a.size)
+
+    // +
+    disp(10 +: a) // 10 2 1 4 3
+    disp(a :+ 10) // 2 1 4 3 10
+
+    // ++
+    disp(a ++ d) // 2 1 4 3 5 6 7 8
+
+    // slice
+    var c = a.slice(0, 2)
+    disp(c)
+
+    // reverse, returns new mutable indexed sequence with elements in reversed order
+    var b = a.reverse;
+    disp(b)
+
+    // clone
+    var e = a.clone()
+    e(0) = 100
+
+    // head, last
+    println(a.head+" "+a.last)
+
+    // indices
+    println(a.indices)
+
+    // sorted
+    disp(a.sortWith(_.compareTo(_) &lt; 0)) // 1, 2, 3, 4
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.scala-lang.org/api/current/scala/Array$.html">Array object</a></li>
+			<li><a href = "https://www.scala-lang.org/api/current/scala/Array.html">Array class</a></li>
+		</div>
+	</body>
+</html>

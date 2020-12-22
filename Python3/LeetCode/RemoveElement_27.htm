@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>LeetCode</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title"><a href = "https://leetcode.com/problems/remove-element/">27. Remove Element</a></div>
+		<div class = "block">
+			O(n)
+			<pre class = "prettyprint linenums">
+from typing import List
+
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -&gt; int:
+        i = 0
+        j = len(nums) -1
+
+        while i &lt;= j:
+            if nums[i] != val:
+                i += 1
+            else:
+                nums[i] = nums[j]
+                j -= 1
+
+        nums = nums[:j+1]
+        print(nums)
+
+        return len(nums)
+
+def main():
+    s = Solution()
+
+    print(s.removeElement([3,2,2,3], 3)) # 2
+    print(s.removeElement([0,1,2,2,3,0,4,2], 2)) #5
+    print(s.removeElement([1], 1)) # 0
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+	</body>
+</html>

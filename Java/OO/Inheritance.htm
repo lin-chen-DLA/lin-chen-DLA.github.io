@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Inheritance
+		</div>
+
+		<div class = "subtitle">Class</div>
+		<div class = "block">
+			<ul>
+				<li>Public class, class is visible to all classes everywhere</li>
+				<li>Package-private, it is visible only within its own package</li>
+				<li>Constructor are not inherited</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Members</div>
+		<div class = "block">
+			<ul>
+				<li>Public class, class is visible to all classes everywhere</li>
+				<li>Protected modifier specifies that the member can only be accessed within its own package (as with package-private) and, in addition, by a subclass of its class in another package</li>
+				<li>Package-private), it is visible only within its own package</li>
+				<li>Private modifier specifies that the member can only be accessed in its own class</li>
+			</ul>
+			<table>
+				<tr><td>Modifier</td><td>Class</td><td>Package</td><td>Subclass</td><td>World</td></tr>
+				<tr><td>Public</td><td>*</td><td>*</td><td>*</td><td>*</td></tr>
+				<tr><td>Protected</td><td>*</td><td>*</td><td>*</td><td></td></tr>
+				<tr><td>Package-Private</td><td>*</td><td>*</td><td></td><td></td></tr>
+				<tr><td>Private</td><td>*</td><td></td><td></td><td></td></tr>
+			</table>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Protected variables and methods are accessible in child and grand child directly</li>
+			</ul>
+			<p style = "text-align:center;"><img src = "img/Inheritance1.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+package A;
+
+public class Car
+{
+	//protected
+	protected String maker;
+
+	//public
+	public Car(String maker)
+	{
+		this.maker = maker;
+	}
+
+	//package-private
+	String getMaker()
+	{
+		return maker;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+package B;
+import A.Car;
+
+public class Buick extends Car
+{
+	protected String color;
+
+	public Buick(String m, String c)
+	{
+		super(m);
+		color = c;
+	}
+
+	public String getColor()
+	{
+		return color;
+	}
+
+	public String toString()
+	{
+		return maker+" "+color;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+package C;
+import B.Buick;
+
+public class Rendezvous extends Buick
+{
+	private int year;
+
+	public Rendezvous(String m, String c, int y)
+	{
+		super(m, c);
+		year = y;
+	}
+
+	public String toString()
+	{
+		return maker+" "+color+" "+year;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import A.Car;
+import B.Buick;
+import C.Rendezvous;
+
+public class CarTest
+{
+	public static void main(String args[])
+	{
+		Car c = new Car("Buick");
+		Buick b = new Buick("Buick", "White");
+		Rendezvous r = new Rendezvous("Buick", "White", 2005);
+
+		System.out.println(r);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Override</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+package A;
+
+public class Car
+{
+	//protected
+	protected String maker;
+
+	//public
+	public Car(String maker)
+	{
+		this.maker = maker;
+	}
+
+	public String getMaker()
+	{
+		return maker;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Car: "+maker;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+package B;
+import A.Car;
+
+public class Buick extends Car
+{
+	protected String color;
+
+	public Buick(String m, String c)
+	{
+		super(m);
+		color = c;
+	}
+
+	public String getColor()
+	{
+		return color;
+	}
+
+	@Override
+	public String toString()
+	{
+		//call it's parent's toString
+		return "Buick: "+ super.toString()+" "+color;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import A.Car;
+import B.Buick;
+
+public class CarTest
+{
+	public static void main(String args[])
+	{
+		Car c = new Car("Buick");
+		Buick b = new Buick("Buick", "White");
+
+		System.out.println(c);//toString of Car is called
+		System.out.println(b);//toString of Buick is called
+
+		System.out.println(b.getMaker()+" "+b.getColor());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Static Methods</div>
+		<div class = "block">
+			<ul>
+				<li>Static is able to be inherited from parent class, however, static methods in child class does not override the methods with same names in parent class, they are just hidden</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Car
+{
+	public static void display()
+	{
+		System.out.println("Car");
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class Buick extends Car
+{
+	public static void display()
+	{
+		System.out.println("Buick");
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class CarTest
+{
+	public static void main(String args[])
+	{
+		Car c = new Car();
+		Buick b = new Buick();
+
+		c.display();//Car
+		b.display();//Buick
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html">Oracle Tutorial</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

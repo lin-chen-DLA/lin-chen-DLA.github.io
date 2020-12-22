@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CSS</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Display
+		</div>
+
+		<div class = "subtitle">Block-level Elements</div>
+		<div class = "block">
+			<li>A block-level element always starts on a new line and takes up the full width available</li>
+			<li>div, h1-h6, p, form, header, footer, section</li>
+		</div>
+		<div class = "subtitle">Inline Elements</div>
+		<div class = "block">
+			<li>An inline element does not start on a new line and only takes up as much width as necessary</li>
+			<li>span, a, img</li>
+		</div>
+		<div class = "subtitle">Inline-Block Elements</div>
+		<div class = "block">
+			<li><span>display: inline-block</span> allows to set a width and height on the element, the top and bottom margins/paddings are respected</li>
+		</div>
+		<div class = "subtitle">Display</div>
+		<div class = "block">
+			<li><span>display: none</span>, hide element</li>
+			<li>override default display value</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		.container { width: 60%; height: 100px; border: 1px solid red; }
+		.inline {display: inline;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class = "container"&gt;
+		&lt;li&gt;Term 1&lt;/li&gt;
+		&lt;li&gt;Term 2&lt;/li&gt;
+	&lt;/div&gt;
+
+	&lt;div class = "container"&gt;
+		&lt;li class = "inline"&gt;Term 1&lt;/li&gt;
+		&lt;li class = "inline"&gt;Term 2&lt;/li&gt;
+	&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+	</body>
+</html>

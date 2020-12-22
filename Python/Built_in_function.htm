@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Built-in Functions
+		</div>
+
+		<div class = "subtitle"></div>
+		<div class = "block">
+			<table>
+				<tr>
+					<td><a href = "#chr">chr</a></td>
+					<td><a href = "#complex">complex</a></td>
+					<td><a href = "OO/Class.htm#attributes">delattr</a></td>
+					<td><a href = "#dict">dict</a></td>
+					<td><a href = "#eval">eval</a></td>
+					<td><a href = "#float">float</a></td>
+					<td><a href = "#frozenset">frozenset</a></td>
+					<td><a href = "OO/Class.htm#attributes">getattr</a></td>
+					<td><a href = "OO/Class.htm#attributes">hasattr</a></td>
+					<td><a href = "#hex">hex</a></td>
+					<td><a href = "#input">input</a></td>
+					<td><a href = "#int">int</a></td>
+					<td><a href = "#list">list</a></td>
+					<td><a href = "#long">long</a></td>
+					<td><a href = "#oct">oct</a></td>
+					<td><a href = "#ord">ord</a></td>
+					<td><a href = "#raw_input">raw_input</a></td>
+					<td><a href = "#repr">repr</a></td>
+					<td><a href = "#set">set</a></td>
+					<td><a href = "OO/Class.htm#attributes">setattr</a></td>
+					<td><a href = "#str">str</a></td>
+					<td><a href = "#tuple">tuple</a></td>
+					<td><a href = "#unichar">unichar</a></td>
+				</tr>
+			</table>
+		</div>
+		<div class = "subtitle" id = "chr">chr</div>
+		<div class = "block">
+			<li>Converts an integer to a character, the argument must be in the range [0..255]</li>
+			<li>Raise <span>ValueError</span></li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+for i in xrange(256):
+    print(chr(i))
+		</pre>
+		</div>
+		<div class = "subtitle" id = "complex">complex</div>
+		<div class = "block">
+			<li>Return a complex number</li>
+			<li>Raise <span>ValueError</span></li>
+		<pre class = "prettyprint linenums">
+c = complex('1+2j') # convert a string to complex
+print c, c.real, c.imag
+		</pre>
+		</div>
+		<div class = "subtitle" id = "dict">dict</div>
+		<div class = "block">
+			<li>Create a new dictionary</li>
+			<li>Raise <span>ValueError</span></li>
+		<pre class = "prettyprint linenums">
+a = dict(one=1, two=2, three=3)
+c = dict(zip(['one', 'two', 'three'], [1, 2, 3]))
+d = dict([('two', 2), ('one', 1), ('three', 3)])
+e = dict({'three': 3, 'one': 1, 'two': 2})
+		</pre>
+		</div>
+		<div class = "subtitle" id = "eval">eval</div>
+		<div class = "block">
+			<li>Evaluates a string and returns an object</li>
+			<li>Raise <span>SyntaxError</span></li>
+		<pre class = "prettyprint linenums">
+x = 1
+print eval("1+x") # 2
+		</pre>
+		</div>
+		<div class = "subtitle" id = "float">float</div>
+		<div class = "block">
+			<li>Return a floating point number constructed from a number or string x</li>
+			<li>Raise <span>ValueError</span></li>
+		<pre class = "prettyprint linenums">
+print(float('100')) # convert a string to float
+print(float(0b1111)) # convert a binary number to float
+print(float(0o1777)) # convert a octal number to float
+print(float(0xABCD)) # convert a hexical number to float
+		</pre>
+		</div>
+		<div class = "subtitle" id = "frozenset">frozenset</div>
+		<div class = "block">
+			<li>Return a new frozenset object</li>
+		<pre class = "prettyprint linenums">
+s = frozenset([1, 2, 3, 4, 1])
+print type(s), s # (1, 2, 3, 4)
+		</pre>
+		</div>
+		<div class = "subtitle" id = "hex">hex</div>
+		<div class = "block">
+			<li>Convert an integer number (of any size) to a lowercase hexadecimal string</li>
+			<li>Raise <span>TypeError</span></li>
+		<pre class = "prettyprint linenums">
+h = hex(100)
+print(type(h), h) # str, '0x64'
+		</pre>
+		</div>
+		<div class = "subtitle" id = "input">input</div>
+		<div class = "block">
+			<li>return the result of the evaluated expression, equals to eval(raw_input())</li>
+			<li>If the input is not syntactically valid, a <span>SyntaxError</span> will be raised</li>
+		<pre class = "prettyprint linenums">
+l = input("Enter your input:") # 1+2
+print l, type(l) # 3, int
+
+l = raw_input("Enter your input:") # 1+2
+print eval(l), type(l) # 3, str
+		</pre>
+		</div>
+		<div class = "subtitle" id = "int">int</div>
+		<div class = "block">
+			<li>return an integer object constructed from a number or string x, or return 0 if no arguments are given</li>
+			<li>Raise <span>ValueError</span></li>
+		<pre class = "prettyprint linenums">
+print(int('100')) # convert a string to integer
+print(int(0b1111)) # convert a binary number to integer
+print(int(0o1777)) # convert a octal number to integer
+print(int(0xABCD)) # convert a hexical number to integer
+		</pre>
+		</div>
+		<div class = "subtitle" id = "list">list</div>
+		<div class = "block">
+			<li>Return a list whose items are the same and in the same order as iterable’s items, iterable may be either a sequence, a container that supports iteration, or an iterator object</li>
+			<li>Raise <span>TypeError</span></li>
+		<pre class = "prettyprint linenums">
+l = list([1, 2, 3, 4])
+l = list(xrange(10))
+l = list(iter(xrange(10)))
+print(l)
+		</pre>
+		</div>
+		<div class = "subtitle" id = "long">long</div>
+		<div class = "block">
+			<li>Return a long integer object constructed from a string or number x</li>
+			<li>Raise <span>ValueError</span></li>
+		<pre class = "prettyprint linenums">
+print type(long(10)) # long
+print(long('100')) # convert a string to long
+print(long(0b1111)) # convert a binary number to long
+print(long(0o1777)) # convert a octal number to long
+print(long(0xABCD)) # convert a hexical number to long
+		</pre>
+		</div>
+		<div class = "subtitle" id = "oct">oct</div>
+		<div class = "block">
+			<li>Convert an integer number (of any size) to an octal string</li>
+			<li>Raise <span>TypeError</span></li>
+		<pre class = "prettyprint linenums">
+o = oct(100)
+print(type(o), o) # str, 0144
+		</pre>
+		</div>
+		<div class = "subtitle" id = "ord">ord</div>
+		<div class = "block">
+			<li>Given a string of length one, return an integer representing the Unicode code point of the character</li>
+			<li>Raise <span>TypeError</span></li>
+		<pre class = "prettyprint linenums">
+print(ord('a'))
+print(ord(u'a'))
+print(ord(u'\u2020'))
+		</pre>
+		</div>
+		<div class = "subtitle" id = "raw_input">raw_input</div>
+		<div class = "block">
+			<li>return a string</li>
+			<li>When EOF is read, <span>EOFError</span> is raised</li>
+		<pre class = "prettyprint linenums">
+l = raw_input("Enter your input:") # 1+2
+print l, type(l) # 1+2, 'str'
+		</pre>
+		</div>
+		<div class = "subtitle" id = "repr">repr</div>
+		<div class = "block">
+			<li>Return a string containing a nicely printable representation of an object</li>
+			<li>str() is used for creating output for end user while repr() is mainly used for debugging and development. repr’s goal is to be unambiguous and str’s is to be readable</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(str(10.0/3)) # 3.33333333333
+print(repr(10.0/3)) # 3.333333333333335
+
+import datetime
+today = datetime.datetime.now()
+
+print(str(today)) # 2018-10-12 00:32:14.820843
+print(repr(today)) # atetime.datetime(2018, 10, 12, 0, 32, 14, 820843)
+		</pre>
+		</div>
+		<div class = "subtitle" id = "set">set</div>
+		<div class = "block">
+			<li>Return a new set object</li>
+		<pre class = "prettyprint linenums">
+s = set([1, 2, 3, 4, 1])
+print type(s), s # (1, 2, 3, 4)
+		</pre>
+		</div>
+		<div class = "subtitle" id = "str">str</div>
+		<div class = "block">
+			<li>Return a string containing a nicely printable representation of an object</li>
+		<pre class = "prettyprint linenums">
+s = str(100); # convert an integer to string
+print s # 100, str
+		</pre>
+		</div>
+		<div class = "subtitle" id = "tuple">tuple</div>
+		<div class = "block">
+			<li>Return a tuple whose items are the same and in the same order as iterable’s items</li>
+		<pre class = "prettyprint linenums">
+t = tuple(range(4))
+print type(t), t # tuple, (0, 1, 2, 3)
+		</pre>
+		</div>
+		<div class = "subtitle" id = "unichar">unichar</div>
+		<div class = "block">
+			<li>Return the Unicode string</li>
+			<li>Raise <span>ValueError</span></li>
+		<pre class = "prettyprint linenums">
+u = unichr(100)
+print type(u), u
+
+u = unichr(300)
+print type(u), u
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.python.org/2/library/functions.html">Python Standard Library</a></li>
+		</div>
+	</body>
+</html>

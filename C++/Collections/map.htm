@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			map
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Each key is unique</li>
+				<li>Elements are sorted by its key following a specific order indicated by its comparison object</li>
+				<li>Implemented as a balanced binary search tree</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Initialization</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;first&lt;&lt;" "&lt;&lt;it-&gt;second&lt;&lt;std::endl;
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::map&lt;std::string, int&gt; m;
+	m["Buick"] = 1;
+	m["Acura"] = 2;
+
+	//insert
+	m.insert(std::make_pair("Lincoln", 3));
+	m.insert(std::make_pair("Honda", 4));
+
+	std::cout&lt;&lt;"Size: "&lt;&lt;m.size()&lt;&lt;std::endl;
+	std::cout&lt;&lt;"Max_size: "&lt;&lt;m.max_size()&lt;&lt;std::endl;
+
+	//erase
+	m.erase("Buick");//remove by key
+	auto it = m.find("Acura");//remove by iterator
+	m.erase(it);
+
+	display(m.begin(), m.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Map Containing Objects</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle(){}
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const;
+		double getLength() const;
+		double getArea() const;
+
+		//mutator
+		void setWidth(double w);
+		void setLength(double l);
+
+		//operator
+		bool operator&lt;(const Rectangle &right) const
+		{
+			if(getArea() &lt; right.getArea())
+				return true;
+			else
+				return false;
+		}
+};
+#endif
+
+//Rectangle.cpp
+#include "Rectangle.h"
+
+double Rectangle::getWidth() const
+{
+	return width;
+}
+
+double Rectangle::getLength() const
+{
+	return length;
+}
+
+double Rectangle::getArea() const
+{
+	return width*length;
+}
+
+void Rectangle::setWidth(double w)
+{
+	width = w;
+}
+
+void Rectangle::setLength(double l)
+{
+	length = l;
+}
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include "Rectangle.h"
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;first.getArea()&lt;&lt;" "&lt;&lt;it-&gt;second&lt;&lt;std::endl;
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::map&lt;Rectangle, int&gt; m;
+	Rectangle r1(1, 2);
+	Rectangle r2(2, 3);
+	Rectangle r3(2, 4);
+	m[r1] = 1;
+	m[r2] = 2;
+	m[r3] = 3;
+
+	display(m.begin(), m.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Insert object in map, overload <span style = "color:red">operator &lt;</span></li>
+				<li>Sorted by operator &lt;</li>
+				<li>find element by checking both a &lt; b and b &lt; a are false</li>
+			</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include "Rectangle.h"
+
+struct comp{
+	bool operator()(const Rectangle &a, const Rectangle &b)
+	{
+		return (a.getArea() &lt; b.getArea());
+	}
+};
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;first.getArea()&lt;&lt;" "&lt;&lt;it-&gt;second&lt;&lt;std::endl;
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::map&lt;Rectangle, int, comp&gt; m;
+	Rectangle r1(1, 2);
+	Rectangle r2(2, 3);
+	Rectangle r3(2, 4);
+	m[r1] = 1;
+	m[r2] = 2;
+	m[r3] = 3;
+
+	display(m.begin(), m.end());
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+			<ul>
+				<li>Insert object in map, use <span style = "color:red">compare struct operator()</span></li>
+			</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include "Rectangle.h"
+
+bool cmp(const Rectangle &a, const Rectangle &b)
+{
+	return (a.getArea() &lt; b.getArea());
+}
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;first.getArea()&lt;&lt;" "&lt;&lt;it-&gt;second&lt;&lt;std::endl;
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::map&lt;Rectangle, int, bool(*)(const Rectangle &a, const Rectangle &b)&gt; m(cmp);
+	Rectangle r1(1, 2);
+	Rectangle r2(2, 3);
+	Rectangle r3(2, 4);
+	m[r1] = 1;
+	m[r2] = 2;
+	m[r3] = 3;
+
+	display(m.begin(), m.end());
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+			<ul>
+				<li>Insert object in map, use <span style = "color:red">comparision function</span></li>
+			</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include "Rectangle.h"
+
+auto comp = [](const Rectangle &a, const Rectangle &b) {return (a.getArea()&lt;b.getArea());};
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;it-&gt;first.getArea()&lt;&lt;" "&lt;&lt;it-&gt;second&lt;&lt;std::endl;
+		std::advance(it, 1);
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	std::map&lt;Rectangle, int, decltype(comp)&gt; m(comp);
+	Rectangle r1(1, 2);
+	Rectangle r2(2, 3);
+	Rectangle r3(2, 4);
+	m[r1] = 1;
+	m[r2] = 2;
+	m[r3] = 3;
+
+	display(m.begin(), m.end());
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+			<ul>
+				<li>Insert object in map, use <span style = "color:red">lambda</span></li>
+			</ul>
+		</div>
+			<div class = "subtitle">Reference</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "http://fusharblog.com/3-ways-to-define-comparison-functions-in-cpp/">3 Ways to Define Comparison Functions in C++</a></li>
+			<li><a href = "http://www.cplusplus.com/reference/map/map/">cplusplus.com</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Array
+		</div>
+
+		<div class = "subtitle">Basics</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.Random;
+
+public class Arr
+{
+	public static void changeArray(int [] array)
+	{
+			for(int i = 0; i &lt; array.length; i++)
+			array[i] *= 2;
+	}
+
+	public static void display(int [] array)
+	{
+		for(int e : array)
+			System.out.println(e);
+	}
+
+	public static void main(String args[])
+	{
+		int [] array = new int[10];
+		//int array [] = new int[10];
+
+		Random r = new Random();
+		for(int i = 0; i &lt; array.length; i++)
+			array[i] = r.nextInt(10);
+
+		display(array);
+		changeArray(array);
+		display(array);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Sorting</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.Random;
+import java.util.Arrays;
+
+public class Arr
+{
+	public static void sort(int [] array)
+	{
+		Arrays.sort(array);
+	}
+
+	public static void display(int [] array)
+	{
+		for(int e : array)
+			System.out.println(e);
+	}
+
+	public static int [] init()
+	{
+		int [] array = new int[10];
+
+		Random r = new Random();
+		for(int i = 0; i &lt; array.length; i++)
+			array[i] = r.nextInt(10);
+
+		return array;
+	}
+
+	public static void main(String args[])
+	{
+		int [] array;
+		array = init();
+
+		display(array);
+		sort(array);
+		display(array);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Multidimensional Array</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.Random;
+import java.util.Arrays;
+
+public class Arr
+{
+	public static void display(int [][] array)
+	{
+		for(int [] row : array)
+		{
+			for(int e : row)
+				System.out.printf("%10d", e);
+			System.out.printf("%n");
+		}
+	}
+
+	public static int [][] init()
+	{
+		int [][] array = new int[2][5];
+
+		Random r = new Random();
+		for(int i = 0; i &lt; array.length; i++)
+			for(int j = 0; j &lt; array[i].length; j++)
+				array[i][j] = r.nextInt(10);
+
+		return array;
+	}
+
+	public static void main(String args[])
+	{
+		int [][] array;
+		array = init();
+
+		display(array);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Copy</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.Random;
+import java.util.Arrays;
+
+public class Arr
+{
+	public static void display2(int [][] array)
+	{
+		for(int [] row : array)
+		{
+			for(int e : row)
+				System.out.printf("%10d", e);
+			System.out.printf("%n");
+		}
+	}
+
+	public static void display(int [] array)
+	{
+		for(int e : array)
+			System.out.printf("%10d", e);
+		System.out.println();
+	}
+
+	public static int [][] getArray2()
+	{
+		int [][] array = new int[2][5];
+
+		Random r = new Random();
+		for(int i = 0; i &lt; array.length; i++)
+			for(int j = 0; j &lt; array.length; j++)
+				array[i][j] = r.nextInt(10);
+
+		return array;
+	}
+
+	public static int [] getArray()
+	{
+		int [] array = new int[10];
+
+		Random r = new Random();
+		for(int i = 0; i &lt; array.length; i++)
+			array[i] = r.nextInt(10);
+		return array;
+	}
+
+	public static void main(String args[])
+	{
+		//copy one dimensional array
+		int [] array;
+		array = getArray();
+
+		int [] array2 = new int[array.length];
+		System.arraycopy(array, 0, array2, 0, array.length);
+
+		display(array2);
+
+		int [] array3;
+		array3 = Arrays.copyOf(array, array.length);
+		display(array3);
+
+		//three arrays point to different address
+		System.out.println(System.identityHashCode(array));
+		System.out.println(System.identityHashCode(array2));
+		System.out.println(System.identityHashCode(array3));
+
+		//copy two dimensional array
+		int [][] array4;
+		array4 = getArray2();
+
+		display2(array4);
+
+		int [][] array5;
+		array5 = new int[array4.length][];
+		for(int i = 0; i &lt; array4.length; i++)
+			array5[i] = Arrays.copyOf(array4[i], array4[i].length);
+
+		display2(array5);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Object Array</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Car
+{
+	private String maker;
+	private String color;
+
+	Car(){}
+
+	public String getMaker()
+	{
+		return maker;
+	}
+
+	public String getColor()
+	{
+		return color;
+	}
+
+	public void setMaker(String m)
+	{
+		maker = m;
+	}
+
+	public void setColor(String c)
+	{
+		color = c;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class CarArray
+{
+	public static void main(String args[])
+	{
+		Car c[] = new Car[10];
+
+		for(int i = 0; i &lt; 10; i++)
+		{
+			c[i] = new Car();
+			c[i].setMaker("Buick");
+			c[i].setColor("White");
+		}
+
+		c[4].setMaker("Honda");
+		c[4].setColor("Blue");
+
+		for(int i = 0; i &lt; 10; i++)
+			System.out.println(c[i].getMaker()+" "+c[i].getColor());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Sort Object Array</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Car implements Comparable<Car>
+{
+	private String maker;
+	private String color;
+
+	public Car(String m, String c)
+	{
+		maker = m;
+		color = c;
+	}
+
+	public int compareTo(Car c)
+	{
+		return maker.compareTo(c.maker);
+	}
+
+	public String toString()
+	{
+		return maker+" "+color;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class CarArray
+{
+	public static void main(String args[])
+	{
+		Car c[] = new Car[3];
+
+		c[0] = new Car("Buick", "White");
+		c[1] = new Car("Honda", "Blue");
+		c[2] = new Car("Acura", "Blue");
+
+		Arrays.sort(c);
+
+		for(int i = 0; i &lt; 3; i++)
+			System.out.println(c[i]);
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>

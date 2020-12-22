@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Package
+		</div>
+
+		<div class = "subtitle">Past Style</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// module.js
+var App = {}; // define a global variable
+App.VSU = {};
+App.VSU.f1 = function () {console.log("f1 ...");}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;script src = "module.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+	App.VSU.f1();
+&lt;/script&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">ES6 Style</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/Browserify_2.png" width=30% /></p>
+		</div>
+		<div class = "block">
+			<li><span>liver-server</span> in the root directory of the project</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// src/app.js
+import math from './math.js';
+console.log(math.sumAll(50, 10));
+console.log(math.subtractAll(50, 10));
+console.log(math.multiplyAll(50, 10));
+console.log(math.divideAll(50, 10));
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// src/math.js
+let sumAll = (a, b) =&gt; {return a + b;}
+let subtractAll = (a, b) =&gt; {return a - b;}
+let divideAll = (a, b) =&gt; {return a / b;}
+let multiplyAll = (a, b) =&gt; {return a * b;}
+export default {sumAll, subtractAll, divideAll, multiplyAll};
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;script type="module" src="../src/app.js"&gt;&lt;/script&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Current Style</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/Browserify_4.png" width=60% /></p>
+		</div>
+		<div class = "subtitle">Bundle by Browserify</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/Browserify_1.png" width=20% /></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// main.js
+"use strict";
+
+var R = require('ramda'); // call third-party library
+var vsu = require('./vsu.js'); // call global library which can be used by html files
+var lib = require('./lib.js'); // self-defined library
+
+var square = function square (x) { return x * x; }  
+var squares = R.chain(square, [1, 2, 3, 4, 5]); // call third-party function
+
+vsu.App.VSU.f1(); // call global function
+lib.f2(); // call self-defined function
+document.getElementById('response').innerHTML = squares;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>By default, browserify doesn't let you access the modules from outside of the browserified code</li>
+			<li>Explicitly make your method accessible from outside by defining it as a global function</li>
+		<pre class = "prettyprint linenums">
+// vsu.js
+window.App = {};
+App.VSU = {};
+App.VSU.f1 = function () {console.log("f1 ...");}
+
+module.exports = {App: App} // export to make App can be imported in other js files
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// lib.js
+var f2 = function () {console.log("f2 ...");}
+
+module.exports = {
+	f2: f2
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// index.html
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Getting Cozy with Browserify&lt;/title&gt;
+    &lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"&gt;
+    &lt;style&gt;
+      h1, p, div { text-align: center; }
+      html       { background: #fffffe; }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div class="container"&gt;
+      &lt;h2&gt;Welcome to the Client Side.&lt;/h2&gt;
+
+      &lt;div class="well"&gt;
+        &lt;p&gt;I see you've got some numbers. Why not let me see them?&lt;/p&gt;
+
+        &lt;div id="response"&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script src="bundle.js"&gt;&lt;/script&gt;
+	&lt;script&gt;
+		App.VSU.f1();
+	&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+browserify main.js vsu.js lib.js -o bundle.js
+		</pre>
+		</div>
+		<div class = "subtitle">Transpile and Bundle with Babel and Browserify</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/Browserify_3.png" width=30% /></p>
+		</div>
+		<div class = "block">
+			<ol>
+				<li>npm init, set entry point to app.js</li>
+				<li>Install Babel
+					<ul>
+						<li>npm install --save-dev @babel/core @babel/cli</li>
+						<li>npm install @babel/preset-env --save-dev</li>
+					</ul>
+				</li>
+				<li>.babelrc Configurations
+		<pre class = "prettyprint linenums">
+{
+"presets": ["@babel/preset-env"]
+}
+		</pre>
+				</li>
+				<li>NPM Scripts Configurations
+		<pre class = "prettyprint linenums">
+"scripts": {
+  "build": "babel src -d public",
+  "browserify": "browserify ./public/app.js -o ./public/bundle.js",
+},
+		</pre>
+				</li>
+				<li>npm run build, convert js files in src folder to ES5 code and save them in public folder</li>
+				<li>npm run browserify, bundle .js file into bundle.js</li>
+				<li>liver-server</li>
+			</ol>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// app.js
+import math from './math.js';
+console.log(math.sumAll(50, 10));
+console.log(math.subtractAll(50, 10));
+console.log(math.multiplyAll(50, 10));
+console.log(math.divideAll(50, 10));
+console.log(math.addFive(2));
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// math.js
+import sum from "lodash/sum"
+let sumAll = (a, b) =&gt; {return a + b;}
+let subtractAll = (a, b) =&gt; {return a - b;}
+let divideAll = (a, b) =&gt; {return a / b;}
+let multiplyAll = (a, b) =&gt; {return a * b;}
+const addFive = (number)=&gt; sum([number, 5])
+export default {sumAll, subtractAll, divideAll, multiplyAll, addFive};
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// index.html
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;script src="bundle.js"&gt;&lt;/script&gt;
+	&lt;!-- &lt;script type="module" src="./app.js"&gt;&lt;/script&gt; --&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// package.json
+"scripts": {
+  "build": "babel src -d public",
+  "browserify": "browserify ./public/app.js -o ./public/bundle.js",
+},
+		</pre>
+		</div>
+		<div class = "subtitle">Transpile and Bundle with Babelify and Browserify</div>
+		<div class = "block">
+			<ol>
+				<li>npm install babelify --save-dev, install babelify</li>
+				<li>browserify -t babelify src/app.js src/math.js &gt; public/bundle.js</li>
+			</ol>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "http://easyreactbook.com/blog/react-fundamentals-configuring-browserify-babelify-and-react#targetText=Installing%20Browserify%20and%20Babelify&targetText=...%20%22dependencies%22%3A,.3%22%20%7D%20...&targetText=With%20Browserify%20and%20Babelify%20installed,JSX%20into%20browser%2Dcompatible%20JavaScript.">React Fundamentals: Configuring Browserify Babelify and React</a></li>
+			<li><a href = "https://medium.com/backticks-tildes/introduction-to-babel-and-javascript-bundlers-fe6165de197c">Introduction to Babel and JavaScript Bundlers</a></li>
+			<li><a href = "https://stackoverflow.com/questions/23296094/browserify-how-to-call-function-bundled-in-a-file-generated-through-browserify">Browserify - How to call function bundled in a file generated through browserify in browser</a></li>
+			<li><a href = "https://www.sitepoint.com/javascript-modules-bundling-transpiling/">Understanding JavaScript Modules: Bundling & Transpiling</a></li>
+			<li><a href = "https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export">MDN Export</a></li>
+			<li><a href = "https://hype.codes/how-include-js-file-another-js-file">How to include JS file to another JS file?</a></li>
+		</div>
+	</body>
+</html>

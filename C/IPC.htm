@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Interprocess Communication
+		</div>
+
+		<div class = "subtitle">pipe</div>
+		<div class = "block">
+			<li>Pipe is one-way communication only i.e we can use a pipe such that One process write to the pipe, and the other process reads from the pipe. It opens a pipe, which is an area of main memory that is treated as a “virtual file”</li>
+			<li>The pipe can be used by the creating process, as well as all its child processes, for reading and writing. One process can write to this “virtual file” or pipe and another related process can read from it</li>
+			<li>If a process tries to read before something is written to the pipe, the process is suspended until something is written</li>
+			<li>The pipe system call finds the first two available positions in the process’s open file table and allocates them for the read and write ends of the pipe</li>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/pipe_1.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt; 
+#include &lt;unistd.h&gt; 
+#include &lt;stdlib.h&gt;
+
+#define MSGSIZE 16 
+
+char* msg = "hello, world!"; 
+
+int main() 
+{ 
+    char inbuf[MSGSIZE]; 
+    int p[2], i; 
+  
+    // create a pipe
+    if (pipe(p) &lt; 0) 
+        exit(1); 
+  
+    // write message to pipe
+    write(p[1], msg, MSGSIZE); 
+  
+    // read message from pipe
+    read(p[0], inbuf, MSGSIZE); 
+    printf("%s\n", inbuf); 
+
+    return 0; 
+} 
+		</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/pipe_2.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main()
+{
+    int pipefd[2]; // 0, read; 1, write
+    pid_t fpid;
+
+    char buf[100];
+
+    if(pipe(pipefd) &lt; 0)
+    {
+        printf("Cannot create pipe ...");
+        exit(1);
+    }
+
+    fpid = fork();
+
+    if(fpid == 0)
+    {
+        printf("I am the child process %d, child id is: %d\n", getpid(), fpid);
+
+        close(pipefd[1]); //close the write-end of the child process
+        wait(NULL);
+        read(pipefd[0], buf, 100);
+        write(1, buf, strlen(buf)+1);
+        write(1, "\n", 1);
+        close(pipefd[0]); //close the read-end of the child process
+        exit(0);
+    }
+    else
+    {
+        printf("I am the parent process %d, parent id is: %d\n", getpid(), fpid);
+
+        close(pipefd[0]); //close the read-end of the parent process
+        char str[] = "Hello World!";
+        write(pipefd[1], str, strlen(str));
+        close(pipefd[1]); //close the write-end of the child process
+        wait(NULL);
+        exit(0);
+    }
+
+    return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.geeksforgeeks.org/pipe-system-call/">geeksforgeeks</a></li>
+		</div>
+	</body>
+</html>

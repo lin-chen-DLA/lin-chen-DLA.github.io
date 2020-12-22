@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			HTTP
+		</div>
+
+		<div class = "subtitle">Server Side</div>
+		<div class = "block">
+			<ul>
+				<li>BaseHTTPServer</li>
+				<li>SimpleHTTPServer, support GET</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from BaseHTTPServer import HTTPServer
+from BaseHTTPServer import BaseHTTPRequestHandler
+
+class GetHandler(BaseHTTPRequestHandler):
+
+    def do_GET(self):
+        print 'Path: ', self.path
+        print 'Client Address: ', self.client_address
+        print 'Command: ', self.command
+        print 'Request Version: ', self.request_version
+        #print 'Responses: ', self.responses
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write('Received request ...')
+        return
+
+def run(server_class=HTTPServer, handler_class=BaseHTTPRequestHandler):
+    server_address = ('', 8080)
+    httpd = server_class(server_address, GetHandler)
+    httpd.serve_forever()
+
+if __name__ == '__main__':
+    run();
+			</pre>
+			<pre class = "prettyprint linenums">
+curl -i http://localhost:8080/?foo=barHTTP/1.0
+			</pre>
+		</div>
+		<div class = "subtitle">Client Side</div>
+		<div class = "block">
+			<ul>
+				<li>httplib, is normally not used directly</li>
+				<li>urllib and urllib2, uses httplib to handle URLs that use HTTP and HTTPS</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#open local file or webpage online
+#!/usr/bin/python
+
+import urllib
+
+#Open local file
+response = urllib.urlopen('U.py')
+
+#print response.read() # read whole file
+print response.readline() # read a single line
+print response.readlines() # read all lines
+print response.fileno();
+print response.info()
+print response.getcode()
+print response.geturl()
+			</pre>
+		</div>
+		<div class = "subtitle">XML</div>
+		<div class = "block">
+			<ul>
+				<li>XML-RPC is a Remote Procedure Call method using XML</li>
+				<li>SimpleXMLRPCServer, XML RPC server</li>
+				<li>xmlrpclib, client side</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#server.py
+#!/usr/bin/python
+
+import xmlrpclib
+from SimpleXMLRPCServer import SimpleXMLRPCServer
+
+def is_even(n):
+    return n % 2 == 0
+
+def display(filename):
+    with open(filename) as f:
+        lines = f.readlines();
+    return lines
+
+server = SimpleXMLRPCServer(("localhost", 8000))
+
+server.register_function(is_even, "is_even")
+server.register_function(display, "display");
+
+server.serve_forever()
+			</pre>
+			<pre class = "prettyprint linenums">
+#client.py
+#!/usr/bin/python
+
+import xmlrpclib
+
+proxy = xmlrpclib.ServerProxy("http://localhost:8000/")
+print "3 is even: %s" % str(proxy.is_even(3))
+print "100 is even: %s" % str(proxy.is_even(100))
+
+print proxy.display('server.py')
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://pymotw.com/2/urllib/index.html">PyMOTW</a></li>
+				<li><a href = "https://pymotw.com/2/BaseHTTPServer/index.html">PyMOTW</a></li>
+				<li><a href = "https://docs.python.org/2/library/basehttpserver.html">BaseHTTPServer</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

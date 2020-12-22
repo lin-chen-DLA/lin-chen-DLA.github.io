@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+			th, td { border-bottom: 1px solid #ddd;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Stack</div>
+		<div class = "block">
+			<li style = "font-size: 20px">Stack is a linear data structure, the order is FILO (First In Last Out)</li>
+		</div>
+		<div class = "subtitle">Operations</div>
+		<div class = "block">
+			<li style = "font-size: 20px"><span class = "red">push()</span>, add an element to the top of a stack</li>
+			<p style = "text-align:center;"><img src = "img/Stack_2.png" width = "50%"></p>
+			<li style = "font-size: 20px"><span class = "red">pop()</span>, remove the top element from a stack</li>
+			<p style = "text-align:center;"><img src = "img/Stack_3.png" width = "46%"></p>
+			<li style = "font-size: 20px"><span class = "red">top()</span>, returns top element of stack</li>
+		</div>
+		<div class = "subtitle">Implementation with linked list</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# NodeModule.py
+#!/usr/bin/python
+""" A model containing Node class """
+import copy
+
+__author__ = "Lin Chen"
+__version__ = "0.1"
+
+class Node:
+    """Single node in a data structure"""
+
+    def __init__(self, data):
+        """Initialize a Node
+        
+        Args:
+            data : data saved in the node
+        """
+        self._data = data
+        self._next = None
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, d):
+        self._data = d
+
+    @data.deleter
+    def data(self):
+        del self._data
+
+    @property
+    def next(self):
+        return self._next
+
+    @next.setter
+    def next(self, n):
+        self._next = n
+
+    @next.deleter
+    def next(self):
+        del self._next
+
+    def __copy__(self):
+        #print('Call copy ...')
+        return Node(copy.deepcopy(self._data))
+
+    def __str__(self):
+        return str(self._data)
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# ListModule.py
+#!/usr/bin/python
+""" A modeule containing Sorted List class
+
+The data structure is a linked list of nodes, in which the elements
+has been sorted by ascending order"""
+
+import copy
+from NodeModule import Node
+
+class List(object):
+    """Linked List class with a pre-defined Node class"""
+
+    def __init__(self):
+        """Initialize a List
+        """
+        self._head = None
+        self._count = 0
+
+    def isEmpty(self):
+        """Check if the list is empty
+
+        Args:
+            None
+
+        Returns:
+            boolean : True, if list is empty; False, otherwise
+        """
+        return self._count == 0
+
+    def getSize(self):
+        """Return the size of the list
+        
+        Returns:
+            int : size of the list
+        """
+        return self._count
+
+    def insert(self, index, v):
+        """Insert a valude to a specific location in the list
+
+        Args:
+            index (int): location of insertion, 0 is the location before the first element, 1 is the location after the first element
+            v : data which can be saved in a node
+
+        Returns:
+            boolean: True, if the value is inserted succefully; False, otherwise
+        """
+        if index &lt; 0 or index &gt; self._count:
+            return False
+
+        n = Node(v) # create a node
+
+        if index == 0:
+            n.next = self._head
+            self._head = n
+            self._count += 1
+            return True
+
+        current = self._head
+        for i in range(index-1):
+            current = current.next
+        n.next = current.next
+        current.next = n
+        self._count += 1
+        return True
+
+    def delete(self, index):
+        """Delete a valude located at a specific location in the list
+
+        Args:
+            index (int): location of deletion, 0 is the location before the first element, 1 is the location after the first element
+
+        Returns:
+            Node: return the deleted node if it is deleted successfully; False, otherwise
+        """
+        if index &lt; 0 or index &gt; self._count-1:
+            return None
+
+        if index == 0:
+            n = copy.copy(self._head)
+            self._head = self._head.next
+            self._count -= 1
+            return n
+
+        current = self._head
+        for i in range(index-1):
+            current = current.next
+
+        n = copy.copy(current.next)
+        current.next  = current.next.next
+        self._count -= 1
+        return n
+
+    def __str__(self):
+        """Convert the list to a string
+
+        Returns:
+            string : a string represents the list
+        """
+        if self.isEmpty():
+            return "Empty"
+
+        current = self._head
+        output = []
+
+        while current is not None:
+            output.append(str(current))
+            current = current.next
+
+        return " -&gt; ".join(output)
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# StackModule.py
+#!/usr/bin/python
+""" A module containing Stack class which is implmented by linked list"""
+
+from ListModule import List
+
+class Stack(List):
+    """Stack, FILO linear data structure"""
+
+    def __init__(self):
+        List.__init__(self)
+
+    def push(self, v):
+        self.insert(0, v)
+
+    def pop(self):
+        return self.delete(0)
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from StackModule import Stack
+
+def main():
+    s = Stack();
+
+    s.push(1)
+    s.push(2)
+    s.push(3)
+    s.push(4)
+    print(s) # 4 -&gt; 3 -&gt; 2 -&gt; 1
+
+    p = s.pop()
+    print(p) # 4
+    print(s) # 3 -&gt; 2 -&gt; 1
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "subtitle">Applications</div>
+		<div class = "block">
+			<li style = "font-size: 20px">Balancing of symbols</li>
+			<li style = "font-size: 20px">Infix to Postfix /Prefix conversion</li>
+			<li style = "font-size: 20px">Redo-undo features at many places like editors</li>
+			<li style = "font-size: 20px">Forward and backward feature in web browsers</li>
+		</div>
+	</body>
+</html>

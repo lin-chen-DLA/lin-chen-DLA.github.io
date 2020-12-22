@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Function
+		</div>
+
+		<div class = "subtitle">Organization</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//f1.cpp
+#include &lt;iostream&gt;
+using namespace std;
+
+void f()
+{
+	cout&lt;&lt;"Inside the function ..."&lt;&lt;endl;
+}
+
+int main(int argc, char* argv[])
+{
+	f();
+	return 0;
+}
+			</pre>
+		</div>
+				<div class = "block">
+		<pre class = "prettyprint linenums">
+//f2.cpp
+#include &lt;iostream&gt;
+using namespace std;
+
+void f();
+
+int main(int argc, char* argv[])
+{
+	f();
+	return 0;
+}
+
+void f()
+{
+	cout&lt;&lt;"Inside the function ..."&lt;&lt;endl;
+}
+		</pre>
+	</div>
+					<div class = "block">
+	<pre class = "prettyprint linenums">
+//f3.h
+#ifndef F3_H
+#define F3_H
+void f();
+#endif
+	</pre>
+	<pre class = "prettyprint linenums">
+//util.cpp
+#include &lt;iostream&gt;
+#include "f3.h"
+using namespace std;
+
+void f()
+{
+	cout&lt;&lt;"Inside the function ..."&lt;&lt;endl;
+}
+	</pre>
+	<pre class = "prettyprint linenums">
+//f3.cpp
+#include <iostream>
+#include "f3.h"
+using namespace std;
+
+int main(int argc, char* argv[])
+{
+	f();
+	return 0;
+}
+	</pre>
+</div>
+		<div class = "subtitle">Pass by value</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+using namespace std;
+
+void increase(int n)
+{
+	n++;
+}
+
+int main(int argc, char* argv[])
+{
+	int n = 0;
+
+	increase(n);
+
+	cout&lt;&lt;n&lt;&lt;endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+				<div class = "subtitle">Pass by reference</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+using namespace std;
+
+void increase(int &n)
+{
+	n++;
+}
+
+int main(int argc, char* argv[])
+{
+	int n = 0;
+
+	increase(n);
+
+	cout&lt;&lt;n&lt;&lt;endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Return value from function</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+using namespace std;
+
+int increase(int n)
+{
+	return ++n;
+}
+
+int main(int argc, char* argv[])
+{
+	int n = 0;
+
+	n = increase(n);
+
+	cout&lt;&lt;n&lt;&lt;endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Static local variables</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+using namespace std;
+
+void showStatic();
+
+int main(int argc, char *argv[])
+{
+	for(int i = 0; i &lt; 10; i++)
+		showStatic();
+
+	return 0;
+}
+
+void showStatic()
+{
+	static int count = 0;
+
+	count++;
+
+	cout&lt;&lt;"Have been called "&lt;&lt;count&lt;&lt;" times ..."&lt;&lt;endl;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Static local variables are not destroyed when a function returns.</li>
+				<li>Exist for the lifetime of the program, even though their scope is only the function in which they are defined</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Default arguments</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+using namespace std;
+
+int showNum(int, int = 2, int = 3);
+//int showNum(int, int = 2, int);//Illegal
+
+int main(int argc, char *argv[])
+{
+	showNum(10, 100, 1000);
+	showNum(10, 100);
+	showNum(10);
+	//showNum(, 10);//Illegal
+
+	return 0;
+}
+
+int showNum(int num1, int num2, int num3)
+{
+	cout&lt;&lt;num1&lt;&lt;" "&lt;&lt;num2&lt;&lt;" "&lt;&lt;num3&lt;&lt;endl;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>The default arguments are listed in the funciton prototype, or in the function header, but not in both</li>
+				<li>When a function uses a mixture of parameters with and without default arguments, the parameters with default arguments must be defined last</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Variable number of parameters</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;cstdarg&gt;
+#include &lt;string&gt;
+using namespace std;
+
+void display(string p, int n, ...);
+
+int main(int argc, char *argv[])
+{
+	display("Two parameters", 2, 10, 100);
+	display("Four parameters", 4, 1, 2, 3, 4);
+
+	return 0;
+}
+
+void display(string p, int n, ...)
+{
+	va_list l;
+	va_start(l, n);
+
+	cout&lt;&lt;"n: "&lt;&lt;n&lt;&lt;endl;
+
+	for(int i = 0; i &lt; n; i++)
+		cout&lt;&lt;va_arg(l, int)&lt;&lt;endl;
+
+	va_end(l);
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				To create a variadic function, an ellipsis (...) must be placed at the end if a parameter list
+			</ul>
+		</div>
+				<div class = "block">
+		<pre class = "prettyprint linenums">
+//C++ 11
+//g++ -std=c++11 f10.cpp
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;initializer_list&gt;
+using namespace std;
+
+void display(const initializer_list&lt;int&gt; &v)
+{
+	for(int i = 0; i &lt; v.size(); i++)
+		cout&lt;&lt;v.begin()[i]&lt;&lt;endl;//std::initializer_list does not have subscript operator
+}
+
+int main(int argc, char *argv[])
+{
+	display({1, 2, 3, 4});
+
+	return 0;
+}
+		</pre>
+	</div>
+			<div class = "subtitle">Overloading functions</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+using namespace std;
+
+void display(int n);
+void display(int n1, int n2);
+void display(double n);
+void display(double n1, int n2);
+
+int main(int argc, char *argv[])
+{
+	int a = 1, b = 2;
+	double pi = 3.14;
+
+	display(a);
+	display(a, b);
+	display(pi);
+	display(pi, a);
+
+	return 0;
+}
+
+void display(int n) {cout&lt;&lt;n&lt;&lt;endl;}
+void display(double n) {cout&lt;&lt;n&lt;&lt;endl;}
+void display(int n1, int n2)
+{
+	cout&lt;&lt;n1&lt;&lt;" "&lt;&lt;n2&lt;&lt;endl;
+}
+void display(double n1, int n2)
+{
+	cout&lt;&lt;n1&lt;&lt;" "&lt;&lt;n2&lt;&lt;endl;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Assign the same name to multiple functions, as long as their parameter lists are different</li>
+				<li><span style = "color:red">Function signature</span>
+				<ul>
+					<li>the name of the function and the data types of the function's parameters in the proper order</li>
+					<li>the function's return value is not part of the signature</li>
+					<li>the number of parameters is also convenient for overloading</li>
+				</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Recursive</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int factorial(int);
+
+int main(int argc, char *argv[])
+{
+	std::cout&lt;&lt;factorial(10)&lt;&lt;std::endl;
+
+	return 0;
+}
+
+int factorial(int n)
+{
+	if (n == 0)
+		return 1;
+	else
+		return n*factorial(n-1);
+}
+			</pre>
+		</div>
+				<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int gcd(int x, int y);
+
+int main(int argc, char *argv[])
+{
+	std::cout&lt;&lt;gcd(10, 2)&lt;&lt;std::endl;
+	std::cout&lt;&lt;gcd(2, 10)&lt;&lt;std::endl;
+
+	return 0;
+}
+
+int gcd(int x, int y)
+{
+	if (x % y == 0)
+		return y;
+	else
+		return gcd(y, x % y);
+}
+		</pre>
+	</div>
+	<div class = "subtitle">Inline function</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+int doubleNum(int n);
+
+int main(int argc, char *argv[])
+{
+	std::cout&lt;&lt;doubleNum(10)&lt;&lt;std::endl;
+
+	return 0;
+}
+
+inline int doubleNum(int n)
+{
+	return 2*n;
+}
+			</pre>
+		</div>
+				<div class = "block">
+		<pre class = "prettyprint linenums">
+//util.cpp
+#ifndef UTIL_H
+#define UTIL_H
+
+inline int doubleNum(int n)
+{
+	return 2*n;
+}
+
+#endif
+		</pre>
+		<pre class = "prettyprint linenums">
+//main.cpp
+#include &lt;iostream&gt;
+#include "util.h"
+
+int main(int argc, char *argv[])
+{
+	std::cout&lt;&lt;doubleNum(10)&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			<li>Inine functions should be in header files</li>
+		</ul>
+	</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "http://www.cplusplus.com/articles/2LywvCM9/">What is C++ inline functions</a></li>
+			<li><a href = "https://isocpp.org/wiki/faq/inline-functions">Inline function FAQ</a></li>
+		</ul>
+	</div>
+	<div class = "subtitle">Template</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+//pass by value
+#include &lt;iostream&gt;
+
+template &lt;class T&gt;
+T getSquare(T);
+
+int main(int argc, char *argv[])
+{
+	std::cout&lt;&lt;getSquare(10)&lt;&lt;std::endl;
+
+	return 0;
+}
+
+template &lt;class T&gt;
+T getSquare(T n)
+{
+	return n*n;
+}
+	</pre>
+	</div>
+		<div class = "block">
+	<pre class = "prettyprint linenums">
+//pass by reference
+#include &lt;iostream&gt;
+
+template &lt;class T&gt;
+void swap(T &, T &);
+
+int main(int argc, char *argv[])
+{
+	int a = 10, b = 100;
+
+	swap(a, b);
+
+	std::cout&lt;&lt;a&lt;&lt;" "&lt;&lt;b&lt;&lt;std::endl;
+
+	return 0;
+}
+
+template &lt;class T&gt;
+void swap(T &a, T &b)
+{
+	T temp;
+	temp = a;
+	a = b;
+	b = temp;
+}
+	</pre>
+</div>
+		<div class = "block">
+<pre class = "prettyprint linenums">
+//multiple data types
+#include &lt;iostream&gt;
+
+template &lt;class T1, class T2&gt;
+T1 mul(const T1 &, const T2 &);
+
+int main(int argc, char *argv[])
+{
+	int a = 10;
+	double b = 100.0;
+
+	std::cout&lt;&lt;mul(a, b)&lt;&lt;std::endl;
+
+	return 0;
+}
+
+template &lt;class T1, class T2&gt;
+T1 mul(const T1 &a, const T2 &b)
+{
+	return a*b;
+}
+</pre>
+</div>
+		<div class = "block">
+<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+
+template &lt;class T&gt;
+void message();
+
+int main(int argc, char *argv[])
+{
+	message&lt;int&gt;();
+
+	return 0;
+}
+
+template &lt;class T&gt;
+void message()
+{
+	T a;
+	std::cin&gt;&gt;a;
+	std::cout&lt;&lt;a&lt;&lt;std::endl;
+}
+</pre>
+</div>
+	<div class = "block">
+		Explicitly select function template
+		<ul>
+			<li>The template parameter T does not appear in the function's parameter list</li>
+			<li>Forece the actualarguments to be promoted before the compiler deduces the template type</li>
+		</ul>
+	</div>
+			<div class = "block">
+	<pre class = "prettyprint linenums">
+//deal with different data types
+#include &lt;iostream&gt;
+#include &lt;typeinfo&gt;
+#include &lt;string&gt;
+
+template &lt;class T&gt;
+std::string getType(const T &n);
+
+int main(int argc, char *argv[])
+{
+	int a = 10;
+	double b = 3.14;
+
+	std::cout&lt;&lt;getType(a)&lt;&lt;std::endl;
+	std::cout&lt;&lt;getType(b)&lt;&lt;std::endl;
+
+	return 0;
+}
+
+template &lt;class T&gt;
+std::string getType(const T & n)
+{
+	char t = typeid(n).name()[0];
+
+	switch(t)
+	{
+		case 'i':
+			return "Integer";
+			break;
+		case 'd':
+			return "Double";
+			break;
+		default:
+			return "Unknown";
+	}
+}
+	</pre>
+</div>
+	<div class = "block">
+		<ul>
+			<span style = "color:red">Put the template function in .h file</span>
+		</ul>
+<pre class = "prettyprint linenums">
+//util.h
+#ifndef UTIL_H
+#define UTIL_H
+
+template &lt;class T&gt;
+int getSize(T n)
+{
+	return sizeof(n);
+}
+
+#endif
+</pre>
+<pre class = "prettyprint linenums">
+//main.cpp
+#include &lt;iostream&gt;
+#include "util.h"
+
+int main(int argc, char *argv[])
+{
+	int a = 0;
+
+	std::cout&lt;&lt;getSize(a)&lt;&lt;std::endl;
+
+	return 0;
+}
+</pre>
+</div>
+	<div class = "block">
+		<span style = "color:red">Put the prototype of the template in .h file and the declaration of the template function in .cpp file</span>
+		<ul>
+			<li>Create a template prototype with specific data type</li>
+			<li>Include both *.h file and *.cpp file</li>
+			<li>include *.cpp file in *.h file</li>
+		</ul>
+	</div>
+	<div class = "block">
+<pre class = "prettyprint linenums">
+//util.h
+#ifndef UTIL_H
+#define UTIL_H
+
+template &lt;class T&gt;
+int getSize(T n);
+
+#endif
+</pre>
+<pre class = "prettyprint linenums">
+//util.cpp
+#include "util.h"
+
+template &lt;class T&gt;
+int getSize(T n)
+{
+	return sizeof(n);
+}
+
+template int getSize&lt;int&gt;(int);
+template int getSize&lt;double&gt;(double);
+</pre>
+<pre class = "prettyprint linenums">
+//main.cpp
+#include &lt;iostream&gt;
+#include "util.h"
+
+int main(int argc, char *argv[])
+{
+	double a = 0;
+	int b = 10;
+
+	std::cout&lt;&lt;getSize(a)&lt;&lt;std::endl;
+	std::cout&lt;&lt;getSize(b)&lt;&lt;std::endl;
+
+	return 0;
+}
+</pre>
+</div>
+	<div class = "block">
+<pre class = "prettyprint linenums">
+//util.h
+#ifndef UTIL_H
+#define UTIL_H
+
+template &lt;class T&gt;
+int getSize(T n);
+
+#endif
+</pre>
+<pre class = "prettyprint linenums">
+//util.cpp
+#include "util.h"
+
+template &lt;class T&gt;
+int getSize(T n)
+{
+	return sizeof(n);
+}
+</pre>
+<pre class = "prettyprint linenums">
+//main.cpp
+#include &lt;iostream&gt;
+#include "util.h"
+#include "util.cpp"
+
+int main(int argc, char *argv[])
+{
+	double a = 0;
+	int b = 10;
+
+	std::cout&lt;&lt;getSize(a)&lt;&lt;std::endl;
+	std::cout&lt;&lt;getSize(b)&lt;&lt;std::endl;
+
+	return 0;
+}
+</pre>
+</div>
+	<div class = "block">
+<pre class = "prettyprint linenums">
+//util.h
+#ifndef UTIL_H
+#define UTIL_H
+
+template &lt;class T&gt;
+int getSize(T n);
+
+#include "util.cpp"
+
+#endif
+</pre>
+<pre class = "prettyprint linenums">
+//util.cpp
+template &lt;class T&gt;
+int getSize(T n)
+{
+	return sizeof(n);
+}
+</pre>
+<pre class = "prettyprint linenums">
+//main.cpp
+#include &lt;iostream&gt;
+#include "util.h"
+
+int main(int argc, char *argv[])
+{
+	double a = 0;
+	int b = 10;
+
+	std::cout&lt;&lt;getSize(a)&lt;&lt;std::endl;
+	std::cout&lt;&lt;getSize(b)&lt;&lt;std::endl;
+
+	return 0;
+}
+</pre>
+</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "https://isocpp.org/wiki/faq/templates">Template FAQ</a></li>
+			<li><a href = "https://www.codeproject.com/articles/48575/how-to-define-a-template-class-in-a-h-file-and-imp">Define template in a .h file and implet it in a .cpp file</a></li>
+		</ul>
+	</div>
+		<div class = "subtitle">Reference</div>
+	<div class = "block">
+		<ul>
+			<li>Starting out with C++, Tony Gaddis</li>
+			<li>isocpp.org</li>
+		</ul>
+	</div>
+	</body>
+</html>

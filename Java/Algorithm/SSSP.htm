@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Single-Source Shortest Paths</div>
+		<div class = "block">
+			<ul>
+				<li>Given a weighted, directed graph G = (V, E), search the shortest-path from start vertex s to each vertex v &isin; V</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Bellman-Ford Algorithm</div>
+		<div class = "block">
+			<ul>
+				<li>Allow negative edge weight</li>
+				<li>Dynamic Programming</li>
+				<li>O(VE)</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Each node v has v.d for a shortest-path estimate, v.&pi; for its parent</li>
+				<li>For each edge (u, v), if (u.d + w(u, v)) &lt; (v.d), update v.d and v.&pi;</li>
+				<li>Repeat above step |V|-1 times</li>
+				<li>If there is any edge has (u.d + w(u, v)) &lt; v.d, the graph exit negative-weight cycle, there is no shortest path</li>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/BF.png" width = "80%"></p>
+		</div>
+		<div class = "subtitle">Single-Source Shortest Paths in Dag (Directed Acyclic Graph)</div>
+		<div class = "block">
+			<ul>
+				<li>Use DFS to check the finish time for each node</li>
+				<li>List all nodes by finish time to form a dag</li>
+				<li>For each node u in the list, check each edge (u, v), if (u.d + w(u, v)) &lt; v.d, update v.d and v.&pi;</li>
+				<li>Repeat for each node in the list in order</li>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/SPDAG.png" width = "40%"></p>
+		</div>
+		<div class = "subtitle">Dijkstra's Algorithm</div>
+		<div class = "block">
+			<ul>
+				<li>Greedy algorithm</li>
+				<li>Edge weights are nonnegative</li>
+				<li>O(VlgV + E)</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Each node v has v.d for a shortest-path estimate, v.&pi; for its parent</li>
+				<li>Set the edge weight of all nodes to be infinite, push them into a min-priority queue</li>
+				<li>Set the edge weight of the start node to be zero</li>
+				<li>Pop node u from queue, check all edge (u, v), if (u.d + w(u, v)) &lt; v.d, update v.d and v.&pi;</li>
+				<li>Repeat until the queue is empty</li>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/Dijkstra.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li>CLRS Chapter 24</li>
+			</ul>
+		</div>
+	</body>
+</html>

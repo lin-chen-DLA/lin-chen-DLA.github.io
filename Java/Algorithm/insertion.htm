@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Insertion Sort</div>
+		<div class = "block">
+			<li>Best Case, O(n)</li>
+			<li>Worst Case, &Omega;(n^2)</li>
+			<li>Memory Complexity, O(1)</li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.Random;
+import java.util.Arrays;
+
+public class Insertion
+{
+    //insertion sort	
+    public static void insertionSort(int arr[])
+    {
+	int n = arr.length;
+        for (int i=1; i&lt;n; ++i)
+        {
+            int key = arr[i];
+            int j = i-1;
+ 
+	    /* Insert A[j] into the sorted sequence A[1 ... j-1]*/
+            while (j&gt;=0 && arr[j] &gt; key)
+            {
+                arr[j+1] = arr[j];
+                j = j-1;
+            }
+            arr[j+1] = key;
+        }
+    }
+
+    //generate an array with random elements
+    public static int [] getArray(int size)
+    {
+	    int [] array = new int[size];
+	    Random r = new Random();
+
+	    for(int i = 0; i &lt; size; i++)
+		    array[i] = r.nextInt(100);
+
+	    return array;
+    }
+
+    //display an array
+    public static void displayArray(int arr[])
+    {
+	    for(int e : arr)
+		    System.out.printf("%5d", e);
+	    System.out.println();
+    }
+
+    public static void main(String args[])
+    {
+	    long start, end;
+	    int [] array;
+	    int [] array2;
+	    int size = 100000;
+
+	    //create two same arrays
+	    array = getArray(size);
+	    array2 = Arrays.copyOf(array, array.length);
+
+	    //sort a huge array with insertion sort
+	    start = System.currentTimeMillis();
+	    insertionSort(array);
+	    end = System.currentTimeMillis();
+	    System.out.printf("Bubble sort time: %10f%n", (end-start)/1000000.0);
+
+	    //sort the array with build-in sort function in Arrays class
+	    start = System.currentTimeMillis();
+	    Arrays.sort(array2);
+	    end = System.currentTimeMillis();
+	    System.out.printf("Build-in sort time: %10f%n", (end-start)/1000000.0);
+
+	    //validate insertion sort
+	    if(Arrays.equals(array, array2))
+		    System.out.println("Bubble sort is validated ...");
+	    else
+		    System.out.println("Bubble sort does not work correctly ...");
+    }
+}
+			</pre>
+		</div>
+	</body>
+</html>

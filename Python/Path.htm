@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Python Path Configuration
+		</div>
+		<div class = "block">
+			<li>PYTHONPATH
+				<ul>
+					<li>The PYTHONPATH variable can be set to a list of paths that will be added to the beginning of sys.path</li>
+					<li>export PYTHONPATH="/User/lchen/.local/python:$PYTHONPATH", set environment variable PYTHONPATH in .bash_profile or .profile under $HOME directory</li>
+				</ul>
+			</li>
+			<li>sys.path
+				<ul>
+		<pre class = "prettyprint linenums">
+import sys
+sys.path.insert(0,'/path/to/mod_directory') 
+
+# or
+sys.path.append(mod_directory)
+		</pre>
+				</ul>
+			</li>
+			<li>Python configuration file
+				<ul>
+					<li>python -m site --user-site, first find out in which directory Python searches for path configuration file</li>
+					<li>Create .pth file under this directory, add the path in the file</li>
+		<pre class = "prettyprint linenums">
+#/Users/lchen/.local/lib/python2.7/site-packages
+
+#Create temp.pth file under the directory
+/Users/lchen # add this path to the path configuration file
+
+#Add m.py under /User/lchen
+import m
+		</pre>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.python.org/2/library/site.html">site — Site-specific configuration hook</a></li>
+			<li><a href = "https://stackoverflow.com/questions/3402168/permanently-add-a-directory-to-pythonpath">StackOverflow</a></li>
+		</div>
+	</body>
+</html>

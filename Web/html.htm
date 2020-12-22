@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+       <title>HTML</title>
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <style>
+       	span {color: red;}
+		td {width: 100px}
+		</style>
+
+    </head>
+
+    <body bgcolor = white text = #4E6AAA link = silver alink = silver vlink = silver>
+	<li>&lt;!-- comments --&gt;, comment</li>
+    	<li>HTML is not case sensitive, W3C recommend lowcase in HTML</li>
+    	<li><a href = "https://www.w3schools.com/colors/default.asp"><span>Colors</span></a>
+    		<ul>
+    			<li>RGB, HEX, HSL, RGBA, HSLA</li>
+    		</ul>
+    	</li>
+		<li><span>Elements in HTML5</span>
+			<ul>
+				<li>article, aside, bdi, details, dialog, figcaption, figure, footer, header, main, mark, meter, nav, progress, rp, rt, ruby, section, summary, time, wbr</li>
+			</ul>
+		</li>
+	    <li><span>Semantic Tags in HTML5</span>
+		    <ul>
+			    <li>header, section, article, aside, footer, nav, main, figure</li>
+		    </ul>
+	    </li>
+	    <li><a href = "https://www.w3.org/TR/2011/WD-html5-20110525/content-models.html"><span>Content Models</span></a>
+		    <ul>
+			    <li>Block-Level Elements, render to begin a new line by default, roughly flow content in HTML5</li>
+			    <li>Inline Elements, render on the same line, roughly phrasing content in HTML5</li>
+		    </ul>
+	    </li>
+	    <li><span>Attributes</span>
+		    <ul>
+			    <li><a href = "http://www.w3schools.com/tags/ref_attributes.asp">HTML attributes</a></li>
+			    <li><a href = "https://www.w3schools.com/tags/ref_eventattributes.asp">HTML Event Attributes</a></li>
+			    <li>Either double or single quote</li>
+			    <li>class, HTML elements can have more than one class name, each class name must be separated by a space</li>
+			    <li>id, unique in the whole html document</li>
+		    </ul>
+	    </li>
+	    <li><span>Head</span>
+	    	<ul>
+	    		<li>Title, defines the title of the document, and is required in all HTML documents</li>
+	    		<li>Style, define CSS style information for a single HTML page</li>
+	    		<li>Meta
+	    			<ul>
+	    				<li>charset, character encoding declaration
+	    					<ul>
+	    							<li>&lt;meta charset="UTF-8"&gt;, specify which character set is used</li>
+	    					</ul>
+	    				</li>
+	    				<li>name, metadata content
+	    					<ul>
+	    							<li>&lt;meta name="description" content="Free Web tutorials"&gt;, specify page description</li>
+	    							<li>&lt;meta name="keywords" content="HTML, CSS, XML, JavaScript"&gt;, define keywords for search engines</li>
+	    							<li>&lt;meta name="author" content="John Doe"&gt;, define the author of a page</li>
+	    							<li>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;, <span>define viewport element in all your web pages</span></li>
+	    					</ul>
+	    				</li>
+	    				<li>http-equiv
+	    					<ul>
+	    							<li>content-language</li>
+	    							<li>content-type</li>
+	    							<li>default-style</li>
+	    							<li>&lt;meta http-equiv="refresh" content="30"&gt;, refresh document every 30 seconds</li>
+	    							<li>set-cookie</li>
+	    					</ul>
+	    				</li>
+	    			</ul>
+	    		</li>
+	    		<li>Link, is used to link to external style sheets</li>
+	    		<li>Script, define client-side JavaScripts</li>
+	    		<li>Noscript, defines an alternate content for users that have disabled scripts in their browser or have a browser that doesn't support script</li>
+	    		<li>Base, specifies the base URL and base target for all relative URLs in a page</li>
+	    	</ul>
+	    </li>
+	    <li><span>Layout</span>
+	    	<ul>
+	    		<li><del>HTML tables</del></li>
+	    		<li>CSS <span>float</span> property</li>
+	    		<li>CSS <span>flexbox</span>, a new layout mode in CSS3</li>
+	    		<li>CSS <span>framework</span>, W3.CSS or Bootstrap</li>
+	    		<li>CSS <span>grid</span>, a grid-based layout system</li>
+	    	</ul>
+	    </li>
+	    <li><span>Form</span>
+	    	<ul>
+	    		<li>input
+	    			<ul>
+	    				<li>button, checkbox, color, data, datetime-local, email, file, hidden, image, month, number, password, radio, range, reset, search, submit, tel, text, time, url, week</li>
+	    			</ul>
+	    		</li>
+	    		<li>textarea</li>
+	    		<li>label, defines a label for an &lt;input&gt; element</li>
+	    		<li>fieldset
+	    			<ul>
+	    				<li>legend</li>
+	    			</ul>
+	    		</li>
+	    		<li>select, defines a drop-down list
+	    			<ul>
+	    				<li>option</li>
+	    				<li>optgroup</li>
+	    			</ul>
+	    		</li>
+	    		<li>button</li>
+	    		<li>datalist
+	    			<ul>
+	    				<li>option</li>
+	    			</ul>
+	    		</li>
+	    		<li>output</li>
+	    	</ul>
+	    </li>
+	    <li><span>Web storage</span>, all pages, from one origin, can store and access the same data
+	    	<ul>
+	    		<li>window.localStorage, stores data with no expiration date, the data will not be deleted when the browser is closed, and will be available the next day, week, or year</li>
+	    		<li>window.sessionStorage, stores data for one session, data is lost when the browser tab is closed</li>
+	    	</ul>
+	    </li>
+	    <li><span>Web worker</span>, a JavaScript running in the background, without affecting the performance of the page</li>
+	    <li><span>HTML5 Server-Sent Events</span>, allow a web page to get updates from a server</li>
+	    <li><span>Reference</span>
+		    <ul>
+			    <li><a href = "https://w3cx.org/">MOOCs</a></li>
+			    <li><a href = "https://dev.w3.org/html5/html-author/charref">HTML entities</a></li>
+			    <li><a href = "https://www.w3.org/TR/2011/WD-html5-20110525/">W3C Standards</a></li>
+			    <li><a href = "https://caniuse.com/">Can I User</a></li>
+			    <li><a href = "https://validator.w3.org/">Validator</a></li>
+			    <li><a href = "https://www.w3schools.com/browsers/">W3C Browser Statistics</a></li>
+		    </ul>
+	    </li>
+    </body>
+
+    </html>
+

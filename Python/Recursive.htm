@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 36px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Recursion
+		</div>
+
+		<div class = "subtitle" style = "font-size: 28px">Factorial</div>
+		<div class = "block" style = "font-size: 24px">
+			Factorial of a positive integer n, denoted by n!, 
+				<ul>
+					<li>n! = n * (n-1) * (n-2) ... * 2 * 1</li>
+					<br>
+					<li>the value of 0! is defined as 1</li>
+					<br>
+					<li style = "color:red">for example: 4! = 4 * 3 * 2 *1 = 24</li>
+					<br>
+					<li>5! = ?</li>
+					<li>1! = ?</li>
+				</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def factorial(n):
+    '''factorial
+    Args:
+        n (int), integer number
+    Return:
+        int, factorial number
+    '''
+    f = 1
+
+    for i in range(1, n+1):
+        f *= i
+
+    return f
+
+def main():
+    print factorial(10);
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "block" style = "font-size: 24px">
+			<span>Re-write</span> factorial expression<br>
+			<pre>
+n! = n*(n-1)*(n-2)...*2*1
+   = <span style = "color:red">n*(n-1)!</span>
+
+5! = 5*4! = 5*24 = 120
+			</pre>
+			<span>Re-write</span> factorial definition<br>
+<p style = "text-align:center;"><img src = "img/fact_1.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def factorial(n):
+    '''factorial
+    Args:
+        n (int), integer number
+    Return:
+        int, factorial number
+    '''
+    if n == 0:
+        return 1;
+    else:
+        return n*factorial(n-1);
+
+def main():
+    print factorial(10);
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle" style = "font-size: 28px">What is Recursion?</div>
+		<div class = "block" style = "font-size: 24px">
+			<li>A way of solving a problem by having a function call <span>itself</span></li><br>
+			<li>the corresponding function is called as <span>recursive function</span></li><br>
+		</div>
+		<div class = "subtitle" style = "font-size: 28px">How to write recursive function?</div>
+		<div class = "block" style = "font-size: 24px">
+			<ol>
+				<li>Recursion: the idea is represent a problem in terms of one or more smaller problems</li>
+				<p style = "text-align:center;"><img src = "img/fact_3.png" width = "30%"></p>
+				<li>Base: add one or more base conditions that stop recursion</li>
+				<p style = "text-align:center;"><img src = "img/fact_2.png" width = "30%"></p>
+			</ol>
+		</div>
+		<div class = "subtitle" style = "font-size: 28px">Take a look at the recursive program deeper</div>
+		<div class = "block" style = "font-size: 24px">
+				<p style = "text-align:center;"><img src = "img/fact_4.png" width = "70%"></p>
+		</div>
+		<div class = "subtitle" style = "font-size: 28px">Exercise: Fibonacci</div>
+		<div class = "block" style = "font-size: 24px">
+			<br>
+			Fibonacci sequence: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ...
+			<br>
+			<br>
+			<li><span>F<sub>n</sub> = F<sub>n-1</sub> + F<sub>n-2</sub>, F<sub>0</sub> = 0 and F<sub>1</sub> = 1</span></li>
+			<br>
+			<li>Base ?</li>
+			<li>Recursion ?</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bint/python
+
+def fib(n):
+    """Fibnacci nubmer
+    
+    Args:
+        n, index of a fibnacci number in fibnacci sequence
+        
+    Returns:
+        int, fibnacci number with the specified index
+    """
+    if n == 0 or n == 1:
+        return n
+
+    return fib(n-1) + fib(n-2)
+
+def main():
+    print(fib(10))
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle" style = "font-size: 28px">Pros and Cons</div>
+		<div class = "block" style = "font-size: 24px">
+			<li><span>Pros</span>
+				<ul>
+					<li>Recursion adds clarity and reduces the time needed to write and debug code</li>
+					<li>Recursion can reduce time complexity</li>
+					<li>Recursion is better at tree traversal</li>
+				</ul>
+			</li>
+			<li><span>Cons</span>
+				<ul>
+					<li>Recursion uses more memory</li>
+					<li>Recursion can be slow</li>
+					<li>Stack Overflow error</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle" style = "font-size: 28px">Applications</div>
+		<div class = "block" style = "font-size: 24px">
+			<li>puzzle games (Chess,Candy crush,etc)</li>
+			<li>Tree traversal</li>
+			<li>Sorting algorithms (Quick sort, Merge sort, etc)</li>
+			<li><span>Interviews ...</span></li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://medium.com/@williambdale/recursion-the-pros-and-cons-76d32d75973a">Recursion: The Pros and Cons</a></li>
+			<li><a href = "https://www.geeksforgeeks.org/recursion/">Geeksforgeeks</a></li>
+		</div>
+	</body>
+</html>

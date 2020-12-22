@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Format
+		</div>
+
+		<div class = "subtitle">Old Style</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# string
+str = "String: %s %s" % ('One', 'Two');
+
+str = "String: %10s %10s" % ('One', 'Two'); #       One       Two
+
+str = "String: %-10s %-10s" % ('One', 'Two'); #One       Two       
+
+str = "String: %10.2s %10.2s" % ('One', 'Two'); #        On        Tw
+
+# number
+str = "Number: %d %f" % (10, 3.14); # 10 3.140000
+
+str = "Number: %10d %10.2f" % (10, 3.14); #      10      3.14
+
+str = "Number: %010d %010.2f" % (10, 3.14) #0000000010 0000003.14
+
+# named placeholder
+d = {'name':'Lin', 'age':37};
+str = "%(name)s %(age)d" % d;
+		</pre>
+		</div>
+
+		<div class = "subtitle">New Style</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# string
+str = "String: {} {}".format('One', 'Two'); #One Two
+
+str = "String: {1} {0}".format('One', 'Two'); #Two One
+
+str = "String: {:&gt;10} {:&gt;10}".format('One', 'Two'); #       One       Two
+
+str = "String: {:^10} {:^10}".format('One', 'Two'); #    One       Two
+
+str = "String: {:&lt;10} {:&lt;10}".format('One', 'Two'); #One       Two
+
+str = "String: {:_&lt;10} {:_&lt;10}".format('One', 'Two'); #One_______ Two_______
+
+str = "String: {:&gt;10.2} {:&gt;10.2}".format('One', 'Two'); #        On        Tw
+
+# number
+str = "Number: {:d} {:f}".format(10, 3.14); # 10 3.140000
+
+str = "Number: {:10d} {:10.2f}".format(10, 3.14); #      10      3.14
+
+str = "Number: {:010d} {:010.2f}".format(10, 3.14) #0000000010 0000003.14
+
+# named placeholder
+d = {'name':'Lin', 'age':37};
+str = "{name} {age}".format(**d);
+print str
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://pyformat.info/">pyFormat</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

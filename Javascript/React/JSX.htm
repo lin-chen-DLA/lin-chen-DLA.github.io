@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			JSX in React
+		</div>
+
+		<div class = "subtitle">Use JSX in React</div>
+		<div class = "block">
+			<li>JSX produces React “elements”</li>
+			<li>use curly braces to embed a JavaScript expression in an attribute</li>
+			<li>If a tag is empty, you may close it immediately with /&gt;</li>
+			<li style = "color: red">Adjacent JSX elements must be wrapped in an enclosing tag, such as div</li>
+		</div>
+		<div class = "subtitle">Create Element</div>
+		<div class = "block">
+			<li>React elements are <span>immutable</span>. Once you create an element, you can’t change its children or attributes</li>
+		<pre class = "prettyprint linenums">
+const element = (
+  &lt;h1 className="greeting"&gt;
+    Hello, world!
+  &lt;/h1&gt;
+);
+		</pre>
+		<pre class = "prettyprint linenums">
+const element = React.createElement(
+  'h1',
+  {className: 'greeting'},
+  'Hello, world!'
+);
+		</pre>
+		</div>
+		<div class = "subtitle">Add Element</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/React_1.png" width=20% /></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//index.html
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div id = "root"&gt;&lt;/div&gt;
+	&lt;script src="https://fb.me/react-0.14.3.js"&gt;&lt;/script&gt;
+	&lt;script src="https://fb.me/react-dom-0.14.3.js"&gt;&lt;/script&gt;
+	&lt;script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"&gt;&lt;/script&gt;
+	&lt;script src="script.js" type = "text/babel"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//script.js
+var Hello = React.createClass({
+	render: function(){
+		return (
+			&lt;h2&gt;Hello World!&lt;/h2&gt;
+		);
+	}
+});
+
+ReactDOM.render(&lt;Hello /&gt;, document.getElementById("root"));
+		</pre>
+		</div>
+		<div class = "subtitle">Render Element</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function tick() {
+  const element = (
+    &lt;div&gt;
+      &lt;h1&gt;Hello, world!&lt;/h1&gt;
+      &lt;h2&gt;It is {new Date().toLocaleTimeString()}.&lt;/h2&gt;
+    &lt;/div&gt;
+  );
+  ReactDOM.render(element, document.getElementById('root'));
+}
+
+setInterval(tick, 1000);
+		</pre>
+		</div>
+	</body>
+</html>

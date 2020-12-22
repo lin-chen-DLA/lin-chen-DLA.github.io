@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>LeetCode</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title"><a href = "https://leetcode.com/problems/implement-strstr/">28. Implement strStr()</a></div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+class Solution:
+    def strStr(self, haystack: str, needle: str) -&gt; int:
+        return haystack.find(needle)
+
+def main():
+    s = Solution()
+
+    print(s.strStr("hello", "ll")) # 2
+    print(s.strStr("aaaaa", "bba")) # -1
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+class Solution:
+    def strStr(self, haystack: str, needle: str) -&gt; int:
+        if len(haystack) == 0 and len(needle) == 0:
+            return 0
+
+        if len(needle) == 0:
+            return 0
+
+        i = 0 # pointer for haystack
+        j = 0 # pointer for needle
+
+        while i &lt; len(haystack):
+            if haystack[i] == needle[j]:
+                print(i, j, haystack[i], needle[j])
+                i += 1
+                j += 1
+            else:
+                print(i, j, haystack[i], needle[j])
+                if j == 0:
+                    i += 1
+                else:
+                    i -= j-1
+                j = 0
+
+            if j &gt;= len(needle):
+                break
+
+        if j == len(needle):
+            return i-len(needle)
+        else:
+            return -1
+
+def main():
+    s = Solution()
+
+    print(s.strStr("hello", "ll")) # 2
+    print(s.strStr("aaaaa", "bba")) # -1
+    print(s.strStr("abcdcdeef", "cde")) # 4
+    print(s.strStr("mississippi", "issip")) # 4
+    print(s.strStr("mississippi", "issipi")) # -1
+    print(s.strStr("a", "")) # 0
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+	</body>
+</html>

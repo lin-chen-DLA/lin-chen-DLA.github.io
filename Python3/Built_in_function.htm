@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python 3</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Built-in Functions
+		</div>
+
+		<div class = "subtitle">Function list</div>
+		<div class = "block">
+			<table>
+				<tr>
+					<td width = 80px><a href = "#abs">abs</a></td>
+					<td width = 80px><a href = "#all">all</a></td>
+					<td width = 80px><a href = "#all">any</a></td>
+					<td width = 80px><a href = "#bin">bin</a></td>
+					<td width = 80px><a href = "#bool">bool</a></td>
+					<td width = 80px><a href = "ByteArray.htm#bytearray">bytearray</a></td>
+					<td width = 80px><a href = "ByteArray.htm#bytes">bytes</a></td>
+					<td width = 80px><a href = "#chr">chr</a></td>
+					<td width = 80px><a href = "OO/static.htm">classmethod</a></td>
+				</tr>
+				<tr>
+					<td><a href = "OO/Class.htm#attributes">delattr</a></td>
+					<td><a href = "Dict.html">dict</a></td>
+					<td><a href = "#dir">dir</a></td>
+					<td><a href = "#divmod">divmod</a></td>
+					<td><a href = "#enumerate">enumerate</a></td>
+					<td><a href = "#eval">eval</a></td>
+					<td><a href = "diff/exec.htm">exec</a></td>
+					<td><a href = "Function.htm#lambda">filter</a></td>
+					<td><a href = "#float">float</a></td>
+					<td><a href = "Format.htm#format">format</a></td>
+					<td><a href = "Set.html">frozenset</a></td>
+					<td><a href = "OO/Class.htm#attributes">getattr</a></td>
+					<td><a href = "Scope.htm">globals</a></td>
+					<td><a href = "OO/Class.htm#attributes">hasattr</a></td>
+				</tr>
+				<tr>
+					<td><a href = "OO/Overload.htm#hash">hash</a></td>
+					<td><a href = "#help">help</a></td>
+					<td><a href = "#hex">hex</a></td>
+					<td><a href = "#id">id</a></td>
+					<td><a href = "#input">input</a></td>
+					<td><a href = "#int">int</a></td>
+					<td><a href = "OO/Inheritance.htm#isclass">isinstance</a></td>
+					<td><a href = "OO/Inheritance.htm#isclass">issubclass</a></td>
+					<td><a href = "#iter">iter</a></td>
+					<td><a href = "#len">len</a></td>
+					<td><a href = "List.html">list</a></td>
+					<td><a href = "Scope.htm">locals</a></td>
+					<td><a href = "Function.htm#lambda">map</a></td>
+					<td><a href = "#max">max</a></td>
+				</tr>
+				<tr>
+					<td><a href = "Memoryview.html">memoryview</a></td>
+					<td><a href = "#min">min</a></td>
+					<td><a href = "#next">next</a></td>
+					<td><a href = "#object">object</a></td>
+					<td><a href = "#oct">oct</a></td>
+					<td><a href = "IO.htm#open">open</a></td>
+					<td><a href = "#ord">ord</a></td>
+					<td><a href = "#pow">pow</a></td>
+					<td><a href = "#print">print</a></td>
+					<td><a href = "../Python/OO/Class.htm">property</a></td>
+					<td><a href = "#range">range</a></td>
+					<td><a href = "#repr">repr</a></td>
+					<td><a href = "#reversed">reversed</a></td>
+					<td><a href = "#round">round</a></td>
+				</tr>
+				<tr>
+					<td><a href = "Set.html">set</a></td>
+					<td><a href = "OO/Class.htm#attributes">setattr</a></td>
+					<td><a href = "#slice">slice</a></td>
+					<td><a href = "#sorted">sorted</a></td>
+					<td width = 80px><a href = "OO/static.htm">staticmethod</a></td>
+					<td><a href = "#str">str</a></td>
+					<td><a href = "#sum">sum</a></td>
+					<td><a href = "OO/Inheritance.htm#isclass">super</a></td>
+					<td><a href = "Tuple.html">tuple</a></td>
+					<td><a href = "#type">type</a></td>
+					<td><a href = "#vars">vars</a></td>
+					<td><a href = "#zip">zip</a></td>
+				</tr>
+			</table>
+		</div>
+		<div class = "subtitle" id = "abs">abs</div>
+		<div class = "block">
+			<li>return the absolute value of a number</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(abs(-10))
+print(abs(-3.14))
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "all">all&any</div>
+		<div class = "block">
+			<li>return True if all elements of the iterable are true</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+l = [not (i % 3) for i in range(1, 5)] # [False, False, True, False]
+print(any(l)) # True
+print(all(l)) # False
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "bin">bin</div>
+		<div class = "block">
+			<li>convert an integer number to a binary string prefixed with “0b”</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(bin(9)) # convert int to bin
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "bool">bool</div>
+		<div class = "block">
+			<li>if the argument is false or omitted, this returns False; otherwise it returns True</lI>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(bool(0)) # False
+print(bool()) # False
+print(bool(1)) # True
+print(bool(range(4))) # True
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "chr">chr</div>
+		<div class = "block">
+			<li>Converts a Unicode code point to a character, The valid range for the argument is from 0 through 1,114,111</li>
+			<li>Raise ValueError, if i is outside that range</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+ 
+for i in range(256):
+    print(chr(i))
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "dir">dir</div>
+		<div class = "block">
+			<li>without arguments, return the list of names in the current local scope, with an argument, attempt to return a list of valid attributes for that object</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(dir())
+print(dir(str))
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "divmod">divmod</div>
+		<div class = "block">
+			<li>quotient and remainder</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+a = divmod(10, 3) # same as (a//b, a%b)
+print(a) # (3, 1), quotient, remainder
+
+d = divmod(3.5, 3) # (q, a%b)
+print(d) # (1.0, 0.5)
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "enumerate">enumerate</div>
+		<div class = "block">
+			<li>return an enumerate object instead of a list of tuples</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+for index, ele in enumerate(range(4)):
+    print(index, ele)
+
+r = enumerate(range(0, 40, 10))
+print(list(r))
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "eval">eval</div>
+		<div class = "block">
+			<li>expression argument is parsed and evaluated as a Python expression</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+x = 1
+print(eval('1+x'))
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "float">float</div>
+		<div class = "block">
+			<li>return a floating number from a number or string</li>
+			<li>raise OverflowError, if the argument is outside the range of a Python float</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(float("+3.14")) # 3.14
+print(float("   -3.14")) # -3.14
+print(float("3.14e+2")) # 314.0
+print(float("3.14e-2")) # 0.0314
+print(float("Inf")) # inf
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "help">help</div>
+		<div class = "block">
+			<li>invoke the built-in help system, is intended for interactive use</li>
+		<pre class = "prettyprint linenums">
+help() # switch to interactive help environment, Ctrl+C to quit
+help(str) # get the help documentation of str class
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "hex">hex</div>
+		<div class = "block">
+			<li>convert an integer number to a lowercase hexadecimal string prefixed with “0x”</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(hex(20)) # convert int to hex
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "id">id</div>
+		<div class = "block">
+			<li>return the “identity” of an object, which is not the physical address</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+l = [1, 2, 3, 4]
+l2 = l
+l3 = [1, 2, 3, 4]
+
+print(id(l), id(l2)) # l and l2 have same ids
+print(id(l), id(l3)) # l and l3 have different ids
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "input">input</div>
+		<div class = "block">
+			<li>reads a line from input and converts it to a string</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+value = input('Input an integer number: ')
+print(int(value)*100)
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "int">int</div>
+		<div class = "block">
+			<li>return an integer from a number or string, return 0 if no arguments are given</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(int('10')) # string to int
+print(int(3.14)) # float to int
+print(int(0b1001)) # binary number to int
+print(int(0o1001)) # octal number to int
+print(int(0xF1)) # hexadecimal to int
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "iter">iter</div>
+		<div class = "block">
+			<li>Return an iterator object</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+i = iter(range(10))
+
+try:
+    while True:
+        print(next(l)) #if no more element, raise StopIteration
+except StopIteration:
+    pass
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "len">len</div>
+		<div class = "block">
+			<li>Return the length (the number of items) of an object, argument may be a sequence or a collection</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(len(range(4))) # 4
+
+print(len({'Name': 'Lin', 'Age': 39})) # 2
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "max">max</div>
+		<div class = "block">
+			<li>return the largest item in an iterable or the largest of two or more arguments</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+m = max([1, 4, 2, 6]) # 6
+print(m)
+
+m = max(1, 4, 2, 6) # 6
+print(m)
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "min">min</div>
+		<div class = "block">
+			<li>return the smallest item in an iterable or the smallest of two or more arguments</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+m = min([1, 4, 2, 6]) # 1
+print(m)
+
+m = min(1, 4, 2, 6) # 1
+print(m)
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "next">next</div>
+		<div class = "block">
+			<li>Retrieve the next item from the iterator</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+l = iter(range(10))
+
+try:
+    while True:
+        print(next(l)); #if no more element, raise StopIteration
+except StopIteration:
+    print('Reach to the end ...')
+    pass
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "ord">ord</div>
+		<div class = "block">
+			<li>return an integer representing the Unicode code point of that characte</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(ord('a'))
+print(ord(u'a'))
+print(ord(u'\u2020'))
+		</pre>
+		</div>
+		<div class = "subtitle" id = "object">object</div>
+		<div class = "block">
+			<li>Return a new featureless object</li>
+			<li>Object is a base for all classes</li>
+			<li>Has the methods that are common to all instances of Python classes</li>
+			<li>Does not have a __dict__</li>
+		<pre class = "prettyprint linenums">
+o = object
+print(p.__doc__)
+		</pre>
+		</div>
+		<div class = "subtitle" id = "oct">oct</div>
+		<div class = "block">
+			<li>convert an integer number to an octal string prefixed with “0o”</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(oct(9)) # convert int to oct
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "range">range</div>
+		<div class = "block">
+			<li>return a range, instead of a list</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+r = range(0, 10, 1)
+print(type(r)) # range
+print(len(r)) # 10
+print(list(r)) # convert a range to list, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+for e in r:
+    print(e, end=' ')
+print()
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "pow">pow</div>
+		<div class = "block">
+			<li>return x to the power y</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(pow(2, 3)) # 8
+
+print(pow(2, 3, 3)) #2, pow(2, 3) % 3
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "print">print</div>
+		<div class = "block">
+			<li>print(value1, ..., sep=' ', end='\n', file=sys.stdout, flush=False)
+				<ul>
+					<li>values, can take multiple arguments</li>
+					<li>sep, default deliminator is a single space</li>
+					<li>end, end the line with a character, default character is '\n', which changes to a new line</li>
+					<li>file, argument must be an object with a write(string) method, default is sys.stdout</li>
+					<li>flush, use buffer or forcibly flushed</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print('Welcome "Lin" ...') # single quote enclose double quote
+print("Welcome 'Lin' ...") # double quote enclose single quote
+
+print("""Welcome "Lin" and 'Yanhua' ...""") # triple quotes enclose single quote and double quote
+print('''Welcome "Lin" and 'Yanhua' ...''')
+
+# multiline strings
+print("""Welcome to Python,
+        Lin and
+        Yanhua""")
+		</pre>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print("Welcome to Python 3!")
+
+print("Welcome "+"to "+"Python 3!") # use string concatenation
+print("Welcome", "to", "Python 3!") # automatically add space between arguments
+
+print("%s %s %s!" % ("Welcome", "to", "Python 3")) # use old format style
+print("{} {} {}!".format("Welcome", "to", "Python 3")) # use new format style
+		</pre>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(1, 2, 3, 4, sep='|') # 1|2|3|4
+
+print(1, end='|') # end the line with a character
+print(2, end='|')
+print() # change to a new line
+
+f = open("data.txt","w")
+print('Hello World!', file=f) # output to a file
+f.close()
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "repr">repr</div>
+		<div class = "block">
+			<li>str, compute the “informal” string representation of an object</li>
+			<li>repr, compute the “official” string representation of an object, used for debugging and development</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import datetime 
+today = datetime.datetime.now()
+
+# str
+s = 'Hello, Geeks.'
+print(str(s)) # Hello, Geeksl
+print(str(2.0/11.0)) # 0.1818
+print(str(today)) # 2019-02-04 23:21:52.332522
+
+# repr
+s = 'Hello, Geeks.'
+print(repr(s)) # 'Hello, Geeks.'
+print(repr(2.0/11.0)) # 0.1818
+print(repr(today)) # datetime.datetime(2019, 2, 4, 23, 21, 52, 332522)
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "reversed">reversed</div>
+		<div class = "block">
+			<li>Return a reverse iterator</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+l = [1, 2, 3, 4]
+
+a = reversed(l) # &lt;class 'list_reverseiterator'&gt;
+print(list(a)) # [4, 3, 2, 1]
+print(list(a)) # [], a has been consumed
+
+b = reversed(range(4)) # &lt;range_iterator object at 0x10583b9f0&gt;
+print(list(b)) # [3, 2, 1, 0]
+print(list(b)) # [], b has been consumed
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "round">round</div>
+		<div class = "block">
+			<li>Return number rounded to ndigits precision after the decimal point</li>
+		<pre class = "prettyprint linenums">
+round(3.14) # 3
+round(3.1415926, 2) # 3.14
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "slice">slice</div>
+		<div class = "block">
+			<li>is used to slice a given sequence</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+s = slice(1, 10, 2)
+
+l = range(10)
+print(list(l[s])) # [1, 3, 5, 7, 9]
+
+l2 = list(range(10))
+print(l2[s]) # [1, 3, 5, 7, 9]
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "sorted">sorted</div>
+		<div class = "block">
+			<li>return a new sorted list from the items in iterable</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# sort list
+l = [1, 5, 3]
+l2 = sorted(l) # only sort the objec with the same data type
+print(l2) # [1, 3, 5]
+
+# sort tuple
+l = (1, 5, 3)
+l2 = sorted(l)
+print(type(l2)) # list
+print(l2)
+
+# sort dict
+d = {'Name': 'Zara', 'Age': 7, 'Class': 'First'}
+d2 = sorted(d) # return a list containing the sorted keys
+print(d2) # ['Age', 'Class', 'Name']
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "str">str</div>
+		<div class = "block">
+			<li>Return a str version of object</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(str(10)) # int to str
+print(str(3.14)) # float to str
+print('{0:#b}'.format(0b1001)) # binary number to str
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "sum">sum</div>
+		<div class = "block">
+			<li>returns the total of an iterable</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+a = range(10)
+
+print(sum([1, 2, 3, 4])) # 10
+print(sum([1, 2, 3, 4], 1)) # 1 + 2 + 3 + 4 + 1
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "type">type</div>
+		<div class = "block">
+			<li>return the type of an object</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+print(type('Hello World!')) # str
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "vars">vars</div>
+		<div class = "block">
+			<li>Return the __dict__ attribute for a module, class, instance, or any other object with a __dict__ attribute</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+class Vehicle(object):
+    def __init__(self, maker, year):
+        self.maker = maker
+        self.year = year
+
+def main():
+    v = Vehicle('Buick', 1998)
+
+    d = vars(v)
+    print(d) # {'maker': 'Buick', 'year': 1998}
+    print(vars(Vehicle)) # {'__module__': '__main__', '__init__': &lt;function Vehicle.__init__ at 0x10daee2f0&gt;, '__dict__': &lt;attribute '__dict__' of 'Vehicle' objects&gt;, '__weakref__': &lt;attribute '__weakref__' of 'Vehicle' objects&gt;, '__doc__': None}
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+
+		<div class = "subtitle" id = "zip">zip</div>
+		<div class = "block">
+			<li>Make an iterator that aggregates elements from each of the iterables</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+x = [1, 2, 3]
+y = [4, 5, 6]
+zipped = zip(x, y)
+
+print(list(zipped)) # [(1, 4), (2, 5), (3, 6)]
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.python.org/3/library/functions.html">Built-in Functions</a></li>
+		</div>
+	</body>
+</html>

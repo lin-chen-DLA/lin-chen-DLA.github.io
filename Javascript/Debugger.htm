@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Debugger
+		</div>
+
+		<div class = "subtitle">Node</div>
+		<div class = "block">
+			<li>node inspect script.js
+				<ul>
+					<li>cont, c, continue to the next debugger</li>
+					<li>next, n, next line</li>
+					<li>step, s, step in a function</li>
+					<li>out, o, step out a function</li>
+					<li>pause, pause</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+// myscript.js
+global.x = 5;
+
+setTimeout(() =&gt; {
+  debugger;
+  console.log('world');
+}, 1000);
+
+console.log('hello');
+debugger;
+		</pre>
+		<pre class = "prettyprint linenums">
+function loop(n)
+{
+	for(let i = 0; i &lt; n; i++)
+	{
+		console.log(i);
+	}
+}
+
+loop(10);
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://nodejs.org/api/debugger.html">Node Debugger</a></li>
+		</div>
+	</body>
+</html>

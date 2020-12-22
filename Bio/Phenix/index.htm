@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Pheniex</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">PHENIX</div>
+		<div class = "subtitle">1. Map Analysis</div>
+		<div class = "block">
+			<ul>
+				<li>phenix.mtriage</li>
+				<li>Data Analysis -&gt; Mtriage</li>
+			</ul>
+		</div>
+		<div class = "subtitle">2. Map Improvement</div>
+		<div class = "block">
+			<ul>
+				<li>phenix.auto_sharpen</li>
+				<li>Map -&gt; AutoSharpen Map, output ccp4 and mtz map files</li>
+			</ul>
+		</div>
+		<div class = "subtitle">3. Model Building</div>
+		<div class = "block">
+			<ul>
+				<li>Automatic Model Building
+					<ul>
+						<li>Model Building &gt; Map to Model, build model from sharpened model and sequence file (fasta)</li>
+					</ul>
+				</li>
+				<li>Manually Model Building
+					<ul>
+						<li>Coot</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">4. Real Space Refine</div>
+		<div class = "block">
+			<ul>
+				<li>phenix.real_space_refine
+					<ul>
+						<li>Model that fits the map as well as possible</li>
+						<li>Meaningful geometry</li>
+					</ul>
+				</li>
+				<li>Refinement -&gt; Real-space refinement
+					<ul>
+						<li>Input files: Model (mmcif), Map (CCP4 .map), Resolution from Data Analysis, Restraint definitions for ligands</li>
+						<li>Refinement Settings
+							<ul>
+							<li>minimazation global</li>
+							<li>rigid body</li>
+							<li>local grid search</li>
+							<li>morphing</li>
+							<li>simulated annealing</li>
+							<li>adp</li>
+							<li>Use secondary structure restrains</li>
+							<li>Use NCS</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>Restraints
+					<ul>
+						<li>High to medium resolutions: covalent bond lengths, angles, dihedral angles, planarity and chirality restraints, and a nonbonded repulsion term</li>
+						<li>Low resoluiton: secondary structure, NCS</li>
+						<li>real_space_refine restraints
+							<ul>
+								<li>Dsitance and agnle restraints on hydrogen-bond patterns for protein helices and sheets and DNA/RNA base pairs</li>
+								<li>Torsion-angle restraints on idealized protein secondary-structure fragments</li>
+								<li>Restraints to maintain stacking bases in RNA/DNA parallel</li>
+								<li>Ramanchandran plot restraints</li>
+								<li>Amino-acid side-chain rotamer-specific restraints</li>
+								<li>C<sup>&beta;</sup> deviation restraints</li>
+								<li>Reference-model restraints, where a reference model may be a similar structure of better quality or the initial position of the model being refined</li>
+								<li>Similarity restraints in torsion or Cartesian space</li>
+								<li>NCS constraints</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">5. Validation</div>
+		<div class = "block">
+			<li>MolProbity</li>
+			<li>Valdidation -&gt; Comprehensive Validation
+				<ul>
+					<li>Inputs: Refined Model (pdb or cif), Map file, Resolution</li>
+					<li>Outputs: MolProbity Report, or open with Coot</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">6. Deposition</div>
+		<div class = "block">
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.youtube.com/c/phenixtutorials">Tutorials</a></li>
+		</div>
+	</body>
+</html>

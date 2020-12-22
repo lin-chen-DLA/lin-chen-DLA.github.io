@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>Python Tutorial</title>
+       <meta http-equiv="Page-Enter" contect="revealTrans(duration=10,transtion= 50)">
+       <style>
+		td {width: 100px}
+	</style>
+    </head>
+    <body bgcolor = white text = #4E6AAA link = silver alink = silver vlink = silver>
+		    <ul>
+			    <li>Modules are installed in Lib/site-packages</li>
+			    <li><a href = "http://continuum.io/">Anaconda</a>, includes over 195 of the most popular Python packages for science, math, engineering, data analysis
+			    <ul>
+				    <li><a href = "http://docs.continuum.io/anaconda/pkg-docs.html">Python packages</a></li>
+				    <li><a href = "http://repo.continuum.io/pkgs/">Repository</a></li>
+				    <li><a href = "http://conda.pydata.org/docs/index.html">conda</a>
+				    <ul>
+					    <li><a href = "http://conda.pydata.org/docs/examples.html">Examples</a></li>
+					    <li>conda list, list all packages installed</li>
+					    <li>conda search, sell all the packages that are availabe</li>
+					    <li>conda search scipy, show the available packages for scipy, the installed version will be marked with "*"</li>
+					    <li>conda install packageName, install the packages
+					    <ul>
+						    <li>http://repo.continuum.io/pkgs/dev - Experimental or developmental versions of packages</li>
+						    <li>http://repo.continuum.io/pkgs/gpl - GPL licensed packages</li>
+						    <li>ttp://repo.continuum.io/pkgs/free - non GPL open source packages</li>
+					    </ul>
+					    </li>
+					    <li>conda update package, update the modules</li>
+					    <li>conda remove -n Tutorial package, remove the packages from the specific environment</li>
+					    <li>conda create -n Tutorial python=2.7 anaconda, create a copy of anaconda</li>
+					    <li>conda create -p ~/anaconda/envs/test2 anaconda=1.4.0 python=2.7 numpy=1.6, figure out the installation directory</li>
+					    <li>All environments are saved under envs folder</li>
+					    <li>activate Tutorial, activate environment "Tutorial"</li>
+					    <li>source activate Tutorial, activate environment "Tutorial" on Linux</li>
+					    <li>deactivate, deactivate the current environment</li>
+					    <li>source deactivate, deactivate the current environment on Linux</li>
+					    <li>conda info, get the information about Anaconda</li>
+					    <li>conda info -e, list all the environments</li>
+					    <li>conda list -p ~/envs/test2, list all the packages in the specific environment</li>
+					    <li>conda -h, get help of conda</li>
+				    </ul>
+				    </li>
+				    <li>glueviz, link visualizations of scientific datasets</li>
+				    <li>orange, data visualization and data analysis tool</li>
+				    <li>spyder, editor</li>
+				    <li><a href = "http://pandas.pydata.org/pandas-docs/stable/visualization.html">pandas plotting</a></li>
+				    <li><a href = "https://groups.google.com/a/continuum.io/forum/#!forum/anaconda">Anaconda Forum</a></li>
+			    </ul>
+			    </li>
+			    <li><a href = "http://ipython.org/notebook.html">IPython Notebook</a>
+			    <ul>
+				    <li>ipython notebook, start ipython notebook
+				    <ul>
+					    <li>shift+Enter, run the code in the cell and open a new cell</li>
+					    <li>ctrl+Enter, run the code in the cell</li>
+					    <li>l, show the line number under command line mode</li>
+					    <li><a href = "http://markdowntutorial.com/">Markdown Tutorial</a>
+					    <ul>
+						    <li>_this_, italic</li>
+						    <li>**this**, bold</li>
+						    <li># header</li>
+						    <li>[Visit GitHub!](www.github.com), set up the link</li>
+						    <li>[visit place][another pace], [another place:]</li>
+						    <pre>
+  Here's [a link to something else][another place].
+     Here's [yet another link][another-link].
+     And now back to [the first link][another place].
+
+     [another place]: www.github.com
+     [another-link]: www.google.com
+						    </pre>
+						    <li>![](), put an image</li>
+						    <li>&gt;, blockquote</li>
+						    <li>*, unordered list</li>
+						    <li>1., ordered list</li>
+						    <li>blank line/two space, new line</li>
+					    </ul>
+					    </li>
+				    </ul>
+				    </li>
+				    <li>ipython notebook --profile=nbsever</li>
+				    <li>use chrome as the default browser
+				    <ul>
+					    <li>%quickref, display the IPython quick reference card</li>
+					    <li>%matplotlib inline, display the plot inside the browser window</li>
+					    <li>%matplotlib qt, display the plot with qt mode</li>
+					    <li>%load, load the python code</li>
+					    <li>%reset, remove all names defined by the user</li>
+					    <li>%time, time a program running</li>
+					    <li>%timeit, run a program many times and get the average running time</li>
+					    <li>%debug, run ipdb</li>
+					    <li>%pinfo, display the module information</li>
+					    <li>ipython qtconsole --pylab=inline</li>
+					    <li>ipython --pylab, launch with the default GUI and NumPy and matplotlib will be imported</li>
+					    <li>ipython profile create default, create a config file</li>
+					    <li>ipython locate, find the directory of ipython_notebook_config.py</li>
+					    <li>replace #c.NotebookApp.browser = ''</li>
+					    <pre>
+import webbrowser
+webbrowser.register('chrome', None, webbrowser.GenericBrowser('C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'))
+c.NotebookApp.browser = 'chrome'
+					    </pre>
+				    </ul>
+				    </li>
+				    <li>nbviewer.ipython.org scipy, search the ipython notebook files</li>
+				    <li>https://github.com/ipython, ipython on GitHub</li>
+			    </ul>
+			    </li>
+			    <li>PyPI
+			    <ul>
+				    <li><a href = "https://pypi.python.org/pypi">Python Package Index</a></li>
+				    <li><a href = "https://python-packaging-user-guide.readthedocs.org/en/latest/projects.html#pip">Project Summarizes</a>
+				    <ul>
+					    <li>pip, A tool for installing Python packages</li>
+					    <li>setup tools, is a collection of enhancements to the Python distutils that allow you to more easily build and distribute Python packages, especially ones that have dependencies on other packages</li>
+					    <li>virtualenv, A tool for creating isolated Python environments</li>
+				    </ul>
+				    </li>
+				    <li><a href = "https://pip.pypa.io/en/latest/index.html">Pip Document Page</a>
+				    <ul>
+					    <li><a href = "http://blog.csdn.net/luoweipeter/article/details/25750353">Tutorial</a></li>
+					    <li>python get-pip.py, install pip and setuptools</li>
+					    <li>Add C:\Python27\Scripts to the path environment variable</li>
+					    <li>Install
+					    <ul>
+						    <li>pip install somePackage</li>
+					    </ul>
+					    </li>
+					    <li>Show
+					    <ul>
+						    <li>pip show --files somePackage</li>
+					    </ul>
+					    </li>
+					    <li>List packages
+					    <ul>
+						    <li>pip list, list all the installed third-party packages</li>
+						    <li>pip list --outdated, list the outdated packages</li>
+					    </ul>
+					    </li>
+					    <li>Upgrade package
+					    <ul>
+						    <li>pip install --upgrade somePackage</li>
+					    	<li>pip install -U setuptools, update setuptools</li>
+					    	<li>pip install -U pip, update pip</li>
+					    </ul>
+					    </li>
+					    <li>Uninstall
+					    <ul>
+						    <li>pip uninstall, uninstall the modules</li>
+					    </ul>
+					    </li>
+					    <li>Export the require file
+					    <ul>
+						    <li>pip freeze &gt; requirements.txt, output installed packages in requirements format</li>
+						    <li>pip install -r requirements.txt, install the modules with the requirements file</li>
+					    </ul>
+					    </li>
+					    <li>pip search query, search for PyPI packages whose name or summary contains query</li>
+					    <li>pip wheel, reduce the time of compiling when installing multiple times on the different virtual environments</li>
+					    <ul>
+						    <li>pip wheel --wheel-dir=wheelhouse virtualenv, download the .whl file of virtualenv</li>
+						    <li>pip install --use-wheel --no-index --find-links=wheelhouse virtualenv, install virtualenv from the downloaded .whl file</li>
+						    <li>pip install --use-wheel --no-index --find-links=https://wheelhouse.example.com/ pyramid, install from cached wheels remotely</li>
+					    </ul>
+					    </li>
+				    </ul>
+				    </li>
+				    <li><a href = "http://docs.python-guide.org/en/latest/dev/virtualenvs/">virtualenv</a>
+				    <ul>
+					    <li>pip install virtualenv, install virtualenv</li>
+					    <li>virtualenv venv, create a copy of Python
+					    <ul>
+						    <li>Generate "Include", "Lib", "Scripts"</li>
+					    </ul>
+					    </li>
+					    <li>venv/Scripts/activate, active the virtual environments</li>
+					    <li>deactivate, deactivate the virtual environments</li>
+				    </ul>
+				    </li>
+			    </ul>
+			    </li>
+			    <li><a href = "https://the-hitchhikers-guide-to-packaging.readthedocs.org/en/latest/">Welcom to The Hitchhiker's Guide to Packaging</a></li>
+		    </ul>
+		    </li>
+</body>
+</html>

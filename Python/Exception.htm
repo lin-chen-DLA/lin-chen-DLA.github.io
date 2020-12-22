@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Exception
+		</div>
+
+		<div class = "subtitle">Handle Exception</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+try:
+	clause
+except ExceptI, errorInfo:
+	if ExceptI is raised, execute this block
+except ExceptII, errorInfo:
+	if ExceptII is raised, execute this block
+else:
+	if no exception, execute this block
+finally:
+	this would always be executed
+		</pre>
+		</div>
+
+		<div class = "subtitle">Raise Exception</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+raise Exception(errorInfo)
+		</pre>
+		</div>
+
+		<div class = "subtitle">Python Exception Hierarchy</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.python.org/2/library/exceptions.html#exception-hierarchy">Exception Hierarchy</a></li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Raise and Handle</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def div(a, b):
+    if b == 0:
+        raise ZeroDivisionError("Denominator is zero ...");
+    return a/b;
+
+if __name__ == '__main__':
+    try:
+        div(1, 0);
+    except Exception, err:
+        print err.args, err;
+		</pre>
+		</div>
+
+		<div class = "subtitle">assert</div>
+		<div class = "block">
+			<li>If the expression is false, Python raises an AssertionError exception</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def div(a, b):
+    assert b != 0, 'AssertionError: Divided by zero ...';
+    return a/b;
+
+if __name__ == '__main__':
+    try:
+        div(1, 0);
+    except Exception, err:
+        print err.args, err;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>python -O Exception.py, turn off assertion</li>
+		<pre class = "prettyprint linenums">
+# Exception.py
+#!/usr/bin/python
+
+def getString():
+    return "Hello World!"
+
+if __name__ == '__main__':
+    s = getString();
+    assert s == "Hello", "string is not correct ..."
+    print s # Hello World!
+		</pre>
+		</div>
+
+		<div class = "subtitle">Traceback</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import traceback
+
+if __name__ == '__main__':
+    try:
+        div(1, 0);
+    except Exception, err:
+        print err.args, err;
+        traceback.print_exc();
+		</pre>
+		</div>
+
+		<div class = "subtitle">User-Defined Exceptions</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+class definedExcept(Exception):
+    def __int__(self, arg):
+        self.args = arg;
+
+def div(a, b):
+    if b == 0:
+        raise definedExcept("Defined Exception ...");
+    return a/b;
+
+if __name__ == '__main__':
+    try:
+        div(1, 0);
+    except Exception, err:
+        print err.args, err;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.python.org/2/library/exceptions.html">Python STL</a></li>
+				<li><a href = "https://www.tutorialspoint.com/python/python_exceptions.htm">Tutorialspoint.com</a></li>
+				<li>Python How to Program</li>
+			</ul>
+		</div>
+	</body>
+</html>

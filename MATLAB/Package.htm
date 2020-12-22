@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Package</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Package
+		</div>
+		<div class = "block">
+			/test.m, test function<br/>
+			/test2.m, test function<br/>
+			/+Package/@Car/Car.m, class<br/>
+			/+Package/@Car/disp.m, method of class in a different file<br/>
+			/+Package/@Car/disp2.m, method of class in a different file<br/>
+			/+Package/Num.m, class<br/>
+			/+Package/disp.m, function<br/>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>+Package, package folder, is a namespace within which names must be unique</li>
+				<li>@Car, class folder, within which <span style = "color:red">only one class</span> is defined, the methods can be saved in the different file in the class folder</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Car</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+classdef Car
+    properties (Access = private)
+        producer
+    end
+    properties (Access = protected)
+        year = 0
+    end
+    properties (Access = public)
+        model
+    end
+    methods
+        % Constructor
+        function self = Car(p, m)
+            self.producer = p;
+            self.model = m;
+        end
+        
+        % Accessor
+        function p = getProducer(self)
+            p = self.producer;
+        end
+        function y = getYear(self)
+            y = self.year;
+        end
+        function m = getModel(self)
+            m = self.model;
+        end
+        disp(self)
+        disp2(self)
+        
+        % Mutator
+        function self = setProducer(self, p)
+            self.producer = p;
+        end
+        function self = setYear(self, y)
+            self.year = y;
+        end
+        function self = setModel(self, m)
+            self.model = m;
+        end
+    end
+end
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function disp(self)
+    fprintf('Producer: %s\nModel: %s\nYear: %d\n', self.producer, self.model, self.year);
+end
+		</pre>
+	</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+function disp2(self)
+    fprintf('------------------------\n');
+    disp(self);
+    fprintf('------------------------\n');
+end
+	</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "https://www.mathworks.com/help/matlab/matlab_oop/methods-in-separate-files.html">Methods of Class in Separate Files</a></li>
+			<li>Declare the function signature in the classdef file in a method block</li>
+			<li>Each function should be defined in a separated file</li>
+		</ul>
+	</div>
+	<div class = "subtitle">Num</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+classdef Num
+    properties
+        value
+    end
+    methods
+        % Constructor
+        function self = Num(n)
+            self.value = n;
+        end
+        
+        % Accessor
+        function disp(self)
+            fprintf('Num: %d\n', self.value);
+        end
+        
+        % Mutator
+        function self = add(self, v)
+            self.value = self.value + v;
+        end
+        function self = multiply(self, v)
+            self.value = self.value*v;
+        end
+    end
+end
+			</pre>
+		</div>
+		<div class = "subtitle">Other Objects</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+function disp(c)
+    c.disp();
+end
+			</pre>
+		</div>
+		<div class = "subtitle">Test</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+function test()
+    % Create a Car Object
+    c = Package.Car('Honda', 'Accord');
+    c.disp();
+    c.disp2();
+    
+    % Create a Num Object
+    n = Package.Num(80);
+    n.disp();
+    
+    % Call Functions in Package
+    Package.disp(c);
+end
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function test2()
+    import Package.*
+    % Create a Car Object
+    c = Car('Honda', 'Accord');
+    c.disp();
+    c.disp2();
+    
+    % Create a Num Object
+    n = Num(80);
+    n.disp();
+    
+    % Call Functions in Package
+    disp(c);
+end
+		</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "https://www.mathworks.com/help/matlab/ref/import.html">import functions and classes in Package to the current environment</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

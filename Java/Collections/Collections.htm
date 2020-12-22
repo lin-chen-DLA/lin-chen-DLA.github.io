@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Collections
+		</div>
+
+		<div class = "subtitle">Collection</div>
+		<div class = "block">
+			<ul>
+				<li>add, addAll, clear, contains, equals, iterator, isEmpty, remove, size, toArray</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/Set.html">Interface Set</a>
+					<ul>
+						<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/SortedSet.html">Interface SortedSet</a>
+							<ul>
+								<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/NavigableSet.html">Interface NavigableSet</a>
+									<ul>
+										<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentSkipListSet.html">ConcurrentSkipListSet</a></li>
+										<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/TreeSet.html">TreeSet</a></li>
+									</ul>
+								</li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentSkipListSet.html">ConcurrentSkipListSet</a></li>
+								<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/TreeSet.html">TreeSet</a></li>
+							</ul>
+						</li>
+						<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/AbstractSet.html">AbstractSet</a>
+							<ul>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentSkipListSet.html">ConcurrentSkipListSet</a></li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CopyOnWriteArraySet.html">CopyOnWriteArraySet</a></li>
+								<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/EnumSet.html">EnumSet</a></li>
+								<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/HashSet.html">HashSet</a>
+									<ul>
+										<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/LinkedHashSet.html">LinkedHashSet</a></li>
+									</ul>
+								</li>
+								<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/TreeSet.html">TreeSet</a></li>
+							</ul>
+
+						</li>
+					</ul>
+				</li>
+				<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/List.html">Interface List</a>
+					<ul>
+						<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/AbstractList.html">AbstractList</a>
+							<ul>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/AbstractSequentialList.html">AbstractSequentialList</a>
+									<ul>
+										<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/LinkedList.html"><span style = "color:red">*</span>LinkedList</a></li>
+									</ul>
+								</li>
+								<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/ArrayList.html">ArrayList</a>, hold content using array
+									<ul>
+										<li><a href = "https://docs.oracle.com/javase/7/docs/api/javax/management/AttributeList.html">AttributeList</a></li>
+										<li><a href = "https://docs.oracle.com/javase/7/docs/api/javax/management/relation/RoleList.html">RoleList</a></li>
+										<li><a href = "https://docs.oracle.com/javase/7/docs/api/javax/management/relation/RoleUnresolvedList.html">RoleUnresolvedList</a></li>
+									</ul>
+								</li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/Vector.html"><span style = "color:red">*</span>Vector</a>, hold content using array
+									<ul>
+										<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/Stack.html"><span style = "color:red">*</span>Stack</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CopyOnWriteArrayList.html">CopyOnWriteArrayList</a></li>
+					</ul>
+				</li>
+				<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/Queue.html">Interface Queue</a>
+					<ul>
+						<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/Deque.html">Interface Deque</a>
+							<ul>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/BlockingDeque.html">BlockingDeque</a>
+									<ul>
+										<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/LinkedBlockingDeque.html">LinkedBlockingDeque</a></li>
+									</ul>
+								</li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/ArrayDeque.html">ArrayDeque</a></li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentLinkedDeque.html">ConcurrentLinkedDeque</a></li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/LinkedBlockingDeque.html">LinkedBlockingDeque</a></li>
+								<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/LinkedList.html">LinkedList</a></li>
+							</ul>
+						</li>
+						<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/AbstractQueue.html">AbstractQueue</a>
+							<ul>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ArrayBlockingQueue.html">ArrayBlockingQueue</a></li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentLinkedQueue.html">ConcurrentLinkedQueue</a></li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/DelayQueue.html">DelayQueue</a></li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/LinkedBlockingDeque.html">LinkedBlockingDeque</a></li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/LinkedBlockingQueue.html">LinkedBlockingQueue</a></li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/LinkedTransferQueue.html">LinkedTransferQueue</a></li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/PriorityBlockingQueue.html">PriorityBlockingQueue</a></li>
+								<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/PriorityQueue.html">PriorityQueue</a></li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/SynchronousQueue.html">SynchronousQueue</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Map</div>
+		<div class = "block">
+			<ul>
+				<li>clear, containsKey, containsValue, equals, get, iterator, isEmpty, keySet, put, size, values</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/SortedMap.html">Interface SortedMap</a>
+					<ul>
+						<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/NavigableMap.html">Interface NavigableMap</a>
+							<ul>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentSkipListMap.html">ConcurrentSkipListMap</a></li>
+								<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/TreeMap.html">TreeMap</a></li>
+							</ul>
+						</li>
+						<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentNavigableMap.html">Interface ConcurrentNavigableMap</a>
+							<ul>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentSkipListMap.html">ConcurrentSkipListMap</a></li>
+							</ul>
+						</li>
+						<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentMap.html">Interface ConcurrentMap</a>
+							<ul>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentHashMap.html">ConcurrentHashMap</a></li>
+								<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentSkipListMap.html">ConcurrentSkipListMap</a></li>
+							</ul>
+						</li>
+						<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentSkipListMap.html">ConcurrentSkipListMap</a></li>
+						<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/TreeMap.html">TreeMap</a></li>
+					</ul>
+				</li>
+				<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/AbstractMap.html">AbstractMap</a>
+					<ul>
+						<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/HashMap.html">HashMap</a>
+							<ul>
+								<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/LinkedHashMap.html">LinkedHashMap</a></li>
+							</ul>
+						</li>
+						<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html">EnumMap</a></li>
+						<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/IdentityHashMap.html">IdentityHashMap</a></li>
+						<li><span style = "color:red">*</span><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/TreeMap.html">TreeMap</a></li>
+						<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/WeakHashMap.html">WeakHashMap</a></li>
+						<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentSkipListMap.html">ConcurrentSkipListMap</a></li>
+						<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentHashMap.html">ConcurrentHashMap</a></li>
+					</ul>
+				</li>
+				<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/Dictionary.html">Dictionary</a>
+					<ul>
+						<li><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/Hashtable.html">Hashtable</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.geeksforgeeks.org/collections-in-java-2/">GeekForGeek</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

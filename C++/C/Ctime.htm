@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Ctime
+		</div>
+
+		<div class = "subtitle">Types</div>
+		<div class = "block">
+			<ul>
+				<li>clock_t, clock tick</li>
+				<li>size_t, unsigned integeral type</li>
+				<li>time_t, time type</li>
+				<li>struct tm, time structure</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//clock_t
+#include &lt;iostream&gt;
+#include &lt;ctime&gt;
+#include &lt;cmath&gt;
+
+void run()
+{
+	for(int i = 0; i &lt; 100000000; i++)
+		double temp = std::sqrt(i);
+}
+
+int main(int argc, char *argv[])
+{
+	//clock
+	clock_t t = clock();
+	run();
+	t = clock()-t;
+
+	//CLOCKS_PER_SEC
+	std::cout&lt;&lt;"Clicks: "&lt;&lt;t&lt;&lt;std::endl;
+	std::cout&lt;&lt;"Time: "&lt;&lt;float(t)/CLOCKS_PER_SEC&lt;&lt;" seconds ..."&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//time_t
+#include &lt;iostream&gt;
+#include &lt;ctime&gt;
+#include &lt;cmath&gt;
+
+void run()
+{
+	for(int i = 0; i &lt; 100000000; i++)
+		double temp = std::sqrt(i);
+}
+
+int main(int argc, char *argv[])
+{
+	//time
+	time_t t, t2;
+	time(&t);//get the current time
+	run();
+	time(&t2);
+
+	//difftime
+	std::cout&lt;&lt;(t2-t)&lt;&lt;" seconds ..."&lt;&lt;std::endl;
+	std::cout&lt;&lt;difftime(t2, t)&lt;&lt;" seconds ..."&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+//struct tm
+#include &lt;iostream&gt;
+#include &lt;ctime&gt;
+#include &lt;cmath&gt;
+
+int main(int argc, char *argv[])
+{
+	struct tm m;
+	m.tm_hour = 0;
+	m.tm_min = 0;
+	m.tm_sec = 0;
+	m.tm_year = 100;
+	m.tm_mon = 0;
+	m.tm_mday = 1;
+
+	time_t t = mktime(&m);
+
+	//ctime
+	std::cout&lt;&lt;ctime(&t)&lt;&lt;std::endl;
+
+	return 0;
+}
+	</pre>
+</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+//time_t to struct tm
+#include &lt;iostream&gt;
+#include &lt;ctime&gt;
+
+int main(int argc, char *argv[])
+{
+	time_t t;
+	struct tm *timeInfo;
+
+	//localtime
+	time(&t);
+	timeInfo = localtime(&t);
+
+	//asctime
+	std::cout&lt;&lt;asctime(timeInfo)&lt;&lt;std::endl;
+
+	return 0;
+}
+	</pre>
+</div>
+	<div class = "subtitle">Reference</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "http://www.cplusplus.com/reference/ctime/">cplusplus.com</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

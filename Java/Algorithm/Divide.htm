@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Divide and Conquer</div>
+		<div class = "subtitle">Methods</div>
+		<div class = "block">
+			<ul>
+				<li>Substitution Method, guess a bound and then use mathematical induction to prove our guess correct</li>
+				<li>Recursion-Tree Method, converts the recurrence into a tree whose nodes represent the costs incurred at various levels of the recursion</li>
+				<li>Master Method</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Maximum-Subarray</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/MaxArray.png" width = "70%"></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Brute-force, O(n<sup>2</sup>)</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+import javafx.util.*;
+
+public class S
+{
+	public static Pair&lt;Integer, Integer&gt;maxArray(int [] array)
+	{
+		int max = Integer.MIN_VALUE;
+		int m = 0, n = 1;
+
+		for(int i = 0; i &lt; array.length-1; i++)
+			for(int j = i+1; j &lt; array.length; j++)
+			{
+				if(array[j] - array[i] &gt; max)
+				{
+					max = array[j] - array[i];
+					m = i;
+					n = j;
+					System.out.println(m+" "+n);
+				}
+			}
+		return (new Pair&lt;Integer, Integer&gt;(m, n));
+	}
+
+	public static void main(String args[])
+	{
+		int [] prices = {100, 113, 110, 85, 105, 102, 86, 63, 81, 101, 94, 106, 101, 79, 94, 90, 97};
+
+		Pair&lt;Integer, Integer&gt; p = maxArray(prices);
+
+		System.out.printf("%d to %d, sum is %d\n", p.getKey(), p.getValue(), (prices[p.getValue()] - prices[p.getKey()]));
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/MaxArray2.png" width = "70%"></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Divide-and-Conquer, T(n) = 2T(n/2) + n</li>
+				<li>O(nlgn)</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+import javafx.util.*;
+
+public class S
+{
+	public static Tuple findMaxSubArray(int [] array, int low, int high)
+	{
+		if(high == low)
+			return (new Tuple(low, high, array[low]));
+		int leftLow, leftHigh, leftMax;
+		int rightLow, rightHigh, rightMax;
+		int crossLow, crossHigh, crossMax;
+
+		int mid = (low+high)/2;
+		Tuple leftT = findMaxSubArray(array, low, mid);
+		Tuple rightT = findMaxSubArray(array, mid+1, high);
+		Tuple crossT = findMaxCrossSubArray(array, low, mid, high);
+		if(leftT.getMax() &gt; rightT.getMax() && leftT.getMax() &gt; crossT.getMax())
+			return leftT;
+		else if(rightT.getMax() &gt; leftT.getMax() && rightT.getMax() &gt; crossT.getMax())
+			return rightT;
+		else
+			return crossT;
+	}
+
+	public static Tuple findMaxCrossSubArray(int [] array, int low, int mid, int high)
+	{
+		int leftSum = Integer.MIN_VALUE;
+		int sum = 0;
+		int indexLeft = mid;
+		for(int i = mid; i &gt;= low; i--)
+		{
+			sum += array[i];
+			if(sum &gt; leftSum)
+			{
+				leftSum = sum;
+				indexLeft = i;
+			}
+		}
+		int rightSum = Integer.MIN_VALUE;
+		sum = 0;
+		int indexRight = mid+1;
+		for(int i = mid+1; i &lt;= high; i++)
+		{
+			sum += array[i];
+			if(sum &gt; rightSum)
+			{
+				rightSum = sum;
+				indexRight = i;
+			}
+		}
+
+		return (new Tuple(indexLeft, indexRight, leftSum+rightSum));
+	}
+
+	public static int [] getChange(int [] p)
+	{
+		int [] c = new int[p.length-1];
+
+		for(int i = 0; i &lt; p.length-1; i++)
+			c[i] = p[i+1] - p[i];
+
+		return c;
+	}
+
+	public static void display(int [] array)
+	{
+		for(int i = 0; i &lt; array.length; i++)
+			System.out.printf("%5d", array[i]);
+		System.out.println();
+	}
+
+	public static void main(String args[])
+	{
+		int [] prices = {100, 113, 110, 85, 105, 102, 86, 63, 81, 101, 94, 106, 101, 79, 94, 90, 97};
+		int [] change = getChange(prices);
+
+		display(change);
+
+		Tuple t = findMaxSubArray(change, 0, change.length-1);
+
+		System.out.println("Low: "+t.getLeft()+" High: "+t.getRight()+" Max: "+t.getMax());
+	}
+}
+
+class Tuple
+{
+	private int left, right, max;
+	Tuple(int l, int r, int m)
+	{
+		left = l;
+		right = r;
+		max = m;
+	}
+
+	int getLeft() {return left;}
+	int getRight() {return right;}
+	int getMax() {return max;}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Matrix Multiplication</div>
+		<div class = "block">
+			<ul>
+				<li>Brute-force, O(n<sup>3</sup>)</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class M
+{
+	public static int [][] mul(int [][] A, int [][] B)
+	{
+		int array[][] = new int[A.length][A[0].length];
+
+		for(int i = 0; i &lt; array.length; i++)
+			for(int j = 0; j &lt; array[i].length; j++)
+				for(int k = 0; k &lt; array.length; k++)
+					array[i][j] += A[i][k]*B[k][j];
+
+		return array;
+	}
+
+	public static int [][] getMatrix(int n)
+	{
+		int array [][] = new int[n][n];
+		Random r = new Random();
+
+		for(int i = 0; i &lt; n; i++)
+			for(int j = 0; j &lt; n; j++)
+				array[i][j] = r.nextInt(10);
+
+		return array;
+	}
+
+	public static void display(int [][] array)
+	{
+		for(int i = 0; i &lt; array.length; i++)
+		{
+			for(int j = 0; j &lt; array[i].length; j++)
+				System.out.printf("%5d", array[i][j]);
+			System.out.println();
+		}
+	}
+
+	public static void main(String args[])
+	{
+		int A[][] = getMatrix(10);
+		int B[][] = getMatrix(10);
+
+		int array[][] = mul(A, B);
+		display(array);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Strassen's Method</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Mul.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>S1 = B12-B22</li>
+				<li>S2 = A11+A12</li>
+				<li>S3 = A21+A22</li>
+				<li>S4 = B21-B11</li>
+				<li>S5 = A22+A22</li>
+				<li>S6 = B11+B22</li>
+				<li>S7 = A12-A22</li>
+				<li>S8 = B21+B22</li>
+				<li>S9 = A11-A21</li>
+				<li>S0 = B11+B12</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>P1 = A11*S1</li>
+				<li>P2 = S2*B22</li>
+				<li>P3 = S3*B11</li>
+				<li>P4 = A22*S4</li>
+				<li>P5 = S5*S6</li>
+				<li>P6 = S7*S8</li>
+				<li>P7 = S9*S0</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>C11 = P5+P4-P2+P6</li>
+				<li>C12 = P1+P2</li>
+				<li>C12 = P3+P4</li>
+				<li>C22 = P5+P1-P3-P7</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>T(n) = 7T(n/2) + &Theta;(n<sup>2</sup>)</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li>CLRS Chapter 4</li>
+			</ul>
+		</div>
+	</body>
+</html>

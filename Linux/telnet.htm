@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Telnet</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Telnet</div>
+		<div class = "subtitle">HTTP</div>
+		<div class = "block">
+			<ul>
+				<li>telnet www.ecsu.edu 80</li>
+				<li>GET /index.html HTTP/1.1</li>
+				<li>Host: www.ecsu.edu</li>
+				<li>&lt;line feed&gt;</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>200 OK</li>
+				<li>301 Moved Permanently</li>
+				<li>400 Bad Request</li>
+				<li>404 Not Found</li>
+				<li>505 HTTP Version Not Supported</li>
+			</ul>
+		</div>
+		<div class = "subtitle">E-Mail</div>
+		<div class = "block">
+			<ul>
+				<li>telnet</li>
+				<li>open localhost 25</li>
+				<li>helo me</li>
+				<li>mail from: &lt;sender@ecsu.edu&gt;</li>
+				<li>rcpt to: &lt;receiver@ecsu.edu&gt;</li>
+				<li>data</li>
+				<li>Message ...</li>
+				<li>.</li>
+				<li>quit</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>openssl s_client -starttls smtp -connect smtp.gmail.com:587 -crlf -ign_eof</li>
+				<li>ehlo hello</li>
+				<li>auth login</li>
+				<li>Type in username and password with <a href = "https://www.base64encode.org/">base64</a> format</li>
+				<li>mail from: &lt;sender@gmail.com&gt;</li>
+				<li>rcpt to: &lt;receiver@gmail.com&gt;</li>
+				<li>data</li>
+				<li>message ...</li>
+				<li>.</li>
+				<li>quit</li>
+			</ul>
+		</div>
+	</body>
+</html>

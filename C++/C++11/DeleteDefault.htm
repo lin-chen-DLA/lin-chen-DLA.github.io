@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Deleted and Defaulted Functions
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle() = default;
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const {return width;}
+		double getLength() const {return length;}
+		double getArea() const {return width*length;}
+
+		//mutator
+		void setWidth(double w) {width = w;}
+		void setLength(double l) {length = l;}
+
+		Rectangle(const Rectangle&) = delete;
+		Rectangle& operator=(const Rectangle &) = delete;
+
+		//destructor
+		virtual ~Rectangle() = default;
+};
+#endif
+
+//main.cpp
+#include &lt;iostream&gt;
+#include "Rectangle.h"
+
+int main(int argc, char *argv[])
+{
+	Rectangle r;
+
+	r.setWidth(5);
+	r.setLength(10);
+
+	std::cout&lt;&lt;r.getArea()&lt;&lt;std::endl;
+
+	//Rectangle r2(r);//preventing calling copy  constructor
+	Rectangle r2;
+	//r2 = r;//preventing calling assignment constructor
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "subtitle">Reference</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "https://blog.smartbear.com/c-plus-plus/the-biggest-changes-in-c11-and-why-you-should-care/">smartbear.com</a></li>
+			<li><a href = "https://en.wikipedia.org/wiki/C%2B%2B11#Explicitly_defaulted_and_deleted_special_member_functions">Wiki</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

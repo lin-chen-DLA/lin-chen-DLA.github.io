@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Vim
+		</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://www.cs.oberlin.edu/~kuperman/help/vim/home.html">Vim Tips and Tricks</a>
+					<ul>
+						<li><a href = "https://vim-adventures.com/">Vim Adventures</a></li>
+					</ul>
+				</li>
+				<li><a href = "https://github.com/tpope/vim-pathogen">Pathogen</a>, vim plugin management
+					<ul>
+						<li><a href = "https://gist.github.com/romainl/9970697">Tutorial</a></li>
+						<li>mkdir -p ~/.vim/autoload ~/.vim/bundle</li>
+						<li>save pathogen.vim to ~/.vim/autoload</li>
+						<li>add "execute pathogen#infect(), syntax on, filetype plugin indent on" in ~/.vimrc</li>
+					</ul>
+				</li>
+				<li><a href = "https://andrew.stwrt.ca/posts/vim-ctags/">Ctags</a>, create connection between tags and functions
+					<ul>
+						<li><a href = "https://courses.cs.washington.edu/courses/cse451/10au/tutorials/tutorial_ctags.html">Tutorial</a></li>
+						<li>add "set tags=tags;/" in ~/.vimrc, make searching tags from subdirectory</li>
+						<li>ctags -R ., create tags</li>
+						<li>vim -t tag, access the file containing the specific tag</li>
+						<li>ctrl+], jump to the tag underneath the cursor</li>
+						<li>ctrl+t, jump back up in the tag stack</li>
+					</ul>
+				</li>
+				<li><a href = "https://github.com/ervandew/supertab">SuperTag</a>, tag menu
+					<ul>
+						<li>tab, display tag menu</li>
+					</ul>
+				</li>
+				<li><a href = "https://github.com/scrooloose/nerdtree">NerdTree</a>, a file system explorer
+					<ul>
+						<li>:NERDTree, turn on the file system explorer</li>
+					</ul>
+				</li>
+				<li><a href = "http://majutsushi.github.io/tagbar/">TagBar</a>, browser tags in a file
+					<ul>
+						<li>add "nmap &lt;F8&gt; :TagbarToggle&lt;CR&gt;" in ~/.vimrc</li>
+						<li>Fn+F8, turn on tag explorer</li>
+					</ul>
+				</li>
+				<li>Autocomplete
+					<ul>
+			<li>C++
+			<ul>
+				<li><a href = "http://vim.wikia.com/wiki/C%2B%2B_code_completion">C++ code completion</a></li>
+				<li><a href = "https://vim.sourceforge.io/scripts/script.php?script_id=1520">OmniCppComplete</a></li>
+				<li>ctags -R ., create local tags</li>
+				<li>Ctrl+b, add local variables to tags</li>
+			</ul>
+			</li>
+			<li>Java
+				<ul>
+					<li>Install Eclipse Oxygen use the .tar.gz eclipse distribution, not from GUI installer</li>
+					<li>Install <a href = "http://eclim.org/install.html">Eclim</a> with GUI installer</li>
+					<li>Start eclimd installed in $EclipseHome/Contents/Eclipse</li>
+					<li>mkdir project</li>
+					<li>cd project</li>
+					<li>Open vim, type in ":ProjectCreate . -n java", a project is created, .project and .classpath are created</li>
+					<li>mkdir src</li>
+					<li>Open .classpath with vim, type in ":NewSrcEntry ./src"</li>
+					<li>Write code under src folder</li>
+				</ul>
+			</li>
+			<li>Python
+				<ul>
+					<li><a href = "https://github.com/davidhalter/jedi-vim">Jedi-Vim</li>
+					<li>let g:SuperTabDefaultCompletionType = "context"</li>
+					<li>let g:jedi#popup_on_dot = 0</li>
+					<li>let g:jedi#auto_initialization = 0</li>
+					<li>let g:jedi#auto_vim_configuration = 0</li>
+					<li>let g:jedi#use_tabs_not_buffers = 1</li>
+					<li>let g:jedi#use_splits_not_buffers = "left"</li>
+					<li>let g:jedi#popup_on_dot = 0</li>
+					<li>let g:jedi#popup_select_first = 0</li>
+					<li>let g:jedi#show_call_signatures = "1"</li>
+					<li>set completeopt-=preview</li>
+					<li>ctags -R ., create tag file</li>
+					<li>tab, popup variables</li>
+				</ul>
+			</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://my.oschina.net/swuly302/blog/156784">Efficient Vim Plugins</a></li>
+		</div>
+	</body>
+</html>

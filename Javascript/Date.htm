@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Date
+		</div>
+
+		<div class = "subtitle">Create Date</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var d_1 = new Date(); //creates a new date object with the current date and time
+console.log(d_1);
+
+var d_2 = new Date(2018, 11, 24, 10, 33, 30, 0); //year, month, day, hours, minutes, seconds, milliseconds
+console.log(d_2);
+
+var d_3 = new Date("October 13, 2014 11:13:00");
+console.log(d_3);
+
+var d_4 = new Date(0);
+console.log(d_4);
+
+var d_5 = new Date("2015-03-25"); //ISO Dates
+console.log(d_5);
+		</pre>
+		</div>
+		<div class = "subtitle">Display Date</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var d_1 = new Date(); //creates a new date object with the current date and time
+
+console.log(d_1.toString());
+console.log(d_1.toUTCString());
+console.log(d_1.toDateString());
+		</pre>
+		</div>
+		<div class = "subtitle">Get Methods</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var d = new Date(); //creates a new date object with the current date and time
+console.log(d);
+
+console.log(d.getFullYear()+'/'+d.getMonth()+'/'+d.getDate());
+		</pre>
+		</div>
+		<div class = "subtitle">Set Methods</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+var d = new Date(); //creates a new date object with the current date and time
+console.log(d);
+
+d.setFullYear(2004);
+console.log(d);
+		</pre>
+		</div>
+	</body>
+</html>

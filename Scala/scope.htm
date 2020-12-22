@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Scope
+		</div>
+
+		<div class = "subtitle">Fields</div>
+		<div class = "block">
+			<li>The fields are accessible from inside every method in the object</li>
+			<li>Fields can also be accessible outside the object depending on what access modifiers the field is declared with</li>
+			<li>Object fields can be both mutable and immutable types and can be defined using either var or val</li>
+		</div>
+		<div class = "subtitle">Method Parameters</div>
+		<div class = "block">
+			<li>Method parameters are only accessible from inside the method</li>
+			<li>The objects passed in may be accessible from the outside, if you have a reference to the object from outside the method, it is an immutable reference to a mutable object</li>
+			<li>Method parameters are always <span>immutable</span> which are defined by val keyword</li>
+		</div>
+		<div class = "subtitle">Local Variables</div>
+		<div class = "block">
+			<li>Local variables are only accessible from inside the method</li>
+			<li>Local variables can be both mutable and immutable types and can be defined using either var or val</li>
+		</div>
+	</body>
+</html>

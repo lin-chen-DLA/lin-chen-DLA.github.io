@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Data Science</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Machine Learning Project Checklist
+		</div>
+
+		<div class = "subtitle"><span>Frame the Problem and Look at the Big Picture</span></div>
+		<div class = "block">
+			<li>Define the objective in business terms</li>
+			<li>How will your solution be used?</li>
+			<li>What are the current solutions/workarounds (if any)?</li>
+			<li>How should you frame this problem (supervised/unsupervised, online/offline, etc.)?</li>
+			<li>How should performance be measured?</li>
+			<li>Is the performance measure aligned with the business objective?</li>
+			<li>What would be the minimum performance needed to reach the business objective?</li>
+			<li>What are comparable problem? Can you reuse experience or tools</li>
+			<li>How would you solve the problem manually?</li>
+			<li>List hte assumptions you (for others) have made so far.</li>
+			<li>Verify assumptions if possible.</li>
+		</div>
+		<div class = "subtitle"><span>Get the Data</span></div>
+		<div class = "block">
+			<li>List the data you need and how much you need.</li>
+			<li>Find and document where you can get that data.</li>
+			<li>Check how much space it will take.</li>
+			<li>Check legal obligations, and get authorization if necessary.</li>
+			<li>Get access authorizations.</li>
+			<li>Create a workspace (with enough storage space).</li>
+			<li>Get the data.</li>
+			<li>Convert the data to a format you can easily manipulate (without changing the data itself).</li>
+			<li>Ensure sensitive information is deleted or protected (e.g., anonymized).</li>
+			<li>Check the size and type of data (time series, sample, geographical, etc.).</li>
+			<li><span>Sample a test set</span>, put it aside, and never look at it (no data snooping).</li>
+		</div>
+		<div class = "subtitle"><span>Explore the Data</span></div>
+		<div class = "block">
+			<li>Create a copy of the data for exploration (sampling it down to a manageable size if necessary).</li>
+			<li>Create a Jupyter notebook to keep a record of your data exploration.</li>
+			<li>Study each attribute and its characteristics:
+				<ul>
+					<li>Name</li>
+					<li>Type (categorical, int/float, bounded/unbounded, text, structured, etc.)</li>
+					<li>% of missing values</li>
+					<li>Noisiness and type of noise (stochastic, outliers, rounding errors, etc.)</li>
+					<li>Possibly useful for the task?</li>
+					<li>Type of distribution (Gaussina, uniform, logarithmic, etc.)</li>
+				</ul>
+			</li>
+			<li>For supervised learning tasks, identify the target attribute(s).</li>
+			<li>Visualize the data.</li>
+			<li>Study the correlations between attributes.</li>
+			<li>Study how you would solve the problem manually.</li>
+			<li>Identify the promising transformations you may want to apply.</li>
+			<li>Identtify extra data that would be useful (go back to "Get the Data").</li>
+			<li>Document what you have learned.</li>
+		</div>
+		<div class = "subtitle"><span>Prepare the Data</span></div>
+		<div class = "block">
+			<li>Work on copies of the data (keeyp the original dataset intact)</li>
+			<li>Write functions for all data transformations you apply, for five reasons:
+				<ul>
+					<li>So you can easily prepare the data the next time you get a fresh dataset</li>
+					<li>So you can apply these transformations in future projects</li>
+					<li>To clean and prepare the test set</li>
+					<li>To clearn and prepare new data instance once your solution is live</li>
+					<li>To make it easy to treat your preparation choices as hyperparameters</li>
+				</ul>
+			</li>
+			<ol>
+				<li>Data clearning
+					<ul>
+						<li>Fix or remove outliers</li>
+						<li>Fill in missing values or drop their rows (or columns)</li>
+					</ul>
+				</li>
+				<li>Feature selection
+					<ul>
+						<li>Drop the attributes that provide no useful information for the task</li>
+					</ul>
+				</li>
+				<li>Feature engineering, where appropirate:
+					<ul>
+						<li>Discretize continuous features</li>
+						<li>Decompose features (e.g., categorical, date/time, etc.)</li>
+						<li>Add promising transformations of features</li>
+						<li>Agregate features into promising new features</li>
+					</ul>
+				</li>
+				<li>Feature scaling: standardize or normalize features</li>
+			</ol>
+		</div>
+		<div class = "subtitle"><span>Short-List Promising Models</span></div>
+		<div class = "block">
+			<ol>
+				<li>Train many quick and dirty models from different categories (e.g., linear, naive Bayes, SVM, Random Forests, neural net, etc.) using standard parameters</li>
+				<li>Measure and compare their performance
+					<ul>
+						<li>For each model, use N-fold cross-validation and compute the mean and standard deviation of the performance measure on the N folds</li>
+					</ul>
+				</li>
+				<li>Analyze the most significant vairables for each algorithm</li>
+				<li>Analyze the types of errors the models make
+					<ul>
+						<li>What data would a human have used to avoid these errors</li>
+					</ul>
+				</li>
+				<li>Have a quick round of feature selection and engineering</li>
+				<li>Have one or two more quick iterations of the five previous steps</li>
+				<li>Short-lsit the top three to five most promising models, preferring models that make different types of errors</li>
+			</ol>
+		</div>
+		<div class = "subtitle"><span>Fine-Tune the System</span></div>
+		<div class = "block">
+			<ol>
+			<li>Fine-tune the hyperparameters using crossing-validation
+				<ul>
+					<li>Treat your data transformation choices as hyperparameters, especially when you are not sure about them</li>
+					<li>Unless there are very few hyperparameter values to explore, prefer random search over grid search. If training is very long, you may prefer a <a href = "https://arxiv.org/pdf/1206.2944.pdf">Bayesian optimization</a> approach</li>
+				</ul>
+			</li>
+			<li>Try Ensemble methods. Combining your best models will often perform better than runing them individually</li>
+			<li>Once you are confident about your final model, measure its performance on the test set to estimate the generalization error</li>
+			</ol>
+		</div>
+		<div class = "subtitle"><span>Present Your Solution</span></div>
+		<div class = "block">
+			<ol>
+			<li>Document what you have done</li>
+			<li>Create a nice presentation, make sure you highlight the big picture first</li>
+			<li>Explain why your solution achieves the business objective</li>
+			<li>Don't forget to present interesting points you noticed along the way
+				<ul>
+					<li>Describe what worked and what did not</li>
+					<li>List your assumptions and your system's limitations</li>
+				</ul>
+			</li>
+			<li>Ensure your key findings are communicated through beautiful visualizations or easy-to-remember statements</li>
+			</ol>
+		</div>
+		<div class = "subtitle"><span>Launch</span></div>
+		<div class = "block">
+			<ol>
+			<li>Get your solution ready for production (plug into production data inputs, write unit test, etc.)</li>
+			<li>Write monitoring code to check your system's live performance at regular itervals and trigger alerts when it drops
+				<ul>
+					<li>Beware of slow degradation too: models tend to "rot" as data evolves</li>
+					<li>Measuring performance may require a human pipeline</li>
+					<li>Also monitor your inputs's quality. This is particularly important for online learning systems</li>
+				</ul>
+			</li>
+			<li>Retrain your models on a regular basis on fresh data</li>
+			</ol>
+		</div>
+		<div class = "subtitle"><span>Reference</span></div>
+		<div class = "block">
+			<li>Hands-On Machine Learning with Scikit-Learn &amp; TensorFlow, Appendix B</li>
+		</div>
+	</body>
+</html>

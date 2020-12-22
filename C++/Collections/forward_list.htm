@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			forward_list
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Forward list containers are implemented as single-linked lists</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Initialization</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;forward_list&gt;
+#include &lt;iterator&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::forward_list&lt;int&gt; l = {1, 2, 3, 4};
+	std::forward_list&lt;int&gt; l2(10, 1);
+	std::forward_list&lt;int&gt; l3(l.begin(), l.end());
+	std::forward_list&lt;int&gt; l4(l3);
+	display(l4.begin(), l4.end());
+
+	//auto it = l.end();
+	//std::advance(it, -1);//error, forward_list has no backward link
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Operations</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;forward_list&gt;
+#include &lt;iterator&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		std::advance(it, 1);
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::forward_list&lt;int&gt; l = {1, 2, 3, 4};
+
+	//push_front
+	l.push_front(5);//5 1 2 3 4
+
+	//pop_front
+	l.pop_front();//1 2 3 4
+
+	//insert_after
+	auto it = l.begin();
+	std::advance(it, 1);
+	l.insert_after(it, 10);//1 2 10 3 4
+
+	//erase_after
+	it = l.begin();
+	std::advance(it, 2);//1 2 10 4
+	l.erase_after(it);
+
+	//remove
+	l.remove(10);//1 2 4
+
+	//remove_if
+	l.remove_if([](int n){if(n%2 == 1) return n;});//2 4
+
+	//reverse
+	l.reverse();//4 2
+
+	display(l.begin(), l.end());
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/forward_list/forward_list/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

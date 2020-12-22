@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Firewall</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Firewall</div>
+		<div class = "subtitle">ssh</div>
+		<div class = "block">
+			<ul>
+				<li>ecsumcs.eastus.cloudapp.azure.com</li>
+				<li>sudo vim /etc/ssh/sshd_config</li>
+				<li>Add allowed users to the bottom
+					<ul>
+						<li>AllowUsers lchen jzhang fzhou jliao</li>
+					</ul>
+				</li>
+				<li>sudo service ssh restart, retart ssh service, 05.29.2019</li>
+				<li>remove the access from ssh secure shell, 05.29.2019</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Monitor network</div>
+		<div class = "block">
+			<li>iftop, monitor the network activities
+				<ul>
+					<li>Check all input and output activities</li>
+				</ul>
+			</li>
+			<li>netstat -tuapn, monitor the connected network activities
+				<ul>
+					<li>Check the activities of accessing the current server</li>
+				</ul>
+			</li>
+			<li>iptables, add suspicious ips into the blocked list</li>
+		</div>
+		<div class = "subtitle">iptables</div>
+		<div class = "block">
+			<li><a href = "http://www.ipdeny.com/ipblocks/">Download</a> ips of US</li>
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+# allow the US ips
+for ip in `more us.zone`
+do
+        echo $ip
+        iptables -A INPUT -s $ip -j ACCEPT
+        iptables -A OUTPUT -s $ip -j ACCEPT
+done
+
+# block the ips from other countries
+iptables -A INPUT -j DROP
+iptables -A OUTPUT -j DROP
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://askubuntu.com/questions/891548/algorithm-negotiation-failed-when-trying-to-connect-to-server">Algorithm Negotiation failed when trying to connect to server</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

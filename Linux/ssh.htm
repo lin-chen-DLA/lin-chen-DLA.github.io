@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ssh</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">ssh</div>
+		<div class = "subtitle">SSH Secure Shell, fix login problem from SSH Secure Shell to Ubuntu system</div>
+		<div class = "block">
+			<ul>
+				<li>vim /etc/ssh/sshd_config</li>
+				<li>KexAlgorithms +diffie-hellman-group1-sha1<br>Ciphers +aes128-cbc</li>
+				<li>sudo service sshd restart</li>
+			</ul>
+		</div>
+		<div class = "subtitle">ssh with Public Key</div>
+		<div class = "block">
+			<ol>
+				<li>ssh-keygen -t rsa, generate public key (id_rsa.pub) and private key (id_rsa) under /Users/lchen/.ssh directory</li>
+				<li>attach id_rsa.pub to .ssh/authorized_keys on the remote server
+					<ul>
+						<li>scp id_rsa.pub lchen@serverIP:.ssh</li>
+						<li>cat id_rsa.pub &gt;&gt; id_rsa.pub</li>
+					</ul>
+				</li>
+			</ol>
+			<p style = "text-align:center;"><img src = "img/ssh.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle"><a href = "https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh">Connecting to GitHub with SSH</a></div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://kb.iu.edu/d/aews">Set up public-key authentication using SSH on a Linux or macOS computer</a></li>
+				<li><a href = "https://askubuntu.com/questions/891548/algorithm-negotiation-failed-when-trying-to-connect-to-server">Algorithm Negotiation failed when trying to connect to server</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

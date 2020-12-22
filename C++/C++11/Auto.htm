@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Auto and Decltype
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Type Inference, when initializing a variable, the auto keyword can be used in place of the variable type to tell the compiler to infer the variable's type from the initializer's type</li>
+				<li>The auto keyword can't be used with function parameters</li>
+			</ul>
+		</div>
+
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;typeinfo&gt;
+
+//std::vector&lt;int&gt; getContainer()
+auto getContainer() -&gt; std::vector&lt;int&gt;//C++11, trailing return type syntax
+//auto getContainer()//C++14
+{
+	std::vector&lt;int&gt; c = {1, 2, 3, 4};
+
+	return c;
+}
+
+int main(int argc, char *argv[])
+{
+	auto i = 10;
+	std::cout&lt;&lt;typeid(i).name()&lt;&lt;std::endl;
+
+	auto d = 3.14;
+	std::cout&lt;&lt;typeid(d).name()&lt;&lt;std::endl;
+
+	auto c = getContainer();
+	std::cout&lt;&lt;typeid(c).name()&lt;&lt;std::endl;
+	for(int i = 0; i &lt; c.size(); i++)
+		std::cout&lt;&lt;c[i]&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Template</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//g++ main.cpp -std=c++14
+#include &lt;iostream&gt;
+#include &lt;initializer_list&gt;
+#include &lt;typeinfo&gt;
+
+template &lt;class T, class T2&gt;
+auto getProduct(T a, T2 b) -&gt; decltype(a*b)//C++11, trailing return type syntax
+auto getProduct(T a, T2 b)//C++14
+{
+	auto p = a*b;
+	std::cout&lt;&lt;"Type: "&lt;&lt;typeid(p).name()&lt;&lt;std::endl;
+
+	return p;
+}
+
+int main(int argc, char *argv[])
+{
+	int a = 1;
+	double b = 10.0;
+
+	std::cout&lt;&lt;getProduct(1, 4)&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			<li>decltype provides a standardized version of typeof</li>
+		</ul>
+	</div>
+	<div class = "subtitle">decltype</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;typeinfo&gt;
+
+int main(int argc, char *argv[])
+{
+	int a = 10;
+	decltype(a) y;
+
+	std::cout&lt;&lt;typeid(y).name()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://thbecker.net/articles/auto_and_decltype/section_01.html">Thomas Becker</a></li>
+				<li><a href = "http://www.learncpp.com/cpp-tutorial/4-8-the-auto-keyword/">learncpp.com</a></li>
+				<li><a href = "http://blog.smartbear.com/c-plus-plus/the-biggest-changes-in-c11-and-why-you-should-care/">blog.smartbear.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

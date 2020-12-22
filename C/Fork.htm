@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Fork
+		</div>
+
+		<div class = "block">
+			<li>pid = fork()
+				<ul>
+					<li>pid is the process id of child process</li>
+					<li>for parent, pid is the process id of the created child process</li>
+					<li>for child, pid equals to zero</li>
+					<li>if error, pid is a negative value</li>
+				</ul>
+			</li>
+			<li>The implementation order of parent process and child process is random</li>
+		<pre class = "prettyprint linenums">
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+    pid_t fpid;
+
+    fpid = fork();
+
+    if(fpid &lt; 0)
+    {
+        printf("Not able to create child process ...");
+        exit(1);
+    }
+
+    if(fpid == 0)
+    {
+        printf("I am the child process %d, child id is: %d\n", getpid(), fpid);
+    }
+    else
+    {
+        printf("I am the parent process %d, parent id is: %d\n", getpid(), fpid);
+    }
+
+    return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+    int i = 0;
+    pid_t fpid;
+
+    printf("%10s %10s %10s %10s\n", "index", "parent", "current", "child");
+
+    for(i = 0; i &lt; 2; i++)
+    {
+    	fpid = fork();
+
+    	if(fpid == 0)
+    	{
+        	printf("%10d %10d %10d %10d\n", i, getppid(), getpid(), fpid);
+    	}
+    	else
+    	{
+        	printf("%10d %10d %10d %10d\n", i, getppid(), getpid(), fpid);
+    	}
+    }
+
+    return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<li>let parent process implement after child process is implemented</li>
+		<pre class = "prettyprint linenums">
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main()
+{
+    pid_t fpid;
+
+    fpid = fork();
+
+    if(fpid == 0)
+    {
+        printf("I am the child process %d, child id is: %d\n", getpid(), fpid);
+    }
+    else
+    {
+        wait(&fpid);
+        printf("I am the parent process %d, child id is: %d\n", getpid(), fpid);
+    }
+
+    return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">execv()</div>
+		<div class = "block">
+			<li>int execl(const char *path, const char *arg, ...)</li>
+			<li>int execlp(const char *file, const char *arg, ...)</li>
+			<li>int execle(const char *path, const char *arg, ..., char *const envp[])</li>
+			<li>int execv(const char *path, char *const argv[])</li>
+			<li>int execvp(const char *file, char *const argv[])</li>
+			<li>int execve(const char *path, char *const argv[], char *const envp[])</li>
+			<li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main()
+{
+    pid_t fpid;
+
+    fpid = fork();
+
+    if(fpid == 0)
+    {
+        printf("I am the child process %d, child id is: %d\n", getpid(), fpid);
+	char * execv_str[] = {"ls", "-l", "/home", NULL}; // ended with NULL
+	if (execv("/bin/ls",execv_str) &lt;0 ){
+		perror("error on exec");
+		exit(1);
+	}
+    }
+    else
+    {
+        wait(&fpid);
+        printf("I am the parent process %d, parent id is: %d\n", getpid(), fpid);
+    }
+
+    return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main()
+{
+    pid_t fpid;
+
+    fpid = fork();
+
+    if(fpid == 0)
+    {
+	char * execve_str[] = {"env",NULL};
+	char * env[] = {"PATH=/tmp", "USER=lchen", "STATUS=testing", NULL};
+	if (execve("/usr/bin/env",execve_str,env) &lt;0 ){
+		perror("error on exec");
+		exit(1);
+        }
+    }
+    else
+    {
+        wait(&fpid);
+        printf("I am the parent process %d, parent id is: %d\n", getpid(), fpid);
+    }
+
+    return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">system</div>
+		<div class = "block">
+			<li>system() automatically create a child process, does not support thread</li>
+			<li>exec functions support thread</li>
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+    printf("Call system() to implement a child process ...");
+
+    system("ls -l /home");
+
+    printf("Return from the child process ...");
+
+    return 0;
+}
+		</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			PyPI
+		</div>
+
+		<div class = "block">
+			<li>a repository of software for the Python programming language</li>
+		</div>
+		<div class = "subtitle">pip</div>
+		<div class = "block">
+			<li>Install pip
+				<ul>
+					<li>curl https://bootstrap.pypa.io/get-pip.py, download pip</li>
+					<li>python get-pip.py</li>
+					<li>pip install -U pip, update pip to the current version</li>
+				</ul>
+			</li>
+			<li>pip list
+				<ul>
+					<li>pip list, list the installed packages</li>
+					<li>pip list --outdated, list the outdated packages</li>
+				</ul>
+			</li>
+			<li>pip show [packagename], show the information of an installed package</li>
+			<li>pip search [packagename], show available package from PyPI repository</li> 
+			<li>pip install
+				<ul>
+					<li>pip install [packagename], install a package</li>
+					<li>pip install --upgrade [packagename], upgrade a package</li>
+				</ul>
+			</li>
+			<li>pip uninstall [packagename], uninstall a package</li>
+			<li>config
+				<ul>
+					<li>~/.pip/pip.conf</li>
+					<li>index-url = http://pypi.douban.com/simple, add third-party repository</li>
+				</ul>
+			</li>
+			<li>pip freeze &gt; requirements.txt, export installed packages in requirements format</li>
+			<li>pip install -r requirements.txt, install the modules with the requirements file</li>
+			<li>pip wheel, reduce the time of compiling when installing multiple times on the different virtual environments
+				<ul>
+					<li>pip install package.whl, install a package from .whl file</li>
+					<li>pip wheel --wheel-dir=[directoryname] [packagename], download the .whl file of the specific package to a directory</li>
+					<li>pip install --use-wheel --no-index --find-links=[directoryname] [packagename], install a package from the downloaded .whl file</li>
+					<li>pip install --use-wheel --no-index --find-links=https://wheelhouse.example.com/ pyramid, install from cached wheels remotely</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">virtualenv</div>
+		<div class = "block">
+			<li>pip install virtualenv, install virtualenv</li>
+			<li>virtualenv [environmentName]
+				<ul>
+					<li>virtualenv -p /usr/bin/python2.7 [environmentName], use the Python interpreter of your choice</li>
+				</ul>
+			</li>
+			<li>source [environmentName]/bin/activate, activate the virtual environment</li>
+			<li>deactivate, deactivate the virtual environments</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.python-guide.org/dev/virtualenvs/">Pipenv & Virtual Environments</a></li>
+			<li><a href = "https://blog.csdn.net/luoweipeter/article/details/25750353">Pip tutorial</a></li>
+			<li><a href = "https://pip.pypa.io/en/latest/">pip documentation</a></li>
+		</div>
+	</body>
+</html>

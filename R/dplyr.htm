@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>R</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			dplyr
+		</div>
+
+		<div class = "subtitle">Load</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+library(dplyr)
+		</pre>
+		</div>
+
+		<div class = "subtitle">Create Data Frame</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+emp.data &lt;- data.frame(
+   emp_id = c (1:5), 
+   emp_name = c("Rick","Dan","Michelle","Ryan","Gary"),
+   salary = c(623.3,515.2,611.0,729.0,843.25), 
+   
+   start_date = as.Date(c("2012-01-01", "2013-09-23", "2014-11-15", "2014-05-11",
+      "2015-03-27")),
+   stringsAsFactors = FALSE
+)
+		</pre>
+		</div>
+
+		<div class = "subtitle"><span>%&gt;%</span>, pipe operator</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+emp.data %&gt;% select(emp_id, salary) %&gt;% head(n=2L)
+		</pre>
+		</div>
+
+		<div class = "subtitle"><span>filter</span>, select rows in a data.frame that fit one or more logical expressions</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+filter(emp.data, salary &gt; 700)
+filter(emp.data, emp_name %in% c('Rick', 'Dan'))
+		</pre>
+		</div>
+
+		<div class = "subtitle"><span>arrange</span>, sort data.frame according to one or more columns</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+arrange(emp.data, salary) # sorted by ascending order
+arrange(emp.data, desc(salary)) # sorted by descending order
+		</pre>
+		</div>
+
+		<div class = "subtitle"><span>select</span>, select columns, or rename existing columns</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+select(emp.data, emp_id, salary) # select specific columns
+select(emp.data, -salary) # select all columns except a specific column, use "-" operator
+select(emp.data, emp_id:salary) # select a range of columns by name, use the “:” (colon) operator
+select(emp.data, emp_id, sal = salary) # select specific columns and rename a column
+select(emp.data, one_of('emp_id', 'salary', 'start_date')) # select specific columns
+select(emp.data, contains('emp')) # select columns whose column name contain "emp"
+select(emp.data, starts_with('s')) # select columns whose name starts with "s"
+select(emp.data, ends_with('ry')) # select columns whose name ends with "ry"
+		</pre>
+		</div>
+
+		<div class = "subtitle"><span>rename</span>, rename columns</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+rename(emp.data, sal = salary) # rename column
+		</pre>
+		</div>
+
+		<div class = "subtitle"><span>distinct</span>, select unique rows based on the content of one or more columns</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+distinct(mtcars, cyl)
+		</pre>
+		</div>
+
+		<div class = "subtitle"><span>mutate</span>, edit or add columns</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+mutate(emp.data, annual = salary*12) # add column "annual"
+		</pre>
+		</div>
+
+		<div class = "subtitle"><span>transmute</span>, only keep columns that are mentioned in the function</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+transmute(emp.data, emp_id, salary, annual = salary*12) # keep columns "emp_id", "salary", "annual"
+		</pre>
+		</div>
+
+		<div class = "subtitle"><span>summarise</span>, summarise columns</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+summarise(emp.data, mean_salary = mean(salary))
+		</pre>
+		</div>
+
+		<div class = "subtitle"><span>group_by</span>, split the data frame by some variable</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+mtcars %&gt;% group_by(cyl) %&gt;% summarise(mean_mpg = mean(mpg))
+		</pre>
+		</div>
+
+		<div class = "subtitle"><span>sample_n</span>, sample n rows from data.frame</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+sample_n(emp.data, 4) # randomly select n entries from data frame
+		</pre>
+		</div>
+
+		<div class = "subtitle"><span>sample_frac</span>,  sample frac fraction of rows</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+sample_frac(emp.data, 0.5)
+		</pre>
+		</div>
+
+		<div class = "subtitle"><span>do</span>,  execute R expression</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+result = do(mtcars, model = lm(mpg ~ wt, data = .))
+print(result$model)
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "http://genomicsclass.github.io/book/pages/dplyr_tutorial.html">dplyr Tutorial</a></li>
+			<li><a href = "http://stcorp.nl/R_course/tutorial_dplyr.html">Tutorial</a></li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Double Linked List</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/ds_dobulelinkedlist.png" width = "60%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# NodeModule.py
+#!/usr/bin/python
+""" A model containing Node class """
+
+__author__ = "Lin Chen"
+__version__ = "0.1"
+
+class Node:
+    """Single node with double pointers pointing to its previous node and the node after it"""
+
+    def __init__(self, data):
+        """Initialize a Node
+        
+        Args:
+            data : data saved in the node
+        """
+        self._data = data
+        self._prev = None
+        self._next = None
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, d):
+        self._data = d
+
+    @data.deleter
+    def data(self):
+        del self._data
+
+    @property
+    def next(self):
+        return self._next
+
+    @next.setter
+    def next(self, n):
+        self._next = n
+
+    @next.deleter
+    def next(self):
+        del self._next
+
+    @property
+    def prev(self):
+        return self._prev
+
+    @prev.setter
+    def prev(self, n):
+        self._prev = n
+
+    @prev.deleter
+    def prev(self):
+        del self._prev
+
+    def __str__(self):
+        return str(self._data)
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# ListModule.py
+#!/usr/bin/python
+""" A modeule containing List class"""
+
+from NodeModule import Node
+
+class List:
+    """Linked List class with a pre-defined Node class"""
+
+    def __init__(self):
+        """Initialize a List
+        """
+        self._head = None
+        self._tail = None
+        self._count = 0
+
+    def getSize(self):
+        """Return the size of the list
+        
+        Returns:
+            int : size of the list
+        """
+        return self._count
+
+    def insert(self, index, v):
+        """Insert a valude to make the list maintain ascending order
+
+        Args:
+            v : data which can be saved in a node
+
+        Returns:
+            boolean: True, if the value is inserted succefully; False, otherwise
+        """
+        if index &lt; 0 or index &gt; self._count:
+            return False
+
+        n = Node(v) # create a node
+
+        # insert a node into an empty list
+        if self.getSize() == 0:
+            self._head = n
+            self._tail = n
+            self._count += 1
+            return True
+
+        # insert a node in the front
+        if index == 0:
+            n.next = self._head
+            self._head.prev = n
+            self._head = n
+            self._count += 1
+            return True
+
+        # insert a node at the end
+        if index == self.getSize():
+            n.prev = self._tail
+            self._tail.next = n
+            self._tail = n
+            self._count += 1
+            return True
+
+	# insert in the first half
+        if index &lt;= self.getSize()/2:
+            current = self._head
+            for i in range(index-1):
+                current = current.next
+            n.next = current.next
+            n.prev = current
+            current.next.prev = n
+            current.next = n
+            self._count += 1
+            return True
+	# insert a node in the second half
+        else:
+            current = self._tail
+            for i in range(self.getSize()-index-1):
+                current = current.prev
+            n.next = current
+            n.prev = current.prev
+            current.prev.next = n
+            current.prev = n
+            self._count += 1
+            return True
+
+        return False
+
+    def delete(self, index):
+        """Delete a valude located at a specific location in the list
+
+        Args:
+            index (int): location of deletion, 0 is the location before the first element, 1 is the location after the first element
+
+        Returns:
+            boolean: True, if the value is deleted succefully; False, otherwise
+        """
+        if index &lt; 0 or index &gt; self._count-1:
+            return False
+
+	# delete the first node
+        if index == 0:
+            self._head = self._head.next
+            self._head.prev = None
+            self._count -= 1
+            return True
+
+	# delete the last node
+        if index == self._count-1:
+            self._tail = self._tail.prev
+            self._tail.next = None
+            self._count -= 1
+            return True
+
+	# delete a node located in the first half
+        if index &lt;= self._count/2:
+            current = self._head
+            for i in range(index-1):
+                current = current.next
+            current.next = current.next.next
+            current.next.prev = current
+            self._count -= 1
+            return True
+	# delete a node located in the second half
+        else:
+            current = self._tail
+            for i in range(self.getSize()-index-2):
+                current = current.prev
+            current.prev = current.prev.prev
+            current.prev.next = current
+            self._count -= 1
+            return True
+
+        return False
+
+    def __str__(self):
+        """Convert the list to a string
+
+        Returns:
+            string : a string represents the list
+        """
+        if self.getSize() == 0:
+            return "Empty"
+
+        current = self._head
+        output = []
+
+        while current is not None:
+            output.append(str(current))
+            current = current.next
+
+        return " -&gt; ".join(output)
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Test.py
+#!/usr/bin/python
+
+from ListModule import List
+
+def main():
+    l = List()
+
+    l.insert(0, 20) # insert the first node
+    l.insert(1, 10) # insert to the end
+    l.insert(0, 40) # insert to the front
+    l.insert(2, 30) # insert to the second half
+    l.insert(2, 50) # insert to the first half
+    print(l) # 40 -&gt; 20 -&gt; 50 -&gt; 30 -&gt; 10
+
+    # insert more nodes
+    l.insert(0, 60)
+    l.insert(0, 70)
+    l.insert(0, 80)
+    print(l) # 80 -&gt; 70 -&gt; 60 -&gt; 40 -&gt; 20 -&gt; 50 -&gt; 30 -&gt; 10
+
+    l.delete(2) # delete a node in the first half
+    print(l) # 80 -&gt; 70 -&gt; 40 -&gt; 20 -&gt; 50 -&gt; 30 -&gt; 10 
+    l.delete(4) # delete a node in the second half
+    print(l) # 80 -&gt; 70 -&gt; 40 -&gt; 20 -&gt; 30 -&gt; 10 
+    l.delete(0) # delete the first node
+    print(l) # 70 -&gt; 40 -&gt; 20 -&gt; 30 -&gt; 10 
+    l.delete(4) # delete the last node
+    print(l) # 70 -&gt; 40 -&gt; 20 -&gt; 30
+
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CSS</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Bootstrap 4
+		</div>
+
+		<div class = "subtitle">Create a Bootstrap Webpage</div>
+		<div class = "block">
+			<li><span>1. Add the HTML5 doctype</span></li>
+			<li><span>2. Bootstrap 4 is mobile-first</span></li>
+		<pre class = "prettyprint linenums">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+		</pre>
+			<li><span>3. Containers</span>
+				<ul>
+					<li><span>.container</span> class provides a responsive fixed width container</li>
+					<li><span>.container-fluid</span> class provides a full width container, spanning the entire width of the viewport</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Grid System</div>
+		<div class = "block">
+			<li>built with flexbox and allows up to <span>12</span> columns across the page</li>
+			<li>Grid Classes
+				<ul>
+					<li><span>.col-</span>, extra small devices - screen width less than 576px</li>
+					<li><span>.col-sm-</span>, small devices - screen width equal to or greater than 576px</li>
+					<li><span>.col-md-</span>, medium devices - screen width equal to or greater than 768px</li>
+					<li><span>.col-lg-</span>, large devices - screen width equal to or greater than 992px</li>
+					<li><span>.col-xl-</span>, xlarge devices - screen width equal to or greater than 1200px</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Two Breakpoints</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;title&gt;Bootstrap Example&lt;/title&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;!-- Viewport --&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;!-- Latest compiled and minified CSS --&gt;
+  &lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"&gt;
+  &lt;!-- jQuery library --&gt;
+  &lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"&gt;&lt;/script&gt;
+  &lt;!-- Popper JS --&gt;
+  &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"&gt;&lt;/script&gt;
+  &lt;!-- Latest compiled JavaScript --&gt;
+  &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  
+&lt;div class="container-fluid" style = "border: 1px solid red"&gt;
+  &lt;div class="row"&gt;
+  &lt;!-- small devices, 12 spans, 8 spans, 4 spans --&gt;
+  &lt;!-- large devices, 2 spans, 8 spans, 2 spans --&gt;
+  &lt;div class="col-sm-12 col-lg-2" style = "border: 1px solid blue"&gt;.col&lt;/div&gt;
+  &lt;div class="col-sm-8 col-lg-8" style = "border: 1px solid blue"&gt;.col&lt;/div&gt;
+  &lt;div class="col-sm-4 col-lg-2" style = "border: 1px solid blue"&gt;.col&lt;/div&gt;
+  &lt;/div&gt;         
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Spacing</div>
+		<div class = "block">
+			<li>property, m - margin or p - margin</li>
+			<li>sides, t - top, b - bottom, l - left, r - right, x - left and right, y - top and down</li>
+			<li>size, 0 - 0, 1 - 0.25rem, 2 - 0.5rem, 3 - 1rem, 4 - 1.5rem, 5 - 3rem</li>
+		<pre class = "prettyprint linenums">
+pt-4 //padding-top: 1.5rem
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.w3schools.com/bootstrap4/bootstrap_ref_all_classes.asp">Bootstrap 4 Reference</a></li>
+			<li><a href = "https://www.bootstrapcdn.com/">BootstrapCDN</a></li>
+			<li><a href = "https://getbootstrap.com/">Bootstrap</a></li>
+			<li><a href = "https://fontawesome.com/">Font Awesome</a></li>
+			<li><a href = "https://bootswatch.com/">Bootswatch</a></li>
+		</div>
+	</body>
+</html>

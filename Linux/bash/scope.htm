@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Linux</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Scope
+		</div>
+
+		<div class = "subtitle">Global variable</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+a=10
+
+function f1()
+{
+	echo $a # 10, access global variable
+	a=100 # by default, a is global variable
+	echo $a # 100
+	b=1000 # define a global variable
+}
+
+f1
+echo $a # 100
+echo $b # 1000
+			</pre>
+		</div>
+		<div class = "subtitle">Local variable</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/bin/bash
+
+a=10
+
+function f1()
+{
+	local a=1000 # define a local variable
+	echo $a # 1000
+}
+
+f1
+echo $a # 10
+			</pre>
+		</div>
+		<div class = "subtitle">Variable between processes</div>
+		<div class = "block">
+			<li>In bash, variable scope is at the level of processes: each process has its own copy of all variables</li>
+			<pre class = "prettyprint linenums">
+# s3.sh
+#!/bin/bash
+
+a=10
+
+bash s4.sh # Print nothing
+
+export a # export a environmental variable
+
+bash s4.sh # 10
+			</pre>
+			<pre class = "prettyprint linenums">
+# s4.sh
+#!/bin/bash
+
+echo $a
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://matt.might.net/articles/bash-by-example/">Bash by Example</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

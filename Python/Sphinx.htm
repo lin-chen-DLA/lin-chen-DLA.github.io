@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Sphinx
+		</div>
+
+		<div class = "block">
+			Sphinx is widely used to generate python document. Here is a brief tutorial to generate your own doc
+		</div>
+		<div class = "subtitle">Quick Start</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Sphinx_1.png" width = "40%"></p>
+
+			1. <span>sphinx-quickstart</span>, inside "S4" folder, <span>sphinx-quickstart doc</span>, if on Linux system
+	<ul>
+		<li>Root paht for the documentation [.]: doc</li>
+		<li>Separate source and build directories (y/n) [n], press "Enter"</li>
+		<li>Name prefix for templates and static dir [_], press "Enter"</li>
+		<li>Project name: yourProjectName</li>
+		<li>Author Name: yourName</li>
+		<li>Project version []: yourProjectVersion</li>
+		<li>Project release [0.1], press "Enter"</li>
+		<li>Project language [en], press "Enter"</li>
+		<li>Source file suffix [.rst], press "Enter"</li>
+		<li>Name of your master document (without suffix) [index], press "Enter"</li>
+		<li>Do you want to use the epub builder (y/n) [n], press "Enter"</li>
+		<li>autodoc: automatically insert docstrings from modules (y/n) [n]: y</li>
+		<li>doctest: automatically test code snippets in doctest blocks (y/n) [n]: y</li>
+		<li>intersphinx: link between Sphinx documentation of different projects (y/n) [n], press "Enter"</li>
+		<li>todo: write "todo" entries that can be shown or hidden on build (y/n) [n], press "Enter"</li>
+		<li>coverage: checks for documentation coverage (y/n) [n], press "Enter"</li>
+		<li>imgmath: include math, rendered as PNG or SVG images (y/n) [n], press "Enter"</li>
+		<li>mathjax: include math, rendered in the browser by MathJax (y/n) [n]: y</li>
+		<li>ifconfig: conditional inclusion of content based on config values (y/n) [n], press "Enter"</li>
+		<li>viewcode: include links to the source code of documented Python objects (y/n) [n]: y</li>
+		<li>githubpages: create .nojekyll file to publish the document on GitHub pages (y/n) [n], press "Enter"</li>
+		<li>Create Makefile? (y/n) [y], press "Enter"</li>
+		<li>Create Windows command file? (y/n) [y], press "Enter"</li>
+	</ul>
+	<ul>
+			<p style = "text-align:center;"><img src = "img/Sphinx_2.png" width = "40%"></p>
+		<span>Generate _build (to save html files), _static (to save the css files), _templates (to save the layout template), conf.py, index.rst</span>
+</ul>
+</li>
+		</div>
+		<div class = "block">
+			2. <span>sphinx-apidoc -o doc .</span> inside "S4" folder, generate a rst file for each py file or each package under "S4" folder, and save them to "doc" folder
+			<p style = "text-align:center;"><img src = "img/Sphinx_3.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+3. edit conf.py in "doc" folder, define where to search the source code
+<pre>
+import os
+import sys
+sys.path.insert(0, os.path.abspath('..'))
+</pre>
+		</div>
+		<div class = "block">
+4. edit index.rst in "doc" folder, add rst files for the modules and packages that will be shown in index.html, use reStructuredText to edit the file, rst files are initial documentation files
+<pre>
+.. toctree:: 
+     :maxdepth: 2
+     <strike>:caption: Contents:</strike>
+     :glob: 
+---Blank Line--- 
+     convert.rst
+     format.rst
+     modules.rst
+</pre>
+		</div>
+		<div class = "block">
+			5. <span>make html</span> in "doc" folder, save the generated html doc to _build
+		</div>
+		<div class = "subtitle">Change theme</div>
+		<div class = "block">
+			1. edit conf.py in "doc" folder
+			<pre>
+html_theme = 'classic'
+			</pre>
+			2. <span>make html</span>, in "doc" folder
+		</div>
+		<div class = "subtitle">Add logo</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Sphinx_4.png" width = "40%"></p>
+			1. edit conf.py in "doc" folder
+			<pre>
+# The name of an image file (relative to this directory) to place at the top
+# of the sidebar.
+html_logo = '../img/logo.jpg' 
+			</pre>
+			2. <span>make html</span>, in "doc" folder
+		</div>
+		<div class = "subtitle">Generate pdf doc</div>
+		<div class = "block">
+			<li>Mac OS
+				<ul>
+					<li>Install <a href = "https://www.macports.org/install.php">Manport</a></li>
+					<li>sudo port install texlive texlive-latex-extra, install latex</li>
+					<li>make latexpdf, create latex files and a pdf file in _build/latex</li>
+				</ul>
+			</li>
+			<li>Ubuntu
+				<ul>
+					<li>sudo apt-get install texlive-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-latex-base texlive-font-utils</li>
+					<li>sudo apt-get install latexmk</li>
+					<li>make latexpdf, create latex files and a pdf file in _build/latex</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://sphinx-themes.org/">Sphinx Themes</a></li>
+			<li><a href = "https://codeandchaos.wordpress.com/2012/07/30/sphinx-autodoc-tutorial-for-dummies/">Sphinx Autodoc Tutorial for Dummies</a></li>
+			<li><a href = "http://www.sphinx-doc.org/en/master/theming.html">Sphinx themes</a></li>
+			<li><a href = "https://github.com/ReactiveX/RxPY/pull/101/commits/69ccb18d84eb73558e92e44d32fac1c1098e9e4f">Sphinx Docs, Logo and Updated Docstrings</a></li>
+			<li><a href = "https://media.readthedocs.org/pdf/brandons-sphinx-tutorial/latest/brandons-sphinx-tutorial.pdf">Brandon’s Sphinx Tutorial</a></li>
+			<li><a href = "https://docs.typo3.org/typo3cms/extensions/sphinx/AdministratorManual/RenderingPdf/InstallingLaTeXLinux.html">Installing LaTeX on Linux or Mac OS X</a></li>
+		</div>
+	</body>
+</html>

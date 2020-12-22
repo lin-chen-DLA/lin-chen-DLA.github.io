@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Radix Sort</div>
+
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/radix.png" width = "70%"></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Sort the least significant digit first</li>
+				<li>O(d(n+k)), n is the number of elements in the array, k is radix, it is 10 for integer number, d is digit number</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.io.*;
+
+public class Radix
+{
+	/** Get the max value of an array
+	 * @param array an integer array
+	 * @return max value of the array
+	 */
+	public static int getMax(int [] array)
+	{
+		int max = array[0];
+
+		for(int i = 1; i &lt; array.length; i++)
+			if(array[i] &gt; max)
+				max = array[i];
+
+		return max;
+	}
+
+	/** Use counting sort to sort array by a specific digit
+	 * @param A an integer array
+	 * @param exp contol digit that will be used to sort array, such as 1, 10, 100, ...
+	 * @throws ArrayIndexOutOfBoundsException
+	 */
+	public static void countingSort(int [] A, int exp) throws ArrayIndexOutOfBoundsException
+	{
+		int [] B = new int[A.length];
+
+		int [] C = new int[10];
+
+		for(int i = 0; i &lt; A.length; i++)
+			C[A[i]/exp%10] += 1;
+
+		for(int i = 1; i &lt; 10; i++)
+			C[i] = C[i] + C[i-1];
+
+		//display(C);
+
+		for(int i = A.length-1; i &gt;= 0; i--)
+		{
+			B[C[A[i]/exp%10]-1] = A[i];
+			C[A[i]/exp%10] -= 1;
+		}
+
+		for(int i = 0; i &lt; A.length; i++)
+			A[i] = B[i];
+
+		//display(A);
+	}
+
+	/** Use radix sort to sort an integer array
+	 * @param array an integer array
+	 * @throws ArrayIndexOutOfBoundsException
+	 */
+	public static void radixSort(int [] array) throws ArrayIndexOutOfBoundsException
+	{
+		int m = getMax(array);
+
+		for(int exp = 1; m/exp &gt; 1; exp *= 10)
+		{
+			countingSort(array, exp);
+		}
+	}
+
+	/** Display an integer array
+	 * @param array an integer array
+	 */
+	public static void display(int [] array)
+	{
+		for(int i = 0; i &lt; array.length; i++)
+			System.out.printf("%5d", array[i]);
+		System.out.println();
+	}
+
+	public static void main(String args[])
+	{
+		int [] array = {329, 457, 657, 839, 436, 20, 5};
+
+		radixSort(array);
+
+		display(array);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.geeksforgeeks.org/radix-sort/">Geeksforgeeks</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

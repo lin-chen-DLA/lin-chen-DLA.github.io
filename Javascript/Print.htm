@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Output
+		</div>
+
+		<div class = "subtitle">innerHTML</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;div id = "demo"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+	document.getElementById("demo").innerHTML = "Hello Javascript";
+&lt;/script&gt;
+		</pre>
+		</div>
+
+		<div class = "subtitle">document.write</div>
+		<div class = "block">
+			<li>Using document.write() after an HTML document is loaded, will <span>delete</span> all existing HTML</li>
+		<pre class = "prettyprint linenums">
+&lt;script&gt;
+	document.write(5+6)
+&lt;/script&gt;
+		</pre>
+		</div>
+
+		<div class = "subtitle">window.alert</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;script&gt;
+	window.alert(5 + 6);
+&lt;/script&gt;
+		</pre>
+		</div>
+
+		<div class = "subtitle">console.log</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;script&gt;
+	console.log("Hello World!")
+&lt;/script&gt;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Print Object</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+const car = {
+  color: 'black',
+  manufacturer: 'Ford',
+  model: 'Fiesta'
+}
+
+console.log(car)
+console.dir(car) // same as console.log('%O', car)
+document.write(JSON.stringify(car));
+		</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Algorithms with numbers</div>
+		<div class = "subtitle">Multiply</div>
+		<div class = "block">
+			<ul>
+				<li>O(n<sup>2</sup>), n is the number of bits</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class M
+{
+	public static int multiply(int x, int y)
+	{
+		if(y == 0)
+			return 0;
+
+		if(y%2 == 0)
+			return 2*multiply(x, y&gt;&gt;1);
+		else
+			return x + 2*multiply(x, y&gt;&gt;1);
+	}
+
+	public static void main(String args[])
+	{
+		System.out.printf("10 * 5 = %d\n", multiply(10, 5));
+		System.out.printf("10 * 8 = %d\n", multiply(10, 8));
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Division</div>
+		<div class = "block">
+			<ul>
+				<li>O(n<sup>2</sup>), n is the number of bits</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import javafx.util.*;
+
+public class D
+{
+	public static Pair&lt;Integer, Integer&gt; divide(int x, int y)
+	{
+		if(x==0)
+			return (new Pair&lt;Integer, Integer&gt;(0, 0));
+
+		Pair p = divide(x&gt;&gt;1, y);
+
+		int q = 2*(int)p.getKey();
+		int r = 2*(int)p.getValue();
+
+		if(x%2 != 0)
+			r += 1;
+		if(r &gt; y)
+		{
+			r -= y;
+			q += 1;
+		}
+
+		return (new Pair&lt;Integer, Integer&gt;(q, r));
+	}
+
+	public static void main(String args[])
+	{
+		Pair&lt;Integer, Integer&gt; p = divide(10, 3);
+
+		System.out.printf("10/3 = (%d, %d)\n", p.getKey(), p.getValue());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Greatest Common Divisor (GCD)</div>
+		<div class = "block">
+			<ul>
+				<li>gcd(a, b) = gcd(b, a mod b)</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class G
+{
+	public static int gcd(int a, int b)
+	{
+		if(b == 0)
+			return a;
+
+		return gcd(b, a%b);
+	}
+
+	public static void main(String args[])
+	{
+		System.out.printf("GCD of (121, 77): %d\n", gcd(121, 77));
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li>Algorithm, by Sanjoy Dasgupta, Christos Papadimitriou, Umesh Vazirani</li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Set
+		</div>
+
+		<div class = "subtitle">Set</div>
+		<div class = "block">
+			<li>A set object is an unordered collection of immutable values, set type is mutable</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+s = set(['a', 'a', 'b', 'c', 'd']); #['a', 'b', 'c', 'd']
+s2 = set(['a', 'd', 'e', 'f']);
+
+#access element
+for e in s:
+    print e,
+print
+
+print s|s2; #union
+print s&s2; #intersection
+print s-s2; #difference
+
+s.add('g'); #['a', 'b', 'c', 'd', 'g']
+s.remove('d'); #remove element; raise KeyError if not present
+s.discard('c'); #remove if present
+s.pop(); #remvoe an arbitrary element
+if s.issuperset(set(['b'])):
+    print '[b, g] is the super set of [b]'
+s.clear(); #remove all element in set
+		</pre>
+		</div>
+		<div class = "subtitle">Frozenset</div>
+		<div class = "block">
+			<li>Frozenset type is immutable</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+s = frozenset(['a', 'a', 'b', 'c', 'd']); #['a', 'b', 'c', 'd']
+s2 = frozenset(['a', 'd', 'e', 'f']);
+
+print s|s2; #union
+print s&s2; #intersection
+print s-s2; #difference
+
+if s.issuperset(frozenset(['b'])):
+    print '[a, b, c, d] is the super set of [b]'
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.python.org/2/library/sets.html">Standard Library</a></li>
+		</div>
+	</body>
+</html>

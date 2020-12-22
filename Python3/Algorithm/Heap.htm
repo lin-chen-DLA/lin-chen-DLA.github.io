@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Heap Tree</div>
+		<div class = "block">
+			<ul>
+				<li>A nearly complete binary tree</li>
+				<li>Tree is completely filled on all levels except possibly the lowest, which is filled from the left up to a point</li>
+				<li>The tree is saved in an array</li>
+				<li>Max-heap, the value of parent is greater than the value of its children</li>
+				<li>Min-heap, the value of parent is less than the value of its children</li>
+			</ul>
+		</div>
+
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Heap.png" width = "80%"></p>
+		</div>
+
+		<div class = "subtitle">Heapify</div>
+		<div class = "block">
+			<ul>
+				<li>T(n) &le; T(2n/3) + &Theta;(1)</li>
+				<li>Master Theory: a = 1, b = 3/2, T(n) = log<sub>3/2</sub>n</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+""" A modeule containing Heap class"""
+
+def getList():
+    return [16, 14, 10, 8, 7, 9, 3, 2, 4, 1]
+
+def getRandomList():
+    import random
+
+    random.seed()
+
+    l = []
+    for i in range(10):
+        l.append(random.choice(range(10)))
+
+    return l
+
+def getLeft(index):
+    """Get the index of left child
+
+    Args:
+        index (int), index of current node
+
+    Returns:
+        int, index of the left child
+    """
+    return index*2+1
+
+def getRight(index):
+    """Get the index of right child
+
+    Args:
+        index (int), index of current node
+
+    Returns:
+        int, index of the right child
+    """
+    return index*2+2
+
+def maxHeapify(l, index, n):
+    """Max heapify the tree
+
+    Args:
+        l (list), a list of objects
+        i (int), index of current node
+        n (int), index of the last node in the list
+    """
+    # lg(n)
+    left = getLeft(index)
+    right = getRight(index)
+
+    largest = index
+    if left &lt;= n and l[left] &gt; l[index]:
+        largest = left
+
+    if right &lt;= n and l[right] &gt; l[largest]:
+        largest = right
+
+    if largest != index:
+        l[largest], l[index] = l[index], l[largest]
+        maxHeapify(l, largest, n)
+
+def buildMaxHeap(l):
+    # nlg(n)
+    for i in range(int(len(l)/2 - 1), -1, -1):
+        maxHeapify(l, i, len(l)-1)
+
+def heapSort(l):
+    # nlg(n)
+    buildMaxHeap(l)
+    print(l)
+
+    for i in range(len(l)-1, 0, -1):
+        l[0], l[i] = l[i], l[0]
+        maxHeapify(l, 0, i-1)
+
+def main():
+    l = getList();
+    print(l)
+    heapSort(l)
+    print(l)
+
+    l = getRandomList()
+    print(l)
+    heapSort(l)
+    print(l)
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li>CLRS Chapter 6</li>
+			</ul>
+		</div>
+	</body>
+</html>

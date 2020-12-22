@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Google Cloud</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Cloud Shell
+		</div>
+
+		<div class = "subtitle">Basic Operations</div>
+		<div class = "block">
+			<ol>
+				<li>Access <a href = "https://console.cloud.google.com/">Google Cloud</a></li>
+				<li>Start Shell</li>
+				<li>Edit Files
+					<ul>
+						<li>Editor</li>
+						<li>vim</li>
+					</ul>
+				</li>
+				<li>Upload Files</li>
+				<li>Download Files
+					<ul>
+						<li>cloudshell download test1.md test2.md</li>
+					</ul>
+				</li>
+				<li>Install Softwares
+					<ul>
+						<li>sudo apt-get install [package_name]</li>
+					</ul>
+				</li>
+			</ol>
+		</div>
+		<div class = "subtitle">Commands</div>
+		<div class = "block">
+			<li>gcloud, CLI
+				<ul>
+					<li>gcloud alpha cloud-shell ssh, ssh google cloud shell from local</li>
+					<li>gcloud alpha cloud-shell scp cloudshell:~/data.txt localhost:~data.txt, copy file from cloud to local</li>
+					<li>gcloud alpha cloud-shell scp clocalhost:~data.txt loudshell:~/data.txt, copy file from local to cloud</li>
+				</ul>
+			</li>
+			<li>cloudshell
+				<ul>
+					<li>edit-files, edit-file, edit, open
+						<ul>
+							<li>cloudshell edit-files *.c, open multiple files</li>
+						</ul>
+					</li>
+					<li>download-files, download-file, download, dl
+						<ul>
+							<li>cloudshell download-files *.c, download multiple files</li>
+						</ul>
+					</li>
+					<li>launch-tutorial
+						<ul>
+							<li>cloudshell launch-tutorial -d README-cloudshell.txt, open a text file as a web-based tutorial</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">System Information</div>
+		<div class = "block">
+			<li>Debian GNU/Linux 10</li>
+			<li>5G persistent disk storage</li>
+			<li>2 Intel(R) Xeon(R) CPU @ 2.30GHz</li>
+			<li>1995 Mega Bytes memory</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://cloud.google.com/shell/docs/launching-cloud-shell">Tutorial</a></li>
+		</div>
+	</body>
+</html>

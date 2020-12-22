@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Java Documentation
+		</div>
+
+		<div class = "subtitle">Syntax</div>
+		<div class = "block">
+			<ul>
+				<li>Occur only with /** ... */ comments</li>
+				<li>Standalone doc tages, are at the beginning of a comment line</li>
+				<li>Inline doc tags, appear anywhere within a Javadoc comment</li>
+				<li>Javadoc will process comment documentation for only public and protected members</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Tags</div>
+		<div class = "block">
+			<ul>
+				<li>@see, standalone doc tag, hyperlinked to the other documentation
+					<ul>
+						<li>@see package.class#member label</li>
+						<li>@see #method(Type, ...), refer current class member</li>
+						<li>@see class, refer class in the same package</li>
+						<li>@see package.class, refer class in the different package</li>
+						<li>@see &lt;a href = "url"&gt;, refer a external link</li>
+					</ul>
+				</li>
+				<li>@author, add author information with javadoc -author</li>
+				<li>@version, add version information</li>
+				<li>@param parameterName description, parameterName should be same as the parameter name in function</li>
+				<li>@throws fullyQualifiedClassName description, add exception information</li>
+				<li>@return description, add return information</li>
+				<li>{@link package.class#member label}, inline doc tag, add hyperlink</li>
+				<li>{@docRoot}, produces the relative path to the documentation root directory</li>
+			</ul>
+		</div>
+		<div class = "subtitle">javadoc</div>
+		<div class = "block">
+			<ul>
+				<li>-d dir, figure out output directory</li>
+				<li>-author, display author information in generated doc</li>
+				<li>-version, display version information</li>
+				<li>-header, include header in each page</li>
+				<li>-footer, include footer in each page</li>
+				<li>-top, add information on the top of each page</li>
+				<li>-bottom, add information on the bottom of each page</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+package Doc;
+
+import java.util.*;
+
+/** &lt;h3&gt;Javadoc Tutorial&lt;/h3&gt;
+ * &lt;br&gt;
+ * &lt;ul&gt;
+ * &lt;li&gt;Occur only within doc comments&lt;/li&gt;
+ * &lt;li&gt;Javadoc will process comment documentation for only public and protected members&lt;/li&gt;
+ * &lt;/ul&gt;
+ * @see Buick
+ * @see Doc.A.Honda
+ * @see &lt;a href = "https://docs.oracle.com/javase/7/docs/api/java/lang/String.html"&gt;String&lt;/a&gt;
+ * @see #setMaker(String)
+ * @author &lt;a href = "mailto:lchen@ecsu.edu"&gt;Lin Chen&lt;/a&gt;
+ * @author Yanhua Feng
+ * @version 1.0
+ * @since 09.27.2017
+ */
+public class Car
+{
+	private String maker;
+
+	/** Initialize Car with maker name
+	 * @param c maker name
+	 */
+	public Car(String c)
+	{
+		maker = c;
+	}
+
+	/** Get make name
+	 * @return maker name
+	 */
+	public String getMaker()
+	{
+		return maker;
+	}
+
+	/** Set maker
+	 * @param m maker name
+	 */
+	public void setMaker(String m)
+	{
+		maker = m;
+	}
+
+	/** Convert a Car object to string
+	 * @return string
+	 */
+	public String toString()
+	{
+		return "Car: "+maker;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+package Doc;
+/** &lt;h3&gt;Javadoc Tutorial&lt;/h3&gt;
+ * &lt;ul&gt;
+ * &lt;li&gt;Related to &lt;a href = "{@docRoot}/index.html"&gt;Root&lt;/a&gt;&lt;/li&gt;
+ * &lt;/ul&gt;
+ * @author Lin Chen
+ * @author https://lin-chen-va.github.io/
+ * @version 1.0
+ */
+public class Buick
+{
+	private String color;
+
+	public Buick(String c)
+	{
+		color = c;
+	}
+
+	public String toString()
+	{
+		return "Car: "+maker;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+package Doc.A;
+/** &lt;h3>Javadoc Tutorial&lt;/h3>
+ * @see Doc.Car
+ * @see Doc.Buick
+ */
+public class Honda
+{
+	private String color;
+
+	public Honda(String c)
+	{
+		color = c;
+	}
+
+	public String toString()
+	{
+		return "Car: "+maker;
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "doc/index.html">Documentation</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://corochann.com/javadoc-coding-rule-of-link-linkplain-see-372.html">see</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/comments-in-java/">Geeksforgeeks</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Friend
+		</div>
+
+		<div class = "subtitle">Friend Function</div>
+		<div class = "block">
+			<ul>
+				<li>A friend function of a class is defined outside that class's scope but it has the right to access all private and protected members</li>
+				<li>Friend declaration can go in either the public, private, or protected section of a class</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Regular Stand-alone Function</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+#include "Util.h"
+
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle(double w, double l);
+
+		//accessor
+		double getWidth() const;
+		double getLength() const;
+		double getArea() const;
+
+		//mutator
+		void setWidth(double w);
+		void setLength(double l);
+
+		//friend
+		friend void display(const Rectangle &r);
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+//Rectangle.cpp
+#include "Rectangle.h"
+
+Rectangle::Rectangle(double w, double l):width(w), length(l){}
+
+double Rectangle::getWidth() const
+{
+	return width;
+}
+
+double Rectangle::getLength() const
+{
+	return length;
+}
+
+double Rectangle::getArea() const
+{
+	return width*length;
+}
+
+void Rectangle::setWidth(double w)
+{
+	width = w;
+}
+
+void Rectangle::setLength(double l)
+{
+	length = l;
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//Util.h
+#ifndef UTIL_H
+#define UTIL_H
+#include &lt;iostream&gt;
+
+//forward declaration
+class Rectangle;
+
+void display(const Rectangle &r);
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+//Util.cpp
+#include &lt;iostream&gt;
+#include "Rectangle.h"
+#include "Util.h"
+
+void display(const Rectangle &r)
+{
+	std::cout&lt;&lt;"Width: "&lt;&lt;r.width&lt;&lt;std::endl;
+	std::cout&lt;&lt;"Length: "&lt;&lt;r.length&lt;&lt;std::endl;
+}
+
+			</pre>
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "Rectangle.h"
+#include "Util.h"
+
+int main(int argc, char *argv[])
+{
+	Rectangle *r = new Rectangle(5, 10);
+
+	display(*r);
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Member Function of Another Class</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Square.h
+#ifndef SQUARE_H
+#define SQUARE_H
+#include "Rectangle.h"
+
+class Square
+{
+	private:
+		int edge;
+	public:
+		Square(int e):edge(e){}
+		int getEdge() const;
+		friend void Rectangle::setEdge(const Square &s);
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+//Square.cpp
+#include "Square.h"
+
+int Square::getEdge() const {return edge;}
+			</pre>
+			<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Square;
+
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle(double w, double l);
+
+		//accessor
+		double getArea() const;
+
+		//mutator
+		void setEdge(const Square &s);
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+//Rectangle.cpp
+#include "Rectangle.h"
+#include "Square.h"
+
+Rectangle::Rectangle(double w, double l):width(w), length(l){}
+
+double Rectangle::getArea() const
+{
+	return width*length;
+}
+
+void Rectangle::setEdge(const Square &s)
+{
+	width = s.edge;
+	length = s.edge;
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//main.cpp
+#include &lt;iostream&gt;
+#include "Rectangle.h"
+#include "Square.h"
+
+int main(int argc, char *argv[])
+{
+	Square s(10);
+
+	Rectangle r(0, 0);
+	r.setEdge(s);
+
+	std::cout&lt;&lt;"Area: "&lt;&lt;r.getArea()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Friend Class</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Square.h
+#ifndef SQUARE_H
+#define SQUARE_H
+
+class Square
+{
+	private:
+		int edge;
+	public:
+		friend class Cube;
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+//Cube.h
+#ifndef CUBE_H
+#define CUBE_H
+#include "Square.h"
+
+class Cube
+{
+	private: 
+		Square s;
+	public:
+		int getArea() const
+		{
+			return s.edge*s.edge;
+		}
+
+		void setEdge(int e)
+		{
+			s.edge = e;
+		}
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+//main.cpp
+#include &lt;iostream&gt;
+#include "Cube.h"
+
+int main(int argc, char *argv[])
+{
+	Cube c;
+
+	c.setEdge(10);
+
+	std::cout&lt;&lt;"Area: "&lt;&lt;c.getArea()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				Other class have direct access to protected and private members of the class
+			</ul>
+		</div>
+	</body>
+</html>

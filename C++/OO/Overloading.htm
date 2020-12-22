@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Overloading
+		</div>
+
+		<div class = "subtitle">C++ Operators Available for Overloading</div>
+		<div class = "block">
+			<table>
+				<tr><td width=50>+</td width=50><td width=50>-</td width=50><td width=50>*</td width=50><td width=50>/</td width=50><td width=50>%</td width=50><td width=50>^</td width=50><td width=50>&</td width=50><td width=50>|</td width=50><td width=50>~</td width=50><td width=50>=</td width=50></tr>
+				<tr><td width=50>&lt;</td width=50><td width=50>&gt;</td width=50><td width=50>+=</td width=50><td width=50>-=</td width=50><td width=50>*=</td width=50><td width=50>/=</td width=50><td width=50>%=</td width=50><td width=50>^=</td width=50><td width=50>&=</td width=50><td width=50>|=</td width=50></tr>
+				<tr><td width=50>&lt;&lt;</td width=50><td width=50>&gt;&gt;</td width=50><td width=50>&gt;&gt;=</td width=50><td width=50>&lt;&lt;=</td width=50><td width=50>==</td width=50><td width=50>!=</td width=50><td width=50>&lt;=</td width=50><td width=50>&gt;=</td width=50><td width=50>&&</td width=50><td width=50>||</td width=50></tr>
+				<tr><td width=50>++</td width=50><td width=50>--</td width=50><td width=50>-&lt;*</td width=50><td width=50>,</td width=50><td width=50>-&gt;</td width=50><td width=50>[]</td width=50><td width=50>()</td width=50><td width=50>new</td width=50><td width=50>delete</td width=50><td width=50>!</td width=50></tr>
+			</table>
+		</div>
+		<div class = "subtitle">Operator +</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef V_H
+#define V_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		//constructor
+		V(int s):size(s)
+		{
+			std::cout&lt;&lt;"Constructor ..."&lt;&lt;std::endl;
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+			std::cout&lt;&lt;"----End Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//copy constructor
+		V(const V &right):size(right.size), array(size?new int [size]:nullptr)
+		{
+			std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+			std::cout&lt;&lt;"----End Copy Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//move constructor
+		V(V && right):size(0), array(nullptr)
+		{
+			std::cout&lt;&lt;"Move Constructor ..."&lt;&lt;std::endl;
+			size = right.size;
+			array = right.array;
+			right.size = 0;
+			right.array =  nullptr;
+			std::cout&lt;&lt;"----End Move Constructor ..."&lt;&lt;std::endl;
+		}
+
+		int *getAddress() const {return array;}
+		int getSize() const {return size;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		std::string toString() const
+		{
+			std::string str = "V: ";
+			for(int i = 0; i &lt; size; i++)
+				str += std::to_string(array[i])+" ";
+			return str;
+		}
+
+		V & time(int n)
+		{
+			for(int i = 0; i &lt; size; i++)
+				array[i] *= n;
+			return *this;
+		}
+
+		//copy assignment
+		const V& operator=(const V &right)
+		{
+			std::cout&lt;&lt;"Copy Assignment ..."&lt;&lt;size&lt;&lt;std::endl;
+			if(this != &right)
+			{
+				V temp(right);
+				//std::swap(size, temp.size);
+				//std::swap(array, temp.array);
+				std::swap(*this, temp);
+			}
+			std::cout&lt;&lt;"----End Assignment ..."&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		//move assignment
+		V & operator=(V&& right)
+		{
+			std::cout&lt;&lt;"Move Assignment ..."&lt;&lt;std::endl;
+			if(this != &right)
+			{
+				delete [] array;
+				array = 0;
+				size = 0;
+
+				size = right.size;
+				array = right.array;
+
+				right.size = 0;
+				right.array = nullptr;
+			}
+			std::cout&lt;&lt;"----End Move Assignment ..."&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		//Overloading
+		V operator+(const V &right)
+		{
+			std::cout&lt;&lt;"Operator + ..."&lt;&lt;std::endl;
+			V temp(size+right.size);
+			std::copy(array, array+size, temp.array);
+			std::copy(right.array, right.array+right.size, temp.array+size);
+			std::cout&lt;&lt;"End Operator + ..."&lt;&lt;std::endl;
+
+			return temp;
+		}
+
+		~V()
+		{
+			std::cout&lt;&lt;"Destructor ..."&lt;&lt;size&lt;&lt;std::endl;
+			delete array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	V v(3);
+	V v2(4);
+
+	V v3 = v + v2;
+
+	v.display();
+	v2.display();
+	v3.display();
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>v3 = v + v2;</li>
+				<li>v3 = v.operator+(v2)</li>
+		</ul>
+		</div>
+		<div class = "subtitle">Prefix ++</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+		//Prefix ++ Operator
+		V operator++()
+		{
+			std::cout&lt;&lt;"Prefix ++ ..."&lt;&lt;std::endl;
+			for(int i = 0; i &lt; size; i++)
+				array[i] += 1;
+			std::cout&lt;&lt;"End Prefix ++ ..."&lt;&lt;std::endl;
+			return *this;
+		}
+			</pre>
+		</div>
+		<div class = "subtitle">Postfix ++</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+		//Postfix ++ Operator
+		V operator++(int)
+		{
+			std::cout&lt;&lt;"Postfix ++ ..."&lt;&lt;std::endl;
+			V temp(*this);
+			for(int i = 0; i &lt; size; i++)
+				array[i] += 1;
+			std::cout&lt;&lt;"End Postfix ++ ..."&lt;&lt;std::endl;
+			return temp;
+		}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	V v(10);
+
+	V v2 = ++v;
+
+	std::cout&lt;&lt;v.toString()&lt;&lt;std::endl;
+	std::cout&lt;&lt;v2.toString()&lt;&lt;std::endl;
+
+	V v3 = v++;
+	std::cout&lt;&lt;v.toString()&lt;&lt;std::endl;
+	std::cout&lt;&lt;v3.toString()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>int, dummy parameter, is designed to be used in postfix mode</li>
+				<li>temp, a copy of the object before making change</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Operator &lt;</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+		bool operator&lt;(const V &right)
+		{
+			if(size &lt; right.size)
+				return true;
+			else
+				return false;
+		}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;V&gt; container;
+	V v(10), v2(2), v3(4), v4(20);
+	container.push_back(v);
+	container.push_back(v2);
+	container.push_back(v3);
+	container.push_back(v4);
+
+	std::sort(container.begin(), container.begin()+4);
+
+	for(int i = 0; i &lt; container.size(); i++)
+		std::cout&lt;&lt;container[i].toString()&lt;&lt;std::endl;
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			<span style = "color:red">operator &lt; is used in std::sort in algorithm library</span>
+		</ul>
+	</div>
+	<div class = "subtitle">Operator &lt;&lt;</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef V_H
+#define V_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		//constructor
+		V(int s):size(s)
+		{
+			std::cout&lt;&lt;"Constructor ..."&lt;&lt;std::endl;
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+			std::cout&lt;&lt;"----End Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//copy constructor
+		V(const V &right):size(right.size), array(size?new int [size]:nullptr)
+		{
+			std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+			std::cout&lt;&lt;"----End Copy Constructor ..."&lt;&lt;std::endl;
+		}
+
+		//move constructor
+		V(V && right):size(0), array(nullptr)
+		{
+			std::cout&lt;&lt;"Move Constructor ..."&lt;&lt;std::endl;
+			size = right.size;
+			array = right.array;
+			right.size = 0;
+			right.array =  nullptr;
+			std::cout&lt;&lt;"----End Move Constructor ..."&lt;&lt;std::endl;
+		}
+
+		int *getAddress() const {return array;}
+		int getSize() const {return size;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		std::string toString() const
+		{
+			std::string str = "V: ";
+			for(int i = 0; i &lt; size; i++)
+				str += std::to_string(array[i])+" ";
+			return str;
+		}
+
+		V & time(int n)
+		{
+			for(int i = 0; i &lt; size; i++)
+				array[i] *= n;
+			return *this;
+		}
+
+		//copy assignment
+		const V& operator=(const V &right)
+		{
+			std::cout&lt;&lt;"Copy Assignment ..."&lt;&lt;size&lt;&lt;std::endl;
+			if(this != &right)
+			{
+				V temp(right);
+				//std::swap(size, temp.size);
+				//std::swap(array, temp.array);
+				std::swap(*this, temp);
+			}
+			std::cout&lt;&lt;"----End Assignment ..."&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		//move assignment
+		V & operator=(V&& right)
+		{
+			std::cout&lt;&lt;"Move Assignment ..."&lt;&lt;std::endl;
+			if(this != &right)
+			{
+				delete [] array;
+				array = 0;
+				size = 0;
+
+				size = right.size;
+				array = right.array;
+
+				right.size = 0;
+				right.array = nullptr;
+			}
+			std::cout&lt;&lt;"----End Move Assignment ..."&lt;&lt;std::endl;
+
+			return *this;
+		}
+
+		//Overloading
+		//Operator &lt;&lt;
+		friend std::ostream &operator&lt;&lt;(std::ostream &strm, const V &right);
+		//Operator &gt;&gt;
+		friend std::istream &operator&gt;&gt;(std::istream &strm, V &right);
+
+		~V()
+		{
+			std::cout&lt;&lt;"Destructor ..."&lt;&lt;size&lt;&lt;std::endl;
+			delete array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#ifndef UTIL_H
+#define UTIL_H
+#include &lt;iostream&gt;
+
+class V;
+
+std::ostream &operator&lt;&lt;(std::ostream &strm, const V &right)
+{
+	strm&lt;&lt;"V: ";
+	for(int i = 0; i &lt; right.size; i++)
+		strm&lt;&lt;right.array[i]&lt;&lt;" ";
+	return strm;
+}
+
+std::istream &operator&gt;&gt;(std::istream &strm, V &right)
+{
+	delete [] right.array;
+	right.array = nullptr;
+	right.size = 0;
+
+	std::cout&lt;&lt;"Enter the size: "&lt;&lt;std::endl;
+	strm&gt;&gt;right.size;
+	right.array = new int[right.size];
+	for(int i = 0; i &lt; right.size; i++)
+		right.array[i] = i*10;
+
+	return strm;
+}
+#endif
+		</pre>
+	</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+#include "util.h"
+
+int main(int argc, char *argv[])
+{
+	V v(10);
+
+	std::cout&lt;&lt;v&lt;&lt;std::endl;
+
+	V v2(0);
+	std::cin&gt;&gt;v2;
+	std::cout&lt;&lt;v2&lt;&lt;std::endl;
+
+
+	return 0;
+}
+	</pre>
+</div>
+		<div class = "block">
+			<ul>
+				&lt;&lt; and &gt;&gt; are part of ostream and istream classes in the C++ runtime library, overloading overload the ostream version of &lt;&lt; and the istream version of &gt;&gt;
+			</ul>
+		</div>
+		<div class = "subtitle">Operator []</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+		int &operator[](const int &index)
+		{
+			if(index &lt; 0 || index &gt;= size)
+			{
+				std::cerr&lt;&lt;"Out of range ..."&lt;&lt;std::endl;
+				std::exit(1);
+			}
+			return array[index];
+		}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+#include "util.h"
+
+int main(int argc, char *argv[])
+{
+	V v(10);
+
+	int a = v[2];
+	std::cout&lt;&lt;a&lt;&lt;std::endl;
+
+	v[2] = 100;
+	std::cout&lt;&lt;v&lt;&lt;std::endl;
+
+
+	return 0;
+}
+		</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			return a reference
+		</ul>
+	</div>
+	<div class = "subtitle">Object Conversion</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+		//Convert object to integer
+		operator int()
+		{
+			return size;
+		}
+			</pre>
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	V v(10);
+
+	int size = v;
+
+	std::cout&lt;&lt;"Size: "&lt;&lt;size&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+	</body>
+</html>

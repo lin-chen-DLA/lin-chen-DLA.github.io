@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Module
+		</div>
+
+		<div class = "subtitle">Module is a file that contains definitions of functions and classes</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+'''
+	Module m1
+'''
+#!/usr/bin/python
+
+def f_1():
+    '''
+        Function f_1 in module m1
+    '''
+    print "f_1  ..."
+
+def f_2():
+    '''
+        Function f_2 in module m1
+    '''
+    print "f_2 ..."
+
+def main():
+    f_1()
+    f_2()
+
+if __name__ == "__main__":
+    main()
+		</pre>
+	</div>
+
+		<div class = "subtitle">Import Module</div>
+		<div class = "block">
+			<i>'''Import a whole module'''</i><br><br>
+			<i>import m1</i>
+			<br>----------------------</br>
+			m1.f_1()<br>
+			m1.f_2()<br>
+			m1.main()<br>
+		</div>
+
+		<div class = "block">
+			<i>'''Import the functions in a module'''</i><br><br>
+			<i>from m1 import *</i>
+			<br>----------------------</br>
+			f_1()<br>
+			f_2()<br>
+			main()<br>
+		</div>
+
+		<div class = "block">
+			<i>'''Import a specific function from a module'''</i><br><br>
+			<i>from m1 import main</i>
+			<br>-----------------------</br>
+			main()
+		</div>
+
+				<div class = "subtitle">Module Search Path</div>
+		<div class = "block">
+			<li>The current directory</li>
+			<li>PYTHONPATH
+			<ul>
+				<li>PYTHONPYTH="${PYTHONPATH}:<i>/yourPath/</i>"<br>export PYTHONPATH</li>
+				<li>import sys<br>sys.path.append(<i>yourPath</i>)</li>
+			</ul>
+			</li>
+			<li>Installation-dependent default</li>
+		</div>
+
+				<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.python.org/2/tutorial/modules.html#modules">Python Tutorial</a></li>
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Conditional Render
+		</div>
+
+		<div class = "subtitle">Conditional rendering</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/React_1.png" width=20% /></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//index.html
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div id = "root"&gt;&lt;/div&gt;
+	&lt;script src="https://fb.me/react-0.14.3.js"&gt;&lt;/script&gt;
+	&lt;script src="https://fb.me/react-dom-0.14.3.js"&gt;&lt;/script&gt;
+	&lt;script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"&gt;&lt;/script&gt;
+	&lt;script src="script.js" type = "text/babel"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function UserGreeting(props) {
+  return &lt;h1&gt;Welcome back!&lt;/h1&gt;;
+}
+
+function GuestGreeting(props) {
+  return &lt;h1&gt;Please sign up.&lt;/h1&gt;;
+}
+
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {
+    return &lt;UserGreeting /&gt;;
+  }
+  return &lt;GuestGreeting /&gt;;
+}
+
+ReactDOM.render(
+  // Try changing to isLoggedIn={true}:
+  &lt;Greeting isLoggedIn={false} /&gt;,
+  document.getElementById('root')
+);
+
+		</pre>
+		</div>
+		<div class = "subtitle">Element Variables</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+function UserGreeting(props) {
+  return &lt;h1&gt;Welcome back!&lt;/h1&gt;;
+}
+
+function GuestGreeting(props) {
+  return &lt;h1&gt;Please sign up.&lt;/h1&gt;;
+}
+
+function LoginButton(props) {
+  return (
+    &lt;button onClick={props.onClick}&gt;
+      Login
+    &lt;/button&gt;
+  );
+}
+
+function LogoutButton(props) {
+  return (
+    &lt;button onClick={props.onClick}&gt;
+      Logout
+    &lt;/button&gt;
+  );
+}
+
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {
+    return &lt;UserGreeting /&gt;;
+  }
+  return &lt;GuestGreeting /&gt;;
+}
+
+class LoginControl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    this.state = {isLoggedIn: false};
+  }
+
+  handleLoginClick() {
+    this.setState({isLoggedIn: true});
+  }
+
+  handleLogoutClick() {
+    this.setState({isLoggedIn: false});
+  }
+
+  render() {
+    const isLoggedIn = this.state.isLoggedIn;
+    let button;
+
+    if (isLoggedIn) {
+      button = &lt;LogoutButton onClick={this.handleLogoutClick} /&gt;;
+    } else {
+      button = &lt;LoginButton onClick={this.handleLoginClick} /&gt;;
+    }
+
+    return (
+      &lt;div&gt;
+        &lt;Greeting isLoggedIn={isLoggedIn} /&gt;
+        {button}
+      &lt;/div&gt;
+    );
+  }
+}
+
+ReactDOM.render(
+  &lt;LoginControl /&gt;,
+  document.getElementById('root')
+);
+		</pre>
+		</div>
+		<div class = "subtitle">Inline If with Logical &amp;&amp; Operator</div>
+		<div class = "block">
+			<li>It works because in JavaScript, true &amp;&amp; expression always evaluates to expression</li>
+			<li>and false &amp;&amp; expression always evaluates to false</li>
+		<pre class = "prettyprint linenums">
+function Mailbox(props) {
+  const unreadMessages = props.unreadMessages;
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Hello!&lt;/h1&gt;
+      {unreadMessages.length &gt; 0 &amp;&amp;
+        &lt;h2&gt;
+          You have {unreadMessages.length} unread messages.
+        &lt;/h2&gt;
+      }
+    &lt;/div&gt;
+  );
+}
+
+const messages = ['React', 'Re: React', 'Re:Re: React'];
+ReactDOM.render(
+  &lt;Mailbox unreadMessages={messages} /&gt;,
+  document.getElementById('root')
+);
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+button = isLoggedIn ? (
+        &lt;LogoutButton onClick={this.handleLogoutClick} /&gt;
+      ) : (
+        &lt;LoginButton onClick={this.handleLoginClick} /&gt;
+      )
+		</pre>
+		</div>
+		<div class = "subtitle">Preventing Component from Rendering</div>
+		<div class = "block">
+			<li>return <span>null</span> instead of its render output</li>
+		<pre class = "prettyprint linenums">
+function WarningBanner(props) {
+  if (!props.warn) {
+    return null;
+  }
+
+  return (
+    &lt;div className="warning"&gt;
+      Warning!
+    &lt;/div&gt;
+  );
+}
+
+class Page extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {showWarning: true};
+    this.handleToggleClick = this.handleToggleClick.bind(this);
+  }
+
+  handleToggleClick() {
+    this.setState(state =&gt; ({
+      showWarning: !state.showWarning
+    }));
+  }
+
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;WarningBanner warn={this.state.showWarning} /&gt;
+        &lt;button onClick={this.handleToggleClick}&gt;
+          {this.state.showWarning ? 'Hide' : 'Show'}
+        &lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+ReactDOM.render(
+  &lt;Page /&gt;,
+  document.getElementById('root')
+);
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://reactjs.org/docs/conditional-rendering.html">Getting Started at reactjs.org</a></li>
+		</div>
+	</body>
+</html>

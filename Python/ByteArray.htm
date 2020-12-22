@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			ByteArray
+		</div>
+
+		<div class = "subtitle">Bytes</div>
+		<div class = "block">
+			<li>an immutable (can be modified) sequence of integers in the range 0 &lt;=x &lt; 256, the elements of a bytes object cannot be changed</li>
+			<li>str in Python 2 is byte string</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+d = b'Python How to Program';
+
+print type(d), d #'str', Python How to Program
+
+d2 = bytes([97, 98, 99, 100]); #save whole list as string
+print type(d2), str(d2); #'str', [97, 98, 99, 100]
+print d2[0]; #[
+		</pre>
+		</div>
+		<div class = "subtitle">ByteArray</div>
+		<div class = "block">
+			<li>a mutable (can be modified) sequence of integers in the range 0 &lt;=x &lt; 256</li>
+			<li>Bytes and bytearrays are an efficient, byte-based form of strings</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# convert list to bytearray
+arr = bytearray([97, 98, 99, 99]);
+
+# convert bytearray to bytes
+print bytes(arr); #abcc
+
+# modify elements
+arr[0] = 10;
+
+# access element
+print arr[0]
+
+# slicing
+arr2 = arr[:2];
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import sys;
+
+# set up default encoding
+reload(sys)  # Reload does the trick!
+sys.setdefaultencoding('UTF8')
+print sys.stdout.encoding;
+
+arr = bytearray("Café", "utf-8");
+
+# convert to string
+print type(str(arr)), str(arr);
+
+#convert to unicode
+print type(arr.decode('utf-8')), arr.decode('utf-8');
+
+#count
+print arr.count(b'a');
+
+# in
+if 97 in arr:
+    print 'a in arr ...'
+
+# concatenation
+print arr+bytearray(b'dddddddd');
+
+#conver to list
+print list(arr); #[67, 97, 102, 195, 169]
+
+#append
+arr.append(97);
+
+#delete
+del arr[:2];
+
+#insert
+arr.insert(0, 98);
+print arr;
+
+#replace
+arr = arr.replace(b'b', b'c');
+print arr;
+		</pre>
+		</div>
+		<div class="subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.dotnetperls.com/bytes-python">Bytes and Bytearray</a></li>
+		</div>
+	</body>
+</html>

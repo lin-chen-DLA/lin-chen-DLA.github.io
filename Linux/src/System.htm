@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+	    <meta charset="utf-8" />
+       <title>Linux Tutorial</title>
+    </head>
+<body background = "/images/images.jpg" bgproperties = fixed>
+<font color = purple>
+	<li>系统
+	<ul>
+
+	<li># uname -a # 查看内核/操作系统/CPU信息</li>
+	<li>        　　# head -n 1 /etc/issue # 查看操作系统版本</li>
+	<li>	    　　# cat /proc/cpuinfo # 查看CPU信息</li>
+	<li>	        　　# hostname # 查看计算机名</li>
+	<li>		    　　# lspci -tv # 列出所有PCI设备</li>
+	<li>		        　　# lsusb -tv # 列出所有USB设备</li>
+	<li>			    　　# lsmod # 列出加载的内核模块</li>
+	<li>			        　　# env # 查看环境变量</li>
+				</ul>
+				</li>
+
+				<li>资源
+				<ul>
+
+					<li>   　　# free -m # 查看内存使用量和交换区使用量</li>
+					<li>				        　　# df -h # 查看各分区使用情况</li>
+					<li>					    　　# du -sh <目录名> # 查看指定目录的大小</li>
+					<li>					        　　# grep MemTotal /proc/meminfo # 查看内存总量</li>
+					<li>						    　　# grep MemFree /proc/meminfo # 查看空闲内存量</li>
+					<li>						        　　# uptime # 查看系统运行时间、用户数、负载</li>
+					<li>							    　　# cat /proc/loadavg # 查看系统负载</li>
+							    </ul>
+							    </li>
+
+							    <li> 磁盘和分区
+							    <ul>
+
+								    <li>        　　# mount | column -t # 查看挂接的分区状态</li>
+								    <li>								    　　# fdisk -l # 查看所有分区</li>
+								    <li>								        　　# swapon -s # 查看所有交换分区</li>
+								    <li>									    　　# hdparm -i /dev/hda # 查看磁盘参数（仅适用于IDE设备）</li>
+								    <li>									        　　# dmesg | grep IDE # 查看启动时IDE设备检测状况</li>
+							    </ul>
+							    </li>
+
+							    <li>网络
+							    <ul>
+
+								    　<li>　# ifconfig # 查看所有网络接口的属性</li>
+								    <li>										        　　# iptables -L # 查看防火墙设置</li>
+								    <li>											    　　# route -n # 查看路由表</li>
+								    <li>											        　　# netstat -lntp # 查看所有监听端口</li>
+								    <li>												    　　# netstat -antp # 查看所有已经建立的连接</li>
+								    <li>												        　　# netstat -s # 查看网络统计信息</li>
+							    </ul>
+							    </li>
+
+							    <li>进程
+							    <ul>
+								    <li>
+								    　　# ps -ef # 查看所有进程</li>
+								    <li>	        　　# top # 实时显示进程状态</li>
+							    </ul>
+							    </li>
+
+							    <li>用户
+							    <ul>
+
+								    <li># w # 查看活动用户</li>
+								    <li># id <用户名> # 查看指定用户信息</li>
+								    <li># last # 查看用户登录日志</li>
+								    <li># cut -d: -f1 /etc/passwd # 查看系统所有用户</li>
+								    <li># cut -d: -f1 /etc/group # 查看系统所有组</li>
+								    <li># crontab -l # 查看当前用户的计划任务</li>
+							    </ul>
+							    </li>
+
+							    <li>服务
+							    <ul>
+								    　<li>　# chkconfig --list # 列出所有系统服务</li>
+								    <li>																	        　　# chkconfig --list | grep on # 列出所有启动的系统服务</li>
+							    </ul>
+							    </li>
+
+							    <li>程序
+							    <ul>
+								    　<li>　# rpm -qa # 查看所有安装的软件包</li>
+
+								    </ul>
+									    </li>
+									    <li>其他常用命令整理如下：
+									    <ul>
+										    　　<li>查看主板的序列号：dmidecode | grep -i 'serial number'</li>
+										    　　<li>用硬件检测程序kuduz探测新硬件：service kudzu start （ or restart）</li>
+										    　　<li>查看CPU信息：cat /proc/cpuinfo [dmesg | grep -i 'cpu'][dmidecode -t processor]</li>
+										    　　<li>查看内存信息：cat /proc/meminfo [free -m][vmstat]</li>
+										    　　<li>查看板卡信息：cat /proc/pci</li>
+										    　　<li>查看显卡/声卡信息：lspci |grep -i 'VGA'[dmesg | grep -i 'VGA']</li>
+										    　　<li>查看网卡信息：dmesg | grep -i 'eth'[cat /etc/sysconfig/hwconf | grep -i eth][lspci | grep -i 'eth']</li>
+										    　　<li>查看PCI信息：lspci （相比cat /proc/pci更直观）</li>
+										    　　<li>查看USB设备：cat /proc/bus/usb/devices</li>
+										    　　<li>查看键盘和鼠标：cat /proc/bus/input/devices</li>
+										    　　<li>查看系统硬盘信息和使用情况：fdisk & disk – l & df</li>
+										    　　<li>查看各设备的中断请求（IRQ）：cat /proc/interrupts</li>
+										    　　<li>查看系统体系结构：uname -a</li>
+										    　　<li>查看及启动系统的32位或64位内核模式：isalist –v [isainfo –v][isainfo –b]</li>
+										    　　<li>查看硬件信息，包括bios、cpu、内存等信息：dmidecode</li>
+										    　　<li>测定当前的显示器刷新频率：/usr/sbin/ffbconfig –rev \?</li>
+										    　　<li>查看系统配置：/usr/platform/sun4u/sbin/prtdiag –v</li>
+										    　　<li>查看当前系统中已经应用的补丁：showrev –p</li>
+										    　　<li>显示当前的运行级别：who –rH</li>
+										    　　<li>查看当前的bind版本信息：nslookup –class=chaos –q=txt version.bind</li>
+										    　　<li>查看硬件信息：dmesg | more</li>
+										    　　<li>显示外设信息， 如usb，网卡等信息：lspci</li>
+										    　　<li>查看已加载的驱动：
+
+																			        　　lsnod
+																				    　　lshw
+																				    </li>
+																				    　　<li>查看当前处理器的类型和速度（主频）：psrinfo -v</li>
+																				    　　<li>打印当前的OBP版本号：prtconf -v</li>
+																				    　　<li>查看硬盘物理信息（vendor， RPM， Capacity）：iostat –E</li>
+																				    　　<li>查看磁盘的几何参数和分区信息：prtvtoc /dev/rdsk/c0t0d0s</li>
+																				    　　<li>显示已经使用和未使用的i-node数目：
+
+																				        　　df –F ufs –o i
+																					　　isalist –v</li>
+
+																					<li>对于“/proc”中文件可使用文件查看命令浏览其内容，文件中包含系统特定信息：
+
+																					        　　主机CPU信息：Cpuinfo
+																						    　　主机DMA通道信息：Dma
+																						        　　文件系统信息：Filesystems
+																							    　　主机中断信息：Interrupts
+																							        　　主机I/O端口号信息：Ioprots
+																								    　　主机内存信息：Meninfo
+																								        　　Linux内存版本信息：Version
+																									</li>
+																								　　<li>备注： proc – process information pseudo-filesystem 进程信息伪装文件系统
+																							</ul>
+																							</li>
+</font>
+ 
+</body>
+</html>

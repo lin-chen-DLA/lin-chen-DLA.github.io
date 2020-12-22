@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Environment
+		</div>
+
+		<div class = "subtitle">Using Sebpack and Babel</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+npm init -y //create package.json
+npm install react --save //install react
+npm install react-dom --save //install react-dom
+		</pre>
+		<pre class = "prettyprint linenums">
+npm install webpack webpack-dev-server webpack-cli --save
+		</pre>
+		<pre class = "prettyprint linenums">
+//install babel 7
+npm install --save-dev @babel/core @babel/preset-env
+npm install --save-dev babel-loader
+npm install @babel/preset-react --save-dev
+npm install html-webpack-plugin --save-dev
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+touch index.html App.js main.js webpack.config.js .babelrc
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//webpack-config.js
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+   entry: './main.js',
+   output: {
+      path: path.join(__dirname, '/bundle'),
+      filename: 'index_bundle.js'
+   },
+   devServer: {
+      inline: true,
+      port: 8001
+   },
+   module: {
+      rules: [
+         {
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+         }
+      ]
+   },
+   plugins:[
+      new HtmlWebpackPlugin({
+         template: './index.html'
+      })
+   ]
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+//add the following two lines into "scripts" in the package.json
+"start": "webpack-dev-server --mode development --open --hot",
+"build": "webpack --mode production"
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//index.html
+&lt;!DOCTYPE html&gt;
+&lt;html lang = "en"&gt;
+   &lt;head&gt;
+      &lt;meta charset = "UTF-8"&gt;
+      &lt;title&gt;React App&lt;/title&gt;
+   &lt;/head&gt;
+   &lt;body&gt;
+      &lt;div id = "app"&gt;&lt;/div&gt;
+      &lt;script src = 'index_bundle.js'&gt;&lt;/script&gt;
+   &lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//App.js
+import React, { Component } from 'react';
+class App extends Component{
+   render(){
+      return(
+         &lt;div&gt;
+            &lt;h1&gt;Hello World&lt;/h1&gt;
+         &lt;/div&gt;
+      );
+   }
+}
+export default App;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//main.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App.js';
+
+ReactDOM.render(&lt;App /&gt;, document.getElementById('app'));
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//.babelrc
+{
+   "presets": ["@babel/preset-env", "@babel/preset-react"]
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Running the Server</li>
+		<pre class = "prettyprint linenums">
+npm start
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Build Static Files</li>
+		<pre class = "prettyprint linenums">
+npm run build //build static files and save to ./bundle
+cp ./bundle/* /Application/AMPPS/www/react //copy static files to web server
+		</pre>
+		</div>
+		<div class = "subtitle">create-react-app</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//install create-react-app
+npm install -g create-react-app
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Running the Server</li>
+		<pre class = "prettyprint linenums">
+npm start
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Build Static Files</li>
+		<pre class = "prettyprint linenums">
+npm run build //build static files and save to ./bundle
+cp ./bundle/* /Application/AMPPS/www/react //copy static files to web server
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.valentinog.com/blog/babel/">Tutorial: How to set up React, webpack, and Babel 7 from scratch (2019)</a></li>
+		</div>
+	</body>
+</html>

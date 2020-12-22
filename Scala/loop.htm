@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Loop
+		</div>
+
+		<div class = "subtitle">For</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def main(args : Array[String])
+  {
+    var i : Int = 0;
+
+    for(i &lt;- 1 to 10) // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+      println(i);
+  }
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def main(args : Array[String])
+  {
+    var i : Int = 0;
+
+    for(i &lt;- 1 until 10) // 1, 2, 3, 4, 5, 6, 7, 8, 9
+      println(i);
+  }
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def main(args : Array[String])
+  {
+    var i : Int = 0;
+    var j : Int = 0;
+
+    for(i &lt;- 1 to 3; j &lt;- 1 to 3) // nest loop
+      println(i*10+j);
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">For and IF</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def main(args : Array[String])
+  {
+    var i : Int = 0;
+
+    for(i &lt;- 1 to 10; if i%2 == 0) // 2, 4, 6, 8, 10
+      println(i);
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Yield</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def main(args : Array[String])
+  {
+    var i : Int = 0;
+
+    var retVal = for{i &lt;- 1 to 10; if i%2 == 0} yield i
+
+    for(i &lt;- retVal)
+      println(i);
+  }
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">While</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def main(args : Array[String])
+  {
+    var i : Int = 0;
+    while ( i &lt; 10) // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+    {
+      println(i);
+      i += 1;
+    }
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Break</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import scala.util.control._
+
+object Demo {
+   def main(args: Array[String]) {
+      var a = 0;
+
+      val loop = new Breaks;
+      
+      loop.breakable {
+         for( a &lt;- 1 to 10){
+            println( "Value of a: " + a );
+            
+            if( a == 4 ){
+               loop.break;
+            }
+         }
+      }
+      println( "After the loop" );
+   }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.tutorialspoint.com/scala/scala_loop_types.htm">Tutorialspoints</a></li>
+		</div>
+	</body>
+</html>

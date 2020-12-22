@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>LeetCode</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title"><a href = "https://leetcode.com/problems/merge-two-sorted-lists/">21. Merge Two Sorted Lists</a></div>
+		<div class = "block">
+			O(n)
+			<pre class = "prettyprint linenums">from typing import List
+
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -&gt; ListNode:
+        w1 = l1
+        w2 = l2
+
+        l = ListNode(0)
+        w = l
+
+        while w1 is not None and w2 is not None:
+            if w1.val &lt; w2.val:
+                w.next = ListNode(w1.val)
+                w1 = w1.next
+            else:
+                w.next = ListNode(w2.val)
+                w2 = w2.next
+            w = w.next
+
+        if w1 is not None:
+            while w1 is not None:
+                w.next = ListNode(w1.val)
+                w1 = w1.next
+                w = w.next
+
+        if w2 is not None:
+            while w2 is not None:
+                w.next = ListNode(w2.val)
+                w2 = w2.next
+                w = w.next
+
+        return l.next
+
+def getList(l: List[int]) -&gt; ListNode:
+    head = None
+    if not l:
+        return head
+
+    head = ListNode(l[0])
+    walker = head
+    for i in range(1, len(l)):
+        walker.next = ListNode(l[i])
+        walker = walker.next
+
+    return head
+
+def disp(l: ListNode) -&gt; None:
+    walker = l
+
+    while walker is not None:
+        print('-&gt; '+str(walker.val), end = ' ')
+        walker = walker.next
+    print()
+
+def main():
+    l1 = getList([1, 2, 4])
+    l2 = getList([1, 3, 4])
+
+    disp(l1)
+    disp(l2)
+
+    s = Solution()
+    l = s.mergeTwoLists(l1, l2)
+
+    disp(l)
+
+if __name__ == '__main__':
+    main()
+
+			</pre>
+		</div>
+	</body>
+</html>

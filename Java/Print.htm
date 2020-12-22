@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Print
+		</div>
+
+		<div class = "subtitle">System.out.print</div>
+		<div class = "block">
+			<ul>
+				<li>Print string without changing a new line</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+class Output
+{
+	public static void main(String args[])
+	{
+		System.out.print("Hello ");// not change a new line
+		System.out.print("World!\n");
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">System.out.println</div>
+		<div class = "block">
+			<ul>
+				<li>Print string with changing a new line</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+class Output
+{
+	public static void main(String args[])
+	{
+		System.out.println("Hello ");
+		System.out.println("World!");
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">System.out.printf, System.out.format</div>
+		<div class = "block">
+			<ul>
+				<li>printf and format are equivalent</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+class Output
+{
+	public static void main(String args[])
+	{
+		//Decimal
+		System.out.printf("%d%n", 10000);// print an integer
+		System.out.printf("%10d%n", 10000);// print an integer with width 10, defalut is right-justified
+		System.out.printf("%-10d%n", 10000);// left-justified
+		System.out.printf("%,10d%n", 10000);// locale-specific grouping characters
+
+		//Float
+		System.out.printf("%f%n", Math.PI);// print a float number
+		System.out.printf("%10.2f%n", Math.PI);// print a float number with width 10 and 2 significant figure
+		System.out.printf("%-10.2f%n", Math.PI);// left-justified
+		System.out.printf("%e%n", 12345678.0);// print a float number in exponential notation
+		System.out.printf("%g%n", 12345678.0);// print a float number in either the floating-point format f or the exponential format e based on the magnitude of the value
+		System.out.printf("%a%n", 12345678.0);// print a float number in hexadecimal format
+
+		//Octal
+		System.out.printf("%o%n", 10);
+
+		//Hexadecimal
+		System.out.format("%x%n", 10);
+
+		//Character
+		System.out.format("%c%n", 'A');
+
+		//String
+		System.out.format("%s%n", "String");
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Print Date and Time</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.Calendar;
+
+class Output
+{
+	public static void main(String args[])
+	{
+		Calendar c = Calendar.getInstance();
+
+		// Date/Time Compositions
+		System.out.format("%tc%n", c);// tc, date
+		System.out.format("%tF%n", c);// tF, date
+		System.out.format("%tr%n", c);// tr
+		System.out.format("%tT%n", c);// tT
+
+		//Date
+		System.out.format("%1$tA, %1$tB %1$td, %1$tY%n", c);// argument index to indicate all format specifiers use the first argument
+
+		//Time
+		System.out.format("%1$tH:%1$tM:%1$tS%n", c);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Other Conversion Characters</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+class Output
+{
+	public static void main(String args[])
+	{
+		System.out.format("%b%n", false);// boolean
+		System.out.format("%h%n", "Hello");// hash code
+		System.out.format("%%%n");// %
+		System.out.format("%n");// new line
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">Argument Indices</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+class Output
+{
+	public static void main(String args[])
+	{
+		System.out.format("%4$s %3$s %2$s %1$s%n", "One", "Two", "Three", "Four");
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Escape</div>
+		<div class = "block">
+			<ul>
+				<li>\', single quote</li>
+				<li>\", double quote</li>
+				<li>\\, backslash character</li>
+				<li>\b, backspace</li>
+				<li>\f, new page</li>
+				<li>\n, new line</li>
+				<li>\r, carriage return</li>
+				<li>\t, horizontal tab</li>
+			</ul>
+		</div>
+		<div class = "subtitle">DecimalFormat</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.text.DecimalFormat;
+
+public class Output{
+
+   static public void customFormat(String pattern, double value ) {
+      DecimalFormat myFormatter = new DecimalFormat(pattern);
+      String output = myFormatter.format(value);
+      System.out.println(value + "  " + pattern + "  " + output);
+   }
+
+   static public void main(String[] args) {
+
+      customFormat("###,###.###", 123456.789);
+      customFormat("###.##", 123456.789);
+      customFormat("000000.000", 123.78);
+      customFormat("$###,###.###", 12345.67);
+   }
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/java/data/numberformat.html">Oracle</a></li>
+				<li>Java How to Program</li>
+			</ul>
+		</div>
+	</body>
+</html>

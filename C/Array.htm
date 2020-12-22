@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Array
+		</div>
+
+		<div class = "subtitle">Define an Array</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int array[10];
+
+	int i;
+	for(i = 0; i &lt; 10; i++)
+		array[i] = i;
+
+	for(i = 0; i &lt; 10; i++)
+		printf("%d: %d\n", i, array[i]);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Pass Array to Function By Reference</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+void disp_2(int *array, int size)
+{
+	int i;
+	for(i = 0; i &lt; size; i++)
+		printf("%d, %d\n", i, array[i]);
+}
+
+void disp_1(int array[], int size)
+{
+	int i;
+	for(i = 0; i &lt; size; i++)
+		printf("%d, %d\n", i, array[i]);
+}
+
+int main()
+{
+	int array[10];
+
+	int i;
+	for(i = 0; i &lt; 10; i++)
+		array[i] = i;
+
+	disp_1(array, 10);
+	disp_2(array, 10);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Memory Address</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+ 
+int main()
+{
+	int array[10];
+ 
+	printf("Address of array: %p\n", array); //9d820
+	printf("Address of array[0]: %p\n", &amp;array[0]); // 9d820
+	printf("Address of array[1]: %p\n", &amp;array[1]); // 9d824
+	printf("Address of array[2]: %p\n", &amp;array[2]); // 9d828
+ 
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/array_1.png" width = "40%"></p>
+		</div>
+		<div class = "subtitle">Two-Dimensional Array</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+ 
+void display(int row, int column, int arr[][column])
+{
+	for(int i = 0; i &lt; row; i++)
+	{
+		for(int j = 0; j &lt; column; j++)
+			printf("%5d", arr[i][j]);
+		printf("\n");
+	}
+}
+ 
+int main()
+{
+	int array[2][4]; // 2 rows, 4 columns
+ 
+	for(int i = 0; i &lt; 2; i++)
+		for(int j = 0; j &lt; 4; j++)
+			array[i][j] = i*10+j;
+ 
+	display(2, 4, array);
+ 
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/array_2.png" width = "40%"></p>
+		</div>
+		<div class = "subtitle">Three-Dimensional Array</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+ 
+void display(int page, int row, int column, int array[][row][column])
+{
+	for(int i = 0; i &lt; page; i++)
+	{
+		for(int j = 0; j &lt; row; j++)
+		{
+			for(int k = 0; k &lt; column; k++)
+				printf("%5d", array[i][j][k]);
+			printf("\n");
+		}
+		printf("\n");
+	}
+}
+ 
+int main()
+{
+	int array[2][3][2]; 
+ 
+	display(2, 3, 2, array);
+ 
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/array_3.png" width = "60%"></p>
+		</div>
+		<div class = "subtitle">Array to Pointer</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int array[10];
+
+	int i;
+	for(i = 0; i &lt; 10; i++)
+		array[i] = i;
+
+	int *p;
+	p = array;
+
+	for(i = 0; i &lt; 10; i++)
+		printf("%d, %d\n", i, *(p+i));
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">String</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main()
+{
+	char array[] = "Hello World!";
+
+	printf("%s occupies %lu spaces for %lu characters\n", array, sizeof(array)/sizeof(char), strlen(array)); // 10 11
+
+	return 0;
+}
+		</pre>
+		</div>
+	</body>
+</html>

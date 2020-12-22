@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Generator
+		</div>
+
+		<div class = "subtitle">Iterable Objects</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+#list
+l = range(10);
+for i in l:
+    print i;
+
+#tuple
+t = (1, 2, 3, 4);
+for i in t:
+    print i;
+
+#dict
+d = {'x':1, 'y':2};
+for k in d:
+    print k;
+
+#string
+s = 'Hello World!';
+for i in s:
+    print i;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Iterator</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+l = iter(range(10)); #iterator
+
+try:
+    while True:
+        print l.next(); #if no more element, raise StopIteration
+except StopIteration:
+    pass
+		</pre>
+		</div>
+
+		<div class = "subtitle">Implement Iterator as Classes</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+class yrange:
+    def __init__(self, n):
+        self.i = 0
+        self.n = n
+
+    def __iter__(self): # make an object iterable
+        return self # return an iterator
+
+    def next(self):
+        if self.i &lt; self.n:
+	              i = self.i
+	              self.i += 1
+	              return i
+	          else:
+	              raise StopIteration()
+
+y = yrange(10);
+
+l = list(y); # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+print l;
+l = list(y); # []
+print l;
+		</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Iterable and iterator are same, it is consumed in a single iteration</li>
+			</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+
+class zrange:
+    def __init__(self, n):
+        self.n = n
+
+    def __iter__(self):
+        return zrange_iter(self.n)
+
+class zrange_iter:
+    def __init__(self, n):
+	          self.i = 0
+	          self.n = n
+
+	      def __iter__(self):
+	          # Iterators are iterables too.
+	          # Adding this functions to make them so.
+	          return self
+
+	      def next(self):
+	          if self.i &lt; self.n:
+	              i = self.i
+	              self.i += 1
+	              return i
+	          else:
+	              raise StopIteration()
+
+l = zrange(10);
+
+print list(l); # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+print list(l); # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+		</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Iterable and iterator are not same, every time a new iterator is created, is able to be re-used, same as xrange</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Generator</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def yrange(n):
+    i = 0;
+    while i &lt; n:
+    	yield i;
+	i += 1;
+
+l = yrange(10);
+for i in l:
+	print i;
+
+for i in l: # do not print anything, l has been consumed
+	print i;
+		</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Generator is iterator, can be consumed in a single iteration</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Generator Expression</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+# list
+l = [x*x for x in range(4)]; # [0, 1, 4, 9]
+print l;
+
+# generator
+g = (x*x for x in range(4));
+for i in g:
+	print i;
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://blog.teamtreehouse.com/python-single-line-loops">Python Single Line For Loops</a></li>
+				<li><a href = "http://anandology.com/python-practice-book/iterators.html">Python Practice Book</a></li>
+				<li><a href = "https://stackoverflow.com/questions/231767/what-does-the-yield-keyword-do-in-python">Stackoverflow.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Dynamic Program</div>
+		<div class = "subtitle">Steps</div>
+		<div class = "block">
+			<ul>
+				<li>Characterize the structure of an optimal solution</li>
+				<li>Recursively define the value of an optimal solution</li>
+				<li>Compute the value of an optimal solution, typically in a bottom-up fashion</li>
+				<li>Construct an optimal solution from computed information</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Properties</div>
+		<div class = "block">
+			<ul>
+				<li>Overlapping Subproblems</li>
+				<li>Optimal Substructure</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/dynamic.png" width = "40%"></p>
+		</div>
+		<div class = "subtitle">Navie Fibnacii</div>
+		<div class = "block">
+			<ul>
+				<li>O(2<sup>n</sup>)</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+public class Fibonacci
+{
+	public static int fib(int n)
+	{
+		if(n &lt;= 1)
+			return n;
+		else
+			return fib(n-1) + fib(n-2);
+	}
+
+	public static void main(String args[])
+	{
+		System.out.println(fib(100));
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Memoization Fibnacii, Top Down</div>
+		<div class = "block">
+			<ul>
+				<li>O(n)</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+public class Fibonacci
+{
+	int memory [];
+
+	public Fibonacci(int n)
+	{
+		memory = new int[n+1];
+		for(int i = 0; i &lt; n+1; i++)
+			memory[i] = -1;
+	}
+
+	public int fib(int n)
+	{
+		if(memory[n] == -1)
+		{
+			if(n &lt;= 1)
+				memory[n] = n;
+			else
+				memory[n] = fib(n-1) + fib(n-2);
+		}
+
+		return memory[n];
+	}
+
+	public static void main(String args[])
+	{
+		Fibonacci f = new Fibonacci(40);
+
+		System.out.println(f.fib(40));
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Tabulation Fibnacii, Bottom Up</div>
+		<div class = "block">
+			<ul>
+				<li>O(n)</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+public class Fibonacci
+{
+	public static int fib(int n)
+	{
+		int [] array = new int[n+1];
+
+		array[0] = 0;
+		array[1] = 1;
+
+		for(int i = 2; i &lt;= n; i++)
+			array[i] = array[i-1] + array[i-2];
+
+		return array[n];
+	}
+
+	public static void main(String args[])
+	{
+		System.out.println(fib(30));
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Rod-cutting problem</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/cutting.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Cut rod into k pieces, n = i<sub>1</sub> + i<sub>2</sub> + ... + i<sub>k</sub></li>
+				<li>Maximum revenue, r<sub>n</sub> = p[i<sub>1</sub>] + p[i<sub>2</sub>] + ... p[i<sub>n</sub>]</li>
+				<li>Cut a rod into i (left-hand end) and n-i (right-hand end), only the right-hand end is divided</li>
+				<li>r<sub>n</sub> = max(p<sub>i</sub> + r<sub>n-i</sub>)</li>
+				<li><a href = "http://www.cs.uml.edu/~kdaniels/courses/ALG_503_S12/DynamicRodCutting.pdf">Reference</a></li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Navie solution, &Theta;(2<sup>n</sup>)</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+public class C
+{
+	public static int cutRod(int prices [], int n)
+	{
+		if (n &lt;= 0)
+            		return 0;
+        	int max_val = Integer.MIN_VALUE;
+
+        	for (int i = 0; i&lt;n; i++)
+            		max_val = Math.max(max_val, prices[i] + cutRod(prices, n-i-1));
+        	
+		return max_val;
+	}
+
+	public static void main(String args[])
+	{
+		int prices [] = {1, 5, 8, 9, 10, 17, 17, 20, 24, 30};
+
+		System.out.println(cutRod(prices, 5));
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Top Down, &Theta;(n<sup>2</sup>)</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+//Memorization
+public class C
+{
+	public static int cutRod(int prices [], int n, int r [])
+	{
+		if(r[n] &gt; 0)
+			return r[n];
+
+		if (n &lt;= 0)
+            		return 0;
+
+		int max_val = Integer.MIN_VALUE;
+
+        	for (int i = 0; i&lt;n; i++)
+            		max_val = Math.max(max_val, prices[i] + cutRod(prices, n-i-1, r));
+        	
+		r[n] = max_val;
+		return max_val;
+	}
+
+	public static void main(String args[])
+	{
+		int prices [] = {1, 5, 8, 9, 10, 17, 17, 20, 24, 30};
+		int r [] = new int[prices.length+1];
+
+		System.out.println(cutRod(prices, 10, r));
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Bottom Up, &Theta;(n<sup>2</sup>)</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+//Tabulation
+public class C
+{
+	public static int cutRod(int prices [], int n)
+	{
+		int [] val = new int[n+1];
+
+		val[0] = 0;
+
+
+		for(int j = 1; j &lt;= n; j++)
+		{
+			int max_val = Integer.MIN_VALUE;
+			for (int i = 0; i&lt;j; i++)
+			{
+				max_val = Math.max(max_val, prices[i] + val[j-i-1]);
+			}
+			val[j] = max_val;
+		}
+        	
+		return val[n];
+	}
+
+	public static void main(String args[])
+	{
+		int prices [] = {1, 5, 8, 9, 10, 17, 17, 20, 24, 30};
+
+		System.out.println(cutRod(prices, 4));
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reconstructing a solution</div>
+		<div class = "block">
+			<ul>
+				<li>s<sub>j</sub>, the optimal size of the first piece to cut off</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+public class C
+{
+	public static void cutRod(int prices [], int n, int val [], int s [])
+	{
+		for(int j = 1; j &lt;= n; j++)
+		{
+			int max_val = Integer.MIN_VALUE;
+			for (int i = 0; i&lt;j; i++)
+			{
+				if(max_val &lt; prices[i] + val[j-i-1])
+				{
+					max_val = prices[i] + val[j-i-1];
+					s[j] = i+1;
+				}
+			}
+			val[j] = max_val;
+		}
+	}
+
+	public static void main(String args[])
+	{
+		int prices [] = {1, 5, 8, 9, 10, 17, 17, 20, 24, 30};//price for 1, 2, 3, 4, ...
+		int [] val = new int[prices.length+1];//optimal price
+		int [] s = new int[prices.length+1];//optimal first cut off
+
+		cutRod(prices, prices.length, val, s);
+		
+		for(int i = 0; i &lt; prices.length; i++)
+			System.out.printf("Rod Size %2d:     Price: %2d    First Cut: %2d    Optimal Value: %2d\n", i+1, prices[i], s[i+1], val[i+1]);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.geeksforgeeks.org/category/dynamic-programming/">Dynamic Programming Problems</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/?p=12635">Dynamic programming set I</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/dynamic-programming-set-2-optimal-substructure-property/">Dynamic programming set II</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/longest-increasing-subsequence/">Dynamic programming III</a></li>
+				<li>CLRS</li>
+			</ul>
+		</div>
+	</body>
+</html>

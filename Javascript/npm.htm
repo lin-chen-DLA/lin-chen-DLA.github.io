@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			npm
+		</div>
+
+		<div class = "subtitle"><span>npm init</span></div>
+		<div class = "block">
+			<li><span>npm init</span>, generate package.json, initial the setting, figure out the entry point</li>
+			<li><span>npm init -y</span>, create package.json without step by step inputs, default entry point is index.js</li>
+		</div>
+		<div class = "subtitle"><span>npm install</span></div>
+		<div class = "block">
+			<li>all packages should be installed <span>locally</span>
+				<ul>
+					<li>node_modules in the root directory of the project</li>
+				</ul>
+			</li>
+			<li>A package should be installed <span>globally</span> when it provides an executable command that you run from the shell (CLI), and it’s reused across projects. e.g create-react-app , nodemon npm e.t.c
+				<ul>
+					<li>{prefix}/lib/node_modules/</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "block">
+			<li>npm install, install the dependencies listed in the package.json and package-lock.json</li>
+			<li>npm install <span>--save-dev</span>, set "dev" to be true for the installed dependency in <span>package-lock.json</span>, which is a development-only package, such as grunt, is added in devDependencies section in <span>package.json</span></li>
+			<li>npm install or npm install <span>--save</span>, not set "dev" for the installed dependency in <span>package-lock.json</span>, which is a regular dependency package, is added in dependencies section in package.json</li>
+			<li>npm install <span>-g</span> &lt;package-name&gt;, install the package in the system</li>
+			<li><span>^</span>, npm will pull in the highest version of the package it can find where the only the major version has to match</li>
+			<li>npm install underscore@1.9.0, install a specific version of the package</li>
+		</div>
+		<div class = "subtitle"><span>package.json and package-lock.json</span></div>
+		<div class = "block">
+			<li><span>package.json</span> contains package name, and the semver that should be used, not guarrantee the installed libraries having the exactly same version</li>
+			<li><span>package-lock.json</span> specifies a version, location and integrity hash for every module and each of its dependencies, the install it creates will be the same, every single time
+				<ul>
+					<li>should use package-lock to ensure a consistent install and compatible dependencies</li>
+					<li>SHOULD commit your package-lock to source control</li>
+				</ul>
+			</li>
+		</pre>
+		</div>
+		<div class = "subtitle"><span>npm list</span></div>
+		<div class = "block">
+			<li>npm list &lt;packageName&gt;, list the information of a package</li>
+			<li>npm list --global, list global packages</li>
+			<li>npm <span>help</span> list, show the help documents of list</li>
+			<li>npm list --depth=3, max display depth of the dependency tree</li>
+		</div>
+		<div class = "subtitle"><span>npm uninstall</span></div>
+		<div class = "block">
+			<li>npm uninstall, uninstall the local packages</li>
+			<li>npm uninstall -g, unstall the global packages</li>
+		</div>
+		<div class = "subtitle"><span>Update packages</span></div>
+		<div class = "block">
+			<li>npm outdated, check if there’s an update</li>
+			<li>npm update &lt;packageName&gt;, update a package</li>
+		</div>
+		<div class = "subtitle"><span>npm search</span></div>
+		<div class = "block">
+			<li>npm search &lt;packageName&gt;, search the similar packages</li>
+		</div>
+		<div class = "subtitle"><span>Update npm</span></div>
+		<div class = "block">
+			<li>npm install npm@latest -g</li>
+			<li>npm -v, check the npm version</li>
+		</div>
+		<div class = "subtitle"><span>npm cache</span></div>
+		<div class = "block">
+			<li>When npm installs a package it keeps a copy, so the next time you want to install that package, it doesn’t need to hit the network. The copies are cached in the <span>.npm</span> directory in your home path</li>
+			<li>npm cache clean --force, clean the cached copies</li>
+		</div>
+		<div class = "subtitle"><span>npm audit</span></div>
+		<div class = "block">
+			<li>npm audit, check security vulnerabilities</li>
+			<li>npm audit fix, fix the security vulnerabilities</li>
+		</div>
+		<div class = "subtitle"><span>npm config</span></div>
+		<div class = "block">
+			<li>npm config list, gives the information about our install</li>
+			<li>npm config ls -l, show all defaults</li>
+			<li>npm config get prefix, get the current global location</li>
+			<li>npm config set prefix, change the default global install locatioin</li>
+		</div>
+		<div class = "subtitle"><span>Aliases</span></div>
+		<div class = "block">
+			<li>npm i, npm install</li>
+			<li>npm i -g, npm install --global</li>
+			<li>npm un, npm uninstall</li>
+			<li>npm up, npm update</li>
+			<li>npm t, npm test</li>
+			<li>npm ls, npm list</li>
+			<li>npm ll or npm la, print additional package information while listing modules</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.sitepoint.com/beginners-guide-node-package-manager/">A Beginner’s Guide to npm — the Node Package Manager</a></li>
+			<li><a href = "https://nodesource.com/blog/an-absolute-beginners-guide-to-using-npm/">An Absolute Beginner's Guide to Using npm</a></li>
+			<li><a href = "https://medium.com/coinmonks/everything-you-wanted-to-know-about-package-lock-json-b81911aa8ab8">Everything You Wanted To Know About package-lock.json But Were Too Afraid To Ask</a></li>
+		</div>
+	</body>
+</html>

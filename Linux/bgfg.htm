@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Linux</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			bg and fg
+		</div>
+
+		<div class = "subtitle">Front-end and Back-end</div>
+<div class = "block">
+			<p style = "text-align:center;"><img src = "img/bgfg.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+sleep 100 & # run the program "sleep" at the back-end
+jobs # list programs running at the back-end
+fg %1 # bring a specific program to the front-end and run
+Ctrl+Z # bring the current program to the back-end and pause the program
+bg %1 # active the paused program
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.thegeekdiary.com/understanding-the-job-control-commands-in-linux-bg-fg-and-ctrlz/">job control</li>
+		</div>
+	</body>
+</html>

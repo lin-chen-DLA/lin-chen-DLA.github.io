@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Router
+		</div>
+
+		<div class = "subtitle">Install</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+npm install --save react-router-dom
+		</pre>
+		</div>
+		<div class = "subtitle">Basic</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import Home from "./Home.js";
+import About from "./About.js";
+import Contact from "./Contact.js";
+
+class App extends React.Component {
+   render() {
+      return (
+    &lt;Router&gt;
+      &lt;div&gt;
+        &lt;nav&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;Link to="/"&gt;Home&lt;/Link&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;Link to="/about"&gt;About&lt;/Link&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;Link to="/contacts"&gt;Contact&lt;/Link&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/nav&gt;
+
+	{/* A &lt;Switch&gt; looks through its children &lt;Route&gt;s and
+            renders the first one that matches the current URL. */}
+        &lt;Switch&gt;
+          &lt;Route path="/about"&gt;&lt;About /&gt;&lt;/Route&gt;
+          &lt;Route path="/contacts"&gt;&lt;Contact /&gt;&lt;/Route&gt;
+          &lt;Route path="/"&gt;&lt;Home /&gt;&lt;/Route&gt;
+        &lt;/Switch&gt;
+      &lt;/div&gt;
+    &lt;/Router&gt;
+  )
+   }
+}
+
+ReactDOM.render(&lt;App /&gt;, document.getElementById('root'));
+		</pre>
+		<pre class = "prettyprint linenums">
+//About.js
+import React from 'react';
+
+class About extends React.Component {
+   render() {
+      return (
+         &lt;div&gt;
+            &lt;h1&gt;About...&lt;/h1&gt;
+         &lt;/div&gt;
+      )
+   }
+}
+export default About;
+		</pre>
+		<pre class = "prettyprint linenums">
+//contact.js
+import React from 'react';
+
+class Contact extends React.Component {
+   render() {
+      return (
+         &lt;div&gt;
+            &lt;h1&gt;Contact...&lt;/h1&gt;
+         &lt;/div&gt;
+      )
+   }
+}
+export default Contact;
+		</pre>
+		<pre class = "prettyprint linenums">
+//Home.js
+import React from 'react';
+
+class Home extends React.Component {
+   render() {
+      return (
+         &lt;div&gt;
+            &lt;h1&gt;Home...&lt;/h1&gt;
+         &lt;/div&gt;
+      )
+   }
+}
+export default Home;
+		</pre>
+		</div>
+		<div class = "subtitle">Nested Routing</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router, Switch, Route, Link, useParams} from "react-router-dom";
+import Home from "./Home.js";
+import About from "./About.js";
+import Topics from "./Topics.js";
+
+class App extends React.Component {
+   render() {
+      return (
+    &lt;Router&gt;
+      &lt;div&gt;
+        &lt;nav&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;Link to="/"&gt;Home&lt;/Link&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;Link to="/about"&gt;About&lt;/Link&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;Link to="/topics"&gt;Topics&lt;/Link&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/nav&gt;
+
+	{/* A &lt;Switch&gt; looks through its children &lt;Route&gt;s and
+            renders the first one that matches the current URL. */}
+	      {/* Add Home at the end */}
+        &lt;Switch&gt;
+	      &lt;Route path = "/about"&gt;&lt;About /&gt;&lt;/Route&gt;
+	      &lt;Route path = "/topics"&gt;&lt;Topics /&gt;&lt;/Route&gt;
+	      &lt;Route path = "/"&gt;&lt;Home /&gt;&lt;/Route&gt;
+        &lt;/Switch&gt;
+      &lt;/div&gt;
+    &lt;/Router&gt;
+  )
+   }
+}
+
+ReactDOM.render(&lt;App /&gt;, document.getElementById('root'));
+		</pre>
+		<pre class = "prettyprint linenums">
+//Home.js
+import React from 'react';
+
+class Home extends React.Component {
+   render() {
+      return (
+         &lt;div&gt;
+            &lt;h1&gt;Home...&lt;/h1&gt;
+         &lt;/div&gt;
+      )
+   }
+}
+export default Home;
+		</pre>
+		<pre class = "prettyprint linenums">
+//About.js
+import React from 'react';
+
+class About extends React.Component {
+   render() {
+      return (
+         &lt;div&gt;
+            &lt;h1&gt;About...&lt;/h1&gt;
+         &lt;/div&gt;
+      )
+   }
+}
+export default About;
+		</pre>
+		<pre class = "prettyprint linenums">
+//Topics.js
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams
+} from "react-router-dom";
+import Component from "./Component.js"
+import Props from "./Props.js"
+
+function Topics() {
+  let match = useRouteMatch();
+
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;Topics&lt;/h2&gt;
+
+      &lt;ul&gt;
+        &lt;li&gt;
+          &lt;Link to={`${match.url}/components`}&gt;Components&lt;/Link&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;Link to={`${match.url}/props-v-state`}&gt;
+            Props v. State
+          &lt;/Link&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+
+      {/* The Topics page has its own &lt;Switch&gt; with more routes
+          that build on the /topics URL path. You can think of the
+          2nd &lt;Route&gt; here as an "index" page for all topics, or
+          the page that is shown when no topic is selected */}
+      &lt;Switch&gt;
+        &lt;Route path={`${match.path}/:topicId`}&gt;
+          &lt;Topic /&gt;
+        &lt;/Route&gt;
+        &lt;Route path={match.path}&gt;
+          &lt;h3&gt;Please select a topic.&lt;/h3&gt;
+        &lt;/Route&gt;
+      &lt;/Switch&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default Topics;
+
+function Topic() {
+  let { topicId } = useParams();
+  console.log(topicId);
+  let current;
+  if (topicId == "components")
+		current = &lt;Component /&gt;;
+  else if (topicId = "props-v-stat")
+		current = &lt;Props /&gt;;
+  else
+		current = &lt;span&gt;Wrong Info ...&lt;/span&gt;;
+  return (
+	  &lt;div&gt;
+	  	&lt;h3&gt;Requested topic ID: {topicId}&lt;/h3&gt;
+	  	{current}
+  	  &lt;/div&gt;
+  );
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+//Component.js
+import React from 'react';
+
+class Component extends React.Component {
+   render() {
+      return (
+         &lt;div&gt;
+            &lt;h1&gt;Component...&lt;/h1&gt;
+         &lt;/div&gt;
+      )
+   }
+}
+export default Component;
+		</pre>
+		<pre class = "prettyprint linenums">
+import React from 'react';
+
+class Props extends React.Component {
+   render() {
+      return (
+         &lt;div&gt;
+            &lt;h1&gt;Props...&lt;/h1&gt;
+         &lt;/div&gt;
+      )
+   }
+}
+export default Props;
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://reacttraining.com/react-router/web/guides/quick-start">ReactTraining</a></li>
+	</body>
+</html>

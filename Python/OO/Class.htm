@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Class
+		</div>
+
+		<div class = "subtitle">Vehicle, Java style</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+
+    def __init__(self, brand, year):
+	self.brand = brand;
+	self.year = year;
+
+    def getBrand(self):
+        return self.brand
+
+    def getYear(self):
+        return self.year
+
+    def setBrand(self, brand):
+        self.brand = brand
+
+    def setYear(self, year):
+        self.year = year
+
+    def __str__(self):
+        return str(self.brand)+" "+str(self.year)
+
+def main():
+    v = Vehicle("Lincoln", 1998);
+    print("Brand: %s, Year: %d" % (v.getBrand(), v.getYear()))
+    print(v)
+
+    v.setBrand("Honda")
+    v.setYear(2016)
+
+    print("Brand: %s, Year: %d" % (v.getBrand(), v.getYear()))
+    print(v)
+
+if __name__ == "__main__":
+	main()
+		</pre>
+		</div>
+		<div class = "subtitle">Access</div>
+		<div class = "block">
+			<li>In Python, an object's attributes may always be accessed, there is no way to prevent other code from accessing the data</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from Vehicle import Vehicle
+
+def main():
+    v = Vehicle("Lincolin", 1998)
+
+    print v.brand, v.year
+
+    v.brand = "Honda"
+    v.year = 2016
+
+    print v
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">Controlling Access to Attributes</div>
+		<div class = "block">
+			<li>when a class author creates an attribute with a single leading underscore, the author does not want users of the class to access the attribute directly</li>
+			<li>the attribute with single leading underscore is still able to be accessed directly</li>
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+
+    def __init__(self, brand, year):
+        self._brand = brand;
+	self._year = year;
+
+    def getBrand(self):
+        return self._brand
+
+    def getYear(self):
+        return self._year
+
+    def setBrand(self, brand):
+        self._brand = brand
+
+    def setYear(self, year):
+        self._year = year
+
+    def delBrand(self):
+        del self._brand
+
+    def delYear(self):
+        del self._year
+
+    def __str__(self):
+        return self._brand+' '+str(self._year)
+
+    def __getattr__(self, attr): # intercept that inexistent attribute
+        return '~'
+
+    # If c is an instance of C, c.x will invoke the getter, c.x = value will invoke the setter and del c.x the deleter
+    # set up getter, setter, and deleter
+    year = property(getYear, setYear, delYear, 'doc of year ...') # access self._year by year
+    brand = property(getBrand, setBrand, delBrand, 'doc of brand ...') # access self._brand by brand
+
+def main():
+    v = Vehicle("Lincoln", 1998);
+
+    print("Brand: %s, Year: %d" % (v.brand, v.year))
+
+    v.brand = "Honda"
+    v.year = 2016
+    print(v)
+    print(v._brand) # access self._brand directly
+
+    del v.year
+    print(v)
+
+if __name__ == "__main__":
+	main()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+
+    def __init__(self, brand, year):
+        self._brand = brand;
+	self._year = year;
+
+    @property
+    def brand(self):
+        return self._brand
+
+    @brand.setter
+    def brand(self, b):
+        self._brand = b;
+
+    @brand.deleter
+    def brand(self):
+        del self._brand
+
+    @property
+    def year(self):
+        return self._year
+
+    @year.setter
+    def year(self, y):
+        self._year = y
+
+    @year.deleter
+    def year(self):
+        del self._year
+
+    def __str__(self):
+        return self._brand+' '+str(self._year)
+
+    def __getattr__(self, attr): # intercept that inexistent attribute
+        return '~'
+
+def main():
+    v = Vehicle("Lincoln", 1998);
+
+    print("Brand: %s, Year: %d" % (v.brand, v.year))
+
+    v.brand = "Honda"
+    v.year = 2016
+    print(v)
+    print(v._brand) # access self._brand directly
+
+    del v.year
+    print(v)
+
+if __name__ == "__main__":
+	main()
+		</pre>
+		</div>
+		<div class = "subtitle">Add attributes in a function</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+
+    def __init__(self, brand):
+        self._brand = brand;
+
+    @property
+    def brand(self):
+        return self._brand
+
+    @brand.setter
+    def brand(self, b):
+        self._brand = b;
+
+    @brand.deleter
+    def brand(self):
+        del self._brand
+
+    @property
+    def year(self):
+        return self._year
+
+    @year.setter
+    def year(self, y):
+        self._year = y
+
+    @year.deleter
+    def year(self):
+        del self._year
+
+    def __str__(self):
+        return self._brand+' '+str(self._year)
+
+    def __getattr__(self, attr): # intercept that inexistent attribute
+        return '~'
+
+def main():
+    v = Vehicle("Lincoln");
+
+    v.year = 1998
+
+    print(v)
+
+if __name__ == "__main__":
+	main()
+		</pre>
+		</div>
+		<div class = "subtitle">Control attributes with built-in functions</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums" id = "attributes">
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+
+    def __init__(self, brand, year):
+	#print "Create Vehicle Object ...";
+	self._brand = brand;
+	self._year = year;
+
+    @property
+    def brand(self):
+        return self._brand
+
+    @brand.setter
+    def brand(self, b):
+        self._brand = b;
+
+    @brand.deleter
+    def brand(self):
+        del self._brand
+
+    @property
+    def year(self):
+        return self._year
+
+    @year.setter
+    def year(self, y):
+        self._year = y
+
+    @year.deleter
+    def year(self):
+        del self._year
+
+    def __str__(self):
+        return str(self.brand)+" "+str(self.year)
+
+    def __getattr__(self, attr): # intercept that inexistent attribute
+        return '~'
+
+def main():
+	v = Vehicle("Lincoln", 1998);
+        print(v)
+
+	setattr(v, 'year', 2000); # use setattr() and setter
+	setattr(v, 'brand', 'Buick');
+        print(v)
+
+	if hasattr(v, 'year'):
+		print "Year Attribute: ", getattr(v, 'year'); # use getattr() and getter
+
+	delattr(v, 'year');
+	print "Year Attribute: ",getattr(v, 'year');
+
+if __name__ == "__main__":
+	main()
+		</pre>
+		</div>
+		<div class = "subtitle">Private attributes</div>
+		<div class = "block">
+			<li>Prevent access attributes directly, prefix the name of the attribute with two underscore</li>
+			<li>Name mangling with create an attribute, _ClassName__attribute</li>
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+
+    def __init__(self, brand):
+        self.__brand = brand;
+
+    @property
+    def brand(self):
+        return self.__brand
+
+    @brand.setter
+    def brand(self, b):
+        self.__brand = b;
+
+    @brand.deleter
+    def brand(self):
+        del self.__brand
+
+    def __str__(self):
+        return self.__brand
+
+    def __getattr__(self, attr): # intercept that inexistent attribute
+        return '~'
+
+def main():
+    v = Vehicle("Lincoln");
+
+    print("Brand: %s" % (v.brand)) # use getter to access attribute
+    print("Brand: %s" % getattr(v, 'brand')) # use getattr() and getter
+
+    print("Brand: %s" % v.__brand) # not able to access self.__brand
+    print("Brand: %s" % v._Vehicle__brand) # name mangling
+
+if __name__ == "__main__":
+	main()
+		</pre>
+		</div>
+		<div class = "subtitle">Using default arguments with constructors</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+
+    def __init__(self, brand = "None", year = 0):
+        self._brand = brand;
+	self._year = year;
+
+    @property
+    def brand(self):
+        return self._brand
+
+    @brand.setter
+    def brand(self, b):
+        self._brand = b;
+
+    @brand.deleter
+    def brand(self):
+        del self._brand
+
+    @property
+    def year(self):
+        return self._year
+
+    @year.setter
+    def year(self, y):
+        self._year = y
+
+    @year.deleter
+    def year(self):
+        del self._year
+
+    def __str__(self):
+        return self._brand+' '+str(self._year)
+
+    def __getattr__(self, attr): # intercept that inexistent attribute
+        return '~'
+
+def main():
+    v = Vehicle("Lincoln", 1998); # Lincoln 1998
+    print(v)
+
+    v = Vehicle("Lincoln"); # Lincoln 0
+    print(v)
+
+    v = Vehicle(year = 1998) # None 1998
+    print(v)
+
+if __name__ == "__main__":
+	main()
+		</pre>
+		</div>
+		<div class = "subtitle">Class attributes and deconstructor</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    """ Vehicle class """
+
+    count = 0; # class attribute
+
+    def __init__(self, brand):
+        self.__brand = brand
+        Vehicle.count += 1
+
+    @property
+    def brand(self):
+        return self.__brand
+
+    @brand.setter
+    def brand(self, b):
+        self.__brand = b
+
+    @brand.deleter
+    def brand(self):
+        del self.__brand
+
+    def __str__(self):
+        return "Brand: %s" % self.__brand
+
+    def __getattr__(self, attr):
+        return "~"
+
+    def __del__(self):
+        Vehicle.count -= 1
+        print("Delete %s, %d vehicles left ..." % (self.__brand, Vehicle.count))
+
+def main():
+    v1 = Vehicle("Lincoln")
+    v2 = Vehicle("Buick")
+    v3 = Vehicle("Acura")
+    v4 = Vehicle("Honda")
+
+    del v1
+    del v2
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">Call its own method</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class T(object):
+    def __init__(self, n):
+        self.n = n
+
+    def show(self):
+        return self.n
+
+    def callShow(self):
+        return self.show()
+        #return T.show(self)
+
+def main():
+    t = T(10)
+
+    print(t.show())
+    print(t.callShow())
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">__slots__</div>
+		<div class = "block">
+			<li>list the only attributes that objects of the class are allowed to have</li>
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+ 
+    __slots__ = ['_brand', '_year', '_model']
+
+    def __init__(self, brand, year):
+        self._brand = brand;
+	self._year = year;
+ 
+    def __str__(self):
+        return self._brand+' '+str(self._year)+' '+self._model
+
+    def __getattr__(self, name):
+        return 'None'
+
+def main():
+    v = Vehicle("Buick", 1998) # by default, only _brand and _year
+    print(v)
+
+    v._model = 'Century' # add attribute, _model
+    print(v)
+
+    v._color = 'White' # not allow to add _color which is not in __slots__
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li>Python How to Program, Chapter 7</li>
+		</div>
+	</body>
+</html>

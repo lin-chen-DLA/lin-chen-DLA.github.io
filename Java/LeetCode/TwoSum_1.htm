@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>LeetCode</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">1. Two Sum</div>
+		<div class = "block">
+			<li><a href = "https://leetcode.com/problems/two-sum/description/">Description</a></li>
+		</div>
+		<div class = "subtitle">Brute-Force</div>
+		<div class = "block">
+			O(n<sup>2</sup>)
+			<pre class = "prettyprint linenums">
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int [] results = new int[2];
+        for(int i = 0; i &lt; nums.length-1; i++)
+        {
+            for(int j = i+1; j &lt; nums.length; j++)
+                if(target == (nums[i]+nums[j]))
+                {
+                    results[0] = i;
+                    results[1] = j;
+                }
+        }
+        
+        return results;
+    }
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Hash</div>
+		<div class = "block">
+			O(n)
+			<pre class = "prettyprint linenums">
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int [] results = new int[2];
+
+        HashMap&lt;Integer, Integer&gt; m = new HashMap&lt;Integer, Integer&gt;();
+        
+        for(int i = 0; i &lt; nums.length; i++)
+        {
+            if(m.containsKey(nums[i]))
+            {
+                results[0] = i;
+                results[1] = m.get(nums[i]);
+                break;
+            }
+            else{
+                m.put((target-nums[i]), i);
+            }
+        }
+
+        return results;
+    }
+}
+			</pre>
+		</div>
+	</body>
+</html>

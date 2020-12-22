@@ -1,0 +1,81 @@
+<html>
+    <head>
+       <title>Ubuntu</title>
+    </head>
+<body background = "/images/images.jpg" bgproperties = fixed>
+<font color = purple>
+		<li>Ubuntu software
+		<ul>
+			<li>gnome-calculator, calculator</li>
+			<li>gnome-control-center, system setting</li>
+			<li>gnome-help, system tutorial</li>
+			<li>gnome-nettool, network tools</li>
+			<li>gnome-open, open folder</li>
+			<li>gnome-system-log, system log</li>
+			<li>gnome-system-monitor, system monitor</li>
+			<li>gnome-terminal, open a terminal</li>
+			<li>gnome-text-editor, open default text edit</li>
+			<li>gnome-www-browser, open default web browser</li>
+		</ul>
+		</li>
+		<li>File managers
+		<ul>
+			<li>nauthilus, default file manager in Gnome</li>
+			<li>konqueror, file manager on a KDE desktop</li>
+		</ul>
+		</li>
+		<table border>
+			<tr><td>Key or key combination</td><td>Function</td></tr>
+			<tr><td>Ctrl+Alt+T</td><td>Open a new terminal</td></tr>
+			<tr><td>Ctrl+Shift+N</td><td>Open a new terminal at current directory</td></tr>
+			<tr><td>Ctrl+A</td><td>Move coursor to the beginning of the command line</td></tr>
+			<tr><td>Ctrl+C</td><td>End a running program</td></tr>
+			<tr><td>Ctrl+D</td><td>Log out current shell, equal to typing exit</td></tr>
+			<tr><td>Ctrl+E</td><td>Move coursor to the end of the command line</td></tr>
+			<tr><td>Ctrl+H</td><td>Backspace</td></tr>
+			<tr><td>Ctrl+L</td><td>Clear this terminal, equal to typing clear</td></tr>
+			<tr><td>Ctrl+R</td><td>Search command history</td></tr>
+			<tr><td>Ctrl+Z</td><td>Suspend a program</td></tr>
+			<tr><td>ArrowLeft, ArrowRight</td><td>Move cursor left or right</td></tr>
+			<tr><td>ArrowUp, ArrowDown</td><td>Browse history</td></tr>
+			<tr><td>Shift+PageUp, Shift+PageDow</td><td>Browse terminal buffer</td></tr>
+			<tr><td>Tab</td><td>Command or filename completion</td></tr>
+			<tr><td>Tab Tab</td><td>Show file or command completion possibilities</td></tr>
+		</table>
+		<li>Update the code and only publish the changes, which is called "diff" or "patch"</li>
+		<li>KDE uses C++</li>
+		<li>GNOME uses C</li>
+		<li>Initialize shell
+		<ul>
+			<li>/etc/profile</li>
+			<li>~/.bashrc</li>
+			<li>~/.profile</li>
+			<li>source .profile, make modification works in current terminal</li>
+		</ul>
+		</li>
+		<li>Set environment
+		<ul>
+			<li>bash, export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.</li>
+			<li>tcsh, setenv LD_LIBRARY_PATH $LD_LIBRARY_PATH:.</li>
+		</ul>
+		</li>
+		<li>LD_LIBRARY_PATH
+		<ul>
+			<li>set up share library path, this is global variable, only work for current terminal</li>
+			<li><a href = "../C/Library.htm">Share Library</a></li>
+			<li>add share library to /lib and usr/lib, do not modify /etc/ld.so.conf, need run ldconfig</li>
+			<li>install lib to other directory, add configure list file to /etc/ld.so.conf.d/, then sudo ldconfig</li>
+			<li>run ldconfig once share library has any change</li>
+		</ul>
+		</li>
+		<li>Kernel modules are used to avoid reboot computer after install drivers or other functions
+		<ul>
+			<li>insmod, install modules</li>
+			<li>rmmod, remove modules</li>
+			<li>lsmode, load modules</li>
+		</ul>
+		</li>
+		<li>switch terminal by [Ctrl+Alt+F1], [Ctrl+Alt+F2], ..., [Ctrl+Alt+F7] back to X-windows</li>
+		<li>xdm: run x windows</li>
+</body>
+</html>

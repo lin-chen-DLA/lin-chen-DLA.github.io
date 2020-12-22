@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scala</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			List
+		</div>
+
+		<div class = "block">
+			<li>List is immutable, elements of a list cannot be changed by assignment</li>
+		</div>
+		<div class = "subtitle">List object</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def disp[A](a : List[A])
+  {
+    for(e &lt;- a)
+      printf(s"$e ")
+    println
+  }
+
+  def doubleNum(a : Int) : Int = 2*a
+
+  def main(args : Array[String])
+  {
+    var a = List();
+
+    // fill
+    var b = List.fill(10)(1);
+    disp(b)
+
+    // range
+    var c = List.range(1, 10); // 1, 2, 3, 4, 5, 6, 7, 8, 9
+    disp(c)
+
+    // tabulate
+    var d = List.tabulate(10)(n =&gt; n*n)
+    disp(d)
+
+    // reverse
+    disp(d.reverse)
+  }
+}
+		</pre>
+		</div>
+
+		<div class = "subtitle">List class</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+object Demo
+{
+  def disp[A](a : List[A])
+  {
+    for(e &lt;- a)
+      printf(s"$e ")
+    println
+  }
+
+  def doubleNum(a : Int) : Int = 2*a
+
+  def main(args : Array[String])
+  {
+    val a = Nil // empty list
+    val b : List[Int] = List(1, 2, 3, 4)
+    var c : List[Int] = List(5, 6, 7, 8)
+
+    println("Head: "+b.head) // head
+    println("Tail: "+b.tail) // tail
+    disp(10 :: b) // attach a nubmer before head
+    disp(b :+ 10) // append a number after tail
+
+    disp(b ::: c) // concate two lists
+
+    println(b(0)) // access list with index
+
+    println(b.size) // size
+    println(b.max) // max
+    println(b.min) // min
+    println(b.sum) // sum
+
+    println(b.mkString("|")) // mkString
+
+    disp(b.sortWith(_.compareTo(_) &lt; 0))
+
+    disp(b.map(doubleNum)) // map
+    println(b.reduce(_+_)) // reduce
+  }
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.scala-lang.org/api/2.12.5/scala/collection/immutable/List.html">List class</a></li>
+			<li><a href = "https://www.scala-lang.org/api/2.12.5/scala/collection/immutable/List$.html">List object</a></li>
+		</div>
+	</body>
+</html>

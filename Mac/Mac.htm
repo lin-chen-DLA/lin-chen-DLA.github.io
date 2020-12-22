@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>Mac</title>
+       <meta http-equiv="Page-Enter" contect="revealTrans(duration=10,transtion= 50)">
+	<style>
+		span.red {color:red;}
+	</style>
+    </head>
+    <body bgcolor = white text = #4E6AAA link = silver alink = silver vlink = silver>
+	    <ol>
+			<li>Basic Operations
+			<ul>
+				<li><a href = "https://www.danrodney.com/mac/">Mac Keyboard Shortcuts</a></li>
+				<li>command+I, display file/folder information</li>
+				<li>Ctrl+&larr; and Ctrl+&rarr;, swipe left or right three fingers, switch desktop</li>
+				<li>Command-delete, delete the selected files or folders</li>
+				<li>Command-o, open a selected file</li>
+				<li>Command-n, open a new windows</li>
+				<li>Command-r, refresh a webpage</li>
+				<li>Command+Shift-3, copy the whole screen and save it on the desktop</li>
+				<li>Command+Shift-4, snip the screen and save it on the desktop</li>
+				<li>Command+C, copy</li>
+				<li>Command+V, paste</li>
+				<li>Command+C, Command+Option+V, cut and paste</li>
+				<li>Command+space, spotlight search</li>
+				<li>Sleep/Logout
+				<ul>
+					<li>Control+Eject, dialog box</li>
+					<li>Control+Shift+Power, display sleep</li>
+					<li>Control+Command+Power, restart</li>
+					<li>Shift+Command+Q, log out</li>
+					<li>Control+Option+Command+Power, shut down</li>
+				</ul>
+				</li>
+			</ul>
+			</li>
+			<li>Mac System
+			<ul>
+				<li>Setup X11
+				<ul>
+					<li>Installed <a href = "http://www.xquartz.org/">XQuartz</a>, on 07.04.2017</li>
+					<li>ssh -X lchen@hpcq.cs.odu.edu</li>
+				</ul>
+				</li>
+				<li>Set up Powerbeat3 bluetooth ear phone, 07.04.2017</li>
+				<li>System Preferences
+					<ul>
+						<li>Add Chinese Input, 07.01.2017
+							<ul>
+								<li>Ctrl+space, switch between two input source</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>Open App from Terminal
+				<ul>
+					<li>open -a Notes, open Notes.app, open Notes</li>
+				</ul>
+				</li>
+				<li>Installed XCode, 07.01.2017</li>
+				<li>Command Line Tools, 07.01.2017</li>
+				<li>top
+				<ul>
+					<li>top -o cpu, sort by CPU usage</li>
+					<li>top -user lchen7, display the processes for a specific user</li>
+					<li>kill a process
+					<ul>
+						<li>top</li>
+						<li>Shift+s</li>
+						<li>type in 'kill'</li>
+						<li>type in the pid</li>
+					</ul>
+					</li>
+				</ul>
+				</li>
+			</ul>
+			</li>
+			<li>Software
+				<ul>
+		    			<li>Installed Ananconda, on 07.03.2017
+						<ul>
+							<li>Fix Jupyter, on 07.11.2017
+								<ul>
+									<li><a href = "https://stackoverflow.com/questions/44057601/ipython-notebook-will-not-start-on-command-line">stackoverflow.com</a></li>
+								</ul>
+						</ul>
+					</li>
+					<li><a href = "http://www.tug.org/mactex/mactex-download.html">MacTEXT</a>, 07.04.2017</li>
+					<li>Remote Drive, 07.02.2017
+						<ul>
+							<li><a href = "https://amaral.northwestern.edu/resources/guides/mounting-remote-folder-os-x-over-ssh-yosemite">Mounting a remote folder on OS X over SSH</a></li>
+							<li>Installed <a href = "https://osxfuse.github.io/">OS X FUSE Site</a></li>
+							<li>Installed sshfs</li>
+							<li>sshfs lchen@hpcq.cs.odu.edu:./ /Users/lchen/Documents/mount/hpcq -ovolname=ODU, mount hpcq.cs.odu.edu to /User/lchen/Documents/mount/hpcq</li>
+						</ul>
+					</li>
+					<li>Homebrew, 07.02.2017</li>
+					<li>MATLAB, 07.01.2017</li>
+					<li>Vim
+					<ul>
+						<li>Copy /usr/share/vim/vim74/vimrc_example.vim to ~/.vimrc, 07.01.2017</li>
+					</ul>
+					</li>
+					<li>Setup .bash_profile
+						<ul>
+							<li><a href = "https://gist.github.com/stephenll/8762279">stephenll's .bash_profile</a></li>
+						</ul>
+					</li>
+					<li>Installed <a href = "https://www.iterm2.com/downloads.html">ITerm2</a>, 07.01.2017
+					<ul>
+						<li>Download <a href = "http://iterm2colorschemes.com/">iTerm2 Themes</a></li>
+						<li>iTerm2 &gt; Preferences &gt; Profiles, import color scheme</li>
+					</ul>
+					</li>
+					<li>Installed Dropbox, 07.01.2017</li>
+					<li>Installed Microsoft Office 2016, 07.01.2017</li>
+					<li>Installed Chrome, 06.30.2017
+					<ul>
+						<li><a href = "https://support.google.com/chrome/answer/157179?hl=en">Chrome Keyboard Shortcuts</a></li>
+						<li>command+T, <span class = "red">open</span> a new tab</li>
+						<li>command+shift+T, <span class = "red">recover</span> closed pages</li>
+						<li>command+Y, display <span class = "red">history</span></li>
+						<li>command+[ or command+left arrow, <span class = "red">back</span> to previous page</li>
+						<li>command+] or command+right arrow, <span class = "red">forward</span> to next page</li>
+						<li>command+shift+J, open <span class = "red">download</span> page</li>
+						<li>command+W, <span class = "red">close</span> a tab</li>
+						<li>command+M, <span class = "red">minimize</span> the window</li>
+						<li>command+f, <span class = "red">search</span> bar</li>
+						<li>command+,, <span class = "red">set</span> window</li>
+						<li>command+Shift+Delete, <span class = "red">clear</span> browsing data options</li>
+						<li>command+R, <span class = "red">refresh</span> page</li>
+						<li>command+P, <span class = "red">print</span> page</li>
+						<li>command+Ctrl+f, <span class = "red">full window</span></li>
+						<li>command+'+'/'-', <span class = "red">zoom in/out</span></li>
+						<li>command+0, <span class = "red">default</span> page size</li>
+						<li>space or option+down arrow, <span class = "red">scroll down</span></li>
+						<li>shift+space or option+up arrow, <span class = "red">scroll up</span></li>
+						<li>command+down arrow, <span class = "red">scroll down</span> whole page</li>
+						<li>command+up arrow, <span class = "red">scroll up</span> whole page</li>
+					</ul>
+					</li>
+				</ul>
+			</li>
+			<li>iCloud
+				<ul>
+					<li>iCloud Drive</li>
+					<li>Find Mac</li>
+				</ul>
+			</li>
+			<li>Mac Software
+			<ul>
+				<li>Finder
+				<ul>
+					<li><a href = "http://www.macworld.com/article/2040256/eight-easy-ways-to-move-between-folders-in-os-x.html">Move between folders in OS X</a></li>
+
+					<li>Command+&uarr;, go the parent directory</li>
+					<li>Command+&darr;, enter a folder</li>
+					<li>Command+[, backward</li>
+					<li>Command+], forward</li>
+					<li>command+shif+G, go to a folder</li>
+					<li>command+icon, the directory structure for the current folder</li>
+					<li>command+option+P, path bar</li>
+					<li>Path button</li>
+				</ul>
+				</li>
+				<li>iTunes
+					<ul>
+						<li>Music, Movies, TV Shows, iTunes University, Podcast, Internet Radio</li>
+					</ul>
+				</li>
+				<li>Automator, create work flow</li>
+				<li>Keychain, store password</li>
+				<li>Preview, view pictures</li>
+				<li>Grapher, create plots</li>
+				<li>Grab, copy screen as a picture</li>
+				<li>Stickies, create stickers</li>
+				<li>Keynote
+					<ul>
+						<li>Saved as .key format</li>
+						<li>Export to pdf, <span class = "red">powerpoint format</li>
+					</ul>
+				</li>
+				<li>Pages
+					<ul>
+						<li>Saved as .Pages format</li>
+						<li>Export to pdf, <span class = "red">word</span> format</li>
+					</ul>
+				</li>
+				<li>Numbers
+					<ul>
+						<li>Saved as .numbers format</li>
+						<li>Export to pdf, <span class = "red">excel</span> format</li>
+					</ul>
+				</li>
+			</ul>
+			</li>
+			<li>Software Management and Installation
+				<ul>
+					<li><a href = "https://brew.sh/">Homebrew</a>
+				<ul>
+					<li>/usr/local/bin/brew, brew installed</li>
+					<li>/usr/local/Cellar/, the directory saving all installed packages</li>
+					<li>/Library/Caches/Homebrew, the directory saving the downloaded packages</li>
+					<li>brew install/uninstall git, install/uninstall git</li>
+					<li>brew info git, check the information</li>
+					<li>brew list, list all the packages installed</li>
+					<li>brew help, display the help information</li>
+					<li>brew doctor, check everything is ok with</li>
+					<li>brew update, update package lists and Homebrew</li>
+					<li>brew upgrade, upgrade packages installed</li>
+				</ul>
+				</li>
+				</ul>
+			</li>
+	    </ol>
+    </body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			DJI Tello EDU Drone
+		</div>
+
+		<div class = "subtitle">Architecture</div>
+		<div class = "block">
+			<li>Tello IP: 192.168.10.1</li>
+			<li>UDP Port: 8889</li>
+			<li>Send Command & Receive Response
+				<ul>
+					<li>Set up UDP client on PC</li>
+					<li>Send "command" to the Tello via UDP Port 8889</li>
+				</ul>
+			</li>
+			<li>Receive Tello State
+				<ul>
+					<li>PC Server: 0.0.0.0, Port: 8890</li>
+				</ul>
+			</li>
+			<li>Receive Tello Video Stream
+				<ul>
+					<li>PC Server: 0.0.0.0, Port: 11111</li>
+					<li>Send "streamon" to the Tello</li>
+				</ul>
+			</li>
+		</div>
+
+		<div class = "subtitle">Commands</div>
+		<div class = "block">
+			<li>Control Commands</li>
+			<li>Set Commands</li>
+			<li>Read Commands</li>
+		</div>
+
+		<div class = "subtitle">Control Commands</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import socket
+import time
+
+tello = ("192.168.10.1", 8889)
+
+def init_drone():
+
+    # create upd client on PC
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    except socket.error as err:
+        print(err)
+        exit()
+
+    try:
+        # send control commands to the drone
+        s.sendto('command', tello)
+        time.sleep(5)
+    except socket.error as err:
+        print(err)
+
+    return s
+
+def takeoff(s):
+    s.sendto('takeoff', tello)
+    time.sleep(10)
+
+def rotate90(s):
+    s.sendto('cw 90', tello)
+    time.sleep(10)
+
+def flip_left(s):
+    s.sendto('flip l', tello)
+    time.sleep(10)
+
+def land(s):
+    s.sendto('land', tello)
+    time.sleep(5)
+
+def main():
+    s = init_drone()
+
+    takeoff(s)
+
+    rotate90(s)
+
+    flip_left(s)
+
+    land(s)
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+
+		<div class = "subtitle">Read Commands</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import socket
+import time
+
+tello = ("192.168.10.1", 8889)
+
+def init_drone():
+
+    # create upd client on PC
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    except socket.error as err:
+        print(err)
+        exit()
+
+    try:
+        # send control commands to the drone
+        s.sendto('command', tello)
+        time.sleep(5)
+    except socket.error as err:
+        print(err)
+
+    return s
+
+def info(s):
+    speed = s.sendto('speed?', tello)
+    battery = s.sendto('battery?', tello)
+    time = s.sendto('time?', tello)
+    height = s.sendto('height?', tello)
+
+    print('-----------Informaiton------------')
+    print('Speed: %f cm/s' % float(speed))
+    print('Battery: %f %%' % float(battery))
+    print('Time: %f' % float(time))
+    print('Height: %f' % float(height))
+
+def takeoff(s):
+    s.sendto('takeoff', tello)
+    time.sleep(10)
+
+def land(s):
+    s.sendto('land', tello)
+    time.sleep(5)
+
+def main():
+    s = init_drone()
+    takeoff(s)
+    info(s)
+    land(s)
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://github.com/dji-sdk/Tello-Python">Tello-Python</a></li>
+			<li><a href = "https://www.ryzerobotics.com/tello-edu">Offical Website</a></li>
+			<li><a href = "https://dl-cdn.ryzerobotics.com/downloads/Tello/Tello%20User%20Manual%20v1.4.pdf">User Manual</a></li>
+			<li><a href = "https://dl-cdn.ryzerobotics.com/downloads/Tello/Tello%20SDK%202.0%20User%20Guide.pdf">SDK2</a></li>
+			<li><a href = "https://dl-cdn.ryzerobotics.com/downloads/Tello/Tello%20Mission%20Pad%20User%20Guide.pdf">Mission Pad User Guide</a></li>
+		</div>
+	</body>
+</html>

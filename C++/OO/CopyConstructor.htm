@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Copy Constructor
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>By default, C++ compiler creates a copy constructor to copy counterparts from one object to another. When class has dynamic memory allocation, define our own copy constructor</li>
+				<li><span style = "color:red">When to call copy constructor</span>
+				<ul>
+					<li>When you declare a new object and initialize it with another object</li>
+					<li>When pass an object to function by value</li>
+					<li>When an object is constructed based on another object of the same class</li>
+					<li>When explicity invoked in another constructor's initialization list</li>
+					<li>When an object is a data member of another class for which the compiler has generated its own copy constructor</li>
+				</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "block">
+			The Big Three
+			<ul>
+				<li>Whenever you are writing either one of destructor, copy constructor or copy assignment operator, you probably need to write the other two</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Class with Copy Constructor</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef V_H
+#define V_H
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		//constructor
+		V(int s):size(s)
+		{
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+		}
+
+		//copy constructor
+		V(const V &right):size(right.size), array(size?new int[size]:nullptr)
+		{
+			std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+			std::cout&lt;&lt;"End Constructor ..."&lt;&lt;std::endl;
+		}
+
+		int *getAddress() const {return array;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		//copy assignment
+		const V& operator=(const V &right)
+		{
+			std::cout&lt;&lt;"Copy Assignment ..."&lt;&lt;std::endl;
+			V temp(right);
+			std::swap(size, temp.size);
+			std::swap(array, temp.array);
+			return *this;
+		}
+
+		~V()
+		{
+			std::cout&lt;&lt;"Destructor ..."&lt;&lt;std::endl;
+			delete [] array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+			</pre>
+		</div>
+		<div class = "subtitle">When you declare a new object and initialize it with another object</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	V v1(10);
+	V v2(v1);
+	V v3 = v1;
+
+	v2.display();
+	v3.display();
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">When pass an object to function by value</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+
+void getObject(V v)
+{
+	v.display();
+}
+
+int main(int argc, char *argv[])
+{
+	V v(10);
+
+	std::cout&lt;&lt;"Before calling function ..."&lt;&lt;std::endl;
+	getObject(v);
+	std::cout&lt;&lt;"After calling function ..."&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">When an object is constructed based on another object of the same class</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef V_H
+#define V_H
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		//constructor
+		V(int s):size(s)
+		{
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+		}
+
+		V(int s, V right):size(s), array(size?new int [size]:nullptr)
+		{
+			std::cout&lt;&lt;"Second Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+		}
+
+		//copy constructor
+		V(const V &right):size(right.size), array(size?new int[size]:nullptr)
+		{
+			std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+			std::cout&lt;&lt;"End Constructor ..."&lt;&lt;std::endl;
+		}
+
+		int *getAddress() const {return array;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		//copy assignment
+		const V& operator=(const V &right)
+		{
+			std::cout&lt;&lt;"Copy Assignment ..."&lt;&lt;std::endl;
+			V temp(right);
+			std::swap(size, temp.size);
+			std::swap(array, temp.array);
+			return *this;
+		}
+
+		~V()
+		{
+			std::cout&lt;&lt;"Destructor ..."&lt;&lt;std::endl;
+			delete [] array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	V v(10);
+	V v2(20, v);
+
+	v2.display();
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">When explicity invoked in another constructor's initialization list</div>
+		<div class = "block">
+			<ul>
+				<li>Name(string f, string l):firstName(f), lastName(l){}</li>
+			</ul>
+		</div>
+		<div class = "subtitle">When an object is a data member of another class for which the compiler has generated its own copy constructor</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef V_H
+#define V_H
+class V
+{
+	private:
+		int size;
+		int *array;
+	public:
+		//constructor
+		V()
+		{
+			std::cout&lt;&lt;"Default Constructor ..."&lt;&lt;std::endl;
+			size = 0;
+			array = 0;
+		}
+
+		V(int s):size(s)
+		{
+			array = new int[size];
+			for(int i = 0; i &lt; size; i++)
+				array[i] = 10*i;
+		}
+
+		//copy constructor
+		V(const V &right):size(right.size), array(size?new int[size]:nullptr)
+		{
+			std::cout&lt;&lt;"Copy Constructor ..."&lt;&lt;std::endl;
+			std::copy(right.array, right.array+size, array);
+			std::cout&lt;&lt;"End Constructor ..."&lt;&lt;std::endl;
+		}
+
+		int *getAddress() const {return array;}
+
+		void display() const
+		{
+			for(int i = 0; i &lt; size; i++)
+				std::cout&lt;&lt;array[i]&lt;&lt;" ";
+			std::cout&lt;&lt;std::endl;
+		}
+
+		//copy assignment
+		const V& operator=(const V &right)
+		{
+			std::cout&lt;&lt;"Copy Assignment ..."&lt;&lt;std::endl;
+			V temp(right);
+			std::swap(size, temp.size);
+			std::swap(array, temp.array);
+			return *this;
+		}
+
+		~V()
+		{
+			std::cout&lt;&lt;"Destructor ..."&lt;&lt;std::endl;
+			delete [] array;
+			array = 0;
+			size = 0;
+		}
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+#ifndef A_H
+#define A_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "V.h"
+
+class A
+{
+	private:
+		std::string name;
+		V array;
+	public:
+		A(std::string n, V v)
+		{
+			std::cout&lt;&lt;"--------------"&lt;&lt;std::endl;
+			name = n;
+			array = v;
+			std::cout&lt;&lt;"--------------"&lt;&lt;std::endl;
+		}
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "A.h"
+#include "V.h"
+
+int main(int argc, char *argv[])
+{
+	V v(10);
+	A a("Array", v);
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "http://quiz.geeksforgeeks.org/copy-constructor-in-cpp/">geeksforgeeks.org</a></li>
+		</div>
+	</body>
+</html>

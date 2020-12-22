@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			FileCmp
+		</div>
+
+		<div class = "subtitle">Compare Files</div>
+		<div class = "block">
+			<ul>
+				<li>shallow, default value is true, which only compare the information returned by os.stat(); false, compare the content inside files</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import filecmp
+import os
+
+#Compare two files
+print os.stat('server.py');
+print os.stat('server2.py');
+print filecmp.cmp('server.py', 'server2.py', shallow = False);
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#Compare the assignments submitted by students
+#Compare all files from one student with all files from another student
+#!/usr/bin/python
+
+import filecmp
+import os
+import sys
+
+def getFiles(d):
+    '''Get all files in a folder
+    '''
+    files = []
+    for (dirpath, dirnames, filenames) in os.walk(d):
+        for f in filenames:
+            if f[0] != '.':
+                files.append(os.path.join(dirpath, f));
+    return files;
+
+def getDir(d):
+    '''Get all directories in a folder
+    '''
+    l = os.listdir(d);
+    return [os.path.join(d, e) for e in l if os.path.isdir(os.path.join(d,e))];
+
+def compareFolders(dir1, dir2):
+    '''Compare the files in a directory with the files in another directory
+    '''
+    files_1 = getFiles(dir1);
+    files_2 = getFiles(dir2);
+    for f1 in files_1:
+        for f2 in files_2:
+            if filecmp.cmp(f1, f2, shallow = False):
+                print f1, f2
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print 'Usage: python comparison.py dir'
+        sys.exit(1);
+
+    #Get all folders
+    folders = getDir(sys.argv[1]);
+
+    for index, d1 in enumerate(folders):
+        for d2 in range(index+1, len(folders)):
+            compareFolders(d1, folders[d2]);
+			</pre>
+		</div>
+		<div class = "subtitle">Check Similarity</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#Compare the assignments submitted by students
+#Compare all files from one student with all files from another student, and report file pairs that have high similarity
+#!/usr/bin/python
+
+import filecmp
+import os
+import sys
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+def getFiles(d):
+    '''Get all files in a folder
+    '''
+    files = []
+    for (dirpath, dirnames, filenames) in os.walk(d):
+        for f in filenames:
+            if f[0] != '.':
+                files.append(os.path.join(dirpath, f));
+    return files;
+
+def getDir(d):
+    '''Get all directories in a folder
+    '''
+    l = os.listdir(d);
+    return [os.path.join(d, e) for e in l if os.path.isdir(os.path.join(d,e))];
+
+def compareFiles(f1, f2):
+    '''Check the similarity of a pair of files
+    '''
+    with open(f1, 'r') as content_file:
+        c1= content_file.read()
+    with open(f2, 'r') as content_file:
+        c2= content_file.read()
+    documents = [c1, c2];
+    tfidf = TfidfVectorizer().fit_transform(documents)
+    pairwise_similarity = tfidf * tfidf.T
+    return pairwise_similarity[0, 1]
+
+def compareFolders(dir1, dir2):
+    '''Compare the files in a directory with the files in another directory
+    '''
+    files_1 = getFiles(dir1);
+    files_2 = getFiles(dir2);
+    for f1 in files_1:
+        for f2 in files_2:
+            similarity = compareFiles(f1, f2);
+            if similarity &gt; 0.8:
+                print f1, f2, similarity
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print 'Usage: python comparison.py dir'
+        sys.exit(1);
+
+    #Get all folders
+    folders = getDir(sys.argv[1]);
+
+    for index, d1 in enumerate(folders):
+        for d2 in range(index+1, len(folders)):
+            compareFolders(d1, folders[d2]);
+			</pre>
+		</div>
+		<div class = "subtitle">Compare Directories</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#import filecmp
+
+dc = filecmp.dircmp(dir_left, dir_right);
+print dc.left_list # terms in left directory
+print dc.right_list # terms in right directory
+print dc.left_only # terms in left directory only
+print dc.right_only # terms in right directory only
+print dc.common_files # files in both directories
+print dc.diff_files # same file name but different content, compared with os.state() only
+print dc.same_files # same file name and same content
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://pymotw.com/2/filecmp/">Pymotw</a></li>
+				<li><a href = "https://docs.python.org/2/library/filecmp.html">Documentation</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

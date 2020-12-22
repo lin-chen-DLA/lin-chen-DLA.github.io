@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Random
+		</div>
+
+		<div class = "subtitle">Pseduo Random Number</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+
+int main(int argc, char *argv[])
+{
+	int seed = 10;
+	srand(seed);
+
+	std::cout&lt;&lt;"Rand() return an integer between 0 and "&lt;&lt;RAND_MAX&lt;&lt;std::endl;
+
+	//generate random integer number
+	for(int i = 0; i &lt; 5; i++)
+		std::cout&lt;&lt;rand()%100&lt;&lt;std::endl;
+
+	//generate random float number [0, 1]
+	for(int i = 0; i &lt; 5; i++)
+		std::cout&lt;&lt;rand()/float(RAND_MAX)&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+				<div class = "subtitle">Random Number</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+
+int main(int argc, char *argv[])
+{
+	int seed = 10;
+	srand(time(NULL));
+
+	std::cout&lt;&lt;"Rand() return an integer between 0 and "&lt;&lt;RAND_MAX&lt;&lt;std::endl;
+
+	//generate random integer number
+	for(int i = 0; i &lt; 5; i++)
+		std::cout&lt;&lt;rand()%100&lt;&lt;std::endl;
+
+	//generate random float number [0, 1]
+	for(int i = 0; i &lt; 5; i++)
+		std::cout&lt;&lt;rand()/float(RAND_MAX)&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+	</body>
+</html>

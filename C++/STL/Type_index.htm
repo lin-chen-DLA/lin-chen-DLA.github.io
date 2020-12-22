@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Type_index
+		</div>
+		<div class = "subtitle">Why use type_index instead of type_info</div>
+			<div class = "block">
+				<ul>
+					<li>type_index can be used as an index type in associative containers, such as map and unordered_map, which is a simple wrapper, do not have to provide hash function and comparator in the map</li>
+				</ul>
+			</div>
+
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+#include &lt;typeinfo&gt;
+#include &lt;typeindex&gt;
+
+int main(int argc, char *argv[])
+{
+	//index
+	std::cout&lt;&lt;std::type_index(typeid(int)).name()&lt;&lt;std::endl;
+	std::cout&lt;&lt;std::type_index(typeid(double)).name()&lt;&lt;std::endl;
+
+	std::string name;
+	std::cout&lt;&lt;std::type_index(typeid(name)).name()&lt;&lt;std::endl;
+
+	std::vector&lt;std::string&gt; stringContainer;
+	std::vector&lt;int&gt; intContainer;
+	std::cout&lt;&lt;std::type_index(typeid(stringContainer)).name()&lt;&lt;std::endl;
+	std::cout&lt;&lt;std::type_index(typeid(intContainer)).name()&lt;&lt;std::endl;
+
+	//map
+	std::map&lt;std::type_index, std::string&gt; m;
+	m[std::type_index(typeid(int))] = "int";
+
+	int n;
+	std::cout&lt;&lt;m[std::type_index(typeid(n))]&lt;&lt;std::endl;
+
+	std::map&lt;std::type_info, std::string&gt; m2;
+	//m2[typeid(int)] = "int";//error
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://stackoverflow.com/questions/20022546/why-use-stdtype-index-instead-of-stdtype-info">stackoverflow.com</a></li>
+				<li><a href = "http://en.cppreference.com/w/cpp/types/type_index">cppreference.com</a></li>
+				<li><a href = "http://www.cplusplus.com/reference/typeindex/type_index/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

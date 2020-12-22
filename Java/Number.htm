@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Number
+		</div>
+
+		<div class = "subtitle">Primitives and Objects</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Num
+{
+	public static void main(String args[])
+	{
+		int i = 10;
+		Integer i2;
+
+		// primitve int to Integer
+		i2 = Integer.valueOf(i);
+		System.out.println(i2.getClass().getName());
+
+		// Integer to int
+		i = i2.intValue();
+		System.out.println(i);
+
+		//autoboxing
+		i2 = i;
+		System.out.println(i2);
+
+		//unboxing
+		i = i2;
+		System.out.println(i);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/java/data/numberclasses.html">Oracle</a></li>
+				<li><a href = "https://docs.oracle.com/javase/8/docs/api/java/lang/Number.html">Number</a></li>
+				<li><a href = "https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Copy
+		</div>
+
+		<div class = "subtitle">Assignment</div>
+		<div class = "block">
+			assign the reference of an object to the variable
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+l = ['a', 'b', 'c', 'd']
+
+l2 = l
+
+print(id(l), id(l2)) # l and l2 have same id
+
+l2[1] = 't' # change both l and l2
+
+print(l, l2)
+			</pre>
+		</div>
+
+		<div class = "subtitle">Shallow Copy</div>
+		<div class = "block">
+			constructs a new compound object, then inserts references of the elements in the original object into it
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# all elements are immutable elements, shallow copy and deep copy have the same effect
+ 
+import copy
+
+l = ['a', 'b', 'c', 'd']
+ 
+l2 = copy.copy(l) # shallow copy
+ 
+print(id(l), id(l2)) # l and l2 have different id
+ 
+l2[1] = 't' # not change l
+ 
+print(l, l2)
+			</pre>
+		</div>
+
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# have mutable elements, shallow copy and deep copy are not same
+ 
+import copy
+
+l = ['a', 'b', ['ab', 'ba']]
+ 
+l2 = copy.copy(l) # shallow copy
+ 
+print(id(l), id(l2)) # l and l2 have different id
+ 
+l2[2][1] = 't' # change both l and l2
+ 
+print(l, l2)
+			</pre>
+		</div>
+
+		<div class = "subtitle">Deep Copy</div>
+		<div class = "block">
+			constructs a new compound object, then inserts copies of the elements of the original objects into it
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# have object elements, shallow copy and deep copy are not same
+
+import copy
+
+l = ['a', 'b', ['ab', 'ba']]
+ 
+l2 = copy.deepcopy(l) # deep copy
+ 
+print(id(l), id(l2)) # l and l2 have different id
+ 
+l2[2][1] = 't' # not change l
+ 
+print(l, l2)
+			</pre>
+		</div>
+
+		<div class = "subtitle">List</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import copy
+
+def info(l, l2):
+    print('id: ', id(l), id(l2))
+    print(l, l2)
+
+l = [1, 2, 3, [4, 5]]
+
+# copy from both shallow copy and deep copy have different id
+ 
+# Slicing, shallow copy
+l2 = l[:]
+
+l2[3][0] = 10 # changed both l and l2
+info(l, l2)
+ 
+# list, shallow copy
+l2 = list(l)
+
+l2[3][0] = 100 # changed both l and l2
+info(l, l2)
+ 
+# copy.copy(), shallow copy
+l2 = copy.copy(l)
+
+l2[3][0] = 1 # changed both l and l2
+info(l, l2)
+ 
+# copy.deepcopy(), deep copy
+l2 = copy.deepcopy(l)
+
+l2[3][0] = 1000 # change l2, not l
+info(l, l2)
+			</pre>
+		</div>
+
+		<div class = "subtitle">Dict</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import copy
+
+def info(l, l2):
+    print('id: ', id(l), id(l2))
+    print(l, l2)
+
+# copy from both shallow copy and deep copy have different id
+
+# Shallow copy
+d = {'Name':'Lin', 'List':[1, 2, 3, 4]}
+d2 = d.copy()
+
+d2['List'][1] = 10 # change both d and d2
+info(d, d2)
+
+# Deep copy
+d2 = copy.deepcopy(d)
+
+d2['List'][1] = 10 # change d2, not d
+info(d, d2)
+			</pre>
+		</div>
+
+		<div class = "subtitle">Tuple</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import copy
+
+def info(i, i2):
+    print('id: ', id(i), id(i2))
+    print(i, i2)
+
+# for immutable elements, shallow copy and deep copy are same
+i = (1, 2, (3, 4))
+ 
+i2 = copy.copy(i) # i and i2 have same ids
+info(i, i2)
+ 
+i2 = copy.deepcopy(i) # i and i2 have same ids
+info(i, i2)
+ 
+# containing mutable elements
+ 
+# Shallow copy
+l = (1, 2, [3, 4])
+ 
+l2 = copy.copy(l) # i and i2 have the same ids
+info(l, l2)
+ 
+l2 = l+() # i and i2 have the same ids
+info(l, l2)
+ 
+# deep copy
+l2 = copy.deepcopy(l) # l and l2 have the different ids
+info(l, l2)
+			</pre>
+		</div>
+
+		<div class = "subtitle">Resource</div>
+		<div class = "block">
+			<li><a href = "https://www.python-course.eu/python3_deep_copy.php">Python Course</a></li>
+		</div>
+	</body>
+</html>

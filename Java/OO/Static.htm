@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Static
+		</div>
+
+		<div class = "subtitle">Static Variable and Static Method</div>
+		<div class = "block">
+			<ul>
+				<li>Static variable (also known as class variable)</li>
+				<li>Static method (also known as class method)</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class S
+{
+	private static int count = 0;
+
+	public S()
+	{
+		System.out.println("Constructor ...");
+		count++;
+	}
+
+	protected void finalize()
+	{
+		System.out.println("Finalize ...");
+		count--;
+	}
+
+	public static void main(String args[])
+	{
+		S s1 = new S();
+		S s2 = new S();
+
+		System.out.println("Count: "+S.count);
+
+		s1 = null;
+		s2 = null;
+
+		System.gc();
+
+		System.out.println("Count: "+S.count);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Static Block</div>
+		<div class = "block">
+			<ul>
+				<li>Static block is used for initializing the static variables</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class S
+{
+	private static String name;
+	private static int year;
+	static
+	{
+		name = "Lin";
+		year = 37;
+	}
+
+	public static void main(String args[])
+	{
+		S s1 = new S();
+
+		System.out.printf("Name: %s\nAge: %d\n", S.name, S.year);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Static Nested Class</div>
+		<div class = "block">
+			<ul>
+				<li>Nested static class doesn’t need reference of Outer class</li>
+				<li>A static class cannot access non-static members of the Outer class</li>
+				<li>Able to access instance attributes and methods through an object reference</li>
+				<li>As a member of the OuterClass, a nested class can be declared private, public, protected, or package private</li>
+				<li>have access to other members of the enclosing class, even if they are declared private</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/NestedClass.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class S
+{
+	//non-static attribute
+	private int age;
+
+	//non-static methods
+	public int getAge() {return age;}
+	public void setAge(int a) {age = a;}
+
+	//static attribute
+	private static int count = 0;
+
+	//static method
+	public static int getCount() {return count;}
+
+	//static class
+	public static class C
+	{
+		private int year;
+
+		public C(int y) { year = y;}
+
+		public int getYear() { return year;}
+
+		//access static attribute and static method
+		public String toString() { return "C: "+year+" "+count+" "+getCount();}
+
+		//access outer class
+		public void display()
+		{
+			S s = new S();
+			s.setAge(20);
+			System.out.println("C: "+s.getAge());
+		}
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+public class STest
+{
+	public static void main(String args[])
+	{
+		//create static class object
+		S.C c = new S.C(2017);
+
+		System.out.println(c);
+		c.display();
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Static Import</div>
+		<div class = "block">
+			<ul>
+				<li>Enable you to refer to imported static members as if they were declared in the class that uses them</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import static java.lang.Math.*;
+
+public class S
+{
+	public static void main(String args[])
+	{
+		System.out.printf("%10.2f\n", PI);
+		System.out.printf("%10.2f\n", sqrt(10.0));
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.geeksforgeeks.org/nested-classes-java/">Nested Classes at Geeksforgeeks</a></li>
+				<li><a href = "https://beginnersbook.com/2013/04/java-static-class-block-methods-variables/">beginnersbook.com</a></li>
+				<li>Java How to Program</li>
+			</ul>
+		</div>
+	</body>
+</html>

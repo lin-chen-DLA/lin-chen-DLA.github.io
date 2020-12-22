@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Jupyter
+		</div>
+
+		<div class = "subtitle">Start Jupyter notebook</div>
+		<div class = "block">
+			<li>ipython notebook</li>
+			<li>jupyter notebook</li>
+		</div>
+		<div class = "subtitle">Run cell</div>
+		<div class = "block">
+			<li>Shift-Enter, implement the current cell and move to the next cell</li>
+			<li>Ctrl-Enter, implment the current cell and stay in the current cell</li>
+			<li>Alt-Enter, implement the current cell and insert a new cell below</li>
+		</div>
+		<div class = "subtitle">Ipython Display System</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from IPython.display import display
+from IPython.display import Image
+
+i = Image(filename='Python.jpeg'); # create an image from a filename
+i2 = Image(url='http://www.ecsu.edu/_resources/images/logos/ecsulogo_original_450px.png'); # create an image from an url
+display(i)
+display(i2)
+		</pre>
+		<pre class = "prettyprint linenums">
+from IPython.display import YouTubeVideo
+YouTubeVideo('_GtFn3h6uDM')
+		</pre>
+		<pre class = "prettyprint linenums">
+from IPython.core.display import HTML
+HTML('http://www.google.com')
+		</pre>
+		<pre class = "prettyprint linenums">
+from IPython.display import Math
+Math(r'F(k) = \int_{-\infty}^{\infty} f(x) e^{2\pi i k} dx')
+
+from IPython.display import Latex
+Latex(r"""\begin{align} e^{i\pi} + 1 = 0 \end{align}""")
+
+%%latex
+\begin{align} e^{i\pi} + 1 = 0 \end{align}
+		</pre>
+		</div>
+		<div class = "subtitle">Latex under markdown mode</div>
+		<div class = "block">
+			<li>Inline expressions, $e^{i\pi} + 1 = 0$</li>
+			<li>Expressions on their own line, $$e^x=\sum_{i=0}^\infty \frac{1}{i!}x^i$$</li>
+		</div>
+		<div class = "subtitle">Code blocks</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+```python
+import scipy
+```
+		</pre>
+		</div>
+		<div class = "subtitle">Ipython built-in commands</div>
+		<div class = "block">
+			<li><span>object?</span>, print all sorts of details about any object</li>
+			<li><span>%alias</span>, define an alias for a system command</li>
+			<li><span>%env</span>, get the environment variables</li>
+			<li><span>%history</span>, print input history</li>
+			<li><span>%load</span>, load code into the current frontend</li>
+			<li><span>%lsmagic</span>, list currently available magic functions</li>
+			<li><span>%pylab</span>, load numpy and matplotlib to work interactively</li>
+			<li><span>%quickref</span>, get the ipython reference</li>
+			<li><span>%run hello.py</span>, run a python script</li>
+			<li><span>%timeit</span>, measure the running time</li>
+			<li><span>%who</span>, print all interactive variables</li>
+			<li><span>%%bash</span>, run cells with bash in a subprocess</li>
+			<li><span>%%html</span>, render the cell as a block of HTML</li>
+			<li><span>%%javascript</span>, run the cell block of Javascript code</li>
+			<li><span>%%js</span>, run the cell block of Javascript code</li>
+			<li><span>%%latex</span>, render the cell as a block of latex</li>
+			<li><span>%%markdown</span>, render the cell as Markdown text block</li>
+			<li><span>%%python2</span>, %%python2 script magic</li>
+			<li><span>%%python3</span>, %%python3 script magic</li>
+			<li><span>%%sh</span>, %%sh script magic</li>
+			<li><span>%%writefile</span>, Write the contents of the cell to a file</li>
+		</div>
+		<div class = "subtitle">System shell commands</div>
+		<div class = "block">
+			<li>!, run command</li>
+			<li>!ping www.google.com, ping a ip address</li>
+			<li>d = !ls, save the outputs of the command to a variable</li>
+		</div>
+		<div class = "subtitle">Caching system</div>
+		<div class = "block">
+			<li>Input caching system
+				<ul>
+					<li><span>In</span>, a list of all inputs</li>
+					<li><span>_i, _ii, _iii</span>, store previous, next previous and next-next previous inputs</li>
+				</ul>
+			</li>
+			<li>Output caching system
+				<ul>
+					<li><span>[_], [__], [___]</span>, stores previous, next previous and next-next previous outputs</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Checkpoint and revert</div>
+		<div class = "block">
+			<li>Click "Save" button to create a checkpoint</li>
+			<li>File -&gt; Revert to Checkpoint</li>
+			<pre class = "prettyprint linenums">
+%autosave 1000 # automatically save every 1000 seconds
+			</pre>
+		</div>
+
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "Markdown/Pieces.htm">Markdown</a></li>
+				<li><a href = "http://nbviewer.jupyter.org/github/ipython/ipython/blob/2.x/examples/Notebook/Display%20System.ipynb#LaTeX">LaTex</a></li>
+				<li><a href = "http://jupyter-notebook.readthedocs.io/en/stable/examples/Notebook/Typesetting%20Equations.html">LaTex Examples</a></li>
+				<li><a href = "https://ipython.readthedocs.io/en/stable/interactive/index.html">Ipython Tutorial</a></li>
+				<li><a href = "https://github.com/ipython/ipython/wiki/Cookbook%3A-Index">IPython Cookbook</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

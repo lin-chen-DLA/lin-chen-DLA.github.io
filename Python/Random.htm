@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Random
+		</div>
+
+		<div class = "subtitle">Random Integer</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import random
+
+random.seed()
+
+print random.randrange(1, 10, 1) # generate a number between [1, 10)
+print random.randint(1, 10) # generate an integer between [1, 10]
+print random.choice(range(10)) # get a random integer from the list
+
+l = range(10)
+random.shuffle(l) # shuffle the list
+print l
+
+print random.sample(xrange(10), 10) # sample size should less than the size of the list
+		</div>
+
+		<div class = "subtitle">Random Float</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import random
+
+random.seed()
+
+print random.random() # generate a random float number between [0, 1)
+print random.uniform(1, 10) # generate a random float number between [1, 10] with uniform distribution
+print random.gauss(0, 1) # generate a float number with gauss distribution
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.python.org/2/library/random.html">Documentation</a></li>
+			</ul>
+		</div>
+
+	</body>
+</html>

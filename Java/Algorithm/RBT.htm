@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Red-Black Tree</div>
+		<div class = "block">
+			<ul>
+				<li>Every node has a color either red or black</li>
+				<li>Root of tree is always black</li>
+				<li>Every leaf is black</li>
+				<li>There are no two adjacent red nodes (A red node cannot have a red parent or red child)</li>
+				<li>Every path from root to a NULL node has same number of black nodes</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Rotation</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "AVL.htm">AVL Tree</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">Insertion</div>
+		<div class = "block">
+			<ul>
+				<li>O(lgn)</li>
+				<li>Perform standard BST insertion and make the color of newly inserted nodes as <span class = "red">RED</span></li>
+				<li>If x is root, change color of x as <b>BLACK</b></li>
+				<li>Do following if color of x’s parent is <span class = "red">not BLACK</span> or x is not root
+					<ul>
+						<li>if uncle is RED
+							<ul>
+								<li>Change color of parent and uncle as BLACK</li>
+								<li>color of grand parent as RED</li>
+								<li>Change x = x’s grandparent, repeat until parent is black or x is root</li>
+							</ul>
+						</li>
+						<li>if uncle is BLACK
+							<ul>
+								<li>LL</li>
+								<li>LR</li>
+								<li>RL</li>
+								<li>LR</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/RBTInsertion.png" width = "60%"></p>
+		</div>
+		<div class = "subtitle">Deletion</div>
+		<div class = "block">
+			<ul>
+				<li>O(lgn)</li>
+				<li>y's color is BLACK, x's color is BLACK
+					<ol>
+						<li>x's sibling w is red
+							<ul>
+								<li>set w to be BLACK</li>
+								<li>x's parent to be RED</li>
+								<li>left rotate x's parent</li>
+								<li>this converts case 1 to case 2/3/4</li>
+							</ul>
+						</li>
+						<li>x's sibling w is BLACK, and both of w's children are BLACK
+							<ul>
+								<li>set w to be RED</li>
+								<li>x's parent to be new x</li>
+							</ul>
+						</li>
+						<li>x's sibling w is BLACK, w's left child is red, and w's right child is black
+							<ul>
+								<li>set w's left child to be BLACK, w to be RED</li>
+								<li>right rotate w</li>
+								<li>set new x's sibling as w</li>
+							</ul>
+						</li>
+						<li>x's sibling w is BLACK, w's right child is red
+							<ul>
+								<li>set w to be x's parent's color</li>
+								<li>set x's parent's color to be BLACK</li>
+								<li>set right child to be BLACK</li>
+								<li>left rotate x's parent</li>
+							</ul>
+						</li>
+					</ol>
+				</li>
+				<li>y's color is BLACK, x's color is RED
+					<ul>
+						<li>Set x's color to be BLACK</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.geeksforgeeks.org/red-black-tree-set-1-introduction-2/">Red-Black Tree at Geeksforgeeks</li>
+				<li><a href = "http://www.geeksforgeeks.org/red-black-tree-set-2-insert/">Insertion</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/red-black-tree-set-3-delete-2/">Deletion</a></li>
+				<li>CLRS Chapter 13</li>
+			</ul>
+		</div>
+	</body>
+</html>

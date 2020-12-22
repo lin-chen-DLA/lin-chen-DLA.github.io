@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Basic Syntax</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Loop
+		</div>
+
+		<div class = "subtitle">For</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	for(int i = 0; i &lt; 10; i++)
+	{//start block
+		printf("Hello World!\n");
+	}//end block
+
+	// the braces can be ignored if there is only one line of code
+	for(int i = 0; i &lt; 10; i++)
+		printf("Hello World!\n");
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<li>break, provides an early exit from for, while, and do ... while, and switch</li>
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	for(int i = 0; i &lt; 10; i++)
+	{
+		if(i == 6) break;
+		printf("%d\n", i);
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<li>continue, skip the rest statements of the current iteration, applies only to loops, not to switch</li>
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	for(int i = 0; i &lt; 10; i++)
+	{
+		if(i == 6) continue;
+		printf("%d\n", i);
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<li>Nested For Loop</li>
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	for(int i = 1; i &lt; 10; i++)
+	{
+		for(int j = 1; j &lt; 10; j++)
+			printf("%3d * %3d = %4d", i, j, i*j);
+
+		printf("\n");
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">While</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int i = 10;
+
+	while (i &gt; 0)
+	{
+		printf("%d\n", i);
+		i--;
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Do ... While</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int i = 10;
+
+	do
+	{
+		printf("%d\n", i);
+		i--;
+	}while ( i &gt; 0 );
+
+	return 0;
+}
+			</pre>
+		</div>
+	</body>
+</html>

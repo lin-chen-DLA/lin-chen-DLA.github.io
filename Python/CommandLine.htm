@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Command Line Arguments
+		</div>
+
+		<div class = "subtitle">sys</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#python command.py arg1 arg2 arg3 -W ignore
+#!/usr/bin/python
+
+import sys
+
+print "Number of arguments: ", len(sys.argv);//4
+
+for i, e in enumerate(sys.argv):
+	print i, e;
+		</pre>
+	</div>
+	<div class = "block">
+		<ul>
+			<li>0, name of python script</li>
+			<li><span style = "color:red">Options are counted as arguments, such as -W and ignore</span></li>
+		</ul>
+	</div>
+	<div class = "subtitle">argparse</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import argparse
+
+# Create a parser
+parser = argparse.ArgumentParser(description='Process some integers.')
+
+# Add Positional Arguments
+parser.add_argument('echo', help='echo help')
+parser.add_argument('square', help='square help', type=int)
+
+# Add Optional Arguments
+parser.add_argument('-f', '--foo', help='foo help')
+args = parser.parse_args()
+
+#python command.py --foo temp 1 2
+#echo = "1"
+#square = 2
+#foo = temp
+print args # print all arguments
+print args.foo # print a single argument
+			</pre>
+		</div>
+	<div class = "subtitle">getopt</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#python command.py -h
+#python command.py -i inputFile -o outputFile arg1 arg2
+#python command.py --help
+#python command.py --input inputFile --output outputFile arg1 arg2
+#python command.py
+#!/usr/bin/python
+
+import sys, getopt
+
+try:
+	opts, args = getopt.getopt(sys.argv[1:], 'hi:o:', ['help', 'input=', 'output=']);
+except getopt.GetoptError, err:
+	print err.msg;
+	print err.opt;
+	print str(err);
+	print 'python command.py -i &lt;inputFile&gt; -o &lt;outputFile&gt; args';
+	sys.exit(2);
+print 'Opts:';
+for opt, arg in opts:
+	print opt, arg;
+print 'Args: ';
+for arg in args:
+	print arg;
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Parameters
+				<ul>
+					<li>getopt.getopt(argv, options, [long_options]</li>
+					<li>argv, all arguments from command line, sys.argv[1:]</li>
+					<li>options
+					<ul>
+						<li>h, not require an argument</li>
+						<li><span style = "color:red">i:</span>, require an argument</li>
+					</ul>
+					</li>
+					<li>Long Options
+					<ul>
+						<li>help, does not need an argument</li>
+						<li><span style = "color:red">input=</span>, require an argument</li>
+					</ul>
+					</li>
+				</ul>
+				</li>
+				<li>Returns
+				<ul>
+					<li>options, a list of (option, value)</li>
+					<li>arguments, a list of arguments after the option list is stripped</li>
+				</ul>
+				</li>
+				<li>Exception
+				<ul>
+					<li>Raised when the argument of an option that requires an argument misses</li>
+					<li>msg and opt give the error message and related option</li>
+				</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.python.org/2/library/getopt.html">getopt Documentation</a></li>
+				<li><a href = "http://www.programcreek.com/python/example/202/getopt.GetoptError">GetoptError</a></li>
+				<li><a href = "https://www.tutorialspoint.com/python/python_command_line_arguments.htm">tutorialspoint.com</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">-c</div>
+		<div class = "block">
+			<ul>
+				<li>Execute the python code in command</li>
+				<li>python -c "import sys; print sys.path"</li>
+			</ul>
+		</div>
+		<div class = "subtitle">-h, --help</div>
+		<div class = "block">
+			<ul>
+				<li>Brief description of all command line options</li>
+			</ul>
+		</div>
+		<div class = "subtitle">-V, --version</div>
+		<div class = "block">
+			<ul>
+				<li>Print the Python version number</li>
+			</ul>
+		</div>
+		<div class = "subtitle">-O</div>
+		<div class = "block">
+			<ul>
+				<li>python -O -m pythonScript
+					<ul>
+				<li>-O, sys.flags.optimized is set to 1, asserts don't get executed</li>
+				<li>-m, generate .pyo file which is a .pyc file with optimization</li>
+				<li>__debug__ if False</li>
+				<li>-OO, doc strings are not available</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/user/bin/python
+
+def KToF(t):
+	'''Convert Kelvin temperature to Fahrenheit temperature'''
+	assert(t &gt;= 0), "Colder than absolute zero!"
+	return (t-273)*1.8+32;
+
+if __name__ == '__main__':
+	print KToF(273);
+	print KToF(-1);
+		</pre>
+	</div>
+	<div class = "subtitle">-i</div>
+		<div class = "block">
+			<ul>
+				<li>from a import *, then enter interactive environment and implement script</li>
+			</ul>
+	</div>
+	<div class = "subtitle">Reference</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "https://docs.python.org/2/using/cmdline.html">Python Documentation</a></li>
+			<li><a href = "https://www.tutorialspoint.com/python/python_environment.htm">tutorialspoint.com</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

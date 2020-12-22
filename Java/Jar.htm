@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Jar
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>Pack edu folder into P.jar, Pack CarUse.class into C.jar</li>
+			</ul>
+			<p style = "text-align:center;"><img src = "img/Package.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle">Create Jar</div>
+		<div class = "block">
+			<ul>
+				<li>jar cvf jarFile inputFile, create a jar file</li>
+				<li>jar tvf jarFile, view a jar file</li>
+				<li>jar xf jarFile, extract a jar file</li>
+				<li>jar xf jarFile archivedFile, extract a specific file from a jar file</li>
+				<li>jar uf jarFile inputFile, add a file into a jar file</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Manifest File</div>
+		<div class = "block">
+			<ul>
+				<li>Create the manifest file
+					<ul>
+						<li>jar cfm jarFile manifest-additon inputFiles, add the content of inputFile into the manifest</li>
+						<li>Add Main-Class: edu.ecsu.cs.Car in Manifest.txt</li>
+						<li>jar cfm P.jar Manifest.txt edu, create jar file</li>
+					</ul>
+				</li>
+				<li>Add entry point with jar tool
+					<ul>
+						<li>jar cfe jarFile className inputFiles</li>
+						<li>jar cef P.jar edu.ecsu.cs.Car edu</li>
+					</ul>
+				</li>
+				<li>Implement with jar file
+					<ul>
+						<li>java -jar P.jar, implement main function in Car</li>
+					</ul>
+				</li>
+				<li>Reference class in a jar file from other jar files
+					<ul>
+						<li>Add Class-Path: P.jar in Manifest.txt</li>
+						<li>Add Main-Path: CarUse in Manifest.txt</li>
+						<li>jar cfm C.jar Manifest.txt CarUse.class, create jar file</li>
+						<li>java -jar C.jar, implement CarUse in C.jar by referecing classes in P.jar</li>
+					</ul>
+				</li>
+				<li>Version Information
+					<ul>
+						<li>Name</li>
+						<li>Specification-Title</li>
+						<li>Specification-Version</li>
+						<li>Specification-Vendor</li>
+						<li>Implementation-Title</li>
+						<li>Implementation-Version</li>
+						<li>Implementation-Vendor</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://javarevisited.blogspot.com/2012/10/5-ways-to-add-multiple-jar-to-classpath-java.html">Add jar to classpath</a></li>
+				<li><a href = "https://docs.oracle.com/javase/tutorial/deployment/jar/basicsindex.html">Oracle Tutorial</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			csv
+		</div>
+
+		<div class = "subtitle">Writer</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import csv
+
+array = [['Hello', 'World'], ['Lin', 'Yanhua']]
+
+with open('eggs.csv', 'w') as csvfile:
+    spamwriter = csv.writer(csvfile, delimiter=',')
+    spamwriter.writerow(array[0]);
+    spamwriter.writerow(array[1]);
+		</pre>
+		</div>
+		<div class = "subtitle">Write Special Characters</div>
+		<div class = "block">
+			<li>quoting
+				<ul>
+					<li>csv.QUOTE_ALL, quote all fields</li>
+					<li>csv.QUOTE_MINIMAL, quote those fields which contain special characters such as delimiter, quotechar or any of the characters in lineterminator</li>
+					<li>csv.QUOTE_NONNUMERIC, quote all non-numeric fields</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+#writerow
+import csv
+
+array = [['Hello', 'World'], ["Lin's, Name", 'Yanhua"s, Name']]
+
+with open('eggs.csv', 'w') as csvfile:
+    spamwriter = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    spamwriter.writerow(array[0]);
+    spamwriter.writerow(array[1])
+		</pre>
+		<pre class = "prettyprint linenums">
+#eggs.csv
+#Hello,World
+#"Lin's, Name","Yanhua""s, Name"
+		</pre>
+		<pre class = "prettyprint linenums">
+#writerows
+import csv
+
+array = [['Hello', 'World'], ["Lin's, Name", 'Yanhua"s, Name']]
+
+with open('eggs.csv', 'w') as csvfile:
+    spamwriter = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    spamwriter.writerows(array);
+		</pre>
+		</div>
+		<div class = "subtitle">DictWriter</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import csv
+
+with open('names.csv', 'w', newline='') as csvfile:
+    fieldnames = ['first_name', 'last_name']
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+    writer.writeheader()
+    writer.writerow({'first_name': "Baked's, Name", 'last_name': 'Beans'})
+    writer.writerow({'first_name': 'Lovely', 'last_name': 'Spam'})
+    writer.writerow({'first_name': 'Wonderful', 'last_name': 'Spam'})
+		</pre>
+		</div>
+		<div class = "subtitle">Reader</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import csv
+
+with open('eggs.csv', newline='') as csvfile:
+    spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
+    for row in spamreader:
+        for field in row:
+            print(field, end='|')
+        print()
+		</pre>
+		</div>
+		<div class = "subtitle">Dialects</div>
+		<div class = "block">
+			<li>excel, Microsoft Excel and LibreOffice</li>
+			<li>unix, quotes all fields with double-quotes and uses \n as the record separator</li>
+		<pre class = "prettyprint linenums">
+import csv
+
+print(csv.list_dialects()) #complete list of registered dialects
+dialet = csv.get_dialect('excel')
+
+print('|'+dialet.delimiter+'|')
+print('|'+str(dialet.doublequote)+'|')
+print('|'+str(dialet.escapechar)+'|')
+print('|'+dialet.lineterminator+'|')
+print('|'+dialet.quotechar+'|')
+print('|'+str(dialet.quoting)+'|')
+print('|'+str(dialet.skipinitialspace)+'|')
+print('|'+str(dialet.strict)+'|')
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import csv
+
+csv.register_dialect('pipes', delimiter=',')
+
+with open('names.csv', 'r') as f:
+    reader = csv.reader(f, dialect='pipes')
+    for row in reader:
+        print(row)
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://pymotw.com/3/csv/index.html">PYMOTW</a></li>
+			<li><a href = "https://docs.python.org/3/library/csv.html">Python3 Documents</a></li>
+		</div>
+	</body>
+</html>

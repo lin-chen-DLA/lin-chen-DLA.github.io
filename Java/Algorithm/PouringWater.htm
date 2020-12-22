@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Pouring Water</div>
+		<div class = "block">
+			<ul>
+				<li>We	have	three	containers	whose	sizes	are	10	pints,	7	pints,	and	4	pints,	respectively.	
+The	7-pint	and	4-pint	containers	start	out	full	of	water,	but	the	10-pint	container	is	initially	empty.	We	
+are	allowed	one	type	of	operation:	pouring	the	contents	of	one	container	into	another,	stopping	only	
+when	the	source	container	is	empty	or	the	destination	container	is	full.	We	want	to	know	if	there	is	a	
+sequence	of	pourings	htat	leaves	exactly	2	pints	in	the	7- or	4-pint	container</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/** Node in Pouring Water Problem
+ * @author Lin Chen
+ * @since 11.13.2017
+ */
+public class Node
+{
+	private int a = 10, b = 7, c = 4;//size of containers
+	private int A, B, C;//real water volume in container
+	private Node prev;//predecessor
+
+	public Node(int A, int B, int C)
+	{
+		this.A = A;
+		this.B = B;
+		this.C = C;
+		prev = null;
+	}
+
+	public int getA() {return A;}
+	public int getB() {return B;}
+	public int getC() {return C;}
+	public int geta() {return a;}
+	public int getb() {return b;}
+	public int getc() {return c;}
+	public Node getPrev() {return prev;}
+
+	public void setA(int A) {this.A = A;}
+	public void setB(int B) {this.B = B;}
+	public void setC(int C) {this.C = C;}
+	public void setPrev(Node n) {prev = n;}
+
+	@Override
+	public boolean equals(Object n)
+	{
+		Node temp = (Node)n;
+		if((A == temp.A) && (B == temp.B) && (C == temp.C))
+			return true;
+
+		return false;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return A+B*10+C*100;
+	}
+
+	public String toString()
+	{
+		return "("+A+"/"+a+","+B+"/"+c+","+C+"/"+c+")";
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+/** Program to demo pouring water
+ * @author Lin Chen
+ * @since 11.13.2017
+ */
+import java.util.*;
+import javafx.util.*;
+
+public class P
+{
+	/** Calculate the remaining water after pouring water from A to B
+	 * @param A volume of water in container A
+	 * @param B volume of water in container B
+	 * @param a volume of container A
+	 * @param b volume of container B
+	 * @return (volume in A, volume in B)
+	 */
+	public static Pair&lt;Integer, Integer&gt; pouring(int A, int B, int a, int b)
+	{
+		int tempA, tempB;
+		if((b-B) &gt; A)
+		{
+			tempA = 0;
+			tempB = B+A;
+		}
+		else
+		{
+			tempB = b;
+			tempA = A - (b-B);
+		}
+
+		return new Pair&lt;Integer, Integer&gt;(tempA, tempB);
+	}
+
+	/** Pouring water operation
+	 * @param A volume of water in A
+	 * @param B volume of water in B
+	 * @param C volume of water in C
+	 * @param A volume of container A
+	 * @param B volume of container B
+	 * @param C volume of container C
+	 * @param direction pouring direction
+	 * @return {@code Node}, a node from the operation
+	 */
+	public static Node pouringWater(int A, int B, int C, int a, int b, int c, String direction)
+	{
+		if(direction.equals("AB"))
+		{
+			Pair&lt;Integer, Integer&gt; p = pouring(A, B, a, b);
+			return new Node(p.getKey(), p.getValue(), C);
+		}
+		else if(direction.equals("AC"))
+		{
+			Pair&lt;Integer, Integer&gt; p = pouring(A, C, a, c);
+			return new Node(p.getKey(), B, p.getValue());
+		}
+		else if(direction.equals("BC"))
+		{
+			Pair&lt;Integer, Integer&gt; p = pouring(B, C, b, c);
+			return new Node(A, p.getKey(), p.getValue());
+		}
+		else if(direction.equals("BA"))
+		{
+			Pair&lt;Integer, Integer&gt; p = pouring(B, A, b, a);
+			return new Node(p.getValue(), p.getKey(), C);
+		}
+		else if(direction.equals("CA"))
+		{
+			Pair&lt;Integer, Integer&gt; p = pouring(C, A, c, a);
+			return new Node(p.getValue(), B, p.getKey());
+		}
+		else if(direction.equals("CB"))
+		{
+			Pair&lt;Integer, Integer&gt; p = pouring(C, B, c, b);
+			return new Node(A, p.getValue(), p.getKey());
+		}
+		else
+			return null;
+	}
+
+	/** Check if the pouring from A to B is a valid operation
+	 * @param A volume of water in A
+	 * @param B volume of water in B
+	 * @param a volume of container A
+	 * @param b volume of container B
+	 * @return {@code true}, valide; {@code false}, otherwise
+	 */
+	public static boolean isValid(int A, int B, int a, int b)
+	{
+		if(A &lt;= 0)
+			return false;
+		if(B &gt;= b)
+			return false;
+		return true;
+	}
+
+	/** Search all children of the current node, if they are valid and not visited, push into queue
+	 * @param q a queue of Node
+	 * @param u current node
+	 * @param m hash table to check if the node has been visited
+	 */
+	public static void addChildren(Queue&lt;Node&gt; q, Node u, HashMap&lt;Node, Integer&gt; m)
+	{
+		int A, B, C, a, b, c;
+		A = u.getA();
+		B = u.getB();
+		C = u.getC();
+		a = u.geta();
+		b = u.getb();
+		c = u.getc();
+
+		Node v;
+		if(isValid(A, B, a, b))
+		{
+			v = pouringWater(A, B, C, a, b, c, "AB");
+			v.setPrev(u);
+			if(!m.containsKey(v))
+			{
+				q.add(v);
+				m.put(v, 0);
+			}
+		}
+		if(isValid(A, C, a, c))
+		{
+			v = pouringWater(A, B, C, a, b, c, "AC");
+			v.setPrev(u);
+			if(!m.containsKey(v))
+			{
+			q.add(v);
+				m.put(v, 0);
+			}
+		}
+		if(isValid(B, A, b, a))
+		{
+			v = pouringWater(A, B, C, a, b, c, "BA");
+			v.setPrev(u);
+			if(!m.containsKey(v))
+			{
+				q.add(v);
+				m.put(v, 0);
+			}
+		}
+		if(isValid(B, C, b, c))
+		{
+			v = pouringWater(A, B, C, a, b, c, "BC");
+			v.setPrev(u);
+			if(!m.containsKey(v))
+			{
+				q.add(v);
+				m.put(v, 0);
+			}
+		}
+		if(isValid(C, A, c, a))
+		{
+			v = pouringWater(A, B, C, a, b, c, "CA");
+			v.setPrev(u);
+			if(!m.containsKey(v))
+			{
+				q.add(v);
+				m.put(v, 0);
+			}
+		}
+		if(isValid(C, B, c, b))
+		{
+			v = pouringWater(A, B, C, a, b, c, "CB");
+			v.setPrev(u);
+			if(!m.containsKey(v))
+			{
+				q.add(v);
+				m.put(v, 0);
+			}
+		}
+	}
+
+	/** Check if the current node is the target node
+	 * @param u node
+	 * @param target target volume
+	 * @return {@code true}, target node; {@code false}, otherwise
+	 */
+	public static boolean checkNode(Node u, int target)
+	{
+		if(u.getA() == target)
+			return true;
+		if(u.getB() == target)
+			return true;
+		if(u.getC() == target)
+			return true;
+		return false;
+	}
+
+	/** Breadth First Search all possible nodes
+	 * @param s start node
+	 * @param target target volume of water
+	 * @return target node
+	 */
+	public static Node BFS(Node s, int target)
+	{
+		Queue&lt;Node&gt; q = new LinkedList&lt;Node&gt;();
+		HashMap&lt;Node, Integer&gt; m = new HashMap&lt;Node, Integer&gt;();
+
+		q.add(s);
+		m.put(s, 0);
+
+		while(!q.isEmpty())
+		{
+			Node u = q.poll();
+			if(checkNode(u, target))
+				return u;
+			addChildren(q, u, m);
+		}
+
+		return null;
+	}
+
+	/** print path finding the target node
+	 * @param u target node
+	 */
+	public static void printNode(Node u)
+	{
+		if(u == null)
+			return;
+		printNode(u.getPrev());
+		System.out.println(u);
+	}
+
+	public static void main(String args[])
+	{
+		Node s = new Node(0, 7, 4);
+
+		Node t = BFS(s, 2);
+
+		printNode(t);
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>

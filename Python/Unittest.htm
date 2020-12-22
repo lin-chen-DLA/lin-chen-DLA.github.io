@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Test</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Test
+		</div>
+		<div class = "subtitle">General Rules</div>
+		<div class = "block">
+			<li>A testing unit should focus on one tiny bit of functionality and prove it correct</li>
+			<li>Each test unit must be fully independent</li>
+			<li>Try hard to make tests that run fast</li>
+			<li>Learn your tools and learn how to run a single test or a test case</li>
+			<li>Always run the full test suite before a coding session, and run it again after</li>
+			<li>Runs all tests before pushing code to a shared repository</li>
+			<li>Use long and descriptive names for testing functions</li>
+		</div>
+		<div class = "subtitle">Test Outcomes</div>
+		<div class = "block">
+			<li>ok, the test passes</li>
+			<li>FAIL, the test does not pass, and raises an AssertionError exception</li>
+			<li>ERROR, the test raises an exception other than AssertionError</li>
+		</div>
+		<div class = "subtitle">Layout and pytest</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/py_8.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<span>setup.py</span>
+		<pre class = "prettyprint linenums">
+from setuptools import setup
+
+setup(
+    name='ECSUProject_2',
+    version='0.1',
+    description='Demo for building a Python project',
+    author='Lin Chen',
+    author_email='lchen@ecsu.edu',
+    url='http://lin-chen-va.github.io',
+    install_requires=["numpy &gt;= 1.10", "biopython &gt;= 1.10"],
+    packages=['myFormat', ],
+    package_dir={'':'src'},
+    setup_requires=["pytest-runner"],
+    tests_require=["pytest"],
+    scripts=['src/convert',],
+    license='Creative Commons Attribution-Noncommercial-Share Alike license',
+    long_description=open('README').read(),
+    classifiers=[
+      'Development Status :: 4 - Beta',
+      'Environment :: X11 Applications :: GTK',
+      'Intended Audience :: End Users/Desktop',
+      'Intended Audience :: Developers',
+      'License :: OSI Approved :: GNU General Public License (GPL)',
+      'Operating System :: POSIX :: Linux',
+      'Programming Language :: Python',
+      'Topic :: Desktop Environment',
+      'Topic :: Text Processing :: Fonts'
+      ],
+)
+		</pre>
+		</div>
+		<div class = "block">
+			<span>setup.cfg</span>
+		<pre class = "prettyprint linenums">
+[aliases]
+test=pytest
+		</pre>
+		</div>
+		<div class = "block">
+			<span>MANIFEST.in</span>
+		<pre class = "prettyprint linenums">
+include README LICENSE
+recursive-include doc/_build/html *
+		</pre>
+		</div>
+		<div class = "block">
+			<span>convert</span>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import sys
+from myFormat.m1 import convertRead, convertWrite
+from myFormat.m2 import upper
+
+def main():
+    if len(sys.argv) != 3:
+        print 'python convert.py [inputFile] [outputFile]'
+        exit()
+
+    try:
+        lines_of_file = convertRead(sys.argv[1])  # read file
+        upper_lines = upper(lines_of_file)  # convert strings to upper case
+        convertWrite(upper_lines, sys.argv[2])  # save to output file
+    except Exception, err:
+        print err
+
+if __name__ == '__main__':
+    print 'file: ', __file__
+    main()
+		</pre>
+		</div>
+		<div class = "block">
+			<span>myFormat/m1.py</span>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def convertRead(inputfile):
+    l = [];
+    try:
+        with open(inputfile, 'rb') as f:
+            for line in f:
+                l.append(line);
+    except Exception, err:
+        raise IOError("Errors in reading "+inputfile)
+    return l;
+
+def convertWrite(l, outputfile):
+    try:
+        with open(outputfile, 'wb') as f:
+            for line in l:
+                f.write(line);
+    except Exception, err:
+        raise IOError("Errors in writing "+outputfile)
+		</pre>
+		</div>
+		<div class = "block">
+			<span>myFormat/m2.py</span>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def upper(l):
+    temp = [];
+    for s in l:
+        temp.append(s.upper());
+    return temp;
+
+def lower(l):
+    temp = [];
+    for s in l:
+        temp.append(s.lower());
+    return temp;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Use pytest instead of default test, the default test may ignore some exceptions</li>
+			<li>test
+				<ul>
+					<li>python setup.py test, aliase pytest to test</li>
+					<li>python setup.py pytest</li>
+					<li>pytest</li>
+				</ul>
+			</li>
+			<li>search for test_*.py or *_test.py files, imported by their test package name, collect test_ prefixed test functions or methods as test items</li>
+			<li>test does not install dependencies to system, it install the copies of dependencies to .eggs in the project folder</li>
+			<li>test files must have unique names, the test files will be imported as top-level modules by adding test/ to sys.path</li>
+		</div>
+		<div class = "subtitle">assert</div>
+		<div class = "block">
+			<span>test/test_m1.py</span>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from myFormat.m1 import convertRead, convertWrite
+
+def test_convertRead():
+
+    try:
+        l = convertRead('test/test_file.txt')
+    except Exception, err:
+        raise IOError("test file test_file.txt is not accessible")
+
+    assert l[0] == 'Hello\n'
+    assert l[1] == 'World!\n'
+
+def test_convertWrite():
+
+    l = ["Hello\n", "World!\n"]
+    try:
+        convertWrite(l, 'test/test_output.txt')
+    except Exception, error:
+        raise IOError("Not able to write output to a file")
+
+    try:
+        l2 = convertRead('test/test_output.txt')
+    except Exception, err:
+        raise IOError("test/test_output.txt does not exist")
+
+    assert l[0] == 'Hello\n'
+    assert l[1] == 'World!\n'
+		</pre>
+		</div>
+		<div class = "block">
+			<span>test/test_m2.py</span>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from myFormat.m2 import upper, lower
+
+def test_upper():
+    l = ['Lower Case', '!@$#$']
+    l2 = upper(l)
+
+    assert l2[0] == 'LOWER CASE'
+    assert l2[1] == '!@$#$'
+
+def test_lower():
+    l = ['Lower Case', '!@#$%']
+    l2 = lower(l)
+
+    assert l2[0] == 'lower case'
+    assert l2[1] == '!@#$%'
+		</pre>
+		</div>
+		<div class = "block">
+			<span>test/test_convert.py</span>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+from myFormat.m1 import convertRead
+
+def test_convert():
+    import os
+    os.system('python src/convert.py test/test_file.txt test/test_output2.txt')
+
+    try:
+        l = convertRead('test/test_output2.txt')
+    except Exception, err:
+        raise IOError('test/test_output2.txt is not accessible')
+
+    assert l[0] == 'HELLO\n'
+    assert l[1] == 'WORLD!\n'
+		</pre>
+		</div>
+		<div class = "subtitle">Unittest</div>
+		<div class = "block">
+			<span>test/test_m1.py</span>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import unittest
+from myFormat.m1 import convertRead, convertWrite
+
+class TestM1(unittest.TestCase):
+    def test_convertRead(self):
+        try:
+            l = convertRead('test/test_file.txt')
+        except Exception, err:
+            raise IOError("test file test_file.txt is not accessible")
+
+        self.assertEqual(l[0], 'Hello\n')
+        self.assertEqual(l[1], 'World!\n')
+
+    def test_convertWrite(self):
+        l = ["Hello\n", "World!\n"]
+        try:
+            convertWrite(l, 'test/test_output.txt')
+        except Exception, error:
+            raise IOError("Not able to write output to a file")
+
+        try:
+            l2 = convertRead('test/test_output.txt')
+        except Exception, err:
+            raise IOError("test/test_output.txt does not exist")
+
+        self.assertEqual(l[0], 'Hello\n')
+        self.assertEqual(l[1], 'World!\n')
+
+if __name__ == '__main__':
+    unittest.main()
+		</pre>
+		</div>
+		<div class = "block">
+			<li>failUnless() | failIf() | failUnlessEqual() | failIfEqual() | failUnlessRaises() | fail()</li>
+			<li>assertTrue() | asserFalse() | assertEqual() | assertRaises() | id()</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import unittest
+
+class TestStringMethods(unittest.TestCase):
+    def test_upper(self):
+        self.assertEqual('foo'.upper(), 'FOO')
+
+    def test_isupper(self):
+        self.assertTrue('FOO'.isupper())
+        self.assertFalse('Foo'.isupper())
+
+    def test_split(self):
+        s = 'hello world'
+        self.assertEqual(s.split(), ['hello', 'world'])
+        # check that s.split fails when the separator is not a string
+        with self.assertRaises(TypeError):
+            s.split(2)
+                                                                                    
+if __name__ == '__main__':
+    unittest.main()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import unittest
+
+def raiseException():
+    raise ValueError('Invalid value ...');
+
+class SimplisticTest(unittest.TestCase):
+
+    def setUp(self):
+        self.fixture = range(1, 10);
+        print 'In setUp ...';
+
+    def tearDown(self):
+        del self.fixture;
+        print 'In tearDown ...';
+
+    def test(self):
+        self.failUnless(True);
+
+    def testFail(self):
+        self.failIf(False, 'Test fail ...');
+
+    def testError(self):
+        raise RuntimeError('Test error ...');
+
+    def testAssertTrue(self):
+        self.assertTrue(True, 'Test assert true ...');
+
+    def testAssertFalse(self):
+        self.assertFalse(False);
+
+    def testEqual(self):
+        self.failUnlessEqual(1, 3-2);
+
+    def testRaiseError(self):
+        self.failUnlessRaises(ValueError, raiseException);
+
+class secondTest(unittest.TestCase):
+
+    def testSecond(self):
+        print 'test second ...';
+
+if __name__ == '__main__':
+    suite = unittest.TestLoader().loadTestsFromTestCase(SimplisticTest);
+    suite_2 = unittest.TestLoader().loadTestsFromTestCase(secondTest);
+    allTests = unittest.TestSuite([suite, suite_2]);
+    #unittest.TextTestRunner(verbosity=2).run(allTests);
+    unittest.main();
+		</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>python testCode.py -v, implement a single test file</li>
+				<li>python -m unittest discover projectDir "*_test.py", use test discover to implement multiple test file</li>
+				<li>test fixture, represents the preparation needed to perform one or more tests, and any associate cleanup actions
+					<ul>
+						<li>setUp(), execute before test</li>
+						<li>tearDown(), execute after test</li>
+					</ul>
+				</li>
+				<li>test case, the smallest unit of testing
+					<ul>
+						<li>test_*(), all functions starting with "test_"</li>
+					</ul>
+				</li>
+				<li>test suit, the smallest unit of testing
+					<ul>
+						<li>suite = unittest.TestLoader().loadTestsFromTestCase(SimplisticTest);</li>
+						<li>suite_2 = unittest.TestLoader().loadTestsFromTestCase(secondTest);</li>
+						<li>allTests = unittest.TestSuite([suite, suite_2])</li>
+					</ul>
+				</li>
+				<li>test runner, the execution of tests and provides the outcome to the user
+					<ul>
+						<li>unittest.TextTestRunner(verbosity=2).run(allTests)</li>
+						<li>unittest.main()</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+				<div class = "subtitle"><a href = "http://nose.readthedocs.io/en/latest/">Nose</a></div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def test_numbers_3_4():
+    assert 3*5 &gt;= 12
+			</pre>
+			nosetests testCode.py -v
+		</div>
+		<div class = "block">
+			<li>setup_module() | teardown_module(), before and end of the module</li>
+			<li>with_setup(), before and end of the function</li>
+			<li>setup() | teardown(), before and end of each function in the class</li>
+			<li>setup_class() | teardown_class(), before and end of the class</li>
+		</div>
+			<div class = "subtitle">Doctest</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def squareTest(x):
+    """Return the square of x.
+
+    &gt;&gt;&gt; squareTest(2)
+    4
+    &gt;&gt;&gt; squareTest(-2)
+    4
+    """
+    return x*x;
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod();
+
+			</pre>
+			python testCode.py -v
+		</div>
+			<div class = "subtitle">Pytest</div>
+		<div class = "block">
+			<a href = "http://pythontesting.net/framework/pytest/pytest-introduction/">Python Testing</a><br>
+			pytest testCode.py -v<br>
+			python -m pytest testCode.py -v
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "http://pythontesting.net/framework/nose/nose-introduction/">nose introduction</a></li>
+			<li><a href = "https://dmorgan.info/posts/python-unittest-fixtures/">Python unittest Fixtures</a></li>
+			<li><a href = "https://docs.python.org/2/library/unittest.html">unittest documentation</a></li>
+			<li><a href = "https://pymotw.com/2/unittest/">unittest at PYMOTW</a></li>
+			<li><a href = "https://docs.pytest.org/en/latest/goodpractices.html">Good Integration Practices</a></li>
+			<li><a href = "https://docs.python-guide.org/writing/tests/">Hitchhiker’s Guide</a></li>
+		</div>
+	</body>
+</html>

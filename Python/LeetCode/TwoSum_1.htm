@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>LeetCode</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">1. Two Sum</div>
+		<div class = "block">
+			<li><a href = "https://leetcode.com/problems/two-sum/description/">Description</a></li>
+		</div>
+		<div class = "subtitle">Brute-Force</div>
+		<div class = "block">
+			O(n<sup>2</sup>)
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+'''LeetCode question 1
+'''
+
+def twoSum(nums, target):
+    n = len(nums);
+    for i in xrange(n-1):
+        for j in xrange(i+1, n):
+            if (nums[i] + nums[j]) == target:
+                return i, j
+
+def main():
+    nums = [2, 7, 11, 15]
+    target = 9
+
+    index = twoSum(nums, target)
+
+    if index:
+        print index
+    else:
+        print 'No pair has been found for target %d' % target
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "subtitle">Hash</div>
+		<div class = "block">
+			O(n)
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+'''LeetCode question 1
+'''
+
+def twoSum(nums, target):
+    d = {}
+    for indx, ele in enumerate(nums):
+        if d.has_key(target-ele):
+            return (d[target-ele], indx)
+        else:
+            d[ele] = indx
+
+def main():
+    nums = [2, 7, 11, 15]
+    target = 9
+
+    index = twoSum(nums, target)
+
+    if index:
+        print index
+    else:
+        print 'No pair has been found for target %d' % target
+
+if __name__ == '__main__':
+    main()
+			</pre>
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+'''LeetCode question 1
+'''
+
+def twoSum(nums, target):
+    d = {}
+    for indx, ele in enumerate(nums):
+        if d.has_key(ele):
+            return d[ele], indx
+        else:
+            d[target-ele] = indx
+
+def main():
+    nums = [2, 7, 11, 15]
+    target = 9
+
+    index = twoSum(nums, target)
+
+    if index:
+        print index
+    else:
+        print 'No pair has been found for target %d' % target
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>R</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Array
+		</div>
+
+		<div class = "block">
+			<li>store data in more than two dimensions</li>
+		</div>
+		<div class = "subtitle">Create Array</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create a 3d array
+A = array(1:12, dim = c(2, 3, 2))
+print(A)
+
+# create a 3d empty array
+B = array(0, dim = c(2, 3, 2))
+print(B)
+		</pre>
+		</div>
+
+		<div class = "subtitle">Accesing</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create a 3d array
+A = array(1:12, dim = c(2, 3, 2))
+
+print(A[, , 2]) # second matrix
+print(A[1, , 1]) # first row of the first matrix
+		</pre>
+		</div>
+
+		<div class = "subtitle">Operations</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create a 3d array
+A = array(1:12, dim = c(2, 3, 2))
+print(A)
+
+B = apply(A, c(1), sum) # all rows
+B = apply(A, c(2), sum) # all column
+B = apply(A, c(3), sum) # all matrices
+B = apply(A, c(1, 2), sum) # sum of element along all matrices direction
+print(B)
+		</pre>
+		</div>
+	</body>
+</html>

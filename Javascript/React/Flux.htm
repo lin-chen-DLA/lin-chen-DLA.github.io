@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Flux
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>Flux is a design pattern developed at Facebook that was designed to keep data flowing in <span>one direction</span>
+					<ul>
+						<li><span>Actions,</span> actions are sent to the dispatcher to trigger the data flow</li>
+						<li><span>Dispatcher,</span> this is a central hub of the app. All the data is dispatched and sent to the stores</li>
+						<li><span>Store,</span> store is the place where the application state and logic are held. Every store is maintaining a particular state and it will update when needed</li>
+						<li><span>View,</span> the view will receive data from the store and re-render the app</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Install</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+npm install --save redux
+npm install --save react-redux
+npm install --save-dev redux-devtools-extension
+		</pre>
+		</div><div class = "block">
+			<p style = "text-align:center;"><img src = "./img/React_10.png" width=30% /></p>
+		</div>
+		</div><div class = "block">
+			<p style = "text-align:center;"><img src = "./img/React_11.png" width=30% /></p>
+		</div>
+		<div class = "block">
+			<li>index.js
+				<ul>
+					<li>create store which is used to save state values</li>
+					<li>bind reducers to store</li>
+				</ul>
+			</li>
+			<li>reducers.js
+				<ul>
+					<li>The reducer is a <span>function</span> that takes two parameters (<span>state</span> and <span>action</span>) to calculate and return an updated state</li>
+					<li>combineReducers, connect the state features and their reducers</li>
+					<li>action is automatically passed to all reducers</li>
+					<li>reducer uses <span>action type</span> to decide how to update the state</li> 
+				</ul>
+			</li>
+			<li>actions.js
+				<ul>
+					<li>JavaScript <span>objects</span> that use <span>type</span> property to inform about the data that should be sent to the store</li>
+				</ul>
+			</li>
+			<li>App.js
+				<ul>
+					<li>The App component is the <span>root</span> component of the app. Only the root component should be aware of a redux</li>
+					<li>connect store with App with connect() function</li>
+					<li>two parameters in connect(), one for <span>get</span> specific props from state, one for action which can triger the <span>update</span> of specific state values</li>
+				</ul>
+			</li>
+			<li>Components <span>shouldn't</span> be aware of redux</li>
+		<pre class = "prettyprint linenums">
+//index.js
+import React from 'react'
+
+import { render } from 'react-dom'
+import { createStore, applyMiddleware } from 'redux'
+import {composeWithDevTools } from 'redux-devtools-extension';
+import { Provider } from 'react-redux'
+
+import App from './App.js'
+import todoApp from './reducers/reducers'
+
+let store = createStore(todoApp, {}, composeWithDevTools(applyMiddleware()));
+let rootElement = document.getElementById('root')
+
+render(
+   &lt;Provider store = {store}&gt;
+      &lt;App /&gt;
+   &lt;/Provider&gt;,
+	
+   rootElement
+)
+		</pre>
+		<pre class = "prettyprint linenums">
+//reducers.js
+import { combineReducers } from 'redux'
+import { ADD_TODO } from '../actions/actions'
+
+function todo(state, action) {
+   switch (action.type) {
+      case ADD_TODO:
+         return {
+            id: action.id,
+            text: action.text,
+         }
+      default:
+         return state
+   }
+}
+
+function setAuthor(state = 'Lin', action) {
+	console.log("SetAuthor ...", state);
+	switch (action.type){
+		case ADD_TODO:
+			return 'Yanhua';
+		default:
+			return state
+	}
+}
+
+function todos(state = [], action) {
+	console.log('State in Reducer: ', typeof(state), state, action.type);
+   switch (action.type) {
+      case ADD_TODO:
+         return [
+            ...state,
+            todo(undefined, action)
+         ]
+      default:
+         return state
+   }
+}
+
+const todoApp = combineReducers({
+	stateTodos: todos, //let todos update stateTodos
+   	author: setAuthor //let setAuthor update author
+})
+
+export default todoApp
+		</pre>
+		<pre class = "prettyprint linenums">
+//actions.js
+export const ADD_TODO = 'ADD_TODO'
+
+let nextTodoId = 0;
+
+export function addTodo(text) {
+	console.log(nextTodoId);
+   return {
+      type: ADD_TODO,
+      id: nextTodoId++,
+      text: text
+   };
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+//App.js
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { addTodo } from './actions/actions'
+
+import AddTodo from './components/AddTodo.js'
+import TodoList from './components/TodoList.js'
+
+class App extends Component {
+   render() {
+      const { dispatch, visibleTodos, author } = this.props
+      console.log(dispatch, visibleTodos, author)
+      
+      return (
+         &lt;div&gt;
+            &lt;AddTodo onAddClick = {text =&gt;dispatch(addTodo(text))} /&gt;
+            &lt;TodoList todos = {visibleTodos}/&gt;
+         &lt;/div&gt;
+      )
+   }
+}
+
+function select(state) {
+   return {
+      visibleTodos: state.stateTodos,
+      author: state.author
+   }
+}
+
+export default connect(select)(App);
+		</pre>
+		<pre class = "prettyprint linenums">
+//AddTodo.js
+import React, { Component, PropTypes } from 'react'
+
+export default class AddTodo extends Component {
+   render() {
+      return (
+         &lt;div&gt;
+            &lt;input type = 'text' ref = 'input' /&gt;
+				
+            &lt;button onClick = {(e) =&gt; this.handleClick(e)}&gt;
+               Add
+            &lt;/button&gt;
+         &lt;/div&gt;
+      )
+   }
+
+   handleClick(e) {
+      const node = this.refs.input
+      const text = node.value.trim()
+      this.props.onAddClick(text)
+      node.value = '';
+      node.focus();
+   }
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+//TodoList.js
+import React, { Component, PropTypes } from 'react'
+import Todo from './Todo.js'
+
+export default class TodoList extends Component {
+   render() {
+      return (
+         &lt;ul&gt;
+            {this.props.todos.map(todo =&gt;
+               &lt;Todo
+                  key = {todo.id}
+                  {...todo}
+               /&gt;
+            )}
+         &lt;/ul&gt;
+      )
+   }
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+//Todo.js
+import React, { Component, PropTypes } from 'react'
+
+export default class Todo extends Component {
+   render() {
+      return (
+         &lt;li&gt;
+            {this.props.text}
+         &lt;/li&gt;
+      )
+   }
+}
+		</pre>
+		</div>
+	</body>
+</html>

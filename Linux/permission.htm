@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Share</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Permision</div>
+<div class = "block">
+			<p style = "text-align:center;"><img src = "img/permission.png" width = "30%"></p>
+		</div>
+		<div class = "subtitle">File type</div>
+		<div class = "block">
+			<li>-, Normal file</li>
+			<li>d, Subdirectory</li>
+			<li>p, Named pipe</li>
+			<li>s, Socket</li>
+			<li>l, Symbolic link</li>
+			<li>c, Character device</li>
+			<li>b, Block device</li>
+		</div>
+		<div class = "subtitle">File permission</div>
+		<div class = "block">
+			<li>chmod u=rwx,g=rx,o=r filename
+				<ul>
+					<li>u, user</li>
+					<li>g, group</li>
+					<li>o, other</li>
+				</ul>
+			</li>
+			<li>chmod 754 filename</li>
+		</div>
+		<div class = "subtitle">Directory permission</div>
+		<div class = "block">
+			<li><span>write</span> allows creating new files inside of it</li>
+			<li><span>read</span> allows you to list the files inside of it</li>
+			<li><span>execute</span> allows you to enter it and access files (or other directories) inside</li>
+			<li>chmod -R ugo+rw /DATA/SHARE, modifies the permission of the specific folder and its child objects recursively</li>
+		</div>
+<div class = "block">
+			<p style = "text-align:center;"><img src = "img/permission2.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+			<li>readme (755), temp (750)</li>
+			<li>user2 is not able to access readme file inside temp folder of user1 since temp of user2 is not assible for user1</li>
+		</div>
+		<div class = "subtitle">Set Default Permission</div>
+		<div class = "block">
+			<li>For directories, the <span>base permissions</span> are (rwxrwxrwx) 0777 and for files they are 0666 (rw-rw-rw)</li>
+			<li>umask 022, default directory permissions are 755 and default file permissions are 644</li>
+		</div>
+		<div class = "subtitle">SBIT</div>
+		<div class = "block">
+			<li>SUID (Set owner User ID up on execution), 4
+				<ul>
+					<li>Normally in Linux/Unix when a program runs, it inherit’s access permissions from the logged in user</li>
+					<li> SUID is defined as giving temporary permissions to a user to run a program/file with the permissions of the file owner rather that the user who runs it</li>
+					<li>users will get file owner’s permissions as well as owner UID and GID when executing a file/program/command</li>
+					<li>chmod u+s fileName <span>or</span> chmod 4750 fileName, 'x' for user permission is changed to 's'</li>
+				</ul>
+			</li>
+			<li>SGID, 2
+				<ul>
+					<li>When SGID permission is set on a directory, files created in the directory belong to the group of which the directory is a member</li>
+					<li>chmod g+s directoryName <span>or</span> chmod 2770 directoryName, create a shared folder</li>
+				</ul>
+			</li>
+			<li>SBIT, 1
+				<ul>
+					<li>The sticky bit is primarily used on shared directories</li>
+					<li>users can create files, read and execute files owned by other users, but are not allowed to remove files owned by other users</li>
+					<li>chmod +t directoryName <span>or</span> chmod 1777 directoryName, create a shared directory</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Attributes</div>
+		<div class = "block">
+			<li>lsattr, list file attributes</li>
+			<li>chattr, change file attributes
+				<ul>
+					<li>chattr +i fileName, add i option to the file, not able to modify file</li>
+					<li>chattr +i directoryName, add i option to the directory, not able to add or remove files from the directory</li>
+				</ul>
+			</li>
+			<li>Availabe attributes
+				<ul>
+					<li>a: append only</li>
+					<li>c: compressed</li>
+					<li>d: no dump</li>
+					<li>e: extent format</li>
+					<li>i: immutable</li>
+					<li>j: data journalling</li>
+					<li>s: secure deletion</li>
+					<li>t: no tail-merging</li>
+					<li>u: undeletable</li>
+					<li>A: no atime updates</li>
+					<li>C: no copy on write</li>
+					<li>D: synchronous directory updates</li>
+					<li>S: synchronous updates</li>
+					<li>T: top of directory hierarchy</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.thegeekdiary.com/what-is-suid-sgid-and-sticky-bit/">What is SUID, SGID and Sticky bit ?</a></li>
+			<li><a href = "https://www.linuxnix.com/suid-set-suid-linuxunix/">SUID</a></li>
+			<li><a href = "https://www.cyberciti.biz/tips/understanding-linux-unix-umask-value-usage.html">umask</a></li>
+			<li><a href = "https://en.wikipedia.org/wiki/Chattr">chattr</a></li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			unordered_multimap
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Allow different elements having equivalent values</li>
+				<li>Keys are immutable, cannot be modified, but can be inserted and removed</li>
+				<li>Store elements in no particular order</li>
+				<li>Elements are organized into buckets depending on their <span style = "color:red">hash</span> values</li>
+				<li>Implemented as hash table</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<p style="text-align:center;"><img src = "img/Hash.png" width=50% /></p>
+		</div>
+		<div class = "subtitle">Element Organization</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;unordered_map&gt;
+
+template &lt;class T&gt;
+void display(T c)
+{
+	for(auto & e : c)
+		std::cout&lt;&lt;e.first&lt;&lt;" "&lt;&lt;e.second&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::unordered_multimap&lt;std::string, std::string&gt; m;
+	m.insert(std::make_pair("Buick", "Centry"));
+	m.insert(std::make_pair("Buick", "Rendezvous"));
+	m.insert(std::make_pair("Honda", "CRV"));
+	m.insert(std::make_pair("Honda", "Accord"));
+
+	for(int i = 0; i &lt; m.bucket_count(); i++)
+	{
+		std::cout&lt;&lt;"Bucket "&lt;&lt;i&lt;&lt;": ";
+		for(auto it = m.begin(i); it != m.end(i); ++it)
+			std::cout&lt;&lt;it-&gt;first&lt;&lt;"|"&lt;&lt;it-&gt;second&lt;&lt;" ";
+		std::cout&lt;&lt;std::endl;
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Access Elements</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;unordered_map&gt;
+
+template &lt;class T&gt;
+void display(T c)
+{
+	for(auto & e : c)
+		std::cout&lt;&lt;e.first&lt;&lt;" "&lt;&lt;e.second&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::unordered_multimap&lt;std::string, std::string&gt; m;
+	m.insert(std::make_pair("Buick", "Centry"));
+	m.insert(std::make_pair("Buick", "Rendezvous"));
+	m.insert(std::make_pair("Honda", "CRV"));
+	m.insert(std::make_pair("Honda", "Accord"));
+
+	//equal_range
+	auto ret = m.equal_range("Honda");
+	for(auto it = ret.first; it != ret.second; ++it)
+		std::cout&lt;&lt;it-&gt;first&lt;&lt;" "&lt;&lt;it-&gt;second&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Hash with Objects</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//constructor
+		Rectangle(){}
+		Rectangle(double w, double l):width(w), length(l){}
+
+		//accessor
+		double getWidth() const;
+		double getLength() const;
+		double getArea() const;
+
+		//mutator
+		void setWidth(double w);
+		void setLength(double l);
+};
+#endif
+
+//Rectangle.cpp
+#include "Rectangle.h"
+
+double Rectangle::getWidth() const
+{
+	return width;
+}
+
+double Rectangle::getLength() const
+{
+	return length;
+}
+
+double Rectangle::getArea() const
+{
+	return width*length;
+}
+
+void Rectangle::setWidth(double w)
+{
+	width = w;
+}
+
+void Rectangle::setLength(double l)
+{
+	length = l;
+}
+
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;unordered_map&gt;
+#include "Rectangle.h"
+
+struct comp{
+	bool operator()(const Rectangle &a, const Rectangle &b) const
+	{
+		return (a.getArea() == b.getArea());
+	}
+};
+
+struct RectangleHash
+{
+	size_t operator()(const Rectangle &r) const
+	{
+		std::hash&lt;double&gt; h;
+		return (h(r.getWidth()) ^ h(r.getLength()));
+	}
+};
+
+int main(int argc, char *argv[])
+{
+	std::unordered_multimap&lt;Rectangle, int, RectangleHash, comp&gt; s;
+	s.insert(std::make_pair(Rectangle(1, 2), 1));
+	s.insert(std::make_pair(Rectangle(2, 3), 2));
+	s.insert(std::make_pair(Rectangle(3, 4), 3));
+	s.insert(std::make_pair(Rectangle(4, 5), 4));
+	s.insert(std::make_pair(Rectangle(1, 2), 5));
+
+	std::cout&lt;&lt;"Size: "&lt;&lt;s.size()&lt;&lt;std::endl;
+
+	for(int i = 0; i &lt; s.bucket_count(); i++)
+	{
+		std::cout&lt;&lt;"Bucket "&lt;&lt;i&lt;&lt;": ";
+		for(auto it = s.begin(i); it != s.end(i); ++it)
+			std::cout&lt;&lt;it-&gt;first.getArea()&lt;&lt;"|"&lt;&lt;it-&gt;second&lt;&lt;" ";
+		std::cout&lt;&lt;std::endl;
+	}
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/unordered_map/unordered_multimap/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

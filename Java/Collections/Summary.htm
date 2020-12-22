@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Summary
+		</div>
+
+		<div class = "subtitle">Vector and ArrayList</div>
+		<div class = "block">
+			<ul>
+				<li>Vector is synchronized, ArrayList is not synchronized</li>
+				<li>ArrayList is faster</li>
+				<li>Both grow and shrink dynamically, the increment of ArrayList is 50%, the increment of Vector is 100%</li>
+				<li>Both have Enumeration and Iterator</li>
+				<li>ArrayList is preferrable when there is no specific requirement</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">ArrayList and LinkedList</div>
+		<div class = "block">
+			<ul>
+				<li>ArrayList is an implementation of dynamica array, LinkedList is a double linked list</li>
+				<li>Insertion is O(1) with LinkedList, O(n) in worst-case and O(1) in best-caset with ArrayList</li>
+				<li>Removal is O(1) with LinkedList, O(n) with ArrayList</li>
+				<li>LinkedList has more memory overhead</li>
+				<li>Accessing an element is O(n) with LinkedList, O(1) with ArrayList</li>
+				<li>Search is O(n) for both, but ArrayList is able to use binary search which is O(logn)</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">TreeMap, HashMap and LinkedHashMap</div>
+		<div class = "block">
+			<ul>
+				<li>HashMap
+					<ul>
+						<li>It is implemented by an array of linked lists</li>
+						<li>0(1) lookup and insertion</li>
+						<li>A HashMap contains values based on the key</li>
+						<li>It contains only unique elements</li>
+						<li>It may have one null key and multiple null values</li>
+						<li>It maintains no order</li>
+					</ul>
+				</li>
+				<li>LinkedHashMap
+					<ul>
+						<li>It is implemented by doubly-linked buckets</li>
+						<li>0(1) lookup and insertion</li>
+						<li>A LinkedHashMap contains values based on the key</li>
+						<li>It contains only unique elements</li>
+						<li>It may have one null key and multiple null values</li>
+						<li>It is same as HashMap instead maintains insertion order</li>
+					</ul>
+				</li>
+				<li>TreeMap
+					<ul>
+						<li>TreeMap is implemented by a Red-Black Tree</li>
+						<li>O(log N) lookup and insertion</li>
+						<li>A TreeMap contains values based on the key</li>
+						<li>It contains only unique elements</li>
+						<li>It cannot have null key but can have multiple null values</li>
+						<li>It is same as HashMap instead maintains ascending order sorted using the natural order of its key</li>
+					</ul>
+				</li>
+				<li>Hashtable
+					<ul>
+						<li>A Hashtable is an array of list</li>
+						<li>It contains only unique elements</li>
+						<li>It may have not have any null key or value</li>
+						<li>It is synchronized</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">HashMap and Hashtable</div>
+		<div class = "block">
+			<ul>
+				<li>HashMap is non synchronized. It is not-thread safe and can’t be shared between many threads without proper synchronization code whereas Hashtable is synchronized. It is thread-safe and can be shared with many threads</li>
+				<li>HashMap allows one null key and multiple null values whereas Hashtable doesn’t allow any null key or value</li>
+				<li>HashMap is generally preferred over HashTable if thread synchronization is not needed</li>
+				<li>HashMap is an advanced version and improvement on the Hashtable. HashMap was created later</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Hash and WeakHashmap</div>
+		<div class = "block">
+			<ul>
+				<li>In HashMap , entry object(entry object stores key-value pairs) is not eligible for garbage collection</li>
+				<li>In WeakHashmap, when a key is discarded then its entry is automatically removed from the map</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Remove Elements</div>
+		<div class = "block">
+			<ul>
+				<li>It is not recommended to use remove() of list interface when iterating over elements. This may lead to ConcurrentModificationException (Refer this for a sample program with this exception). When iterating over elements, it is recommended to use Iterator.remove() method</li>
+			</ul>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.geeksforgeeks.org/java/">Geekforgeek</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

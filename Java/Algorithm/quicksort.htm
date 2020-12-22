@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Quick Sort</div>
+		<div class = "block">
+			<li>Best Case, O(nlgn)</li>
+			<li>Worst Case, &Omega;(n^2)</li>
+			<li>Memory Complexity, O(lgn)</li>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Quicksort.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			Ideal case
+			<p style = "text-align:center;"><img src = "img/Quicksort2.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			Worse case
+			<p style = "text-align:center;"><img src = "img/Quicksort3.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/* Quick Sort
+ * @author Lin Chen
+ * @version 1.0
+ * @since 10.06.2017
+ */
+import java.util.*;
+
+public class Q
+{
+	/** Random Quick Sort
+	 * @param array integer array
+	 * @param p index of left boundary
+	 * @param r index of right boundary
+	 */
+	public static void randomQuicksort(int [] array, int p, int r)
+	{
+		if(p &lt; r)
+		{
+			int q = randomPartition(array, p, r);
+			quicksort(array, p, q-1);
+			quicksort(array, q+1, r);
+		}
+	}
+
+	/** Quick Sort
+	 * @param array integer array
+	 * @param p index of left boundary
+	 * @param r index of right boundary
+	 */
+	public static void quicksort(int [] array, int p, int r)
+	{
+		if(p &lt; r)
+		{
+			int q = partition(array, p, r);
+			quicksort(array, p, q-1);
+			quicksort(array, q+1, r);
+		}
+	}
+
+	/** Random partition, swap random selected element with the last elemtn before paritioning
+	 * @param array integer array
+	 * @param p index of left boundary
+	 * @param r index of right boundary
+	 * @return index of pivot
+	 */
+	public static int randomPartition(int [] array, int p, int r)
+	{
+		Random ran = new Random();
+		int i = ran.nextInt(r-p+1);
+		i += p;
+
+		int temp = array[r];
+		array[r] = array[i];
+		array[i] = temp;
+
+		return partition(array, p, r);
+	}
+
+	/** Partition, makes elements on left of pivot are less than pivot, elements on right of pivot are greater than pivot
+	 * @param array integer array
+	 * @param p index of left boundary
+	 * @param r index of right boundary
+	 * @return index of pivot
+	 */
+	public static int partition(int [] array, int p, int r)
+	{
+		int pivot = array[r];
+		int i = p-1;
+		for(int j = p; j &lt; r; j++)
+		{
+			if(array[j] &lt; pivot)
+			{
+				i++;
+				int temp = array[i];
+				array[i] = array[j];
+				array[j] = temp;
+			}
+		}
+		int temp = array[i+1];
+		array[i+1] = array[r];
+		array[r] = temp;
+
+		//System.out.println("Pivot: "+pivot);
+		//display(array, p, r);
+
+		return i+1;
+	}
+
+	/* Generate a random integer array
+	 * @param size array size
+	 * @return random array
+	 */
+	public static int [] getArray(int size)
+	{
+		int [] array = new int[size];
+		Random r = new Random();
+
+		for(int i = 0; i &lt; size; i++)
+			array[i] = r.nextInt(100);
+
+		return array;
+	}
+
+	public static void display(int [] array, int l, int r)
+	{
+		for(int i = l; i &lt;= r; i++)
+			System.out.printf("%5d", array[i]);
+		System.out.println();
+	}
+
+	public static void main(String args[])
+	{
+		int [] array;
+		array = getArray(1&lt;&lt;20);
+
+		int [] array2;
+		array2 = Arrays.copyOf(array, array.length);
+
+		long start, end;
+
+		//quicksort
+		start = System.currentTimeMillis();
+		quicksort(array, 0, array.length-1);
+		end = System.currentTimeMillis();
+	    	System.out.printf("Quick sort time: %10f%n", (end-start)/1000000.0);
+
+		//random quicksort
+		start = System.currentTimeMillis();
+		randomQuicksort(array2, 0, array2.length-1);
+		end = System.currentTimeMillis();
+	    	System.out.printf("Random quicksort time: %10f%n", (end-start)/1000000.0);
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>

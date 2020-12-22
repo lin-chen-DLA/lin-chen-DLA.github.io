@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MATLAB</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Inheritance
+		</div>
+
+		<div class = "subtitle">Organization</div>
+		<div class = "block">
+		<ul>
+			/+Package/Car.m, parent class<br/>
+			/+Package/Sedan.m, child class<br/>
+			/test.m
+		</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+classdef Car
+    properties (Access = private)
+        producer
+    end
+
+    methods
+        % Constructor
+        function self = Car(p)
+            self.producer = p;
+        end
+        
+        % Accessor
+        function p = getProducer(self)
+            p = self.producer;
+        end
+        function disp(self)
+            fprintf('Producer: %s\n', self.producer);
+        end
+        
+        % Mutator
+        function self = setProducer(self, p)
+            self.producer = p;
+        end
+    end
+end
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+classdef Sedan &lt; Package.Car
+    properties (Access = private)
+        model
+    end
+
+    methods
+        % Constructor
+        function self = Sedan(p, m)
+            self = self@Package.Car(p);
+            self.model = m;
+        end
+        
+        % Accessor
+        function p = getModel(self)
+            p = self.model;
+        end
+        function disp(self)
+            disp@Package.Car(self)
+            fprintf('Model: %s\n', self.model);
+        end
+        
+        % Mutator
+        function self = setModel(self, m)
+            self.model = m;
+        end
+    end
+end
+		</pre>
+	</div>
+	<div class = "block">
+	<pre class = "prettyprint linenums">
+function test()
+    c = Package.Car('Honda');
+    c.disp();
+    
+    s = Package.Sedan('Honda', 'CRV');
+    s.disp();
+end
+	</pre>
+</div>
+	<div class = "block">
+		<ul>
+			<li><a href = "https://www.mathworks.com/help/matlab/matlab_oop/defining-interfaces.html">Define an Interface Subclass</a></li>
+		</ul>
+	</div>
+	</body>
+</html>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Greedy Algorithm</div>
+		<div class = "block">
+			<ul>
+				<li>At each decision point, makes choice that seems best at the moment</li>
+				<li>This heuristic strategy does not always produce an optimal solution</li>
+				<li>Steps
+					<ul>
+						<li>Determine the optimal substructure of the problem</li>
+						<li>Develop a recursive solution, using dynamic programming</li>
+						<li>Show that is we make the greedy choice, then only one subproblem remains</li>
+						<li>Prove that it is always safe to make the greedy choice</li>
+						<li>Develop a recursive algorithm that implements the greedy strategy</li>
+						<li>Convert the recursive algorithm to an iterative algorithm</li>
+					</ul>
+				</li>
+				<li>Greedy Steps
+					<ul>
+						<li>Cast the optimization problem as one in which we make a choice and are left with one subproblem to solve</li>
+						<li>Prove that there is always an optimal solution to the original problem that makes the greedy choice, so that the greedy choice is always safe</li>
+						<li>Demonstrate optimal substructure by showing that, having made the greedy choice, what remains is a subproblem with the property that if we combine an optimal solution to the subproblem with the greedy choice we have made, we arrive at an optimal solution to the original problem</li>
+					</ul>
+				</li>
+				<li>Greedy-choice property
+					<ul>
+						<li>Greedy algorithm makes its first choice before solving any subproblems; a dynamic programming solves the subproblems before making the first choice</li>
+						<li>Greedy progresses in a top-down fashion; a dynamic programming progresses in a bottom-up fashion</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class = "subtitle">A activity-selection problem</div>
+
+		<div class = "block">
+			<ul>
+				<li>Select a maximum-size subset of mutually compatible activities</li>
+			</ul>
+				<p style = "text-align:center;"><img src = "img/Activity.png" width = "70%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class P
+{
+	private int s, f;
+
+	public P(int s, int f)
+	{
+		this.s = s;
+		this.f = f;
+	}
+
+	public int getS() {return s;}
+	public int getF() {return f;}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//Top-Down
+import java.util.*;
+import javafx.util.*;
+
+public class A
+{
+	public static int firstEnd(P [] array, int start, int current)
+	{
+		if(start &gt;= current)
+			return start-1;
+
+		int i;
+		for(i = current-1; i &gt;= start; i--)
+		{
+			if(array[i].getF() &lt;g array[current].getS())
+				return i;
+		}
+		return i;
+	}
+
+	public static int secondStart(P [] array, int current, int end)
+	{
+		if(current &gt;= end)
+			return end+1;
+
+		int i;
+		for(i = current+1; i &lt;= end; i++)
+		{
+			if(array[i].getS() &gt; array[current].getF())
+				return i;
+		}
+		return i;
+	}
+
+	public static int activities(P [] array, int start, int end)
+	{
+		if(start &gt; end)
+			return 0;
+
+		int max = Integer.MIN_VALUE;
+
+		for(int i = start; i &lt;= end; i++)
+		{
+			int first = firstEnd(array, start, i);
+			int second = secondStart(array, i, end);
+			max = Math.max(max, activities(array, start, first)+activities(array, second, end)+1);
+		}
+
+		return max;
+	}
+
+	public static void main(String args[])
+	{
+		P [] array = new P[11];
+
+		array[0] = new P(1, 4);
+		array[1] = new P(3, 5);
+		array[2] = new P(0, 6);
+		array[3] = new P(5, 7);
+		array[4] = new P(3, 9);
+		array[5] = new P(5, 9);
+		array[6] = new P(6, 10);
+		array[7] = new P(8, 11);
+		array[8] = new P(8, 12);
+		array[9] = new P(2, 14);
+		array[10] = new P(12, 16);
+
+		System.out.println(activities(array, 0, array.length-1));
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//Top-Down with Memorization
+import java.util.*;
+import javafx.util.*;
+
+public class A
+{
+	public static int firstEnd(P [] array, int start, int current)
+	{
+		if(start &gt;= current)
+			return start-1;
+
+		int i;
+		for(i = current-1; i &gt;= start; i--)
+		{
+			if(array[i].getF() &lt; array[current].getS())
+				return i;
+		}
+		return i;
+	}
+
+	public static int secondStart(P [] array, int current, int end)
+	{
+		if(current &gt;= end)
+			return end+1;
+
+		int i;
+		for(i = current+1; i &lt;= end; i++)
+		{
+			if(array[i].getS() &gt; array[current].getF())
+				return i;
+		}
+		return i;
+	}
+
+	public static int activities(P [] array, int start, int end, int [][] c)
+	{
+		if(start &gt; end)
+			return 0;
+
+		if(c[start][end] &gt; 0)
+			return c[start][end];
+
+		int max = Integer.MIN_VALUE;
+
+		for(int i = start; i &lt;= end; i++)
+		{
+			int first = firstEnd(array, start, i);
+			int second = secondStart(array, i, end);
+			max = Math.max(max, activities(array, start, first, c)+activities(array, second, end, c)+1);
+		}
+
+		c[start][end] = max;
+		return max;
+	}
+
+	public static void main(String args[])
+	{
+		P [] array = new P[11];
+
+		array[0] = new P(1, 4);
+		array[1] = new P(3, 5);
+		array[2] = new P(0, 6);
+		array[3] = new P(5, 7);
+		array[4] = new P(3, 9);
+		array[5] = new P(5, 9);
+		array[6] = new P(6, 10);
+		array[7] = new P(8, 11);
+		array[8] = new P(8, 12);
+		array[9] = new P(2, 14);
+		array[10] = new P(12, 16);
+
+		int [][] c = new int[11][11];
+
+		System.out.println(activities(array, 0, array.length-1,c));
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//Bottom-Up
+import java.util.*;
+import javafx.util.*;
+
+public class A
+{
+	public static int firstEnd(P [] array, int start, int current)
+	{
+		if(start &gt;= current)
+			return start-1;
+
+		int i;
+		for(i = current-1; i &gt;= start; i--)
+		{
+			if(array[i].getF() &lt; array[current].getS())
+				return i;
+		}
+		return i;
+	}
+
+	public static int secondStart(P [] array, int current, int end)
+	{
+		if(current &gt;= end)
+			return end+1;
+
+		int i;
+		for(i = current+1; i &lt;= end; i++)
+		{
+			if(array[i].getS() &gt; array[current].getF())
+				return i;
+		}
+		return i;
+	}
+
+	public static int activities(P [] array, int start, int end)
+	{
+		int [][] c = new int[array.length][array.length];
+
+
+		for(int row = 0; row &lt; array.length; row++)
+		{
+			for(int column = 0; column &lt; array.length; column++)
+			{
+				if(row &gt; column)
+					continue;
+				int max = Integer.MIN_VALUE;
+				for(int i = row; i &lt;= column; i++)
+				{
+					int first = firstEnd(array, row, i);
+					int second = secondStart(array, i, column);
+					int firstPart, secondPart;
+					if(row &gt; first)
+						firstPart = 0;
+					else
+						firstPart = c[row][first];
+					if(second &gt; column)
+						secondPart = 0;
+					else
+						secondPart = c[second][column];
+					max = Math.max(max, firstPart+secondPart+1);
+				}
+				c[row][column] = max;
+			}
+		}
+
+		return c[start][end];
+	}
+
+	public static void main(String args[])
+	{
+		P [] array = new P[11];
+
+		array[0] = new P(1, 4);
+		array[1] = new P(3, 5);
+		array[2] = new P(0, 6);
+		array[3] = new P(5, 7);
+		array[4] = new P(3, 9);
+		array[5] = new P(5, 9);
+		array[6] = new P(6, 10);
+		array[7] = new P(8, 11);
+		array[8] = new P(8, 12);
+		array[9] = new P(2, 14);
+		array[10] = new P(12, 16);
+
+		System.out.println(activities(array, 0, array.length-1));
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//Bottom-Up with Constructing Subset
+/** An activity-selection problem in CLRS Ch16.1
+ * @author Lin Chen
+ * @since 11.14.2017
+ */
+import java.util.*;
+import javafx.util.*;
+
+public class A
+{
+	/** Get the valid activity before the current activity
+	 * @param array array of activities
+	 * @param start index of start activity
+	 * @param current index of current activity
+	 * @return {@code int}, index of valid activity before current activity
+	 */
+	public static int firstEnd(P [] array, int start, int current)
+	{
+		if(start &gt;= current)
+			return start-1;
+
+		int i;
+		for(i = current-1; i &gt;= start; i--)
+		{
+			if(array[i].getF() &lt; array[current].getS())
+				return i;
+		}
+		return i;
+	}
+
+	/** Get the valid activity after the current activity
+	 * @param array array of activities
+	 * @param current index of current activity
+	 * @param end index of end activity
+	 * @return {@code int}, index of valid activity after current activity
+	 */
+	public static int secondStart(P [] array, int current, int end)
+	{
+		if(current &gt;= end)
+			return end+1;
+
+		int i;
+		for(i = current+1; i &lt;= end; i++)
+		{
+			if(array[i].getS() &gt; array[current].getF())
+				return i;
+		}
+		return i;
+	}
+
+	/** Bottom-up with constructing set consisting of mutually compatible activities
+	 * @param array array of activities
+	 * @param start index of start activity
+	 * @param end index of end activity
+	 * @param s array to save a[k] to maximum c[start, end]
+	 * @return {@code int}, number of available mutually compatible activities
+	 */
+	public static int activities(P [] array, int start, int end, int [][] s)
+	{
+		int [][] c = new int[array.length][array.length];
+
+		for(int row = 0; row &lt; array.length; row++)
+		{
+			for(int column = 0; column &lt; array.length; column++)
+			{
+				if(row &gt; column)
+					continue;
+				int max = Integer.MIN_VALUE;
+				for(int i = row; i &lt;= column; i++)
+				{
+					int first = firstEnd(array, row, i);
+					int second = secondStart(array, i, column);
+					int firstPart, secondPart;
+					if(row &gt; first)
+						firstPart = 0;
+					else
+						firstPart = c[row][first];
+					if(second &gt; column)
+						secondPart = 0;
+					else
+						secondPart = c[second][column];
+					if(max &lt; firstPart+secondPart+1)
+					{
+						max = firstPart+secondPart+1;
+						s[row][column] = i;
+					}
+				}
+				c[row][column] = max;
+			}
+		}
+
+		return c[start][end];
+	}
+
+	/** print the maximum subset
+	 * @param array array of activities
+	 * @param s array to save a[k] to maximum c[start, end]
+	 * @param start index of start activity
+	 * @param end index of end activity
+	 */
+	public static void printActivity(P [] array, int [][] s, int start, int end)
+	{
+		if(start &gt; end)
+			return;
+		printActivity(array, s, start, firstEnd(array, start, s[start][end]));
+		System.out.printf("%5d", s[start][end]);
+		printActivity(array, s, secondStart(array, s[start][end], end), end);
+	}
+
+	/** print array
+	 * @param array integer array
+	 */
+	public static void display(int [][] array)
+	{
+		for(int i = 0; i &lt; array.length; i++)
+		{
+			for(int j = 0; j &lt; array[0].length; j++)
+			{
+				System.out.printf("%5d", array[i][j]);
+			}
+			System.out.println();
+		}
+	}
+
+	public static void main(String args[])
+	{
+		P [] array = new P[11];
+
+		array[0] = new P(1, 4);
+		array[1] = new P(3, 5);
+		array[2] = new P(0, 6);
+		array[3] = new P(5, 7);
+		array[4] = new P(3, 9);
+		array[5] = new P(5, 9);
+		array[6] = new P(6, 10);
+		array[7] = new P(8, 11);
+		array[8] = new P(8, 12);
+		array[9] = new P(2, 14);
+		array[10] = new P(12, 16);
+
+		int [][] s = new int[array.length][array.length];
+
+		System.out.println(activities(array, 0, array.length-1, s));
+
+		//display(s);
+
+		printActivity(array, s, 0, array.length-1);
+		System.out.println();
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//Greedy Algorithm, O(n)
+/** An activity-selection problem in CLRS Ch16.1
+ * @author Lin Chen
+ * @since 11.14.2017
+ */
+import java.util.*;
+import javafx.util.*;
+
+public class A
+{
+	/** Bottom-up with constructing set consisting of mutually compatible activities
+	 * @param array array of activities
+	 * @param start index of current activity
+	 * @param end index of end activity
+	 * @param records store activities
+	 */
+	public static void activitySelector(P [] array, int current, int end, ArrayList&lt;Integer&gt; records)
+	{
+		int m = current + 1;
+
+		while(m &lt;= end && array[m].getS() &lt; array[current].getF())
+			m++;
+
+		if(m &lt;= end)
+		{
+			records.add(m);
+			activitySelector(array, m, end, records);
+		}
+	}
+
+	public static void main(String args[])
+	{
+		P [] array = new P[11];
+
+		//sort activities by increasing finish time
+		array[0] = new P(1, 4);
+		array[1] = new P(3, 5);
+		array[2] = new P(0, 6);
+		array[3] = new P(5, 7);
+		array[4] = new P(3, 9);
+		array[5] = new P(5, 9);
+		array[6] = new P(6, 10);
+		array[7] = new P(8, 11);
+		array[8] = new P(8, 12);
+		array[9] = new P(2, 14);
+		array[10] = new P(12, 16);
+
+		ArrayList&lt;Integer&gt; records = new ArrayList&lt;Integer&gt;();
+
+		records.add(0);
+		activitySelector(array, 0, array.length-1, records);
+
+		for(Integer e : records)
+			System.out.printf("%5d", e);
+		System.out.println();
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//Iterative Greedy Algorithm, O(n)
+/** An activity-selection problem in CLRS Ch16.1
+ * @author Lin Chen
+ * @since 11.14.2017
+ */
+import java.util.*;
+import javafx.util.*;
+
+public class A
+{
+	/** Bottom-up with constructing set consisting of mutually compatible activities
+	 * @param array array of activities
+	 * @param start index of current activity
+	 * @param end index of end activity
+	 * @param records store activities
+	 */
+	public static ArrayList&lt;Integer&gt; activitySelector(P [] array)
+	{
+		ArrayList&lt;Integer&gt; records = new ArrayList&lt;Integer&gt;();
+
+		records.add(0);
+
+		int n = array.length;
+		int k = 0;
+
+		for(int m = 2; m &lt; n; m++)
+		{
+			if(array[m].getS() &gt;= array[k].getF())
+			{
+				records.add(m);
+				k = m;
+			}
+		}
+
+		return records;
+	}
+
+	public static void main(String args[])
+	{
+		P [] array = new P[11];
+
+		//sort activities by increasing finish time
+		array[0] = new P(1, 4);
+		array[1] = new P(3, 5);
+		array[2] = new P(0, 6);
+		array[3] = new P(5, 7);
+		array[4] = new P(3, 9);
+		array[5] = new P(5, 9);
+		array[6] = new P(6, 10);
+		array[7] = new P(8, 11);
+		array[8] = new P(8, 12);
+		array[9] = new P(2, 14);
+		array[10] = new P(12, 16);
+
+		ArrayList&lt;Integer&gt; records = activitySelector(array);
+
+		for(Integer e : records)
+			System.out.printf("%5d", e);
+		System.out.println();
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Huffman Codes</div>
+
+		<div class = "block">
+				<p style = "text-align:center;"><img src = "img/Huffman.png" width = "80%"></p>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li>CLRS Chapter 16.1</li>
+			</ul>
+		</div>
+	</body>
+</html>

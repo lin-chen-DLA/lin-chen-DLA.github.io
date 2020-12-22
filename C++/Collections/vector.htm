@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			vector
+		</div>
+		<div class = "subtitle">Initialization</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	for(; it != end; ++it)
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	//initialize vector
+	std::vector&lt;int&gt; a = {1, 2, 3, 4};//C++11
+	display(a.begin(), a.end());//1 2 3 4
+
+	int array[] = {1, 2, 3, 4, 5};
+	std::vector&lt;int&gt; g(array, array+sizeof(array)/sizeof(int));
+	display(g.begin(), g.end());//1 2 3 4 5
+
+	std::vector&lt;int&gt; b;
+	for(int i = 0; i &lt; 10; i++)
+		b.push_back(i);
+	display(b.begin(), b.end());//0 1 2 3 4 5 6 7 8 9
+
+	std::vector&lt;int&gt; c(10);
+	display(c.begin(), c.end());//0 0 0 0 0 0 0 0 0 0
+
+	std::vector&lt;int&gt; d(10, 100);//100 100 100 100 100 100 100 100 100 100
+	display(d.begin(), d.end());
+
+	std::vector&lt;int&gt; e(a.begin(), a.end());
+	display(e.begin(), e.end());//1 2 3 4
+
+	std::vector&lt;int&gt; f(a);
+	display(f.begin(), f.end());//1 2 3 4
+
+	//operator =
+	a = g;
+	display(a.begin(), a.end());//1 2 3 4 5
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Tranverse</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	for(; it != end; ++it)
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+template &lt;class T&gt;
+void display2(T it, T end)
+{
+	while(it != end)
+	{
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+		++it;
+	}
+	std::cout&lt;&lt;std::endl;
+}
+
+template &lt;class T&gt;
+void display3(T c)
+{
+	for(auto e : c)
+		std::cout&lt;&lt;e&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; v = {1, 2, 3, 4};
+
+	display(v.begin(), v.end());//1 2 3 4
+	display2(v.begin(), v.end());//1 2 3 4
+	display3(v);//1 2 3 4
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Retrieve Vector</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	for(; it != end; ++it)
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	//initialize vector
+	std::vector&lt;int&gt; a = {1, 2, 3, 4};//C++11
+	display(a.begin(), a.end());
+
+	//[]
+	std::cout&lt;&lt;a[1]&lt;&lt;std::endl;
+
+	//at
+	std::cout&lt;&lt;a.at(1)&lt;&lt;std::endl;
+
+	//front
+	std::cout&lt;&lt;a.front()&lt;&lt;std::endl;
+
+	//back
+	std::cout&lt;&lt;a.back()&lt;&lt;std::endl;
+
+	//data
+	int *ptr = a.data();
+	std::cout&lt;&lt;*ptr&lt;&lt;std::endl;
+
+	//begin
+	std::cout&lt;&lt;a.begin()[2];
+	std::cout&lt;&lt;*(a.begin()+2)&lt;&lt;std::endl;
+
+	//advance
+	auto it = a.begin();
+	std::advance(it, 1);
+	std::cout&lt;&lt;*it&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Insert and Delete</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include "Rectangle.h"
+
+template &lt;class T&gt;
+void display(T it, T end)
+{
+	for(; it != end; ++it)
+		std::cout&lt;&lt;*it&lt;&lt;" ";
+	std::cout&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	//initialize vector
+	std::vector&lt;int&gt; a = {1, 2, 3, 4};//C++11
+
+	//push_back
+	a.push_back(10);
+
+	//insert
+	a.insert(a.begin(), 20);//insert new element before the element at the specified position
+	std::vector&lt;int&gt; b(2, 100);
+	a.insert(a.begin(), b.begin(), b.end());
+
+	//erase
+	a.erase(a.begin()+2);
+	a.erase(a.begin(), a.begin()+2);
+
+	//clear
+	a.clear();
+
+	display(a.begin(), a.end());
+
+	//insert and emplace
+	std::vector&lt;Rectangle&gt; c;
+	c.push_back(Rectangle(2, 4));
+	c.insert(c.begin(), Rectangle(3, 5));//insert takes a reference to an object
+	c.emplace(c.begin(), 4, 6);//emplace takes the arguments to construct an object
+	for(int i = 0; i &lt; c.size(); i++)
+		std::cout&lt;&lt;c[i].toString()&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Capacity</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; a = {1, 2, 3, 4};//C++11
+
+	a.clear();
+
+	std::cout&lt;&lt;"Size: "&lt;&lt;a.size()&lt;&lt;std::endl;//0
+	std::cout&lt;&lt;"Capacity: "&lt;&lt;a.capacity()&lt;&lt;std::endl;//4
+	std::cout&lt;&lt;"Max_size: "&lt;&lt;a.max_size()&lt;&lt;std::endl;//4611686018427387903
+
+	if(a.empty())
+		std::cout&lt;&lt;"Empty ..."&lt;&lt;std::endl;//Empty ...
+
+	a.shrink_to_fit();//C++11
+	std::cout&lt;&lt;"Capacity: "&lt;&lt;a.capacity()&lt;&lt;std::endl;//0
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Operators</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; c = {1, 2, 3, 4};
+	std::vector&lt;int&gt; d = {1, 2, 3, 4};
+
+	if (c == d)
+		std::cout&lt;&lt;"Equals to ..."&lt;&lt;std::endl;
+
+	std::vector&lt;int&gt; e = {2, 3, 4, 5};
+	if(c &lt; e)
+		std::cout&lt;&lt;"Less than ..."&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Pointer in a Vector</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Rectangle.h
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+#include &lt;iostream&gt;
+
+class Rectangle
+{
+	private:
+		double width;
+		double length;
+	public:
+		//accessor
+		double getWidth() const;
+		double getLength() const;
+		double getArea() const;
+
+		//mutator
+		void setWidth(double w);
+		void setLength(double l);
+
+		//destructor
+		~Rectangle()
+		{
+			std::cout&lt;&lt;"Call Destructor ..."&lt;&lt;std::endl;
+		}
+};
+#endif
+			</pre>
+			<pre class = "prettyprint linenums">
+//Rectangle.cpp
+#include "Rectangle.h"
+
+double Rectangle::getWidth() const
+{
+	return width;
+}
+
+double Rectangle::getLength() const
+{
+	return length;
+}
+
+double Rectangle::getArea() const
+{
+	return width*length;
+}
+
+void Rectangle::setWidth(double w)
+{
+	width = w;
+}
+
+void Rectangle::setLength(double l)
+{
+	length = l;
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+//main.cpp
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include "Rectangle.h"
+
+int main(int argc, char *argv[])
+{
+	const int size = 10;
+	std::vector&lt;Rectangle*&gt; container;
+
+	//initialize vector
+	for(int i = 0 ; i &lt; size; i++)
+	{
+		Rectangle *temp = new Rectangle();
+		temp-&gt;setWidth(i+1);
+		temp-&gt;setLength(2*i+1);
+		container.push_back(temp);
+	}
+
+	for(int i = 0; i &lt; size; i++)
+		std::cout&lt;&lt;container[i]-&gt;getArea()&lt;&lt;std::endl;
+
+	//release memory
+	for(int i = 0; i &lt; size; i++)
+		delete container[i];
+
+	//purge vector
+	container.clear();
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Memory</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main(int argc, char *argv[])
+{
+	std::vector&lt;int&gt; c = {1, 2, 3};
+	std::cout&lt;&lt;"Address: "&lt;&lt;&c[0]&lt;&lt;std::endl;
+
+	c.resize(100);
+	std::cout&lt;&lt;"Address of resizing: "&lt;&lt;&c[0]&lt;&lt;std::endl;
+
+	std::vector&lt;int&gt; d = {1};
+	for(int i = 0; i &lt; 5; i++)
+	{
+		d.push_back(i);
+		std::cout&lt;&lt;"Address while the capacity changed: "&lt;&lt;d.capacity()&lt;&lt;" "&lt;&lt;&d[0]&lt;&lt;std::endl;
+	}
+
+	int array[] = {1, 2, 3, 4, 5};
+	d.insert(d.begin(), array, array+5);
+	for(int i = 0; i &lt; d.size(); i++)
+		std::cout&lt;&lt;"Address: "&lt;&lt;d.capacity()&lt;&lt;" "&lt;&lt;&d[i]&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cstring&gt;
+
+int main(int argc, char *argv[])
+{
+	int array[] = {10, 20, 30, 40};
+	std::vector&lt;int&gt; c = {1, 2, 3};
+
+	c.resize(c.size()+4);
+	memcpy(c.data()+3, &array[0], 4*sizeof(int));
+
+	for(int i = 0; i &lt; c.size(); i++)
+		std::cout&lt;&lt;c[i]&lt;&lt;std::endl;//1 2 3 10 20 30 40
+
+	return 0;
+}
+		</pre>
+	</div>
+		<div class = "block">
+			<ul>
+				<li>vector is always contiguous since C++03</li>
+				<li>The memory address may be changed as the vector's capacity is changed</li>
+				<li><a href = "http://stackoverflow.com/questions/259297/how-do-you-copy-the-contents-of-an-array-to-a-stdvector-in-c-without-looping">Copy array to vector</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/vector/vector/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

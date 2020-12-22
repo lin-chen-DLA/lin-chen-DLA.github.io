@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CSS</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Float
+		</div>
+
+		<div class = "subtitle">Float</div>
+		<div class = "block">
+			<li><span>float</span> property is used for positioning and formatting content</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+		.container {width: 60%; height: 200px; border: 1px solid red;}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class = "container"&gt;
+		Hello World!
+		&lt;div style = "float: left; border: 1px solid blue;"&gt;
+			Lin Chen
+		&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class = "container"&gt;
+		Hello World!
+		&lt;div style = "float: right; border: 1px solid blue;"&gt;
+			Lin Chen
+		&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class = "container"&gt;
+		Hello World!
+		&lt;div style = "float: none; border: 1px solid blue;"&gt;
+			Lin Chen
+		&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class = "container"&gt;
+		Hello World!
+		&lt;div style = "float: inherit; border: 1px solid blue;"&gt;
+			Lin Chen
+		&lt;/div&gt;
+	&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Clear</div>
+		<div class = "block">
+			<li><span>clear</span> property specifies what elements can float beside the cleared element and on which side
+				<ul>
+					<li>none - Allows floating elements on both sides. This is default</li>
+					<li>left - No floating elements allowed on the left side</li>
+					<li>right- No floating elements allowed on the right side</li>
+					<li>both - No floating elements allowed on either the left or the right side</li>
+					<li>inherit - The element inherits the clear value of its parent</li>
+				</ul>
+			</li>
+			<li>use the clear property is after you have used a float property on an element</li>
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div style = "width: 60%; height: 300px; border: 1px solid red;"&gt;
+		&lt;div style = "width: 100px; height: 100px; border: 1px solid blue; float: left;"&gt;
+			Block 1
+		&lt;/div&gt;
+		&lt;div style = "border: 1px solid green;"&gt;
+			Block 2
+		&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;br&gt;
+	&lt;div style = "width: 60%; height: 300px; border: 1px solid red;"&gt;
+		&lt;div style = "width: 100px; height: 100px; border: 1px solid blue; float: left;"&gt;
+			Block 1
+		&lt;/div&gt;
+		&lt;div style = "width: 100px; height: 100px; border: 1px solid green; clear: both;"&gt;
+			Block 2
+		&lt;/div&gt;
+	&lt;/div&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+		<div class = "subtitle">Clearfix Hack</div>
+		<div class = "block">
+			<li>If an element is taller than the element containing it, and it is floated, it will "overflow" outside of its container:</li>
+		<pre class = "prettyprint linenums">
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Box Sizing</div>
+		<div class = "block">
+			<li><span>box-sizing</span> property allows us to include the padding and border in an element's total width and height</li>
+			<li>By default, the width and height of an element is calculated like this
+				<ul>
+					<li>width + padding + border = actual width of an element</li>
+					<li>height + padding + border = actual height of an element</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Example</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+	&lt;title&gt;Document&lt;/title&gt;
+	&lt;style&gt;
+	* {
+  		box-sizing: border-box;
+	}
+	header {width: 90%; height: 100px; background-color: silver; margin: auto; text-align: center; padding: 20px;}
+	section {width: 90%; border: 1px solid red; margin: auto; overflow: auto; display: flex; flex-wrap: nowrap;}
+	section::after {  content: ""; clear: both; display: table;}
+	nav {width: 30%; float: left; border: 1px solid blue; background-color: green;}
+	nav ul {list-style-type: none;}
+	ul a:link {text-decoration: none;}
+	nav ul li {width: 80%; height: 60px; background-color: silver; margin: 5px auto; text-align: center; padding: 20px; border: 1px solid red;}
+	article {width: 70%; float: left; border: 1px solid blue; min-height: 300px; padding: 20px; background-color: white;}
+	footer {width: 90%; height: 100px; background-color: silver; margin: auto; text-align: center; padding: 20px;}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;header&gt;
+  &lt;h2&gt;Cities&lt;/h2&gt;
+&lt;/header&gt;
+
+&lt;section&gt;
+  &lt;nav&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="#"&gt;London&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#"&gt;Paris&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#"&gt;Tokyo&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+  
+  &lt;article&gt;
+    &lt;h1&gt;London&lt;/h1&gt;
+    &lt;p&gt;London is the capital city of England. It is the most populous city in the  United Kingdom, with a metropolitan area of over 13 million inhabitants.&lt;/p&gt;
+    &lt;p&gt;Standing on the River Thames, London has been a major settlement for two millennia, its history going back to its founding by the Romans, who named it Londinium.&lt;/p&gt;
+  &lt;/article&gt;
+&lt;/section&gt;
+
+&lt;footer&gt;
+  &lt;p&gt;Footer&lt;/p&gt;
+&lt;/footer&gt;
+	
+&lt;/body&gt;
+&lt;/html&gt;
+		</pre>
+		</div>
+	</body>
+</html>

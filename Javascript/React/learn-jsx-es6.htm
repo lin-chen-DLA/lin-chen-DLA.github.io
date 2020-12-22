@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Just Enough JSX and ES6
+		</div>
+
+		<div class = "subtitle">create-react-app</div>
+		<div class = "block">
+			<li>automatically pulls in a ton of dependencies such as babel , webpack , eslint</li>
+			<li>a development server with <span>hot reloading</span></li>
+			<li>provides a testing environment with <span>Jest</span></li>
+			<li>allows to build the React app</li>
+			<li>ready for ES6+ syntax</li>
+			<li>bundles all your JavaScript and assets</li>
+			<li>comes with CSS autoprefixer, SASS and CSS Modules support</li>
+		<pre class = "prettyprint linenums">
+//install create-react-app
+npm install -g create-react-app
+		</pre>
+		</div>
+		<div class = "block">
+			<li>created a files structure in the folder you told (todolist in this case), and initialized a Git repository</li>
+			<li>npm start, starts the development server</li>
+			<li>npm run build, bundles the app into static files for production</li>
+			<li>npm test, starts the test runner</li>
+			<li>npm run eject, removes this tool and copies build dependencies, configuration files and scripts into the app directory</li>
+		<pre class = "prettyprint linenums">
+//create project
+create-react-app learn-jsx-es6
+		</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Install
+		</div>
+
+		<div class = "subtitle">Install Node</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// install nvm, which is Node Version Manager
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+
+// source .bashrc
+. ~/.bashrc
+
+// install node
+nvm install node
+node --version // check node version
+
+// install the latest version of npm to global
+npm install -g npm@latest
+		</pre>
+		</div>
+		<div class = "subtitle">Frontend Installation</div>
+		<div class = "block">
+			<li>React + Redux web application</li>
+			<li>npm, package manager</li>
+			<li>bundler, such as webpack or Browserify</li>
+			<li>transpiler, such as Babel</li>
+		</div>
+
+		<div class = "subtitle">Backend Installation</div>
+		<div class = "block">
+			<li>Node + Express + MongoDB web API server</li>
+			<li>npm, package manager</li>
+			<li>NodeJS server, a JavaScript runtime</li>
+			<li>MongoDB, a Database that persists users' data</li>
+			<li>Express, a library that runs in the Node runtime to make dealing with HTTP traffic easier</li>
+			<li>MongooseJS, a library that makes dealing with MongoDB transactions easier</li>
+		</div>
+		<div class = "subtitle">Development Mode vs Production Mode</div>
+		<div class = "block">
+			<li>It is crucially important for you as an effective Full-Stack web app developer to understand the distinctions
+				<ul>
+					<li>between the Development (dev) mode and the Production (prod) mode</li>
+					<li>between the React Dev Server and the Node API Server</li>
+				</ul>
+			</li>
+		</div>
+	</body>
+</html>

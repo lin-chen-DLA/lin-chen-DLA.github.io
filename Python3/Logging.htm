@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Logging
+		</div>
+
+		<div class = "subtitle">Levels</div>
+		<div class = "block">
+			<ol>
+				<li>DEBUG, logging.debug()</li>
+				<li>INFO, logging.info()</li>
+				<li>WARNING, default level, only events of this level and above will be tracked
+					<ul>
+						<li>warnings.warn(), in library code if the issue is avoidable and the client application should be modified to eliminate the warning</li>
+						<li>logging.warning(), if there is nothing the client application can do about the situation, but the event should still be noted</li>
+					</ul>
+				</li>
+				<li>ERROR
+					<ul>
+						<li>Report suppression of an error without raising an exception</li>
+						<li>logging.error(), logging.exception()</li>
+					</ul>
+				</li>
+				<li>CRITICAL, logging.critical()</li>
+			</ol>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#WARNING is defalut level
+import logging
+
+logging.warning('Watch out!')  # will print a message to the console
+logging.info('I told you so')  # will not print anything
+			</pre>
+			<pre class = "prettyprint linenums">
+import logging
+logging.basicConfig(level=logging.DEBUG);
+
+logging.warning('Watch out!') # will print
+logging.info('I told you so') # will print
+			</pre>
+		</div>
+		<div class = "subtitle">Logging into file</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import logging
+
+logging.basicConfig(filename='log.txt', level=logging.DEBUG);
+
+logging.warning('Watch out!')
+logging.info('I told you so')
+			</pre>
+		</div>
+		<div class = "subtitle">Multiple modules</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# l2.py
+import logging
+
+def doSomething():
+    logging.info('Logging in lib ...');
+			</pre>
+			<pre class = "prettyprint linenums">
+# l1.py
+import logging
+import l2
+
+def main():
+    logging.basicConfig(filename='log.txt', level=logging.INFO);
+
+    logging.warning('Watch out!')  # will print a message to the console
+    logging.info('I told you so')  # will not print anything
+
+    l2.do_something()
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "subtitle">Logging format</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import logging
+
+logging.basicConfig(format='%(levelname)s %(asctime)s : %(message)s', filename='log.txt', level=logging.INFO);
+
+logging.warning('Watch out!')
+logging.info('I told you so')
+			</pre>
+		</div>
+		<div class = "subtitle">Logger</div>
+		<div class = "block">
+			<li>Expose the interface that application code directly uses</li>
+		</div>
+		<div class = "subtitle">Handler</div>
+		<div class = "block">
+			<li>Send the log records (created by loggers) to the appropriate destination</li>
+		</div>
+		<div class = "subtitle">Filter</div>
+		<div class = "block">
+			<li>Determining which log records to output</li>
+		</div>
+		<div class = "subtitle">Formatters</div>
+		<div class = "block">
+			<li>Specify the layout of log records in the final output</li>
+		</div>
+		<div class = "subtitle">The Logging Tree</div>
+		<div class = "block">
+			<li>Logger instances are configured in a tree structure, based on their <span>names</span></li>
+			<li>root has no name</li>
+			<li>If a logger does not have any handlers, the message is handed to its parent for processing</li>
+			<p style = "text-align:center;"><img src = "img/Logging.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			<span>l1.py</span>
+			<pre class = "prettyprint linenums">
+#WARNING is defalut level
+import logging
+import l2
+from package.l3 import do_something
+
+# create a logger
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG) # set up logging level
+# create handler
+handler = logging.FileHandler('log.txt', mode='a', encoding=None, delay=False)
+# create formater
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter) # set up format for handler
+logger.addHandler(handler) # add handler for logger
+
+def main():
+
+    logger.warning('Watch out!')  # will print a message to the console
+    logger.info('I told you so')  # will not print anything
+
+    l2.do_something()
+    do_something()
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "block">
+			<span>l2.py</span>
+			<pre class = "prettyprint linenums">
+import logging
+
+logger = logging.getLogger('l2')
+
+def do_something():
+    logger.info('Do Something ...')
+			</pre>
+		</div>
+		<div class = "block">
+			<span>__init__.py</span>
+			<pre class = "prettyprint linenums">
+# empty
+			</pre>
+		</div>
+		<div class = "block">
+			<span>l3.py</span>
+			<pre class = "prettyprint linenums">
+import logging
+
+logger = logging.getLogger('package.l3')
+
+def do_something():
+    logger.info('Do Something ...')
+			</pre>
+		</div>
+		<div class = "block">
+			<span>log.txt</span>
+			<pre class = "prettyprint linenums">
+2020-04-17 11:08:16,349 - root - WARNING - Watch out!
+2020-04-17 11:08:16,349 - root - INFO - I told you so
+2020-04-17 11:08:16,349 - l2 - INFO - Do Something ...
+2020-04-17 11:08:16,349 - package.l3 - INFO - Do Something ...
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.python.org/3/library/logging.html">Logging Documentation</a></li>
+				<li><a href = "https://stackoverflow.com/questions/4150148/logging-hierarchy-vs-root-logger/4150322#4150322">Stack Overflow</a></li>
+				<li><a href = "https://pymotw.com/3/logging/index.html">PyMOTW-3</a></li>
+				<li><a href = "https://docs.python.org/3/howto/logging.html">Tutorial</a></li>
+				<li><a href = "https://www.toptal.com/python/in-depth-python-logging">Python Logging: An In-Depth Tutorial</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

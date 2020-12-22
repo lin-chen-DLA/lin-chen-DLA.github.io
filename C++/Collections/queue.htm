@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			queue
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Container adapters are interfaces that provide limited functionalities regardless of the underlying structures</li>
+				<li>Container adapters do not inherited from the underlying container type</li>
+				<li>Underlying structures can be <span style = "color:red">deque</span> and <span style = "color:red">list</span>, default is deque</li>
+				<li><a href = "http://www.tenouk.com/Module30.html">The C++ STL Container Adaptor</a></li>
+				<li><a href = "https://stackoverflow.com/questions/13428618/trying-to-access-an-index-of-an-stdstack">stackoverflow.com</a></li>
+				<li><a href = "https://stackoverflow.com/questions/3873802/what-are-containers-adapters-c">What are Containers/Adaptors</a></li>
+			</ul>
+		</div>
+		<div class = "subtitle">Queue with List</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;list&gt;
+
+int main(int argc, char *argv[])
+{
+	std::list&lt;int&gt; v = {1, 2, 3, 4};
+	std::queue&lt;int, std::list&lt;int&gt;&gt; q(v);
+
+	q.push(5);
+	q.pop();
+
+	std::cout&lt;&lt;"Front: "&lt;&lt;q.front()&lt;&lt;std::endl;//2
+	std::cout&lt;&lt;"Back: "&lt;&lt;q.back()&lt;&lt;std::endl;//5
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>front of queue needs front of underlying container object</li>
+				<li>back of queue needs back of underlying container object</li>
+				<li>push of queue needs push_back of the underlying container object</li>
+				<li>pop of queue needs pop_front of the underlying container object</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.cplusplus.com/reference/queue/queue/">cplusplus.com</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

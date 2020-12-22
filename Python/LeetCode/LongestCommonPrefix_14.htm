@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>LeetCode</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">14. Longest Common Prefix</div>
+		<div class = "block">
+			<li><a href = "https://leetcode.com/problems/longest-common-prefix/description/">Description</a></li>
+		</div>
+		<div class = "subtitle">Vertial scanning</div>
+		<div class = "block">
+			O(S), S is the sum of all characters in all strings
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+def longestCommonPrefix(strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+	if len(strs) == 0:
+            return ""
+
+        length = len(strs[0])
+
+        for i in xrange(length):
+            for s in strs:
+                if i == len(s) or s[i] != strs[0][i]:
+                    return s[:i]
+
+        return strs[0]
+
+if __name__ == '__main__':
+    strs = ["flower","flow","flight"]
+    print strs, longestCommonPrefix(strs)
+
+    strs = ["dog","racecar","car"]
+    print strs, longestCommonPrefix(strs)
+
+    strs = ["", "b"]
+    print strs, longestCommonPrefix(strs)
+
+    strs = []
+    print strs, longestCommonPrefix(strs)
+
+			</pre>
+		</div>
+		<div class = "subtitle">Horizontal scanning</div>
+		<div class = "block">
+			O(S)
+			<pre class = "prettyprint linenums">
+if len(strs) == 0:
+            return ""
+
+        common = strs[0];
+
+        for i in xrange(1, len(strs)):
+            if len(common) &gt; len(strs[i]):
+                current = common
+                common = strs[i]
+            else:
+                current = strs[i]
+            for j in xrange(len(common)):
+                if common[j] != current[j]:
+                    common = common[:j]
+                    break
+
+        return common
+			</pre>
+		</div>
+		<div class = "block">
+			O(S)
+			<pre class = "prettyprint linenums">
+def longestCommonPrefix(strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        if len(strs) == 0:
+            return ""
+
+        common = strs[0];
+
+        for i in xrange(1, len(strs)):
+            while strs[i].find(common) != 0:
+                common = common[:len(common)-1]
+
+        return common
+			</pre>
+		</div>
+	</body>
+</html>

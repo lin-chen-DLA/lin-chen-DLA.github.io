@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Telnet</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Mail Server</div>
+		<div class = "subtitle">Setup</div>
+		<div class = "block">
+			<ul>
+				<li>sudo apt-get update</li>
+				<li>sudo apt-get install apache2, install apache2</li>
+				<li>sudo apt-get install php, install php 7</li>
+				<li>sudo apt-get install postfix, install Postfix mail server as an SMTP server
+					<ul>
+						<li>mathcs.ecsu.edu</li>
+						<li>sudo service postfix restart</li>
+						<li>sudo dpkg-reconfigure postfix, configure postfix</li>
+					</ul>
+				</li>
+				<li>sudo apt-get install dovecot-imapd dovecot-pop3d, install Dovecot mail delivery agent for POP/IMAP functionality
+					<ul>
+						<li>sudo service dovecot restart</li>
+					</ul>
+				</li>
+				<li><a href = "https://sendgrid.com/docs/Integrate/Mail_Servers/postfix.html">Use SendGrid as a relay host</a>, Azure blocks port 25
+					<ul>
+						<li><a href = "https://app.sendgrid.com/email_activity">SendGrid</a>, eagletiger1, eagle1980****</li>
+					</ul>
+				</li>
+				<li>sudo apt-get install squirrelmail, install Squirrel Mail</li>
+				<li>sudo cp /etc/squirrelmail/apache.conf /etc/apache2/sites-available/squirrelmail.conf</li>
+				<li>sudo service apache2 reload</li>
+				<li>sudo a2ensite squirrelmail.conf</li>
+				<li>sudo apt install php libapache2-mod-php, configure apache</li>
+				<li>sudo mkdir -p /var/www/html/myusername</li>
+				<li>usermod -m -d /var/www/html/myusername myusername</li>
+				<li>sudo chown -R myusername:myusername /var/www/html/myusername</li>
+				<li>sudo chmod a+rwxt /var/mail</li>
+				<li><a href = "https://www.tecmint.com/setup-postfix-mail-server-in-ubuntu-debian/">Tutorial</a>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>http://40.87.55.21/squirrelmail/src/login.php, Squirrel Mail System</li>
+				<li>http://40.87.55.21/username, personal Webpage</li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,1055 @@
+<html>
+    <head>
+       <title>Linux Tutorial</title>
+    </head>
+<body background = "/images/images.jpg" bgproperties = fixed>
+<font color = purple>
+	<li>alias cp="cp -i", set alias name for command</li>
+	<li>at
+	<ul>
+		<li>execute job at specific time</li>
+		<li>
+		<li>at -l or atq: show job queue</li>
+		<li>atrm: delete job</li>
+		<li>Ctrl-D, stop commands edit</li>
+		<li>+2 hours, execute in two hours</li>
+		<li>-f file, set file as input</li>
+		<li>/etc/at.allow, only users who are listed in this file may execute</li>
+		<li>/etc/at.deny, all users may use the at command except those listed in this file</li>
+	</ul>
+	</li>
+	<li>apropos, search command in whatis database</li>
+	<li><a href = "regularExpression.htm#awk">awk</a>, extract content from file</li>
+	<li>bc, an arbitrary precision calculator language</li>
+	<li>basename, strip directory and suffix from filenames</li>
+	<li>batch
+	<ul>
+		<li>almost same as at command with low priority</li>
+		<li>atq, display job queue</li>
+		<li>Ctrl+d, stop input</li>
+	</ul>
+	</li>
+	<li>bg, reactive a suspended program in the background</li>
+	<li>bzip2
+	<ul>
+		<li>bzip2 -9 -k myfile.doc: compress file</li>
+		<li>bzip2 -d myfile.doc.bz2: uncompress file</li>
+		<li>-k: keep old file</li>
+	</ul>
+	</li>
+	<li>bunzip2
+	<ul>
+		<li>uncompress .bz2 file</li>
+		<li>-v: show uncompress process</li>
+		<li>-k: keep old file</li>
+	</ul>
+	</li>
+	<li>cal
+	<ul>
+		<li>calender</li>
+		<li>-y: year</li>
+		<li>-m: month</li>
+		<li>cal 07 1999: show calender in July, 1999</li>
+	</ul>
+	</li>
+	<li>cat
+	<ul>
+		<li>set -o clobber, avoid to overwrite existing file</li>
+		<li>cat a.txt: show a.txt</li>
+		<li>cat a.txt b.txt &gt; c.txt: combine a.txt and b.txt to form c.txt, delete the previous content in c.txt</li>
+		<li>cat a.txt b.txt &gt;&gt; c.txt: attach the content in a.txt and b.txt to c.txt</li>
+		<li>cat &gt; a.txt: input content into a.txt from the keyboard</li>
+		<li>cat &lt;&lt; EOF, instruct the shell to use the text up to the next occurrence of this character sequence as the standard input</li>
+	</ul>
+	</li>
+	<li>cd
+	<ul>
+		<li>cd /: switch to root</li>
+		<li>cd ~: switch to home</li>
+		<li>cd ..: switch to upper layer</li>
+		<li>cd .: switch to current layer</li>
+	</ul>
+	</li>
+	<li>chattr
+	<ul>
+		<li>change file or directory attributes</li>
+		<li>sudo chattr +i test</li>
+		<li>sudo chattr -i test</li>
+	</ul>
+	</li>
+	<li>chfn
+	<ul>
+		<li>Change user information</li>
+	</ul>
+	</li>
+	<li>chgrp
+	<ul>
+		<li>change group</li>
+		<li>chgrp manager prilist.doc</li>
+	</ul>
+	</li>
+	<li>chmod
+	<ul>
+		<li>owner, group, other</li>
+		<li>a: all; u: owner; g: group; o: other</li>
+		<li>x: execute; r: read; w: write</li>
+		<li>chmod g+rw mydoc: give reading and writing permission for group</li>
+		<li>-R: change permission for all sub directory</li>
+	</ul>
+	</li>
+	<li>chown
+	<ul>
+		<li>change owner</li>
+		<li>chown lisa acclist.doc</li>
+	</ul>
+	</li>
+	<li>chsh
+	<ul>
+		<li>change user shell</li>
+		<li>-l: list shell in the system</li>
+	</ul>
+	</li>
+	<li>clear</li>
+	<li>cmp, compare two files and return first different character</li>
+	<li>column, column formatter</li>
+	<li>colrm 2 4 &lt; filename, removes the second through fourth characters from each line of the text file filename</li>
+	<li>compress
+	<ul>
+		<li>compress taipei24.pcf: compress file to .Z file</li>
+		<li>-d: uncompress .Z file</li>
+		<li>-v: show compress process</li>
+	</ul>
+	</li>
+	<li>comm
+	<ul>
+		<li>compare two files</li>
+		<li>-12: show line in both file</li>
+		<li>-23: only show line in first file</li>
+	</ul>
+	</li>
+	<li>cp
+	<ul>
+		<li>-b: make a backup of each existing destination file</li>
+		<li>-r: copy directory</li>
+		<li>-R: recursive copy</li>
+		<li>-p: keep same access priority</li>
+		<li>-i: ask before cover</li>
+		<li>-v: show copy process</li>
+		<li>-u: only cover older file</li>
+		<li>-l: creat link</li>
+	</ul>
+	</li>
+	<li>cpio
+	<ul>
+		<li>find . | cpio -o -v -O output, pack all file in current directory into output</li>
+		<li>cpio -i -v -I output, unpack output file</li>
+	</ul>
+	</li>
+	<li>cron
+	<ul>
+		<li><a href = "http://blog.csdn.net/tianlesoftware/article/details/5315039">Cron Tutorial</a></li>
+		<li>service cron start, start cron</li>
+		<li>crontab -u lchen file, execute command for user lchen</li>
+		<li>crontab -r, current crontab will be removed</li>
+		<li>crontab -l, list user's crontab</li>
+		<li>*/1****ls&gt;&gt;/tmp/ls.txt
+		<ul>
+			<li>*(minute) *(hour) *(date) *(month) *(week day)</li>
+			<li>/, times per unit</li>
+			<li>-, figure value range</li>
+			<li>,, seperate several number</li>
+			<li>#, comment</li>
+		</ul>
+		<li>shopt, permits changing shell options, -s, set, -u, unset</li>
+		</li>
+	</ul>
+	</li>
+	<li>curl, a client to get and send documents</li>
+	<li>cut
+	<ul>
+		<li>cut part of the file</li>
+		<li>ls -al | cut -b25-, output position 25 and after for each line</li>
+		<li>cut -d: -f1,5 /etc/passwd, use : as delimitor and output 1 and 5 fields</li>
+		<li>cut -d: -f1-5 /etc/passwd, output 1-5 fields</li>
+		<li>cut -d: -f5- /etc/passed, output 5th field and fields after it</li>
+		<li>ls -al | cut -d' ' -f1,5, output the first column and fifth column</li>
+	</ul>
+	</li>
+	<li>date
+	<ul>
+		<li><a href = "http://phoenix007.iteye.com/blog/278688">Tutorial</a></li>
+		<li>date "+%Y:%m:%d: Time:%H:%M:%S"</li>
+		<li>date -d "nov 22", display the date of Nov. 22 in this year</li>
+		<li>date -d '2 weeks', get the date after two weeks</li>
+		<li>date -d 'next monday', get the date of next monday</li>
+		<li>date -d 'dec 14 -2 weeks', get the date of two weeks before Dec. 14</li>
+		<li>date -d '-100 days', date before 100 days</li>
+	</ul>
+	</li>
+	<li>df
+	<ul>
+		<li>show hard disk space</li>
+		<li>-h: show size by GB</li>
+		<li>-T: show file system type</li>
+	</ul>
+	</li>
+	<li>diff
+	<ul>
+		<li>-b, ignore space change</li>
+		<li>-B, ignore blank lines</li>
+		<li>-I, ignore case sensitive</li>
+		<li>-r, recursive two direcotries</li>
+		<li>-y, compare two file by two column</li>
+		<li>diff -urN old/ new/ &gt; mysoft.patch</li>
+		<li>patch -p0 &lt; mysoft.patch</li>
+	</ul>
+	</li>
+	<li>dir</li>
+	<li>dirname file, display path name</li>
+	<li>dircolors, show color set up</li>
+	<li>du
+	<ul>
+		<li>-k: count by k</li>
+		<li>-m: count by m</li>
+		<li>-s: show space occupation in current directory</li>
+	</ul></li>
+	<li>echo
+	<ul>
+		<li>echo $PATH: show executable file path</li>
+		<li>echo $USER: show current user</li>
+		<li>echo $HOME: show home directory</li>
+		<li>echo $SHELL: show shell</li>
+		<li>echo $BROWSER: show browser environment variable</li>
+	</ul>
+	</li>
+	<li>editres, used for displaying and editing of X resources</li>
+	<li>env
+	<ul>
+		<li>set up environment variable</li>
+	</ul>
+	</li>
+	<li>eval, replace, then execute the command replaced
+	<ul>
+		<li>test.txt, "hello shell world!"</li>
+		<li>myfile="cat test.txt"</li>
+		<li>echo $myfile #result:cat test.txt</li>
+		<li>eval echo $myfile #result:hello shell world!</li>
+	</ul>
+	</li>
+	<li>exec &lt; filename, implement command and return</li>
+	<li>export PATH, export environment variable</li>
+	<li>expr
+	<ul>
+		<li>expression evaluator</li>
+		<li>expr 3 + 5, 8</li>
+		<li>expr 5 \* 3, 15</li>
+		<li>expr substr $string $positon $length, extrace substring of string</li>
+		<li>expr length $string, get the length of string</li>
+		<li>expr match "$string" '$substring', expr "$string" : '$substring', length of matching substring at beginning of string</li>
+		<li>expr index $string $substring, numberical position in $string of first character in $substring that matches</li>
+	</ul>
+	</li>
+	<li>dolphin, file manager</li>
+	<li>factor, decompose an integer into prime factors</li>
+	<li>fdisk
+	<ul>
+		<li>disk tool</li>
+	</ul>
+	</li>
+	<li>fg, put job back to the foreground</li>
+	<li>file
+	<ul>
+		<li>check file type</li>
+	</ul>
+	</li>
+	<li>find
+	<ul>
+		<li><a href = "http://www.phpq.net/linux/linux-find-demo.html">Example</a></li>
+		<li>find . -name my\*, search by name</li>
+		<li>find / -name "my*" -print: serach by name under root directory</li>
+		<li>find /usr -atime -3 -print: search files saved within 3 days</li>
+		<li>find /usr -ctime -5 -print: search files changed within 5 days</li>
+		<li>find /doc -user jacky -print: search by user name</li>
+		<li>find ./ -name 'main*' -exec more {} \;: search main* and show it</li>
+		<li>find ./ -perm 644, search by permission</li>
+		<li>-user, search by user name</li>
+		<li>-group, search by group name</li>
+		<li>-mtime, search by modify time, -n within n days, +n before n days</li>
+		<li>-atime, search by access time, -n wihtin n days, +n before n days</li>
+		<li>-ctime, search by create time</li>
+		<li>-type, search by type</li>
+		<li>-size, search by size</li>
+		<li>-newer f1 !f2, search file which is newer than f1 and older than f2</li>
+		<li>-ok: same as -exec except has prompt</li>
+		<li>-ls: list search results</li>
+		<li>-a: and</li>
+		<li>-o: or</li>
+		<li>!: not</li>
+		<li>-xtype, file type</li>
+		<li>find ./ -name testFile -exec more {} \;</li>
+		<li>find . -name \* -exec echo rm {} \;, display the files that can be deleted</li>
+		<li>find . -name \* -exec rm {} \;, delete files</li>
+		<li>find . -name \* -ok rm {} \;, prompt before the command is executed</li>
+		<li>rm $(find . -name \*), delete files</li>
+	</ul>
+	</li>
+	<li>finger
+	<ul>
+		<li>show user information</li>
+		<li>finger lchen</li>
+	</ul>
+	</li>
+	<li>fmt, simple-minded file formatter</li>
+	<li>fold, filter that wraps lines of input to a specified width</li>
+	<li>free, check system memory</li>
+	<li>ftp
+	<ul>
+		<li>ls: list directory</li>
+		<li>cd: change directory</li>
+		<li>lcd: change local directory</li>
+		<li>close: close ftp session</li>
+		<li>get: get file to local machine</li>
+		<li>put: upload file to remote machine</li>
+		<li>quit: quit ftp</li>
+	</ul>
+	</li>
+	<li><a href = "regularExpression.htm#grep">grep</a></li>
+	<li>groupadd
+	<ul>
+		<li>add group</li>
+		<li>groupadd -g 1001 group2, create group group2 and assign GID</li>
+	</ul>
+	</li>
+	<li>groupdel, del group</li>
+	<li>groupmod -g 10000 -n group3 group2, set GID and change group name to group3</li>
+	<li>groups
+	<ul>
+		<li>show current group</li>
+	</ul>
+	</li>
+	<li>gunzip
+	<ul>
+		<li>-f: cover same name file</li>
+		<li>-r: uncompress the file in the sub directory</li>
+		<li>-v: show uncompress process</li>
+	</ul>
+	</li>
+	<li>gzip
+	<ul>
+		<li>gzip -9 big1.bmp: compress to minimum file</li>
+		<li>gzip -1 big1.bmp: compress by fast way</li>
+		<li>gzip big1.bmp: default parameter is -6</li>
+		<li>-v: show compress process</li>
+		<li>-r: compress the files in the directory</li>
+		<li>-d: uncompress the file</li>
+	</ul>
+	</li>
+	<li>head
+	<ul>
+		<li>show first severl lines of file</li>
+		<li>head -3 example.c</li>
+	</ul>
+	</li>
+	<li>host
+	<ul>
+		<li>displays the information on hosts or domains</li>
+		<li>host www.google.com</li>
+	</ul>
+	</li>
+	<li>hostname
+	<ul>
+		<li>show host name</li>
+		<li>hostname is saved /etc/hostname</li>
+	</ul>
+	</li>
+	<li>id, show current user id and current group id, groups that current user belongs to</li>
+	<li>ifconfig
+	<ul>
+		<li>ifconfig eth0 down, equals to ifdown eth0, inactive ethernet</li>
+		<li>ifconfig eth0 up, equals to ifup eth0, active ethernet</li>
+		<li>ifconfig eth0, show ip information of eth0</li>
+		<li>ifconfig, show all net information</li>
+	</ul>
+	</li>
+	<li>info, equals to man command</li>
+	<li>infocmp, prints out extensive information about the current terminal</li>
+	<li>ip, show/manipulate routing, devices, policy routing and tunnels
+	<ul>
+		<li>ip addr, show ip address</li>
+	</ul>
+	</li>
+	<li>jobs, show jobs running in the background</li>
+	<li>join
+	<ul>
+		<li>join file1 file2, combine two files by same column</li>
+	</ul>
+	</li>
+	<li>kill
+	<ul>
+		<li>-15: terminal process in an orderly way</li>
+		<li>-2: interrupt process, a process can ignore this signal</li>
+		<li>-9: force to kill process</li>
+		<li>0: to stop all process except your shell</li>
+		<li>-l: list signal which is saved in /usr/include/signal.h</li>
+	</ul>
+	</li>
+	<li>ldconfig, configure share library</li>
+	<li>ldd
+	<ul>
+		<li>Check the library that program needs during execution</li>
+		<li>ldd /usr/bni/xterm</li>
+	</ul>
+	</li>
+	<li>less, display file</li>
+	<li>ln
+	<ul>
+		<li>ln targetfile linkname</li>
+		<li>default is hard line which sign several link for one file</li>
+		<li>-f: delete previous link before create new link</li>
+		<li>-s: symbolic link which like fast link in windows, can link directory</li>
+	</ul>
+	</li>
+	<li>locate
+	<ul>
+		<li>search library file</li>
+		<li>updatedb, update database for locate</li>
+	</ul>
+	</li>
+	<li>login</li>
+	<li>logout</li>
+	<li>lpr</li>
+	<li>ls
+	<ul>
+		<li>-l, use a long listing format</li>
+		<li>-a, do not ignore entries starting with .</li>
+		<li>-d, list  directory  entries instead of contents, and do not dereference symbolic links</li>
+		<li>-R, list subdirectories recursively</li>
+		<li>--color: color the directory and file if default is no color</li>
+		<li>-F: mark executable file and directory</li>
+	</ul>
+	</li>
+	<li>lsattr
+	<ul>
+		<li>list file and directory attributes</li>
+		<li>a, only append allowed</li>
+		<li>c, compress file</li>
+		<li>d, file is not saved by dump</li>
+		<li>i, file is immutable: no deletion, renaming, writing, and linking</li>
+		<li>s, secure deletion of file</li>
+		<li>S, Synchronous writing of modifications</li>
+		<li>u, allow undelete</li>
+	</ul>
+	</li>
+	<li>man
+	<ul>
+		<li>man date: check the manual of date</li>
+		<li>man 1 passwd, show passwd command in section 1</li>
+		<li>man 5 passwd, show passwd command in section 5</li>
+		<li>man -k passwd, show a list of man pages that have keyword in their one-line synopses</li>
+		<li>man -a passwd, show all man pages about passwd one after the other</li>
+	</ul>
+	</li>
+	<li>mandb
+	<ul>
+		<li>add additional man pages to your system, rebuild this file on Ubuntu, SUSE</li>
+		<li>makewhatis, on Red Hat</li>
+		<li>catman -w, Solaris, HP-UX, AIX</li>
+	</ul>
+	</li>
+	<li>manpath, default search path for command man</li>
+	<li>mesg, allow/not allow reveive message from others</li>
+	<li>mkbootdisk
+	<ul>
+		<li>create reboot disk</li>
+	</ul>
+	</li>
+	<li>mkdir
+	<ul>
+		<li>mkdir -p /company/saledept/jacky: build severl layer directory</li>
+		<li>mkdir -m 755 jacky: sign access priority when creat the directory</li>
+	</ul>
+	</li>
+	<li>mke2fs
+	<ul>
+		<li>format disk</li>
+	</ul>
+	</li>
+	<li>more, display file</li>
+	<li>mount
+	<ul>
+		<li>mount -tsmbfs //userdata.cs.odu.edu/grad/lchen /mnt/Z -o username=lchen,password=PASSWARD,rw,file_mode=0777,dir_mode=0777, mount the network disk</li>
+		<li>mount /dev/sdb1 /media/usb: mount usb disk under root</li>
+		<li>-t: specify format, ext2, msdos, iso9660, vfat</li>
+	</ul>
+	</li>
+	<li>mtools
+	<ul>
+		<li>Compitable commands with MS-DOS</li>
+	</ul>
+	</li>
+	<li>mv
+	<ul>
+		<li>-b, make a backup of each existing destination file</li>
+		<li>-i: ask before cover</li>
+		<li>-v: show moving process</li>
+	</ul>
+	</li>
+	<li>netstat
+	<ul>
+		<li>-n: show ip instead of address</li>
+		<li>-t: show tcp information</li>
+		<li>-u: show udp information</li>
+	</ul>
+	</li>
+	<li>Network
+	<ul>
+		<li>./network under /etc/rc.d/init.d</li>
+		<li>./network restart: restart network</li>
+	</ul>
+	</li>
+	<li>newgrp
+	<ul>
+		<li>switch group when user belongs to several groups</li>
+		<li>id, show the user id and current group id, groups that user belongs to</li>
+		<li>newgrp test, switch current group to test group</li>
+	</ul>
+	</li>
+	<li>nice
+	<ul>
+		<li><a href = "http://blog.csdn.net/thinkerabc/article/details/656236">Nice Tutorial</a></li>
+		<li>-20-19, program priority level</li>
+		<li>nice, show default priority level</li>
+		<li>need administrator privilege</li>
+		<li>nice --1 program, default priority level minus one</li>
+		<li>nice -n -13 program, set priority level number</li>
+	</ul>
+	</li>
+	<li>nl, line numbering filter</li>
+	<li>nohup
+	<ul>
+		<li>still run the job when user log out</li>
+		<li>nohup sort sales.dat &amp;: run sort ignoring user quitting</li>
+	</ul>
+	</li>
+	<li>nslookup
+	<ul>
+		<li>check ip address</li>
+		<li>local: check local ip</li>
+		<li>www.google.com: check google server ip</li>
+	</ul>
+	</li>
+	<li>okular
+	<ul>
+		<li>open pdf file</li>
+	</ul>
+	</li>
+	<li>ooffice
+	<ul>
+		<li>oocalc, excel</li>
+		<li>oowriter, word</li>
+		<li>oomath, formula edit</li>
+		<li>ooweb, dreamweaver</li>
+		<li>ooimpress, powerpoint</li>
+		<li>oobase, database</li>
+		<li>oodraw, painter</li>
+	</ul>
+	</li>
+	<li>ping
+	<ul>
+		<li>ping www.google.com, check if a host is alive</li>
+		<li>-c: set up ping times</li>
+		<li>-v: show ping process</li>
+	</ul>
+	</li>
+	<li>passwd
+	<ul>
+		<li>passwd: change current user password</li>
+		<li>passwd tommy: change password for tommy</li>
+		<li>-l: lock account</li>
+		<li>-u: unlock account</li>
+		<li>-d: not password</li>
+		<li>-f: force to change password when log in next time</li>
+	</ul>
+	</li>
+	<li>paste
+	<ul>
+		<li>paste -d -s -file1 file2</li>
+		<li>-d, figure delimitor</li>
+		<li>-s, cobmine files by merging line instead of combining line by line</li>
+	</ul>
+	</li>
+	<li>patch
+	<ul>
+		<li>update software</li>
+		<li>diff -urn old/ new/ &gt; mysoft.patch</li>
+		<li>patch -p0 &lt; mysoft.patch,/li>
+	</ul>
+	</li>
+	<li>printenv, print environment variable value</li>
+	<li>Printer
+	<ul>
+		<li>/etc/init.d/cups restart, restart the printer scheduler which is shut down after restart</li>
+	</ul>
+	</li>
+	<li>ps
+	<ul>
+		<li>-a: list all provesses which is running</li>
+		<li>-au: list detail information</li>
+		<li>-e: list all processes</li>
+		<li>-l: show detailed informaiton</li>
+		<li>-x: show executing processs</li>
+		<li>ps -ef | grep lchen, show all processes owned by lchen</li>
+		<li>ps -auxw | grep bash, show all processes with a process name of bash</li>
+	</ul>
+	</li>
+	<li>pstree, display a tree of processes</li>
+	<li>pwd, show current path</li>
+	<li>rclock
+	<ul>
+		<li>clock</li>
+	</ul>
+	</li>
+	<li>rdesktop -g 1024*768 -d 24 vclab.cs.odu.edu, remote desktop control</li>
+	<li>read
+	<ul>
+		<li>read -p "Press any key: " name, display prompt</li>
+		<li>read -t 1, set up waiting time</li>
+		<li>read -n1, read one type and exit</li>
+	</ul>
+	</li>
+	<li>readlink, disclose the file that a symbolic link points to</li>
+	<li>reboot, reboot computer<li>
+	<li>rename
+	<ul>
+		<li>rename multiple files</li>
+		<li>rename 's/\.bak$//' *.bak</li>
+		<li>renmae 'y/A-Z/a-z/' *</li>
+	</ul>
+	</li>
+	<li>renice
+	<ul>
+		<li><a href = "http://blog.csdn.net/thinkerabc/article/details/656236">Renice Tutorial</a></li>
+		<li>renice -5 -p 5200, change running program priority level to -5</li>
+		<li>-g, reset priority level for all programs of the group</li>
+		<li>-p, reset priority level for program</li>
+		<li>-u, reset priority level for all programs of the user</li>
+	</ul>
+	</li>
+	<li>reset, reset terminal parameters and clear text screen</li>
+	<li>resize, echoes commands necessary to set $TERM and $TERMCAP to duplicate the size (dimensions) of the current terminal</li>
+	<li>rm
+	<ul>
+		<li>-i: ask before delete</li>
+		<li>-v: show deleting process</li>
+		<li>-r: delete directory</li>
+		<li>-f: delete without asking</li>
+	</ul>
+	</li>
+	<li>rmdir</li>
+	<li>route, show internet route</li>
+	<li>rpm
+	<ul>
+		<li>-i: install</li>
+		<li>-test: test install</li>
+		<li>-replacepkgs: force to install the software which has been installed</li>
+		<li>-ignoreos: ignore safty checking</li>
+		<li>-v: show extra information</li>
+		<li>-vv: show debug information</li>
+		<li>-root DIRECTORY: figure out install directory</li>
+		<li>-e: delete software package</li>
+		<li>-U: update the software</li>
+	</ul>
+	</li>
+	<li>screen
+	<ul>
+		<li>-r, resume screen when remote connection is abnormal broken</li>
+	</ul>
+	</li>
+	<li>script, records (saves to a file) all the user keystrokes at the command-line in a console or an xterm window, exit to stop</li>
+	<li><a href = "regularExpression.htm#sed">sed</a>, stream editor</li>
+	<li>seq
+	<ul>
+		<li>seq 10, output 1 to 10</li>
+		<li>seq 2 7, output 2 to 7</li>
+		<li>seq 1 2 20, output 1 to 20 with step 2</li>
+	</ul>
+	</li>
+	<li>service
+	<ul>
+		<li>service --status-all, list all service</li>
+		<li>service program restart, start a service</li>
+	</ul>
+	</li>
+	<li>shopt, permits changing shell options, -s, set, -u, unset</li>
+	<li>sleep, pause and run the command later
+	<ul>
+		<li>(sleep 1800; echo "Lunch time ...") &</li>
+	</ul>
+	</li>
+	<li>sort
+	<ul>
+		<li>sort and output</li>
+		<li>-d, ignore specific character, such as %</li>
+		<li>-f, ignore capital or lower case characters</li>
+		<li>-u, ignore repeat line</li>
+		<li>-n, sort by value</li>
+		<li>-t, figure out delimiter</li>
+		<li>-r, reverse sort</li>
+		<li>sort -nk 5, sort file by the fifth column</li>
+		<li>sort +1 -2 -n file, sort second column by real value instead of the number at first position</li>
+	</ul>
+	</li>
+	<li>shutdown
+	<ul>
+		<li>shutdown -h now: shut down right now</li>
+		<li>shutdown -h +30: shut down in 30 minutes</li>
+		<li>shutdown -h 12:10: shut down at 12:10</li>
+		<li>shutdown -c: cancel the sutdown command</li>
+		<li>shutdown -r now: reboot computer</li>
+		<li>shutdown -k +10 'content': sent out a shut down warning, not real shut down</li>
+	</ul>
+	</li>
+	<li>stat, similar to ls, list file size, access, Uid, Gid, access time</li>
+	<li>ss, show net information</li>
+	<li>ssh
+	<ul>
+		<li>ssh lchen@hpcq.cs.odu.edu, log in hpcq</li>
+		<li>ssh lchen@hpcq.cs.odu.edu ls, implement ls on hpcq</li>
+	</ul>
+	</li>
+	<li>strings, filter character strings out of binary files
+	<ul>
+		<li>-n, return strings which are at lease the numer of that interger in length</li>
+		<li>-t, return the offset position for each line on which one or more strings are found</li>
+	</ul>
+	</li>
+	<li>su</li>
+	<li>sudo
+	<ul>
+		<li>make user has permission to perform root command</li>
+		<li>-l: check what kind of command can be executed by current user</li>
+		<li>-h: show sudo parameter</li>
+		<li>-s: figure out shell</li>
+		<li>-k: enforce to ake password when implement next sudo command</li>
+	</ul>
+	</li>
+	<li>tail
+	<ul>
+		<li>show several tail line of file</li>
+		<li>tail -20f example.c</li>
+	</ul>
+	</li>
+	<li>tar
+	<ul>
+		<li>tar -cf new1.tar my1*.doc: pack the files but no compress</li>
+		<li>tar -zcf new1.tar.gz my1*.doc: pack and compress the file by gzip</li>
+		<li>tar -Zcf new1.tar.Z my1*.doc: pack and compress the file by Compress</li>
+		<li>tar -zxvf onepackage.tgz: uncompress the files from package</li>
+		<li>-r: add file to the packed file</li>
+		<li>-r: update file in the packed file</li>
+		<li>-c, creat</li>
+		<li>-x, unpack a file</li>
+		<li>-t, check tar file</li>
+		<li>-z, compress by gzip</li>
+		<li>-Z, compress by Compress</li>
+		<li>-j, check bzip2 character</li>
+		<li>-v, show document when exectue packing</li>
+		<li>-f, fellow the document name</li>
+		<li>-p, use previous character</li>
+		<li>-P, sign the path</li>
+		<li>tar -cvf file.tar ./file</li>
+		<li>tar -zcvf file.tar.gz ./file</li>
+		<li>tar -jcvf file.tar.bz2 ./file</li>
+	</ul>
+	</li>
+	<li>tee
+	<ul>
+		<li>read data from standard input and output into file</li>
+		<li>-a, append to file</li>
+		<li>date | tee file1 file2</li>
+	</ul>
+	</li>
+	<li>telinit
+	<ul>
+		<li>change system running level</li>
+		<li>who -r, check running level</li>
+		<li>0, halt</li>
+		<li>1, single user mode</li>
+		<li>2, multiuser, without NFS</li>
+		<li>3, full multiuser mode</li>
+		<li>4, unused</li>
+		<li>5, X11</li>
+		<li>6, reboot</li>
+	</ul>
+	</li>
+	<li>test, check file types and compare values</li>
+	<li>time
+	<ul>
+		<li>time, show program running time</li>
+		<li>/usr/bin/time, show the exit status of the command and the elapsed time</li>
+	</ul>
+	</li>
+	<li>top
+	<ul>
+		<li>show top process running</li>
+		<li>-i: do not show spare process</li>
+		<li>-r: adjust process priority level</li>
+		<li>-u: show processes of the specific user</li>
+	</ul>
+	</li>
+	<li>touch, create a file</li>
+	<li>tr
+	<ul>
+		<li><a href = "http://blog.csdn.net/jeffreyst/article/details/8047065">tr Tutorial</a></li>
+		<li>transform characters</li>
+		<li>-c, complement the set of characters in string</li>
+		<li>-d, delete character</li>
+		<li>-s, delete repeat character</li>
+		<li>tr -cs "[:alpha:]" "\n" &lt; /path/to/file, creater a list of the words in /path/to/file, one per line</li>
+		<li>\\, "\"</li>
+		<li>\a, alarm</li>
+		<li>\b, backspace</li>
+		<li>\f, change page</li>
+		<li>\n, new line</li>
+		<li>\r, enter</li>
+		<li>\t, tab</li>
+		<li>\v, vertical table character</li>
+		<li>[a-z], [A-Z], [0-9]</li>
+		<li>[:alnum:], all alphabets and all numbers</li>
+		<li>[:alpha:], all alphabets</li>
+		<li>[:blank:], all blank space</li>
+		<li>[:cntrl:], all control characters</li>
+		<li>[:digit:], all numbers</li>
+		<li>[:graph:], all printable characters except blank</li>
+		<li>[:lower:], all lower case characters</li>
+		<li>[:print:], all printable characters</li>
+		<li>[:punct:], all delimiter characters</li>
+		<li>[:space:], all space</li>
+		<li>[:upper:], all capital letters</li>
+		<li>tr "h2" "3x" &lt; sname, change "h" to "3", "2" to "x"</li>
+		<li>cat file | tr "abc" "xyz" &gt; new_file, replace "abc" with "xyz"</li>
+		<li>grep \* output.txt | tr '[:lower:]' '[:upper:]'</li>
+		<li>cat testFile | tr [a-z] [A-Z]</li>
+		<li>cat file | tr [A-Z] [a-z]</li>
+		<li>cat file | tr -d "Snail" &gt; new_file, delete "Snail" in the strings</li>
+		<li>cat file | tr -d "\n\t" &gt; new_file, delete \n and \t</li>
+		<li>cat file | tr -s [a-zA-Z] &gt; new_file, delete repeat characters</li>
+		<li>cat file | tr -s "\n" &gt; new_file, delete empty lines</li>
+		<li>grep \* output.txt | tr -d '\n', delete all enter characters and print out</li>
+	</ul>
+	</li>
+	<li>tracepath, trace the path to specific address</li>
+	<li>tree, display the tree structure of a folder</li>
+	<li>type, show the type of the command</li>
+	<li>ulimit -a, show file size limit</li>
+	<li>umask, sets the file mode creation mask
+	<ul>
+		<li>set up default permission for new file and new directory</li>
+		<li>default value is 022</li>
+		<li>directory, 777-022</li>
+		<li>file, 666-022</li>
+		<li>umask, show umask value, 0022</li>
+		<li>umask 002, remove write for others, value is changed to 0002</li>
+	</ul>
+	</li>
+	<li>umount
+	<ul>
+		<li>umount /media/usb: remove usb disk under root</li>
+	</ul>
+	</li>
+	<li>uname
+	<ul>
+		<li>-a: show system information</li>
+	</ul>
+	</li>
+	<li>uncompress
+	<ul>
+		<li>uncompress one.Z</li>
+	</ul>
+	</li>
+	<li>uniq
+	<ul>
+		<li>uniq [option] [input] [output], remove the continuous repeat lines</li>
+		<li>-c: show the number of occurrences</li>
+		<li>-d: only print duplicate lines</li>
+		<li>-u: only show the line without repeat</li>
+	</ul>
+	</li>
+	<li>unzip
+	<ul>
+		<li>unzip onepackage.zip a*.doc: uncompress part of files</li>
+		<li>-f: uncompress updated files</li>
+		<li>-u: uncompress updated files and none-exist files</li>
+		<li>-o: uncompress and cover previous files</li>
+		<li>-n: uncompress none-exist files</li>
+		<li>-j: all uncompress under current directory, not mater where the files are</li>
+		<li>-d: uncompress under specfic directory</li>
+	</ul></li>
+	<li>uptime, check how long the system has been running</li>
+	<li>userdrake</li>
+	<ul>
+		<li>add, delete user and set up group</li>
+	</ul>
+	</li>
+	<li>userinfo
+	<ul>
+		<li>show user information</li>
+	</ul>
+	</li>
+	<li>usermod
+	<ul>
+		<li>-s, change shell</li>
+		<li>useradd -s /bin/sh sam, change shell to sh for sam</li>
+		<li>-d, change home directory</li>
+		<li>-g, change group</li>
+	</ul>
+	</li>
+	<li>usermount
+	<ul>
+		<li>mount device</li>
+	</ul>
+	</li>
+	<li>userpasswd
+	<ul>
+		<li>change password for current user</li>
+	</ul>
+	</li>
+	<li>users
+	<ul>
+		<li>show current user</li>
+	</ul>
+	</li>
+	<li>useradd
+	<ul>
+
+		<li>-m: create directory</li>
+		<li>-g: alocate group</li>
+		<li>-s: figure out shell</li>
+		<li>-u: figure out user number</li>
+		<li>adduser -d /usr/sam -m sam: create account for sam</li>
+		<li>adduser -s /bin/sh -g group -G adm,root gem: create account for gem</li>
+	</ul>
+	</li>
+	<li>userdel, delete user account</li>
+	<li>usleep, pauses #N microseconds</li>
+	<li>updatedb, update database for locate</li>
+	<li>uptime, show system load average, average processes number in the queue</li>
+	<li>vdir</li>
+	<li>vmstate, check memory</li>
+	<li>w, check who is logged in the system</li>
+	<li>wall, send message to all users who are connected to this machine</li>
+	<li>wc
+	<ul>
+		<li>wc names, get a count of the total number of lines, words, and characters of information contained in a file</li>
+		<li>-c: count character number</li>
+		<li>-l: count line</li>
+		<li>-L: count length of maxmium line</li>
+	</ul>
+	</li>
+	<li>whatis, serach system command database</li>
+	<li>whereis
+	<ul>
+		<li>whereis bzip2: show command directory and the directory for the man page</li>
+	</ul>
+	</li>
+	<li>which, show command place</li>
+	<li>who
+	<ul>
+		<li>show current user information</li>
+		<li>-b: show last log in time</li>
+		<li>-a: show all information</li>
+		<li>-r: show running level</li>
+	</ul>
+	</li>
+	<li>whoami</li>
+	<li>whois, specific domain information</li>
+	<li>write
+	<ul>
+		<li>send message to other persons</li>
+		<li>who, check who is connecting to this machine</li>
+		<li>write lchen, start write and send message to lchen</li>
+	</ul>
+	</li>
+	<li>xargs, create command line
+	<ul>
+		<li>find /etc -type f -print | xargs grep LUENE02</li>
+	</ul>
+	</lI>
+	<li>xdpyinfo, information about the X server</li>
+	<li>xev, displays the X events</li>
+	<li>xine
+	<ul>
+		<li>Moive player</li>
+	</ul>
+	</li>
+	<li>xhost
+	<ul>
+		<li>xhost, display the machines that are allowed to access current machine</li>
+		<li>xhost +, allow all machines access current machine</li>
+		<li>xhost + hpcq.cs.odu.edu, add machine to allowed list</li>
+		<li>xhost - hpcq.cs.odu.edu, remove machine from allowed list</li>
+	</ul>
+	</li>
+	<li>xkill
+	<ul>
+		<li>xkill -id 0*340000b, kill creator of resource 0*340000b</li>
+	</ul>
+	</li>
+	<li>xlsclients
+	<ul>
+		<li>list the display clients and program</li>
+		<li>xlsclients -l -a, list all information</li>
+	</ul>
+	</li>
+	<li>xmag, magnify parts of the screen</li>
+	<li>xman, display of man pages</li>
+	<li>xmodmap, used to change the keyboard mapping</li>
+	<li>xmore, more with graphic interface</li>
+	<li>xprop, display information about clients</li>
+	<li>xrandr, check monitor resolution</li>
+	<li>xset, set up keyboard click, sound, or the screen saver</li>
+	<li>xwd, save the current screen contents in a file</li>
+	<li>xwininfo
+	<ul>
+		<li>display window information</li>
+		<li>-geometry 81*24+0+0, window of 81 char by 24 line lines in the upper left corner of the screen</li>
+	</ul>
+	</li>
+	<li>zdump
+	<ul>
+		<li>zdump EST, echoes the time in a specified time zone</li>
+	</ul>
+	</li>
+	<li>zip
+	<ul>
+		<li>zip new1.zip my1*.doc: compress and pack files</li>
+		<li>zip -d new1.zip my18.doc: delete file from compress file</li>
+		<li>zip -g new1.zip my32.doc: add file into compress file</li>
+		<li>zip -u new1.zip my2*.doc: update file in the compress file</li>
+		<li>-r: compress directory</li>
+	</ul>
+	</li>
+	<li>Device
+	<ul>
+		<li>Touchpad
+		<ul>
+			<li>in /ect/X11/xorg.conf</li>
+			<li>Section "InputDevice"</li>
+			<li>Identifier "Synaptics Touchpad"</li>
+			<li>Driver "synaptics"</li>
+			<li>Option "SendCoreEvents" "true"</li>
+			<li>Option "Device" "/dev/psaus"</li>
+			<li>Option "Protocol" "auto-dev"</li>
+			<li>Option "HorizEdgeScroll" "0"</li>
+			<li>Option "SHMConfig" "0"</li>
+			<li>EndSection</li>
+			<li>synclient touchpadoff=1, turn off touchpad</li>
+			<li>synclient touchpadoff=0, turn on touchpad</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+</font>
+ 
+</body>
+</html>

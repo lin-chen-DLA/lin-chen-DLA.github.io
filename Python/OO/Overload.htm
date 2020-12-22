@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Override Methods
+		</div>
+
+		<div class = "subtitle">__float__, <span>executed by float()</span></div>
+		<div class = "subtitle">__hex__, <span>executed by hex()</span></div>
+		<div class = "subtitle">__int__, <span>executed by int()</span></div>
+		<div class = "subtitle">__long__, <span>executed by long()</span></div>
+		<div class = "subtitle">__oct__, <span>executed by oct()</span></div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+class Integer(object):
+
+    def __init__(self, value):
+        self._value = value;
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, v):
+        self._value = v;
+
+    @value.deleter
+    def value(self):
+        del self._value
+
+    def __str__(self):
+        return "Value: %d" % self._value
+
+    def __float__(self):
+        return float(self._value)
+
+def main():
+    i1 = Integer(-10);
+
+    print(float(i1))
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+
+		<div class = "subtitle">__abs__, <span>executed by abs()</span></div>
+		<div class = "subtitle">__pow__, <span>executed by pow()</span></div>
+		<div class = "subtitle">__divmod__, <span>executed by divmod()</span></div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+class Integer(object):
+
+    def __init__(self, value):
+        self._value = value;
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, v):
+        self._value = v;
+
+    @value.deleter
+    def value(self):
+        del self._value
+
+    def __str__(self):
+        return "Value: %d" % self._value
+
+    def __abs__(self):
+        return Integer(abs(self._value))
+
+    def __pow__(self, p):
+        return Integer(pow(self._value, p))
+
+    def __divmod__(self, other):
+        return (Integer(self._value/other._value), Integer(self._value%other._value))
+
+def main():
+    i1 = Integer(-10);
+
+    print(abs(i1)) # __abs__
+    print(pow(i1, 2)) # __pow__
+
+    a, b = divmod(Integer(10), Integer(3)) # __divmod__
+    print(a)
+    print(b)
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">__delattr__, execuate when an attribute is deleted, work with <span>delattr</span> function</div>
+		<div class = "subtitle">__getattr__, execute when the accessed attribute does not exist, work with <span>getattr</span> function</div>
+		<div class = "subtitle">__setattr__, execute when an attribute is assigned a value, work with <span>setattr</span> function</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+class Vehicle(object):
+
+    def __init__(self, brand, year):
+        self._brand = brand
+        self._year = year
+
+    @property
+    def brand(self):
+        return self._brand
+
+    @brand.setter
+    def brand(self, b):
+        self._brand = b;
+
+    @brand.deleter
+    def brand(self):
+        del self._brand
+
+    @property
+    def year(self):
+        return self._year
+
+    @year.setter
+    def year(self, y):
+        self._year = y
+
+    @year.deleter
+    def year(self):
+        del self._year
+
+    def __getattr__(self, name):
+        print("Call __getattr__ ... %s" % name)
+        if name == '_brand':
+            return 'Br'
+        if name == '_year':
+            return 0
+
+    def __str__(self):
+        return "Brand: %s, year: %d" % (self._brand, self._year)
+
+def main():
+    v = Vehicle("Buick", 1998)
+    print(v)
+
+    delattr(v, 'year')
+    print(v) # call __getattr__
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+
+		<div class = "subtitle">__contains__, execuate by <span>in</span></div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+class MyRange:
+    def __init__(self, start, stop, step):
+        self.__sequence = range(start, stop, step);
+ 
+    def __str__(self):
+        s = '[';
+        for i in self.__sequence:
+            s = s + ' ' + str(i)
+
+        return s + ' ]'
+
+    def __contains__(self, value):
+        return True
+
+def main():
+    l = MyRange(0, 10, 1);
+
+    print(1 in l) # __contains__
+
+if __name__ == '__main__':
+    main();
+		</pre>
+		</div>
+
+		<div class = "subtitle">__getattribute__, execuate no matter the attribute exists or not</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+class Vehicle(object):
+
+    def __init__(self, brand):
+        self.__brand = brand
+
+    def __str__(self):
+        return "Brand: %s" % self.__brand
+
+    def __getattribute__(self, name):
+        return 'Hello World!'
+
+def main():
+    v = Vehicle("Buick")
+
+    print(v._Vehicle__brand) # attribute exist
+
+    print(v.year) # attribute does not exist
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+
+		<div class = "subtitle">__len__, <span>len()</span></div>
+		<div class = "subtitle">__getitem__, <span>[]</span></div>
+		<div class = "subtitle">__setitem__, <span>[]</span></div>
+		<div class = "block">
+			<li>provides subscript access</li>
+			<li>throw IndexError</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+class MyRange:
+    def __init__(self, start, stop, step):
+        self.__sequence = range(start, stop, step);
+ 
+    def __getitem__(self, index):
+        return self.__sequence[index]
+
+    def __str__(self):
+        s = '[';
+        for i in self.__sequence:
+            s = s + ' ' + str(i)
+
+        return s + ' ]'
+
+    def __len__(self):
+        return len(self.__sequence)
+
+    def __getitem__(self, index):
+        return self.__sequence[index]
+
+    def __setitem__(self, index, value):
+        self.__sequence[index] = value
+
+    def __delitem__(self, index):
+        del self.__sequence[index]
+
+def main():
+    l = MyRange(0, 10, 1);
+
+    print(l) # __str__
+    print(len(l)) # __len__
+    print(l[1]) # __getitem__
+    l[1] = 100 # __setitem__
+    print(l)
+
+    for e in l:
+        print(e)
+
+    del l[1]
+    print(l)
+
+if __name__ == '__main__':
+    main();
+		</pre>
+		</div>
+		<div class = "subtitle">__iter__, executed by <span>iter()</span></div>
+		<div class = "block">
+			<li>support iterators</li>
+		</div>
+		<div class = "block">
+			<li>Define next function, iterable and iterator are same, it is consumed in a single iteration</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+class RangeIterator:
+    def __init__(self, start, stop, step):
+        self.__sequence = range(start, stop, step);
+        self.__nextIndex = 0;
+
+    def __iter__(self):
+        return self;
+
+    def next(self):
+        try:
+            value = self.__sequence[self.__nextIndex];
+        except IndexError:
+            raise StopIteration
+        else:
+            self.__nextIndex += 1;
+            return value;
+		</pre>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+from o import RangeIterator;
+
+l = RangeIterator(0, 10, 1); #[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+for e in l: #0 1 2 3 4 5 6 7 8 9
+    print e,
+print
+
+for e in l: #do not print anything
+    print e,
+
+l2 = RangeIterator(0, 10, 1);
+i2 = iter(l2);
+while 1:
+    try:
+        value = i2.next();
+    except StopIteration:
+        break;
+    else:
+        print value,
+		</pre>
+		</div>
+
+		<div class = "subtitle">__call__, make object callable, <span>callable(obj)</span> returns True</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+
+    def __init__(self, brand, year):
+        print('Create a Vehicle ...')
+        self._brand = brand;
+	self._year = year;
+
+    # make object callable
+    # *args is used to allow passing variable arguments to the __call__() function
+    # **kwargs is used to allow passing named arguments to the __call__() function
+    def __call__(self, *args, **kwargs):
+        print(args)
+        print(kwargs)
+
+def main():
+    v = Vehicle("Lincoln", 1998);
+
+    v()
+    v(10, 'Hello World', name = 'Lin')
+
+if __name__ == "__main__":
+	main()
+		</pre>
+		</div>
+
+		<div class = "subtitle">__hash__, can be checked by <span>hash()</span>, used by hashed collections including <span>set</span>, <span>frozenset</span>, and <span>dict</span></div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+class Vehicle(object):
+
+    def __init__(self, brand):
+        self.__brand = brand
+
+    def __str__(self):
+        return "Brand: %s" % self.__brand
+
+    def __hash__(self):
+        return hash(self.__brand)
+
+def main():
+    v = Vehicle("Buick")
+    print(hash(v))
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+
+		<div class = "subtitle">__str__, executed by <span>str()</span></div>
+		<div class = "block">
+			<li>define a class whose objects can be output with <span>print</span> function</li>
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+class Vehicle(object):
+
+    def __init__(self, brand):
+        self.__brand = brand
+
+    def __str__(self):
+        return "Brand: %s" % self.__brand
+
+def main():
+    v = Vehicle("Buick")
+    print(v)
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">__format__, executed by <span>.format()</span></div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+class Vehicle(object):
+
+    def __init__(self, brand):
+        self.__brand = brand
+
+    def __str__(self):
+        return "Brand: %s" % self.__brand
+
+    def __format__(self, formatstr):
+        print(formatstr)
+        return "Inside {1:{0}}".format(formatstr, self.__brand)
+
+def main():
+    v = Vehicle("Buick")
+
+    print('Vehicle |{:&gt;20s}|'.format(v))
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.python.org/2/genindex-_.html">Index – _</a></li>
+			<li><a href = "https://rszalski.github.io/magicmethods/">A Guide to Python's Magic Methods</a></li>
+			<li>Python How to Program, Chapter 8</li>
+			<li><a href = "https://realpython.com/operator-function-overloading/">Operator and Function Overloading</a></li>
+		</div>
+	</body>
+</html>

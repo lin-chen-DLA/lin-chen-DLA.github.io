@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Polymorphism
+		</div>
+
+		<div class = "block">
+			<ul>
+				<li>Polymorphism allows <span style = "color:red">an object refernce variable or an object pointer</span> to reference objects of different types, and to call the correct member functions, depending upon the type of object being reference.</li>
+				<li>Polymorphic behavior is not possible when an object is passed by value.</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Redefining, derived class redefine a base class member function, which is statically bound</li>
+				<li>Override, redefine a virtual function, which is dynamically bound
+				<ul>
+					<li style = "color:red">Declare the override functions virtual</li>
+					<li style = "color:red">Declare the destructor virtual</li>
+					<li style = "color:red">Any class that has a virtual member function should also have a virtual destructor</li>
+				</ul>
+				</li>
+			</ul>
+		</div>
+	<div class = "subtitle">Static Binding</div>
+		<div class = "block">
+			<p style="text-align:center;"><img src = "img/StaticBinding.png" width = 70%></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include "Vehicle.h"
+#include "Car.h"
+#include "Bicycle.h"
+
+void display(Vehicle &v)
+{
+	std::cout&lt;&lt;v.getProducer()&lt;&lt;std::endl;
+	std::cout&lt;&lt;v.toString()&lt;&lt;std::endl;//toString in Vehicle class is called
+}
+
+int main(int argc, char *argv[])
+{
+	Vehicle v("Buick");
+	Car c("Honda", "Accord");
+	Bicycle b("Yongjiu", 26);
+
+	std::cout&lt;&lt;"-----------------------"&lt;&lt;std::endl;
+	display(v);
+	display(c);
+	display(b);
+	std::cout&lt;&lt;"-----------------------"&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				At compile time, toString() function of Vehicle class is bound. Even toString() has been redefined in Car and Bicyle, the toString() of Vehicle class will be called
+			</ul>
+		</div>
+			<div class = "subtitle">Dynamic Binding</div>
+		<div class = "block">
+			<p style="text-align:center;"><img src = "img/DynamicBinding.png" width = 70%></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Vehicle.h
+#ifndef VEHICLE_H
+#define VEHICLE_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Vehicle
+{
+	private:
+		std::string producer;
+	public:
+		//constructor
+		Vehicle(std::string s);
+
+		std::string getProducer() const {return producer;}
+		void setProducer(std::string producer);
+
+		virtual std::string toString();
+
+		~Vehicle();
+};
+#endif
+			</pre>
+
+			<pre class = "prettyprint linenums">
+//Vehicle.cpp
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+
+//constructor
+Vehicle::Vehicle(std::string s):producer(s)
+{
+	std::cout&lt;&lt;"Vehicle Constructor ..."&lt;&lt;std::endl;
+}
+
+void Vehicle::setProducer(std::string producer)
+{
+	this-&gt;producer = producer;
+}
+
+std::string Vehicle::toString()
+{
+	std::string temp;
+	temp = "Vehicle Producer: "+producer;
+	return temp;
+}
+
+Vehicle::~Vehicle()
+{
+	std::cout&lt;&lt;"Vehicle Destructor ..."&lt;&lt;std::endl;
+}
+			</pre>
+
+			<pre class = "prettyprint linenums">
+//Car.h
+#ifndef CAR_H
+#define CAR_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+
+class Car : public Vehicle
+{
+	private:
+		std::string model;
+	public:
+		//constructor
+		Car(std::string p, std::string m);
+
+		std::string getModel() const {return model;}
+		void setModel(std::string model);
+
+		std::string toString();
+
+		~Car();
+};
+#endif
+			</pre>
+
+			<pre class = "prettyprint linenums">
+//Car.cpp
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+#include "Car.h"
+
+//constructor
+Car::Car(std::string p, std::string m):Vehicle(p), model(m)
+{
+	std::cout&lt;&lt;"Car Constructor ..."&lt;&lt;std::endl;
+}
+
+void Car::setModel(std::string model)
+{
+	this-&gt;model = model;
+}
+
+std::string Car::toString()
+{
+	std::string temp;
+	temp = "Car Producer: "+getProducer()+" Model: "+model;
+	return temp;
+}
+
+Car::~Car()
+{
+	std::cout&lt;&lt;"Car Destructor ..."&lt;&lt;std::endl;
+}
+			</pre>
+
+			<pre class = "prettyprint linenums">
+//Bicycle.h
+#ifndef BICYCLE_H
+#define BICYCLE_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+
+class Bicycle : public Vehicle
+{
+	private:
+		int size;
+	public:
+		//constructor
+		Bicycle(std::string p, int s);
+
+		int getSize() const {return size;}
+		void setSize(int s);
+
+		std::string toString();
+
+		~Bicycle();
+};
+#endif
+			</pre>
+
+			<pre class = "prettyprint linenums">
+//Bicycle.cpp
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include "Vehicle.h"
+#include "Bicycle.h"
+
+//constructor
+Bicycle::Bicycle(std::string p, int s) : Vehicle(p), size(s)
+{
+	std::cout&lt;&lt;"Bicycle Constructor ..."&lt;&lt;std::endl;
+}
+
+void Bicycle::setSize(int s)
+{
+	size = s;
+}
+
+std::string Bicycle::toString()
+{
+	std::string temp;
+	temp = "Bicycle Producer: "+getProducer()+" Size: "+std::to_string(size);
+	return temp;
+}
+
+Bicycle::~Bicycle()
+{
+	std::cout&lt;&lt;"Bicycle Destructor ..."&lt;&lt;std::endl;
+}
+			</pre>
+
+			<pre class = "prettyprint linenums">
+//main.cpp
+#include &lt;iostream&gt;
+#include "Vehicle.h"
+#include "Car.h"
+#include "Bicycle.h"
+
+void display(Vehicle &v)
+{
+	std::cout&lt;&lt;v.getProducer()&lt;&lt;std::endl;
+	std::cout&lt;&lt;v.toString()&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	Vehicle v("Buick");
+	Car c("Honda", "Accord");
+	Bicycle b("Yongjiu", 26);
+
+	std::cout&lt;&lt;"-----------------------"&lt;&lt;std::endl;
+	display(v);
+	display(c);
+	display(b);
+	std::cout&lt;&lt;"-----------------------"&lt;&lt;std::endl;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>The compiler does not bind calls to toString() function of Vehicle class. Instead, it allows the program to bind calls at runtime. The version of toString() that belongs to the same class as the object responsible for the call</li>
+				<li>Virtual functions are declared by placing virtual before the return type in the base class's prototype</li>
+				<li style = "color:red">When a member function of the base class is declared virtual, any redefined versions of the functions in the derived class automatically become virtual. It is not necessary to declare the same functions as virtual in derived class. The redefined versions of the functions int the class derived from the derived class are also virtual.</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Virtual Destructor</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Use the code of static binding
+#include &lt;iostream&gt;
+#include "Vehicle.h"
+#include "Car.h"
+#include "Bicycle.h"
+
+void display(Vehicle &v)
+{
+	std::cout&lt;&lt;v.toString()&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	Vehicle *c = new Car("Honda", "Accord");
+	display(*c);
+
+	delete c;
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<span style = "color:red">//Vehicle destructor will be called instead of Car destructor</span>
+				<br>Vehicle Constructor ...
+				<br>Car Constructor ...
+				<br>Vehicle Producer: Honda
+				<br>Vehicle Detructor ...
+			</ul>
+		</div>
+				<div class = "block">
+		<pre class = "prettyprint linenums">
+#ifndef VEHICLE_H
+#define VEHICLE_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Vehicle
+{
+	private:
+		std::string producer;
+	public:
+		//constructor
+		Vehicle(std::string s);
+
+		std::string getProducer() const {return producer;}
+		void setProducer(std::string producer);
+
+		std::string toString();
+
+		virtual ~Vehicle();
+};
+#endif
+		</pre>
+	</div>
+			<div class = "block">
+			<ul>
+				<span style = "color:red">//Car destructor will be called</span>
+				<br>Vehicle Constructor ...
+				<br>Car Constructor ...
+				<br>Vehicle Producer: Honda
+				<br>Car Destructor ...
+				<br>Vehicle Detructor ...
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<span style = "color:red">For a class that could become a base class, always declare the destructor virtual</span>
+			</ul>
+		</div>
+			<div class = "subtitle">Pointer</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+//Vehicle.h
+#ifndef VEHICLE_H
+#define VEHICLE_H
+#include <iostream>
+#include <string>
+
+class Vehicle
+{
+	private:
+		std::string producer;
+	public:
+		//constructor
+		Vehicle(std::string s);
+
+		std::string getProducer() const {return producer;}
+		void setProducer(std::string producer);
+
+		virtual std::string toString();
+
+		virtual ~Vehicle();
+};
+#endif
+			</pre>
+
+			<pre class = "prettyprint linenums">
+//main.cpp
+#include &lt;iostream&gt;
+#include "Vehicle.h"
+#include "Car.h"
+#include "Bicycle.h"
+
+void display(Vehicle *v)
+{
+	std::cout&lt;&lt;v-&gt;toString()&lt;&lt;std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	Vehicle *v[3] = {new Vehicle("Buick"), new Car("Honda", "Accord"), new Bicycle("Yongjiu", 26)};
+
+	std::cout&lt;&lt;"-----------------------"&lt;&lt;std::endl;
+	for(int i = 0; i &lt; 3; i++)
+		display(v[i]);
+	std::cout&lt;&lt;"-----------------------"&lt;&lt;std::endl;
+
+	for(int i = 0; i &lt; 3; i++)
+		delete v[i];
+
+	return 0;
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Abstract Class</div>
+		<div class = "block">
+		<p style="text-align:center;"><img src = "img/Abstract.png" width = 70%></p>
+	</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#ifndef VEHICLE_H
+#define VEHICLE_H
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Vehicle
+{
+	private:
+		std::string producer;
+	public:
+		//constructor
+		Vehicle(std::string s);
+
+		std::string getProducer() const {return producer;}
+		void setProducer(std::string producer);
+
+		virtual std::string toString() = 0;
+
+		virtual ~Vehicle();
+};
+#endif
+			</pre>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>virtual std::string toString() = 0, pure virtual function. Pure virtual function have no body, or definition in the base class.</li>
+				<li>When a class contanis a pure virtual function, the class becomes an abstract class. Not able to create instance from the abstract classa.</li>
+				<li>The virtual functions must be overridden in derived classes.</li>
+				<li>The variables in base class should be declared as protected for inheritance</li>
+				<li><span style = "color:red">toString() functiions in Car and Bicycle are virtual even the keyword "virtual" are missed since toString() function in Vehicle is virtual</span></li>
+				<li><span style = "color:red">toString() function in Sedan is virtual since toString in Car is virtual</span></li>
+				<li><span style = "color:red">~Car() and ~Bicycle() are virtual even the keyword "virtual" are missed since ~Vehicle() in Vehicle is declared as virtual</span></li>
+			</ul>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Starting out with C++, Tony Gaddis</li>
+			</ul>
+		</div>
+	</body>
+</html>

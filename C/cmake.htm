@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			cmake
+		</div>
+
+		<div class = "subtitle">Syntax</div>
+		<div class = "block">
+			<li>#, comment</li>
+			<li>${var}, access value defined in the variable "var"</li>
+		</div>
+		<div class = "subtitle">CMake Directory Variables</div>
+		<div class = "block">
+			<li><span>CMAKE_SOURCE_DIR</span>, the directory that contains the top-level CMakeLists.txt file</li>
+			<li><span>CMAKE_CURRENT_SOURCE_DIR</span>, the directory containing the CMakeLists.txt file that is currently being processed</li>
+			<li><span>CMAKE_BINARY_DIR</span>, the path to the top level of the build tree</li>
+			<li><span>CMAKE_CURRENT_BINARY_DIR</span>, the path to the binary directory currently being processed</li>
+			<li><span>PROJECT_SOURCE_DIR</span>, top level source directory for the current project</li>
+			<li><span><i>projectName</i>_SOURCE_DIR</span>, source directory for the named project</li>
+			<li><span>PROJECT_BINARY_DIR</span>, top level binary directory for the current project</li>
+			<li><span><i>projectName_BINARY_DIR</i></span>, binary directory for the named project</li>
+			<li><span>CMAKE_C_COMPILER</span>, C compiler</li>
+			<li><span>CMAKE_CXX_COMPILTER</span>, C++ compiler</li>
+			<li><span>CMAKE_C_FLAGS</span>, C flags</li>
+			<li><span>CMAKE_CXX_FLAGS</span>, C++ flags</li>
+			<li><span>EXECUTABLE_OUTPUT_PATH</span>, output path for executable program</li>
+			<li><span>LIBRARY_OUTPUT_PATH</span>, output path for libraries</li>
+			<li><span>CMAKE_BUILD_TYPE</span>, figure out build type, [Debug|Release]</li>
+			<li><span>BUILD_SHARED_LIBS</span>, figure out library build model, [OFF|ON]</li>
+		</div>
+		<div class = "subtitle">Example 1</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/cmake_1.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// main.c
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	printf("Hello World!\n");
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// CMakeLists.txt 1
+cmake_minimum_required (VERSION 2.6)
+project (Hello)
+add_subdirectory(src)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// CMakeLists.txt 2
+add_executable(Hello main.c)
+		</pre>
+		</div>
+		<div class = "block">
+			<li>cd build</li>
+			<li>cmake ..</li>
+			<li>make, generate executable file "Hello" in build/src</li>
+		</div>
+		<div class = "subtitle">Example 2</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/cmake_2.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// util.h
+#ifndef UTIL_H
+#define UTIL_H
+
+void hello();
+void world();
+void disp();
+
+#endif
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// hello.c
+#include &lt;stdio.h&gt;
+#include "util.h"
+
+void hello()
+{
+	printf("Hello ");
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// util.c
+#include &lt;stdio.h&gt;
+#include "util.h"
+
+void disp()
+{
+	hello();
+	world();
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// world.c
+#include &lt;stdio.h&gt;
+#include "util.h"
+
+void world()
+{
+	printf("World!\n");
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// main.c
+#include &lt;util.h&gt;
+#include "util.h"
+
+int main()
+{
+	disp();
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Using include_directories</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 1
+cmake_minimum_required(VERSION 2.6)
+
+project(c1)
+
+include_directories(${PROJECT_SOURCE_DIR}/include) # add before adding subdirectory
+add_subdirectory (src)
+
+add_executable(Hello main.c)
+target_link_libraries(Hello mylib)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 2
+aux_source_directory(. SRC_LIST)
+add_library(mylib ${SRC_LIST})
+		</pre>
+		</div>
+		<div class = "subtitle">Using target_include_directories</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 1
+cmake_minimum_required(VERSION 2.6)
+
+project(c1)
+
+add_subdirectory (src)
+
+add_executable(Hello main.c)
+target_include_directories (Hello PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(Hello mylib)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 2
+aux_source_directory(. SRC_LIST)
+add_library(mylib ${SRC_LIST})
+target_include_directories(mylib PUBLIC ${PROJECT_SOURCE_DIR}/include)
+		</pre>
+		</div>
+		<div class = "block">
+			<li>cd build</li>
+			<li>cmake ..</li>
+			<li>make, generate executable file "Hello" in build, generate libmylib.a in build/src</li>
+		</div>
+		<div class = "subtitle">Example 3</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/cmake_3.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// hello.h
+#ifndef HELLO_H
+#define HELLO_H
+
+void hello();
+
+#endif
+		</pre>
+		<pre class = "prettyprint linenums">
+// util.h
+#ifndef UTIL_H
+#define UTIL_H
+
+void disp();
+
+#endif
+		</pre>
+		<pre class = "prettyprint linenums">
+// world.h
+#ifndef WORLD_H
+#define WORLD_H
+
+void world();
+
+#endif
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// main.c
+#include "util.h"
+
+int main()
+{
+	disp();
+
+	return 0;
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+// util.c
+#include &lt;stdio.h&gt;
+#include "util.h"
+#include "hello.h"
+#include "world.h"
+
+void disp()
+{
+	hello();
+	world();
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// hello.c
+#include &lt;stdio.h&gt;
+#include "hello.h"
+
+void hello()
+{
+	printf("Hello ");
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// world.c
+#include &lt;stdio.h&gt;
+#include "world.h"
+
+void world()
+{
+	printf("World!\n");
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 1
+cmake_minimum_required(VERSION 2.6)
+
+project(c3)
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+add_subdirectory (src)
+		</pre>
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 2
+aux_source_directory(. SRC_LIST)
+
+add_subdirectory(hello)
+add_subdirectory(world)
+
+add_executable(Hello.e ${SRC_LIST})
+target_link_libraries(Hello.e hello world)
+		</pre>
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 3
+aux_source_directory(. HELLO_LIST)
+add_library(hello ${HELLO_LIST})
+		</pre>
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 4
+aux_source_directory(. WORLD_LIST)
+add_library(world ${WORLD_LIST})
+		</pre>
+		</div>
+		<div class = "block">
+			<li>cd build</li>
+			<li>cmake ..</li>
+			<li>make, generate executable file "Hello.e" in build/src, generate libhello.a in build/src/hello, generate libworld.a in build/src/world</li>
+		</div>
+		<div class = "subtitle">Example 4</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/cmake_4.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			Code is same as above
+		<pre class = "prettyprint linenums">
+// CMakeLists.txt 1
+cmake_minimum_required(VERSION 2.6)
+
+project(c3)
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+add_subdirectory (src)
+		</pre>
+		<pre class = "prettyprint linenums">
+// CMakeLists.txt 2
+aux_source_directory(. SRC_LIST)
+
+add_subdirectory(hello)
+add_subdirectory(world)
+add_subdirectory(util)
+
+add_executable(Hello.e ${SRC_LIST})
+target_link_libraries(Hello.e util)
+		</pre>
+		<pre class = "prettyprint linenums">
+// CMakeLists.txt 3
+aux_source_directory(. UTIL_LIST)
+
+add_library(util ${UTIL_LIST})
+target_link_libraries(util hello world)
+		</pre>
+		<pre class = "prettyprint linenums">
+// CMakeLists.txt 4
+aux_source_directory(. HELLO_LIST)
+add_library(hello ${HELLO_LIST})
+		</pre>
+		<pre class = "prettyprint linenums">
+// CMakeLists.txt 5
+aux_source_directory(. WORLD_LIST)
+add_library(world ${WORLD_LIST})
+		</pre>
+		</div>
+		<div class = "block">
+			It is like the code is organized as the following
+			<p style = "text-align:center;"><img src = "img/cmake_5.png" width = "40%"></p>
+		</div>
+		<div class = "subtitle">Functions</div>
+		<div class = "block">
+			<li><span>cmake_minimum_required(VERSION major.minor)</span>, set the minimum required version of cmake</li>
+			<li><span>project(name, version, language)</span>, set a name, version, and enable languages for the entire project</li>
+			<li><span>aux_source_directory(dir, var)</span>, collects the names of all the source files in the specified directory and stores the list in the "var" provided, "var" should be <span>unique</span></li>
+			<li><span>add_library(libName, [STATIC|SHARED|MODULE], source)</span>
+				<ul>
+					<li>libName, corresponds to the logical target name and must be globally <span>unique</span> within a project</li>
+					<li>STATIC libraries are archives of object files</li>
+					<li>SHARED libraries are linked dynamically and loaded at runtime</li>
+				</ul>
+			</li>
+			<li><span>add_executable(name, source)</span>, add an executable to the project using the specified source files</li>
+			<li><span>add_subdirectory(dir)</span>, add a subdirectory to the build</li>
+			<li><span>include_directories(dir)</span>, add the given directories to those the compiler uses to search for include files, relative paths are interpreted as relative to the current source directory, affects directory scope, <span>all targets</span> in this CMakeList, as well as those in <span>all subdirectories</span> added after the point of its call</li>
+			<li><span>target_include_directories(target, INTERFACE|PUBLIC|PRIVATE, dir)</span>, specify include directories or targets to use when compiling a given target</li>
+			<li><span>set(variable, value)</span>, set a CMake, cache or environment variable to a given value</li>
+			<li><span>file(GLOB variable value)</span>, GLOB will generate a list of all files that match the globbing expressions and store it into the variable</li>
+			<li><span>file(GLOB_RECURSE variable value)</span>, traverse all the subdirectories of the matched directory and match the files</li>
+			<li><span>find_library(variable libName)</span>, this command is used to find a library</li>
+			<li><span>target_link_libraries(target libName)</span>, specify libraries or flags to use when linking a given target, cmake like to use full path of libraries</li>
+			<li><span>message("Code: " ${c_files})</span>, print information</li>
+		</div>
+		<div class = "subtitle">Publish</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/cmake_6.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// test.c
+#include "util.h"
+ 
+int main()
+{
+	disp();
+ 
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 1
+# set up the minimum version of camke
+cmake_minimum_required(VERSION 2.6)
+
+# project name
+project(c6)
+
+# set up the path for compiled static libraries and dynamic library
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build/lib)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build/bin)
+
+# figure out the path of header files
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+# figure out the path of compiled libries
+link_directories(${PROJECT_SOURCE_DIR}/build/lib)
+
+# add sub directories
+add_subdirectory(src)
+add_subdirectory(test)
+
+# set up install directory, default is /usr/local
+# set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/install)
+
+# copy readme.md and license to the install directory
+file(COPY ${PROJECT_SOURCE_DIR}/README.md DESTINATION ${CMAKE_INSTALL_PREFIX})
+file(COPY ${PROJECT_SOURCE_DIR}/LICENSE DESTINATION ${CMAKE_INSTALL_PREFIX})
+		</pre>
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 2
+# recursive search *.c file and save names to a variable
+file(GLOB_RECURSE c_files "*.c")
+
+# turn off MACOSX_RPATH warning
+set(CMAKE_MACOSX_RPATH 1)
+# create a static library "libhelloworld.a" and a dynamic library "libhelloworld.so"
+# dynamic library will be "libhelloworld.dylib" on Mac
+add_library(helloworld_lib_shared  SHARED ${c_files})
+add_library(helloworld_lib_static STATIC ${c_files})
+set_target_properties(helloworld_lib_shared PROPERTIES OUTPUT_NAME "helloworld")
+set_target_properties(helloworld_lib_static PROPERTIES OUTPUT_NAME "helloworld")
+set_target_properties(helloworld_lib_shared PROPERTIES VERSION 1.2 SOVERSION 1)
+
+# create an executable program
+add_executable(Hello.e main.c)
+target_link_libraries(Hello.e helloworld)
+
+# install executable program to folder "bin" in the install directory
+# install dynamic library to folder "lib" in the install directory
+# install static library to folder "lib" in the install directory
+INSTALL(TARGETS Hello.e helloworld_lib_shared helloworld_lib_static
+	RUNTIME DESTINATION bin
+     	LIBRARY DESTINATION lib
+     	ARCHIVE DESTINATION lib)
+
+# install header files to folder "include" in the install directory
+INSTALL(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include)
+		</pre>
+		<pre class = "prettyprint linenums">
+# CMakeLists.txt 3
+# recursively find *.c files
+file(GLOB_RECURSE c_files *.c)
+# print out a list of source files
+message("test code: " ${c_files})
+
+# create executable test program
+add_executable(mytest ${c_files})
+target_link_libraries(mytest helloworld)
+
+# install executable test program to folder "bin" in the install directory
+INSTALL(TARGETS mytest
+	RUNTIME DESTINATION bin)
+		</pre>
+		</div>
+		<div class = "block">
+			<li>cd build</li>
+			<li>cmake ..</li>
+			<li>make, generate executable files in build/src, generate libraries in build/lib</li>
+			<li>make install, install executable programs to inallPath/bin, install libraries to installPath/lib, install header files to installPath/include</li>
+		</div>
+		<div class = "subtitle">General</div>
+		<div class = "block">
+			<li>How to collect source files with CMake without globbing?
+				<ul>
+					<li>If no CMakeLists.txt file changes when a source is added or removed then the generated build system cannot know when to ask CMake to regenerate</li>
+					<li>Use GLOB, "touch CMakeLists.txt", let cmake know new source files have been added</li>
+				</ul>
+			</li>
+			<li>Install to a different directory
+				<ul>
+					<li>cmake -DCMAKE_INSTALL_PREFIX=path ..</li>
+					<li>make</li>
+					<li>make install</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">CMake-GUI</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/cmake_7.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			<ul>
+				<li>Where is the source code, figure out project folder</li>
+				<li>Where to build binaries, figure out build folder</li>
+				<li>Configure, make create variable available</li>
+				<li>Generate, genreate makefile</li>
+			</ul>
+			<li><a href = "https://cmake.org/download/">Download</a></li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.ibm.com/developerworks/cn/linux/l-cn-cmake/">IBM Tutorial</a></li>
+			<li><a href = "https://cmake.org/cmake/help/v3.0/index.html">Documentation</a></li>
+			<li><a href = "https://www.jianshu.com/p/8df5b2aba316">Brief Tutorial</a></li>
+		</div>
+	</body>
+</html>

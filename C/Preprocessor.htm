@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Preprocessor
+		</div>
+
+		<div class = "block">
+			<li>C Preprocessor is a text substitution tool, it instructs the compiler to do required pre-processing before the code is compiled</li>
+			<li>Replace Macro, include header files</li>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/gcc_1.png" width = "60%"></p>
+		</div>
+		<div class = "subtitle">#include</div>
+		<div class = "block">
+			<li>means <span>copying</span> the contents of another file in the current one</li>
+			<li>#include &lt;filename&gt;
+				<ul>
+					<li>/usr/local/include</li>
+					<li>libdir/gcc/target/version/include</li>
+					<li>/usr/target/include</li>
+					<li>/usr/include</li>
+				</ul>
+			</li>
+			<li>#include "filename"
+				<ul>
+					<li>Search the current path</li>
+					<li>If not find, search the standard search path</li>
+				</ul>
+			</li>
+			<li>#include macroName
+				<ul>
+					<li>macroName is a macro name pointing to a header file</li>
+				</ul>
+			</li>
+			<li>Define search path
+				<ul>
+					<li>-I dir, define search path in makefile</li>
+					<li>INCLUDE_PATH, define an environment variable</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+#define STDIO &lt;stdio.h&gt;
+#include STDIO
+
+int main()
+{
+	printf("Hello World!\n");
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">#define</div>
+		<div class = "block">
+			<li>Replace identifier with replacement content before compiling program</li>
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+#define MESSAGE "Hello World!"
+#define PI 3.14
+
+int main()
+{
+	printf("%s\n", MESSAGE);
+	printf("%f\n", PI);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Define function</li>
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+#define doubleNum(a) a*2
+
+int main()
+{
+	printf("%d\n", doubleNum(10));
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<li>#, convert a parameter to a string</li>
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+#define OUTPUT(a) printf(#a)
+
+int main()
+{
+	OUTPUT(Hello\n);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+			<li>##, joined a token with a string</li>
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+#define FUNCTION(name, a) int fun_##name() { return a;}
+
+FUNCTION(v1, 12);
+FUNCTION(v2, 2);
+
+int main()
+{
+	printf("%d\n", fun_v1());
+	printf("%d\n", fun_v2());
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">#ifdef, #ifndef, #elif, #else, #endif</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+
+#ifndef SYSTEM
+#define SYSTEM 1
+
+	if(SYSTEM == 1)
+		printf("Linux system ...\n");
+#endif
+
+#ifndef SYSTEM
+	printf("Windows system ...\n");
+#elif SYSTEM == 1
+	printf("Linux system ...\n");
+#else
+	printf("Mac system ...\n");
+#endif
+}
+		</pre>
+		</div>
+		<div class = "subtitle">#error</div>
+		<div class = "block">
+			<li>causes preprocessing to stop at the location where the directive is encountered</li>
+		<pre class = "prettyprint linenums">
+//#define PI 3.14
+
+int main()
+{
+#ifndef PI
+#error NOT DEFINE PI
+#endif
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">#pragma</div>
+		<div class = "block">
+			<li>Issues special commands to the compiler</li>
+		<pre class = "prettyprint linenums">
+// main.c
+#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    #pragma omp parallel
+    {
+    printf("Hello, world.\n");
+    }
+
+  return 0;
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+gcc -fopenmp main.c -o hello
+		</pre>
+		</div>
+		<div class = "subtitle">Predefined Macro</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main() {
+
+   printf("File :%s\n", __FILE__ ); // file name
+   printf("Date :%s\n", __DATE__ ); // current date
+   printf("Time :%s\n", __TIME__ ); // current time
+   printf("Line :%d\n", __LINE__ ); // current line number
+   printf("ANSI :%d\n", __STDC__ ); // 1, if the compiler complies with the ANSI standard
+
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.tutorialspoint.com/cprogramming/c_preprocessors.htm">Tutorialspoint</a></li>
+			<li><a href = "https://www.cnblogs.com/liangliangh/p/3585326.html">cnblogs</a></li>
+		</div>
+	</body>
+</html>

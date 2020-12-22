@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			<li><a href = "https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a></li>
+		</div>
+
+		<div class = "subtitle">ArrayList</div>
+		<div class = "block">
+			<ul>
+				<li>Hold onto contents using an Array</li>
+				<li>Increase 50% size each time</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class L
+{
+	public static void main(String args[])
+	{
+		ArrayList&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+
+		//add
+		for(int i = 0; i &lt; 10; i++)
+			l.add(i);
+
+		//get, size
+		for(int i = 0; i &lt; l.size(); i++)
+			System.out.printf("%4d", l.get(i));
+		System.out.println();
+
+		//set
+		for(int i = 0; i &lt; l.size(); i++)
+			if(l.get(i) % 2 == 0)
+				l.set(i, l.get(i)*10);
+		System.out.println(l);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">ListIterator</div>
+		<div class = "block">
+			<ul>
+				<li>For List implemented classes</li>
+				<li>Increase 50% size each time</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class L
+{
+	public static void main(String args[])
+	{
+		ArrayList&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+
+		//add
+		for(int i = 0; i &lt; 10; i++)
+			l.add(i);
+		System.out.println(l);
+
+		ListIterator itr = l.listIterator();
+
+		//hasNext, next, set
+		while(itr.hasNext())
+		{
+			int e = (Integer)itr.next();
+			System.out.printf("%4d: %4d%n", (Integer)itr.nextIndex(), e);
+			itr.set(e*10);
+		}
+		System.out.println(l);
+
+		//hasPrevious, previous, remove
+		while(itr.hasPrevious())
+		{
+			int e = (Integer)itr.previous();
+			if((e/10)%2 == 1)
+				itr.remove();
+		}
+		System.out.println(l);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">LinkedList</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class L
+{
+	public static void main(String args[])
+	{
+		LinkedList&lt;Integer&gt; l = new LinkedList&lt;Integer&gt;();
+
+		//add
+		for(int i = 0; i &lt; 10; i++)
+			l.add(i);
+
+		//addFirst, addLast
+		l.addFirst(100);
+		l.addLast(200);
+
+		System.out.println(l);
+
+		//get, size
+		for(int i = 0; i &lt; l.size(); i++)
+			System.out.printf("%4d", l.get(i));
+		System.out.println();
+
+		//set
+		for(int i = 0; i &lt; l.size(); i++)
+			if(l.get(i) % 2 == 0)
+				l.set(i, l.get(i)*10);
+		System.out.println(l);
+
+		//contains
+		if(l.contains(3))
+			System.out.println("Contine 3 ...");
+
+		//remove
+		l.remove(5);
+		System.out.println(l);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Vector</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class L
+{
+	public static void main(String args[])
+	{
+		LinkedList&lt;Integer&gt; l = new LinkedList&lt;Integer&gt;();
+
+		for(int i = 0; i &lt; 10; i++)
+			l.add(i);
+
+		Vector&lt;Integer&gt; v = new Vector&lt;Integer&gt;(l);
+
+		v.add(1, 100);
+
+		for(int i = 0; i &lt; v.size(); i++)
+			System.out.printf("%4d", v.get(i));
+		System.out.println();
+
+		for(int i = 0; i &lt; v.size(); i++)
+		{
+			if(v.get(i)%2 == 0)
+				v.set(i, v.get(i)*10);
+		}
+
+		System.out.println(v);
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "http://www.geeksforgeeks.org/list-interface-java-examples/">List at Geekforgeek</a></li>
+				<li><a href = "http://www.geeksforgeeks.org/iterators-in-java/">Iterator at Geekforgeek</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

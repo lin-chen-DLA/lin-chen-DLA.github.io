@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			IO
+		</div>
+
+		<div class = "subtitle">Write into a File with Redirection</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	printf("Hello World!\n");
+
+	return 0;
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+gcc hello.c
+./a.out &gt; output.txt // redirect outputs to a file
+./a.out &gt;&gt; output.txt // attach outputs to the exist file, if the file does not exist, create it
+		</pre>
+		</div>
+		<div class = "subtitle">Write into a File</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+	FILE * fp; // define a file pointer
+	fp = fopen ("info.txt", "w"); // open a file with writing mode
+
+	// exit program if the file cannot be openned
+	if (fp == NULL)
+        	exit(EXIT_FAILURE);
+
+	// write into file
+	fprintf(fp, "%10s: %10d\n", "Lin Chen", 800);
+	fprintf(fp, "%10s: %10s\n", "Office", "2205");
+
+	fclose(fp);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Read a File Line by Line</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// letters.txt
+abcdefg
+hijklmn
+opqrstu
+vwxyz
+		</pre>
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+	FILE* filePointer; // define a file pointer
+
+	// create an array to save the string
+	int bufferLength = 255;
+	char *buffer = (char *)malloc(bufferLength*sizeof(char));
+
+	// open the file
+	filePointer = fopen("letters.txt", "r");
+
+	// exit program if the file cannot be openned
+	if (filePointer == NULL)
+        	exit(EXIT_FAILURE);
+
+	// read file line by line
+	while(fgets(buffer, bufferLength, filePointer)) {
+	     	printf("%s\n", buffer);
+	}
+
+	// close file
+	fclose(filePointer);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Access Specified Location of a File</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void readChar(FILE *fp)
+{
+	printf("Current location: %ld, ", ftell(fp));
+	char c = fgetc(fp); // read a character and move to next character
+	printf("|%c|\n", c);
+}
+
+int main()
+{
+	FILE* filePointer; // define a file pointer
+
+	// open the file
+	filePointer = fopen("letters.txt", "r");
+
+	readChar(filePointer); // a
+	readChar(filePointer); // b
+
+	fseek(filePointer, 2, SEEK_CUR); // SEEK_CUR represents the current location
+	readChar(filePointer); // e
+
+	fseek(filePointer, 2, SEEK_SET); // SEEK_SET represents the start location of a file
+	readChar(filePointer); // c
+
+	rewind(filePointer); // go back to the beginning of the file
+	char c;
+	while((c = fgetc(filePointer)) != EOF)
+	{
+		printf("%c", c);
+	}
+
+	// close file
+	fclose(filePointer);
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Parameters to C Program</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+
+int main(int argc, char *argv[])
+{
+	for(int i = 0; i &lt; argc; i++)
+	{
+		printf("%ith parameter: %s\n", i, argv[i]);
+	}
+
+	return 0;
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+gcc main.c
+./a.out 1 2 3 Hello World
+		</pre>
+		</div>
+		<div class = "subtitle">Standard Files</div>
+		<div class = "block">
+			<li>0, stdin, keyboard</li>
+			<li>1, stdout, screen</li>
+			<li>2, stderr, screen</li>
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+	FILE * fp;
+	fp = fopen("Unknown.txt", "r");
+
+	if(fp == NULL) // output information to stderr
+	{
+		perror("Cannot open Unknown.txt ...");
+		fprintf(stderr, "Unknown.txt is not found\n");
+	}
+	else // output information to stdout
+	{
+		printf("Openned Unknown.txt successfully ...\n");
+		fprintf(stdout, "Opened Unknow.txt\n");
+
+		fclose(fp);
+	}
+
+	return 0;
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+// if Unknown.txt does not exist, print error message to stderr
+gcc main.c
+./a.out // print to screen
+./a.out 2&gt; error.txt // redirect stderr to a file, no space between 2 and &gt;
+		</pre>
+		<pre class = "prettyprint linenums">
+// if Unknown.txt exists, print message to stdout
+gcc main.c
+./a.out // print to screen
+./a.out 1&gt; message.txt // redirect stdout to a file, no space between 1 and &gt;
+		</pre>
+		</div>
+	</body>
+</html>

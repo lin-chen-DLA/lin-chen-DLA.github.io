@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Bubble sort</div>
+		<div class = "block">
+			<li>Best Case, O(n)</li>
+			<li>Worst Case, Ω(n^2)</li>
+			<li>Memory Complexity, O(1)</li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import random
+
+def bubble_sort(l):
+    n = len(l)
+
+    for i in range(n):
+        for j in range(n-i-1):
+            if l[j] &gt; l[j+1]:
+                l[j], l[j+1] = l[j+1], l[j]
+
+def get_list():
+    random.seed()
+
+    l = []
+    for i in range(10):
+        l.append(random.choice(range(10)))
+
+    return l
+
+def main():
+    l = get_list()
+    print(l)
+
+    bubble_sort(l)
+    print(l)
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "subtitle">Reach Best Case with Control</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+
+import random
+
+def bubble_sort(l):
+    n = len(l)
+
+    for i in range(n):
+        swap = False
+        for j in range(n-i-1):
+            if l[j] &gt; l[j+1]:
+                l[j], l[j+1] = l[j+1], l[j]
+                swap = True
+        if not swap:
+            break
+
+def get_list():
+    random.seed()
+
+    l = []
+    for i in range(10):
+        l.append(random.choice(range(10)))
+
+    return l
+
+def main():
+    l = get_list()
+    print(l)
+
+    bubble_sort(l)
+    print(l)
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://stackoverflow.com/questions/12505832/why-is-the-time-complexity-of-bubble-sorts-best-case-being-on">why is the time complexity of bubble sort's best case being O(n)</a></li>
+		</div>
+	</body>
+</html>

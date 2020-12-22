@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Nth Element</div>
+		<div class = "block">
+			<ul>
+				<li>T(n) = T(n/2) + n, O(n)</li>
+			</ul>
+			<pre class = "prettyprint linenums">
+import java.util.*;
+import javafx.util.*;
+
+public class N
+{
+	public static int nth(int [] array, int p, int r, int i)
+	{
+		if(p == r)
+			return array[p];
+		int q = randomPartition(array, p, r);
+		int k = q-p+1;
+		if(i==k)
+			return array[q];
+		else if(i &lt; k)
+			return nth(array, p, q-1, i);
+		else
+			return nth(array, p+1, r, i-k);
+	}
+
+	public static int randomPartition(int [] array, int p, int r)
+	{
+		Random ran = new Random();
+		int i = ran.nextInt(r-p+1);
+		i = p+i;
+
+		int temp = array[r];
+		array[r] = array[i];
+		array[i] = temp;
+
+		return partition(array, p, r);
+	}
+
+	public static int partition(int [] array, int p, int r)
+	{
+		int pivot = array[r];
+		int i = p-1;
+		for(int j = p; j &lt; r; j++)
+		{
+			if(array[j] &lt; pivot)
+			{
+				i++;
+				int temp = array[i];
+				array[i] = array[j];
+				array[j] = temp;
+			}
+		}
+		int temp = array[i+1];
+		array[i+1] = array[r];
+		array[r] = temp;
+
+		return i+1;
+	}
+
+	public static int [] getArray(int n)
+	{
+		int [] array = new int[n];
+		Random r = new Random();
+
+		for(int i = 0; i &lt; n; i++)
+			array[i] = r.nextInt(100);
+
+		return array;
+	}
+
+	public static void display(int [] array)
+	{
+		for(int e : array)
+			System.out.printf("%5d", e);
+		System.out.println();
+	}
+
+	public static void main(String args[])
+	{
+		int [] array = getArray(100);
+
+		display(array);
+
+		System.out.println("2nd: "+nth(array, 0, array.length-1, 1));
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li>CLRS Chapter 9</li>
+			</ul>
+		</div>
+	</body>
+</html>

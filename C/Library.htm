@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			library
+		</div>
+
+		<div class = "subtitle">General</div>
+		<div class = "block">
+			<li>ldd, check share library needed</li>
+			<li>libABC.so.x.y.z
+				<ul>
+					<li>x, campatable</li>
+					<li>y, introduce new feature</li>
+					<li>z, fix some bugs</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Dynamic Library</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/gcc_4.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+gcc -c -fpic -I include src/util.c # generate util.o
+gcc -c -fpic -I include src/temp.c # generate temp.o
+gcc -shared -o lib/libhello.so util.o temp.o # generate dynamic library libhello.so
+gcc -o hello.e -I include src/main.c -L lib -lhello # compile main.c using dynamic library
+		</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/gcc_5.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# makefile
+VPATH = src:include
+SRC = src
+LIB = lib
+CFLAGS = -I include
+objects = main.c util.o temp.o libhello.so
+cc = gcc
+hello.e: $(objects)
+	$(cc) -o hello.e $(CFLAGS) $&lt; -L $(LIB) -lhello
+libhello.so: util.o temp.o
+	$(cc) -shared -o $(LIB)/libhello.so $^
+temp.o: temp.c temp.h
+	$(cc) -c -fpic $(CFLAGS) $&lt; -o $@
+util.o: util.c util.h
+	$(cc) -c -fpic $(CFLAGS) $&lt; -o $@
+.PHONY: clean
+clean: # no dependencies, not implemented automatically
+	rm -f *.o *.e *~ $(LIB)/*.so
+		</pre>
+		</div>
+		<div class = "block">
+		<li>Making library available at run time
+			<ul>
+				<li>export LD_LIBRARY_PATH=$PWD/lib:$LD_LIBRARY_PATH, add "lib" folder to search directory</li>
+				<li>cp lib/libhello.so /usr/lib, chmod 0755 /usr/lib/libhello.so, ldconfig</li>
+			</ul>
+		</li>
+		</div>
+		<div class = "subtitle">Static Library</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+gcc -c -I include src/util.c # generate util.o
+gcc -c -I include src/temp.c # generate temp.o
+ar rcs lib/libhello.a util.o temp.o # generate static library libhello.a
+gcc -o hello.e src/main.c -I include -L lib -lhello # compile main.c using static library
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# makefile
+VPATH = src:include
+SRC = src
+LIB = lib
+CFLAGS = -I include
+objects = main.c util.o temp.o libhello.a
+cc = gcc
+hello.e: $(objects)
+	$(cc) -o hello.e $(CFLAGS) $&lt; -L $(LIB) -lhello
+libhello.a: util.o temp.o
+	ar rcs $(LIB)/libhello.a $^
+temp.o: temp.c temp.h
+	$(cc) -c $(CFLAGS) $&lt; -o $@
+util.o: util.c util.h
+	$(cc) -c $(CFLAGS) $&lt; -o $@
+.PHONY: clean
+clean: # no dependencies, not implemented automatically
+	rm -f *.o *.e *~ $(LIB)/*.a
+		</pre>
+		</div>
+		<div class = "block">
+		<li>Making library available at run time
+			<ul>
+				<li>export LIBRARY_PATH=$PWD/lib:$LIBRARY_PATH, add "lib" folder to search directory</li>
+				<li>cp lib/libhello.a /usr/lib, chmod 0755 /usr/lib/libhello.a</li>
+			</ul>
+		</li>
+		</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://akkadia.org/drepper/dsohowto.pdf">https://akkadia.org/drepper/dsohowto.pdf</a></li>
+			<li><a href = "https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html">Shared libraries with GCC on Linux</a></li>
+		</div>
+	</body>
+</html>

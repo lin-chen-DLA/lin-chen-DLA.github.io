@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			makefile
+		</div>
+
+		<div class = "subtitle">Syntax</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+target: prerequisites
+	command
+		</pre>
+		<li>target is object file, executable file, or a label</li>
+		<li>prerequisites are the files or targets to generate target</li>
+		<li>command is the commands will be implemented by make</li>
+		</div>
+		<div class = "block">
+			<span>Define variables</span>
+		<pre class = "prettyprint linenums">
+obj = main.o util.o
+Compiler = gcc
+hello: $(obj)
+	$(Compiler) $(obj)
+		</pre>
+		</div>
+		<div class = "block">
+			<li>#, comment</li>
+			<li>\, continue a line</li>
+			<li>Use include to include other makefiles</li>
+			<li>Support *, ? and [...]</li>
+		</div>
+		<div class = "subtitle">Example 1</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+#ifndef UTIL_H
+#define UTIL_H
+
+void disp();
+
+#endif
+		</pre>
+		<pre class = "prettyprint linenums">
+#include &lt;stdio.h&gt;
+#include "util.h"
+
+void disp()
+{
+	printf("Hello World!\n");
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+#include "util.h"
+
+int main()
+{
+	disp();
+
+	return 0;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# comment line
+objects = main.o util.o
+hello.e: $(objects)
+	gcc -o hello.e $(objects)
+main.o: main.c util.h
+	gcc -c main.c
+util.o: util.c util.h
+	gcc -c util.c
+clean: # no dependencies, not implemented automatically
+	rm *.o *.e
+		</pre>
+		<li>make or make hello.e, generate executable hello.e</li>
+		<li>make clean, remove *.o and *.e files</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# comment line
+objects = main.o util.o
+hello.e: $(objects)
+	gcc -o hello.e $(objects)
+main.o: util.h # "main.c" and "gcc -c main.c" will be derived automatically
+util.o: util.h # "util.c" and "gcc -c util.c" will be derived automatically
+.PHONY: clean
+clean: # no dependencies, not implemented automatically
+	-rm -f *.o *.e # "-" before rm, continue to do further task not matter what happen
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Static Pattern
+				<ul>
+					<li>&lt;targets ...&gt;: &lt;target-pattern&gt;: &lt;prereq-patterns ...&gt;</li>
+					<li>$^, a list of all the prerequisites of the rule</li>
+					<li>$&lt;, first prerequsite, *.c</li>
+					<li>$@, targets, *.o</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+# comment line
+objects = main.o util.o
+cc = gcc
+hello.e: $(objects)
+	$(cc) -o hello.e $(objects)
+$(objects):%.o:%.c
+	$(cc) -c $&lt; -o $@
+.PHONY: clean
+clean: # no dependencies, not implemented automatically
+	rm -f *.o *.e *~
+		</pre>
+		</div>
+		<div class = "subtitle">Example 2</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/make_1.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+VPATH = src:include # tell make to search prerequisites in these directories
+#vpath %.h include # user vpath to define the prerequisite search path
+#vpath %.c src
+
+SRC = src
+CFLAGS = -I include
+objects = main.o util.o
+cc = gcc
+hello.e: $(objects)
+	$(cc) -o hello.e $(objects)
+main.o: main.c util.h # monitor prerequisites in the directories defined in VPATH
+	$(cc) -c $(CFLAGS) $(SRC)/main.c # "-I include" tells gcc where *.h files are
+util.o: util.c util.h
+	$(cc) -c $(CFLAGS) $(SRC)/util.c
+
+.PHONY: clean
+clean: # no dependencies, not implemented automatically
+	rm -f *.o *.e *~
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# comment line
+VPATH = src:include
+CFLAGS = -I include
+objects = main.o util.o
+cc = gcc
+hello.e: $(objects)
+	$(cc) -o hello.e $(objects)
+$(objects):%.o:%.c
+	$(cc) -c $(CFLAGS) $&lt; -o $@
+.PHONY: clean
+clean: # no dependencies, not implemented automatically
+	rm -f *.o *.e *~
+		</pre>
+		</div>
+		<div class = "subtitle">Install/Uninstall Executable Program</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+VPATH = src:include
+CFLAGS = -I include
+objects = main.o util.o
+cc = gcc
+hello.e: $(objects)
+	$(cc) -o hello.e $(objects)
+$(objects):%.o:%.c
+	$(cc) -c $(CFLAGS) $&lt; -o $@
+.PHONY: clean
+clean: # no dependencies, not implemented automatically
+	rm -f *.o *.e *~
+
+PREFIX = /usr/local
+
+.PHONY: install
+install: hello.e
+	mkdir -p $(PREFIX)/bin
+	cp $&lt; $(PREFIX)/bin/hello
+
+.PHONY: uninstall
+uninstall:
+	rm -f $(PREFIX)/bin/hello
+		</pre>
+		<li>make install, install "hello" in /usr/local/bin</li>
+		<li>make PREFIX=./ install, install "hello" in the specified directory</li>
+		<li>make uninstall, remove "hello"</li>
+		</div>
+		<div class = "subtitle">Install/Uninstall Library</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# comment line
+VPATH = src:include
+SRC = src
+LIB = lib
+CFLAGS = -I include
+objects = main.c util.o temp.o libhello.a
+cc = gcc
+hello.e: $(objects)
+	$(cc) -o hello.e $(CFLAGS) $&lt; -L $(LIB) -lhello
+libhello.a: util.o temp.o
+	ar rcs $(LIB)/libhello.a $^
+temp.o: temp.c temp.h
+	$(cc) -c $(CFLAGS) $&lt; -o $@
+util.o: util.c util.h
+	$(cc) -c $(CFLAGS) $&lt; -o $@
+.PHONY: clean
+clean: # no dependencies, not implemented automatically
+	rm -f *.o *.e *~ $(LIB)/*.a
+PREFIX = /usr
+alib = lib/libhello.a
+.PHONY: install
+install: $(alib)
+	mkdir -p $(PREFIX)/lib
+	mkdir -p $(PREFIX)/local/include
+	cp $(alib) $(PREFIX)/lib/
+	cp include/util.h $(PREFIX)/local/include/
+	cp include/temp.h $(PREFIX)/local/include/
+
+.PHONY: uninstall
+uninstall:
+	rm -f $(PREFIX)/$(alib)
+	rm -f $(PREFIX)/local/include/foo.h
+	rm -f $(PREFIX)/local/include/temp.h
+		</pre>
+		<li>make install, install "libhello.a" in /usr/lib</li>
+		<li>make PREFIX=temp install, install "libhello.a" in the specified directory</li>
+		<li>make uninstall, remove "libhello.a"</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html">Automatic Variables</a></li>
+			<li><a href = "http://nuclear.mutantstargoat.com/articles/make/#a-makefile-for-99-of-your-programs">Practical Makefiles, by example</a></li>
+			<li><a href = "ftp://ftp.gnu.org/old-gnu/Manuals/make-3.79.1/html_chapter/make_14.html">Makefile Conventions</a></li>
+			<li><a href = "https://www.gnu.org/software/make/manual/make.html">Documentation</a></li>
+			<li><a href = "https://bbs.csdn.net/topics/120007861">makefile tutorial</a></li>
+		</div>
+	</body>
+</html>

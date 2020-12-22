@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>PDO</title>
+       <link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+       <script src = "../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+       <style>
+	       span {color: red}
+	</style>
+    </head>
+    <body bgcolor = white text = #4E6AAA link = silver alink = silver vlink = silver>
+	    <ol>
+		    <li>Create connection
+			    <pre class = "prettyprint linenums">
+&lt;?php
+	try{
+		$hostname = 'localhost';
+		$dbname = 'employees';
+		$username = 'root';
+		$password = 'mysql';
+		$DBH = new PDO("mysql:host=$hostname; dbname=$dbname; charset=utf8mb4", $username, $password);
+		echo 'Connected';
+	}
+	catch(PDOException $e){
+		echo $e-&gt;getMessage();
+	}
+?&gt;;
+			    </pre>
+		    </li>
+		    <li>Prepare query and fetch
+			    <pre class = "prettyprint linenums">
+&lt;?php
+	try{
+		$stmt = $DBH-&gt;prepare("select *from employees where gender = ?");
+		$stmt-&gt;bindParam(1, $gen);
+		$gen = 'M';
+		$stmt-&gt;execute();
+		while($row = $stmt-&gt;fetch())
+		{
+			print_r($row);
+		}
+	}
+	catch(PDOException $e){
+		echo $e-&gt;getMessage();
+	}
+?&gt;
+			    </pre>
+		    </li>
+	    </ol>
+    </body>
+</html>

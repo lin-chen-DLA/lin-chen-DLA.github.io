@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Book List
+		</div>
+
+		<div class = "subtitle">React-Redux</div>
+		<div class = "block">
+			<ol>
+				<li>Redux's key ideas
+					<ul>
+						<li>All of your application’s data is in a single data structure called the state which is held in the <span>store</span></li>
+						<li>Your app reads the state from this <span>store</span>. (The app could be React-based, or Angular-based, or Vue-based, or anything.)</li>
+						<li>The state is never mutated directly outside the store</li>
+						<li>The views emit actions that describe what happened</li>
+						<li>A new state is created by combining the old state and the action by a <span>function</span> called the <span>reducer</span></li>
+					</ul>
+				</li>
+				<li>Redux's key benefits
+					<ul>
+						<li>Redux relieves the top-level React component of state management responsibility and allows you to break up state management into isolated, smaller, and testable parts</li>
+						<li>Certain local and component-managed state is fine, like activating certain buttons on mouse hover. But by managing all other state externally, React components become simple HTML rendering functions. This makes them smaller, easier to understand, and more composable</li>
+						</li>
+						<li>It is good and flexible to mis-match between the state tree (in Redux store) and the DOM tree (for React). Oftentimes, we want to store our state with a different representation than how we want to display it. Instead of having components hold all the computational logic for derived data, Redux enables us to perform these computations before providing state to React components</li>
+					</ul>
+				</li>
+			</ol>
+		</div>
+		<div class = "subtitle">Pure React</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/React_6.png" width=60% /></p>
+		</div>
+		<div class = "subtitle">React-Redux</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/React_7.png" width=60% /></p>
+		</div>
+		<div class = "subtitle">Project Appearance</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/React_8.png" width=60% /></p>
+		</div>
+		<div class = "subtitle">Code Organization</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "./img/React_9.png" width=30% /></p>
+		</div>
+		<div class = "subtitle">Install react-redux</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+npm install --save redux
+npm install --save react-redux
+npm install --save-dev redux-devtools-extension
+		</pre>
+		</div>
+		<div class = "subtitle">Source Code</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import "./index.css";
+
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+import { Provider } from 'react-redux';
+
+import App from './components/App';
+import rootReducer from './reducers';
+
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+
+const store = createStore(rootReducer, {}, composeWithDevTools(applyMiddleware()));
+
+ReactDOM.render(
+    &lt;Provider store={store}&gt;
+        &lt;App /&gt;
+    &lt;/Provider&gt;, 
+    document.getElementById("root")
+);
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//index.css
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.row {
+    margin: 20px;
+}
+
+.class-item-mine:hover {
+    border-color: blue;
+}
+
+.selected-item-mine {
+    background-color: lightgray;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//actions/index.js
+export function selectBook(book){
+    return {
+        type: 'BOOK_SELECTED',
+        payload: book
+    }
+}
+
+// If you had other action creators, just list them all
+// one by one here.
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//reducers/index.js
+//combines all reducers into one rootReducer
+import { combineReducers } from "redux";
+
+import BooksReducer from './reducer_books';
+import ActiveBookReducer from './reducer_active_book';
+
+const rootReducer = combineReducers({
+    // our first state in Redux store - books
+    books: BooksReducer,
+    activeBook: ActiveBookReducer
+});
+
+export default rootReducer;
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//reducers/reducer_books.js
+export default function() {
+    return [
+        {title: "JavaScript: The Good Parts", pages: 101},
+        {title: "The Dark Tower", pages: 20},
+        {title: "Eloquent NodeJS", pages: 45},
+    ];
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//reducers/reducer_active_book.js
+export default function(state=null, action) {
+    switch(action.type){
+        case 'BOOK_SELECTED': 
+            return action.payload;
+        default:
+            return state;
+    }
+    return state;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//components/App.js
+import React, { Component } from 'react';
+import BookList from '../containers/book-list';
+import BookDetail from '../containers/book-detail';
+
+export default class App extends Component {
+  render() {
+	  return (
+        &lt;div className="container"&gt;
+            &lt;div className="row"&gt;
+                &lt;div className="col-md-8"&gt;
+                    &lt;BookList /&gt;
+                &lt;/div&gt;
+                &lt;div className="col-md-4"&gt;
+                    &lt;BookDetail /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    );
+  }
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//containers/book-list.js
+import React, { Component } from "react";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { selectBook } from '../actions/index';
+
+class BookList extends Component {
+	    renderList() {
+        // this.props.books works here thanks to the mapStateToProps function below
+        return this.props.books.map(book =&gt; {
+            const cn =
+                this.props.activeBook &amp;&amp;
+                this.props.activeBook.title === book.title
+                    ? "list-group-item class-item-mine selected-item-mine"
+                    : "list-group-item class-item-mine";
+
+            return (
+                &lt;li
+                    onClick={() =&gt; this.props.selectBook(book)}
+                    key={book.title}
+                    className={cn}
+                &gt;
+                    {book.title}
+                &lt;/li&gt;
+            );
+        });
+    }
+    render() {
+        return &lt;ul className="list-group"&gt;{this.renderList()}&lt;/ul&gt;;
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        books: state.books,
+        activeBook: state.activeBook
+    };
+}
+
+// Anything returned from this function will end up as props on the
+// BookList container
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({ selectBook: selectBook }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookList);
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+//containers/book-detail.js
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+class BookDetail extends Component{
+    render(){
+        if (!this.props.book){
+            return &lt;div&gt;Select a book to get started.&lt;/div&gt;
+        }
+        return (
+            &lt;div&gt;
+                &lt;h3&gt;Details for:&lt;/h3&gt;
+                &lt;div&gt; Title: { this.props.book.title } &lt;/div&gt;
+                &lt;div&gt; Pages: { this.props.book.pages } &lt;/div&gt;
+            &lt;/div&gt;
+        )
+    }
+}
+
+function mapStateToProps(state){
+    return {
+        book: state.activeBook
+    };
+}
+
+export default connect(mapStateToProps)(BookDetail);
+		</pre>
+		</div>
+		<div class = "subtitle">Project Domain</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+https://book-list-lin.herokuapp.com/
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li>CS4840 by Dr. Zhiguang Xu at Valdosta State University</li>
+		</div>
+	</body>
+</html>

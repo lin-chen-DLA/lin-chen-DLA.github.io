@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Java</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			<a href = "https://docs.oracle.com/javase/7/docs/api/java/util/Map.html">Map</a>
+		</div>
+
+		<div class = "subtitle">HashCode and Equals</div>
+		<div class = "block">
+			<ul>
+				<li>If two objects are equal according to equals() method, they must have the same hash code</li>
+				<li>If two objects have smae hash code, they do not have to be equal</li>
+				<li>Override equals() and hashcode() at same time</li>
+				<li><a href = "https://stackoverflow.com/questions/30018330/how-are-buckets-created-in-hashmap">How many buckets used in HashMap and rehashing</a></li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public class Car
+{
+	private String maker;
+	private String color;
+
+	public Car(String maker, String color)
+	{
+		this.maker = maker;
+		this.color = color;
+	}
+
+	public String toString()
+	{
+		return maker+": "+color;
+	}
+
+	@Override
+	public boolean equals(Object c)
+	{
+		Car temp = (Car) c;
+		System.out.println("Equals ...");
+		if(maker.equals(temp.maker) && color.equals(temp.color))
+			return true;
+		else
+			return false;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int code = maker.hashCode()+color.hashCode();
+		System.out.println("Hash Code: "+code);
+		return code;
+	}
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class H
+{
+	public static void main(String args[])
+	{
+		HashMap&lt;Car, Integer&gt; m = new HashMap&lt;Car, Integer&gt;();
+
+		Car c1 = new Car("Buick", "White");
+		Car c2 = new Car("Honda", "Blue");
+
+		//put
+		System.out.println("Insert objects into hashMap ...");
+		m.put(c1, 1);
+		m.put(c2, 2);
+
+		//get
+		System.out.println("Access object in hashMap ...");
+		System.out.println(m.get(new Car("Buick", "White")));
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">HashMap</div>
+		<div class = "block">
+			<ul>
+				<li>HashMap implements Hashing</li>
+				<li>Does not maintain the order of insertion</li>
+				<li>HashMap is non synchronized</li>
+				<li>HashMap is an advanced version and improvement on the Hashtable, HashMap was created later</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class H
+{
+	public static void main(String args[])
+	{
+		HashMap&lt;String, Integer&gt; m = new HashMap&lt;String, Integer&gt;();
+
+		//put
+		m.put("a", 10);
+		m.put("b", 20);
+		m.put("c", 30);
+		m.put("d", 40);
+
+		//get
+		System.out.println(m.get("a"));
+
+		//keySet
+		Set&lt;String&gt; keys = m.keySet();
+		System.out.println(keys);
+
+		//values
+		Collection&lt;Integer&gt; values = m.values();
+		System.out.println(values);
+
+		//entrySet
+		Set&lt;Map.Entry&lt;String, Integer&gt;&gt; entries = m.entrySet();
+		for(Map.Entry&lt;String, Integer&gt; e : entries)
+			System.out.println(e.getKey()+" "+e.getValue());
+
+		//remove
+		m.remove("c");
+
+		//toString
+		System.out.println(m);
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">LinkedHashMap</div>
+		<div class = "block">
+			<ul>
+				<li>Keep track of order of insertion</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class H
+{
+	public static void main(String args[])
+	{
+		LinkedHashMap&lt;String, Integer&gt; m = new LinkedHashMap&lt;String, Integer&gt;();
+
+		//put
+		m.put("a", 10);
+		m.put("b", 20);
+		m.put("c", 30);
+		m.put("d", 40);
+
+		//get
+		System.out.println(m.get("a"));
+
+		//keySet
+		Set&lt;String&gt; keys = m.keySet();
+		System.out.println(keys);
+
+		//values
+		Collection&lt;Integer&gt; values = m.values();
+		System.out.println(values);
+
+		//entrySet
+		Set&lt;Map.Entry&lt;String, Integer&gt;&gt; entries = m.entrySet();
+		for(Map.Entry&lt;String, Integer&gt; e : entries)
+			System.out.println(e.getKey()+" "+e.getValue());
+
+		//remove
+		m.remove("c");
+
+		//toString
+		System.out.println(m);
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">TreeMap</div>
+		<div class = "block">
+			<ul>
+				<li>Store unique elements in a sorted order</li>
+				<li>TreeMap implements Red-Black Tree</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class H
+{
+	public static void main(String args[])
+	{
+		TreeMap&lt;String, Integer&gt; m = new TreeMap&lt;String, Integer&gt;();
+
+		//put
+		m.put("a", 10);
+		m.put("b", 20);
+		m.put("c", 30);
+		m.put("d", 40);
+
+		//firstKey
+		System.out.println(m.firstKey());
+
+		//lastKey
+		System.out.println(m.lastKey());
+
+		//lowerKey
+		System.out.println(m.lowerKey("b"));//a
+
+		//ceilingKey
+		System.out.println(m.ceilingKey("b"));//b
+
+		//higherKey
+		System.out.println(m.higherKey("b"));//c
+
+		//floorKey
+		System.out.println(m.floorKey("b"));//b
+
+		System.out.println(m);
+
+		//headMap
+		SortedMap&lt;String, Integer&gt; hMap = m.headMap("b");
+		System.out.println(hMap);
+
+		//subMap
+		SortedMap&lt;String, Integer&gt; sMap = m.subMap("b", "d");
+		System.out.println(sMap);
+
+		//tailMap
+		SortedMap&lt;String, Integer&gt; tMap = m.tailMap("b");
+		System.out.println(tMap);
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle">EnumMap</div>
+		<div class = "block">
+			<ul>
+				<li>All keys of each EnumMap instance must be keys of a single enum type</li>
+				<li>EnumMap doesn’t allow null key and throw NullPointerException, at same time null values are permitted</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+public enum Day
+{
+	Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday;
+}
+			</pre>
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class M
+{
+	public static void main(String args[])
+	{
+		EnumMap&lt;Day, String&gt; m = new EnumMap&lt;Day, String&gt;(Day.class);
+
+		//put
+		m.put(Day.Monday, "Teaching and Research");
+		m.put(Day.Tuesday, "Prepare Course Materials");
+		m.put(Day.Wednesday, "Running ...");
+		m.put(Day.Thursday, "Meeting ...");
+
+		//get
+		System.out.println(m.get(Day.Thursday));
+
+		//toString
+		System.out.println(m);
+	}
+}
+			</pre>
+		</div>
+
+		<div class = "subtitle"><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/Hashtable.html">HashTable</a></div>
+		<div class = "block">
+			<ul>
+				<li>Hashtable is synchronized</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+
+public class H
+{
+	public static void main(String args[])
+	{
+		Hashtable&lt;String, Integer&gt; grade = new Hashtable&lt;String, Integer&gt;();
+
+		//put
+		grade.put("David", 90);
+		grade.put("Jeremy", 80);
+		grade.put("Antonio", 85);
+		grade.put("Ray", 95);
+
+		//get
+		System.out.println("Grade for David: "+grade.get("David"));
+
+		//remove
+		grade.remove("Antonio");
+
+		//toString
+		System.out.println(grade);
+
+		//containsKey
+		if(grade.containsKey("Jeremy"))
+			System.out.println("Contains the record for Jeremy ...");
+
+		//keySet
+		System.out.println(grade.keySet());
+
+		//values
+		System.out.println(grade.values());
+	}
+}
+			</pre>
+		</div>
+		<div class = "subtitle"><a href = "https://docs.oracle.com/javase/7/docs/api/java/util/Properties.html">Properties</a></div>
+		<div class = "block">
+			<ul>
+				<li>The Properties can be saved to a stream or loaded from a stream</li>
+				<li>Each key and its corresponding value in the property list is a string</li>
+			</ul>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import java.util.*;
+import java.io.*;
+
+public class P
+{
+	public static void main(String args[])
+	{
+		Properties t = new Properties();
+
+		t.setProperty("color", "blue");
+		t.setProperty("maker", "Honda");
+
+		//save properties
+		try
+		{
+			FileOutputStream output = new FileOutputStream("temp.dat");
+			t.store(output, "Save Properties");
+			output.close();
+		}
+		catch (IOException ioException)
+		{
+			ioException.printStackTrace();
+		}
+
+		Properties t2 = new Properties();
+
+		//load properties
+		try
+		{
+			FileInputStream input = new FileInputStream("temp.dat");
+			t2.load(input);
+			input.close();
+		}
+		catch (IOException ioException)
+		{
+			ioException.printStackTrace();
+		}
+		t.list(System.out);
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Coot</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Coot</div>
+		<div class = "subtitle"><a href = "https://www2.mrc-lmb.cam.ac.uk/personal/pemsley/coot/web/tutorial/tutorial.pdf">Tutorials</a></div>
+		<div class = "block">
+			<li><u>Edit</u>
+				<ul>
+					<li>"Map Color", set up the color for the select map</li>
+				</ul>
+			</li>
+			<li><u>Calculate</u>
+				<ul>
+					<li>"Model/Fit/Refine", same as the menu in the right window
+						<ul>
+							<li>"Map", select map</li>
+							<li><span>"Rotamer"</span>, choose the rotamer which can fit the density map best</li>
+							<li><span>"Real Space Refine Zone"</span>, refine the rotamer</li>
+							<li>"Regularize Zone", idealize model geometry</li>
+							<li>"Rigit Body Fit Zone", fix the select fragment</li>
+							<li>"Rotate Translate Zone", rotate and translate atoms by selecting two atoms</li>
+							<li>"Edit Chi Angles", adjust Chi angles</li>
+							<li>"Edit Backbone Torsions", adjust Phi and Psi according to the Ramachandra plots</li>
+							<li>"Add Alt Conf", add alternative conformation</li>
+							<li>"Delete", delete the selected residues</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li><u>Draw</u>
+				<ul>
+					<li>"Go to Atom", centre selected atom and display the density map around it, use "Next Residue" and "Previous Residue" to move along the chain</li>
+					<li>"Display Manager", “Scroll” button allows to select which map is affected by this</li>
+					<li>"Sequence View", view the sequence</li>
+					<li>"Clipping", set up the diplay depth</li>
+					<li>"Cell &amp; Symmetry", Display Symmetry Atoms</li>
+				</ul>
+			</li>
+			<li><u>Measure</u>
+				<ul>
+					<li>"Distances &amp; Angles", measure distance, angles, torsion angles</li>
+					<li>"Environment Distances", display the hydrogen bonds and bumps</li>
+					<li>"Clean Atom Labels", remove the atom labels created by "Shift+Left Button"</li>
+				</ul>
+			</li>
+			<li><u>Validate</u>
+				<ul>
+					<li>"Density Fit Analysis", density fit metrics</li>
+					<li>"Unmodelled Blobs", find the unexplained density blobs</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Refinement</div>
+		<div class = "block">
+			<ol>
+				<li>"Rotamer", choose the rotamer fiting the density map best</li>
+				<li>"Real Space Refine Zone", refine the selected residue</li>
+			</ol>
+		</div>
+		<div class = "subtitle">Blob</div>
+		<div class = "block">
+			<ol>
+				<li>"Validate -&gt; Unmodelled Blobs", find the unexplained density blobs</li>
+				<li>"Place Atom At Pointer", place atoms to the selected density blob</li>
+				<li>"File -&gt; Seach Monomer library", search and insert monomer</li>
+				<li>"Calcualte -&gt; Fit Loop ... Fit Loop by Rama Search", add missed residues</li>
+			</ol>
+		</div>
+		<div class = "subtitle">NCS</div>
+		<div class = "block">
+			<li>Comparing the NCS related electron density
+				<ul>
+					<li>"Calcualte -&gt; NCS maps</li>
+				</ul>
+			</li>
+			<li>Comparing the NCS-related chains
+				<ul>
+					<li>"Draw -&gt; NCS ghost control</li>
+				</ul>
+			</li>
+			<li>Compare the NCS-related chains using “NCS jumping”
+				<ul>
+					<li>"o", Other NCS-related chain</li>
+				</ul>
+			</li>
+			<li>Comparing the Ramachandran plots for related chains
+				<ul>
+					<li>"Validate -&gt; Kleywegt plot</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Fix Residue</div>
+		<div class = "block">
+			<li>"Delete", remove the residue</li>
+			<li>"Calculate -&gt; Fit Loop", add ALA residue</li>
+			<li>"Mutate &amp; Auto Fit.", change to a specific residue</li>
+		</div>
+		<div class = "subtitle">Output</div>
+		<div class = "block">
+			<li>"File -&gt; Save Coordinates", output pdb file</li>
+			<li>"File -&gt; Export Map", output map file</li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>iptables</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">iptables</div>
+		<div class = "block">
+			<li>Chain, a set of rules</li>
+			<li>Target, matched package
+				<ul>
+					<li>ACCEPT</li>
+					<li>DROP</li>
+					<li>RETURN,  skip the current chain and go back to the next rule from the chain</li>
+				</ul>
+			</li>
+			<li>Filter
+				<ul>
+					<li>INPUT, incoming packages</li>
+					<li>FORWARD, imcoming packages but forwarded somewhere else</li>
+					<li>OUTPUT, going out packages</li>
+				</ul>
+			</li>
+			<li>Check status
+				<ul>
+					<li>sudo iptables -L -v, all three chains are set to default ACCEPT</li>
+				</ul>
+			</li>
+			<li>Define rules
+				<ul>
+					<li>sudo iptables -A  -i &lt;interface&gt; -p &lt;protocol (tcp/udp) &gt; -s &lt;source&gt; --dport &lt;port no.&gt;  -j &lt;target&gt;
+						<ul>
+							<li>-A, append</li>
+							<li>-i, interface</li>
+							<li>-p, protocol</li>
+							<li>-s, ip sources</li>
+							<li>--dport, port numbers, such as, HTTP (port 80), https (port 443), ssh (port 22)</li>
+							<li>-j, target, ACCEPT, DROP, and RETURN</li>
+						</ul>
+					</li>
+					<li>sudo iptables -A INPUT -s 192.168.1.3 -j DROP, drop packets from a specific IP address</li>
+					<li>sudo iptables -A INPUT -m iprange --src-range 192.168.1.100-192.168.1.200 -j DROP, drop packets from a range of IP addresses</li>
+					<li>sudo iptables -A INPUT -j DROP, <span style = "color:red">DROP</span> all other traffic after defining the rules as it prevents unauthorized access to a server from other open ports</li>
+					<li>sudo iptables -F, remove all rules</li>
+					<li>sudo iptables -L --line-numbers, list rules</li>
+					<li>sudo iptables -D INPUT 3, remove a specific rule</li>
+				</ul>
+			</li>
+			<li>Persisting changes
+				<ul>
+					<li>sudo /sbin/iptables-save, saves current rules to system configuration file which is used to reconfigure the tables at the time of reboot</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.hostinger.com/tutorials/iptables-tutorial">iptables tutorial</a></li>
+		</div>
+	</body>
+</html>
