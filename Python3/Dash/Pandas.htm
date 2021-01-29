@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Pandas
+		</div>
+
+		<div class = "subtitle">Generate Plotly Figure with Pandas</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import pandas as pd
+import plotly.express as px
+
+pd.options.plotting.backend = "plotly"
+
+data = px.data.iris()
+
+app = dash.Dash(__name__)
+
+fig = data.plot.scatter(x='sepal_length', y='sepal_width')
+
+app.layout = html.Div(
+    children=[
+        dcc.Graph(
+            figure=fig
+        ),
+    ]
+)
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+	</body>
+</html>

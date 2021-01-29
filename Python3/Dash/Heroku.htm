@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Heroku
+		</div>
+
+		<div class = "subtitle">Source Code</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+app = dash.Dash(__name__)
+server = app.server
+
+..
+app.run_server()
+		</pre>
+		</div>
+		<div class = "subtitle">requirements.txt</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+pip freeze &gt; requirements.txt
+		</pre>
+		</div>
+		<div class = "subtitle">Procfile</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+web: gunicorn app:server
+		</pre>
+		</div>
+		<div class = "subtitle">Heroku</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+git init
+heroku git:remote -a dash-lin-chen-langley
+git add .
+git commit -am 'Add dashboard files'
+git push heroku master
+		</pre>
+		</div>
+	</body>
+</html>

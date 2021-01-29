@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Layout
+		</div>
+
+		<div class = "subtitle">Style</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+
+app = dash.Dash(__name__)
+
+def main():
+    app.layout = html.H1(children="Avocado Analytics",
+            style={"font-size": "18px", "color": "red", "font-weight": "bold", "border-style": "ridge"})
+
+if __name__ == "__main__":
+    main()
+    app.run_server(debug=True) # turn on Dash tools
+		</pre>
+		</div>
+		<div class = "subtitle">CSS</div>
+		<div class = "block">
+			<li>make a <span>assets</span> folder in the same directory as your app.py. Put all your .cssand .js files there</li>
+			<li>Initialize the app object by using app = dash.Dash(__name__)</li>
+			<li>Now Dash will automatically load your CSS and JS files</li>
+		<pre class = "prettyprint linenums">
+# assets/style.css
+.header-title {
+    color: red;
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 auto;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+
+app = dash.Dash(__name__)
+
+def main():
+    app.layout = html.H1(children="Avocado Analytics",
+            className="header-title",
+    )
+
+if __name__ == "__main__":
+    main()
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Page Load</div>
+		<div class = "block">
+			<li>By default, Dash apps store the app.layout in memory. This ensures that the layout is only computed once, when the app starts</li>
+			<li>Setting app.layout to a function can serve a dynamic layout on every page load</li>
+		<pre class = "prettyprint linenums">
+import datetime
+
+import dash
+import dash_html_components as html
+
+app = dash.Dash(__name__)
+
+def getLayout():
+    return html.H1(children="Avocado Analytics"+str(datetime.datetime.now()),
+            style={"font-size": "18px", "color": "red", "font-weight": "bold"})
+
+app.layout = getLayout # not app.layout = getLaout()
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Component CSS</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# assets/style.css
+.header-title {
+    color: red;
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 auto;
+    border: solid;
+    width: 80%;
+}
+
+.card {
+    margin-bottom: 24px;
+    width: 80%;
+    margin: auto;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.18);
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import pandas as pd
+
+data = pd.read_csv("avocado.csv")
+data = data.query("type == 'conventional' and region == 'Albany'")
+data["Date"] = pd.to_datetime(data["Date"], format="%Y-%m-%d")
+data.sort_values("Date", inplace=True)
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div(
+        children = [html.Div(
+            children = [html.H1(children="Avocado Analytics",
+            className="header-title",
+    )]
+            ),
+
+            html.Div(
+        children = dcc.Graph(
+            figure={
+                "data": [
+                    {
+                        "x": data["Date"],
+                        "y": data["Total Volume"],
+                        "type": "lines",
+                    },
+                ],
+                "layout": {"title": "Avocados Sold"},
+            },
+        ),
+        className="card"
+        )
+    ]
+)
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Dynamic Components</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Dash_1.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.layout = html.Div([
+    dcc.Input(id='my-input', type='text'),
+    html.Div(id='my-output'),
+    html.Br(),
+    html.Div(id='holder'),
+])
+
+# suppress exception when a component does not exist in the initial state
+app.config['suppress_callback_exceptions'] = True
+
+@app.callback(
+    Output(component_id='my-output', component_property='children'),
+    Input(component_id='my-input', component_property='value')
+)
+def update_output_div(input_value):
+    if not input_value:
+        raise PreventUpdate # do not update the callback output
+    if len(input_value) &lt; 10:
+        return 'Output: {}'.format(input_value)
+    else:
+        return ['Output: {}'.format(input_value), html.Label("Hello World! ", id='my-label')]
+
+@app.callback(
+    Output(component_id='my-label', component_property='children'),
+    Input(component_id='my-input', component_property='value')
+)
+def update_output_label(input_value):
+        return input_value
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Inserted Component as Input</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Dash_2.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+			<li>It is possible for a callback to insert new Dash components into a Dash app's layout</li>
+			<li>If these new components are themselves the inputs to other callback functions, then their appearance in the Dash app's layout will trigger those callback functions to be executed</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.layout = html.Div([
+    dcc.Input(id='my-input', type='text'),
+    html.Div(id='my-output'),
+    html.Br(),
+    html.Div(id='holder'),
+])
+
+app.config['suppress_callback_exceptions'] = True
+
+@app.callback(
+    Output(component_id='my-output', component_property='children'),
+    Input(component_id='my-label', component_property='children')
+)
+def update_output_div(input_value):
+    return 'Output: '+str(input_value)
+
+@app.callback(
+    Output(component_id='holder', component_property='children'),
+    Input(component_id='my-input', component_property='value')
+)
+def update_output_label(input_value):
+    if not input_value:
+        raise PreventUpdate
+    return html.Label(str(input_value), id='my-label')
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Prevent Initial Component Callback</div>
+		<div class = "block">
+			<li>Only applies if both the callback output and input are present in the app layout upon initial load of the application</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.layout = html.Div([
+    dcc.Input(id='my-input', type='text'),
+    html.Div(id='my-output'),
+    html.Br(),
+    html.Div(id='holder'),
+])
+
+app.config['suppress_callback_exceptions'] = True
+
+@app.callback(
+    Output(component_id='my-output', component_property='children'),
+    Input(component_id='my-label', component_property='children')
+)
+def update_output_div(input_value):
+    return 'Output: '+str(input_value)
+
+@app.callback(
+    Output(component_id='holder', component_property='children'),
+    Input(component_id='my-input', component_property='value'),
+    prevent_initial_call=True
+)
+def update_output_label(input_value):
+    return html.Label(str(input_value), id='my-label')
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://dash.plotly.com/devtools">Dev Tools</a></li>
+			<li><a href = "https://dash.plotly.com/dash-html-components">HTML Components</a></li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Callback
+		</div>
+
+		<div class = "block">
+			<li>All of the callbacks in a Dash app are executed with the initial value of their inputs when the app is first loaded. This is known as the "initial call" of the callback
+				<ul>
+					<li>when app.config['suppress_callback_exceptions'] = False, dash validates all callbacks when the application is launched and throws a NonExistantIdException if a component does not exist in the initial state</li>
+				</ul>
+			</li>
+			<lI>A callback is executed when all of the callback's inputs have reached their final values
+				<ul>
+					<li>If any input is not ready, will wait until all of them are readly</li>
+				</ul>
+			</li>
+			<li>Each callback function can have multiple outputs</li>
+			<li>Callback must have Output(s) and Input(s)</li>
+		</div>
+		<div class = "subtitle">Multiple Inputs Callback</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# assets/style.css
+body {
+    font-family: "Lato", sans-serif;
+    margin: 0;
+    background-color: #F7F7F7;
+}
+
+.header {
+    background-color: #222222;
+    height: 288px;
+    padding: 16px 0 0 0;
+}
+
+.header-emoji {
+    font-size: 48px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.header-title {
+    color: #FFFFFF;
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.header-description {
+    color: #CFCFCF;
+    margin: 4px auto;
+    text-align: center;
+    max-width: 384px;
+}
+
+.wrapper {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1024px;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: 32px;
+}
+
+.card {
+    margin-bottom: 24px;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.18);
+}
+
+.menu {
+    height: 112px;
+    width: 912px;
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 24px;
+    margin: -80px auto 0 auto;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.18);
+}
+
+.Select-control {
+    width: 256px;
+    height: 48px;
+}
+
+.Select--single &gt; .Select-control .Select-value, .Select-placeholder {
+    line-height: 48px;
+}
+
+.Select--multi .Select-value-label {
+    line-height: 32px;
+}
+
+.menu-title {
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #079A82;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+import pandas as pd
+import numpy as np
+
+data = pd.read_csv("avocado.csv")
+#data = data.query("type == 'conventional' and region == 'Albany'")
+data["Date"] = pd.to_datetime(data["Date"], format="%Y-%m-%d")
+data.sort_values("Date", inplace=True)
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div(
+        children = [html.Div(
+            children = [html.H1(children="Avocado Analytics",
+            className="header-title",
+    )]
+            ),
+
+            html.Div(
+            children=[
+                html.Div(children="Region", className="menu-title"),
+                dcc.Dropdown(
+                    id="region-filter",
+                    options=[
+                        {"label": region, "value": region}
+                        for region in np.sort(data.region.unique())
+                    ],
+                    value="Albany",
+                    clearable=False,
+                    className="dropdown",
+                ),
+            ]
+        ),
+        html.Div(
+            children=[
+                html.Div(children="Type", className="menu-title"),
+                dcc.Dropdown(
+                    id="type-filter",
+                    options=[
+                        {"label": avocado_type, "value": avocado_type}
+                        for avocado_type in data.type.unique()
+                    ],
+                    value="organic",
+                    clearable=False,
+                    searchable=False,
+                    className="dropdown",
+                ),
+            ],
+        ),
+
+            html.Div(
+        children = dcc.Graph(
+            id="volume-chart", config={"displayModeBar": False},
+        ),
+        className="card"
+        )
+    ]
+)
+
+@app.callback(
+    Output("volume-chart", "figure"),
+    [
+        Input("region-filter", "value"),
+        Input("type-filter", "value"),
+    ],
+)
+def update_plot(region, type):
+    mask = (
+        (data.region == region)
+        & (data.type == type))
+    filtered_data = data.loc[mask, :]
+
+    volume_chart_figure = {
+        "data": [
+            {
+                "x": filtered_data["Date"],
+                "y": filtered_data["Total Volume"],
+                "type": "lines",
+            },
+        ],
+        "layout": {
+            "title": {
+                "text": "Avocados Sold",
+                "x": 0.05,
+                "xanchor": "left"
+            },
+            "xaxis": {"fixedrange": True},
+            "yaxis": {"fixedrange": True},
+            "colorway": ["#E12D39"],
+        },
+    }
+
+    return volume_chart_figure
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Multiple Outputs Callback</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.layout = html.Div([
+    html.Label('Label 1', id='id_1'),
+    html.Label('Label 2', id='id_2'),
+    dcc.Input(id='input'),
+])
+
+@app.callback(
+    [Output(component_id='id_1', component_property='children'),
+        Output(component_id='id_2', component_property='children')],
+    Input(component_id='input', component_property='value')
+)
+def update_outputs(input_value):
+    if input_value:
+        return 'Label 1: '+input_value, 'Label 2: '+input_value
+    else:
+        return 'Label 1:', 'Label 2'
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Chained Callbacks</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.layout = html.Div([
+    html.Label('Label 1', id='id_1'),
+    html.Label('Label 2', id='id_2'),
+    dcc.Input(id='input'),
+])
+
+@app.callback(
+    Output(component_id='id_1', component_property='children'),
+    Input(component_id='input', component_property='value')
+)
+def update_input_label1(input_value):
+    if input_value:
+        return 'Label 1: '+input_value
+
+@app.callback(
+    Output(component_id='id_2', component_property='children'),
+    Input(component_id='id_1', component_property='children')
+)
+def update_label1_label2(input_value):
+    if input_value:
+        return 'Label 2: '+input_value
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">State</div>
+		<div class = "block">
+			<li>Input, components response right away</li>
+			<li>State, do not response until the user finish entering all of information in the form</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.layout = html.Div([
+    dcc.Input(id='input-state', type='text', value='input'),
+    html.Button(id='submit-button-state', n_clicks=0, children='Submit'),
+    html.Div(id='output-state')
+])
+
+
+@app.callback(Output('output-state', 'children'),
+              Input('submit-button-state', 'n_clicks'),
+              State('input-state', 'value')
+              )
+def update_output(n_clicks, input):
+    return u'''
+        The Button has been pressed {} times,
+        Input is "{}",
+    '''.format(n_clicks, input)
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">PreventUpdate</div>
+		<div class = "block">
+			<li>Do not update the callback output</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.layout = html.Div([
+    html.Button('Click here to see the content', id='show-secret'),
+    html.Div(id='body-div')
+])
+
+# suppress exception when a component does not exist in the initial state
+app.config['suppress_callback_exceptions'] = True
+
+@app.callback(
+    Output(component_id='body-div', component_property='children'),
+    Input(component_id='show-secret', component_property='n_clicks')
+)
+def update_output(n_clicks):
+    if n_clicks is None:
+        raise PreventUpdate # do not update the callback output
+    else:
+        return html.Label(id='label')
+
+@app.callback(
+    Output(component_id='label', component_property='children'),
+    Input(component_id='show-secret', component_property='n_clicks')
+)
+def update_label(n_clicks):
+    return 'Clicks: '+str(n_clicks)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">dash.callback_context</div>
+		<div class = "block">
+			<li>A global variable, available only inside a callback</li>
+			<li>Use to Determine which Input has fired</li>
+		<pre class = "prettyprint linenums">
+import json
+
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    dcc.Input(id='input1'),
+    dcc.Input(id='input2'),
+    html.Div(id='container')
+])
+
+
+@app.callback(Output('container', 'children'),
+              [Input('input1', 'value'),
+              Input('input2', 'value')]
+              )
+def display(click1, click2):
+    ctx = dash.callback_context
+
+    if not ctx.triggered:
+        button_id = 'No clicks yet'
+    else:
+        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+
+    ctx_msg = json.dumps({
+        'states': ctx.states,
+        'triggered': ctx.triggered,
+        'inputs': ctx.inputs
+    }, indent=2)
+        
+    return html.Pre(ctx_msg)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Sharing Data Between Callbacks</div>
+		<div class = "block">
+			<li>Dash apps run across multiple workers, their memory is not shared</li>
+		<pre class = "prettyprint linenums">
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://realpython.com/python-dash/">Develop Data Visualization Interfaces in Python With Dash</a></li>
+		</div>
+	</body>
+</html>

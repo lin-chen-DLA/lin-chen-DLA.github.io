@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			General
+		</div>
+
+		<div class = "subtitle">Install</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+conda create --name Dash python=3.7 # create an empty virtual environment
+conda install dash # dash-1.19.0
+conda install pandas # pandas-1.2.1
+		</pre>
+		</div>
+		<div class = "subtitle">Local Server</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+http://localhost:8050
+		</pre>
+		</div>
+		<div class = "subtitle">Modules</div>
+		<div class = "block">
+			<li><span>dash</span>, initialize the application</li>
+			<li><span>dash_core_components</span>, create interactive components like graphs, dropdowns, or date ranges</li>
+			<li><span>dash_html_components</span>, access HTML tags</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://plotly.com/python/plotly-fundamentals/">Plotly Express Gallery</a></li>
+			<li><a href = "https://dash.plotly.com/dash-html-components">Dash HTML Components</a></li>
+			<li><a href = "https://dash.plotly.com/dash-core-components">Dash Core Components Gallery</a></li>
+			<li><a href = "https://dash-gallery.plotly.host/Portal/">Dash Gallery</a></li>
+			<li><a href = "https://dash.plotly.com/">Dash Documentation</a></li>
+		</div>
+	</body>
+</html>
