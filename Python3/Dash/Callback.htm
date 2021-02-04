@@ -411,8 +411,369 @@ if __name__ == '__main__':
 		</div>
 		<div class = "subtitle">Sharing Data Between Callbacks</div>
 		<div class = "block">
-			<li>Dash apps run across multiple workers, their memory is not shared</li>
+			<p style = "text-align:center;"><img src = "img/Dash_4.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			<li>Use global variable
+				<ul>
+					<li>Dash apps run across multiple workers, their memory is not shared</li>
+					<li>Global variabls are shared by multiple workers</li>
+					<li>If modify a global variable by one workers, the changes are applied to the rest of the workers</li>
+					<li>Cause network transport cost</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "block">
 		<pre class = "prettyprint linenums">
+import os
+import dash
+import pandas as pd
+
+from dash.dependencies import Output, Input
+from dash.exceptions import PreventUpdate
+
+import dash_html_components as html
+import dash_core_components as dcc
+import dash_table
+import plotly.graph_objects as go
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+df = None
+
+def get_files():
+    container = []
+    for root, dirs, files in os.walk("./"):
+        for file in files:
+            if file.endswith(".csv"):
+                container.append(file)
+
+    return [{'label': file, 'value': file} for file in container]
+
+def get_fields(data):
+    fields = []
+    for item in data.columns:
+        t = data[item].dtype
+        if t == 'int' or t =='float':
+            fields.append(item)
+    return [{'label': field, 'value': field} for field in fields]
+
+app.layout = html.Div([
+    #dcc.Store(id='output'),
+    dcc.Dropdown(id='field1', options=get_files()),
+    html.Div(id='content'),
+])
+
+@app.callback(Output('content', 'children'),
+              Input('field1', 'value'))
+def update_fields(value):
+    if not value:
+        raise PreventUpdate
+
+    print(value)
+
+    global df
+    df = pd.read_csv(value)
+    print(df)
+
+    graph = dcc.Graph(id='graph')
+
+    fields = get_fields(df)
+
+    dropdown = dcc.Dropdown(id='field2', options=get_fields(df), multi=True)
+
+    return [dropdown, graph]
+
+@app.callback(Output('graph', 'figure'),
+              Input('field2', 'value'))
+def update_fields2(value):
+    if not value:
+        raise PreventUpdate
+    if len(value) &lt; 2:
+        raise PreventUpdate
+
+    fig = go.Figure()
+    for i in range(1, len(value)):
+        fig.add_trace(go.Scatter(x=df[value[0]], y=df[value[i]], mode='markers', name=value[i]))
+    return fig
+
+if __name__ == '__main__':
+    app.run_server(debug=True, threaded=True, port=10450)
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Three places to save data
+				<ul>
+					<li>In the user's browser session</li>
+					<li>On the disk</li>
+					<li>In a shared memory space like with Redis</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Dash_3.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			<li>Saving the data as part of Dash's front-end store
+				<ul>
+					<li>Data that is cached in this way will only be available in the user's current session</li>
+					<li>There could be a cost in network transport. If you're sharing 10MB of data between callbacks, then that data will be transported over the network between each callback</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import numpy as np
+import pandas as pd
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
+import plotly.express as px
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.layout = html.Div([
+    html.Div(id='display-1'),
+    html.Div(id='display-2'),
+    dcc.Dropdown(id='dropdown',
+        options=[
+            {'label': 'A', 'value': 'A'},
+            {'label': 'B', 'value': 'B'}
+            ]),
+
+    # Hidden div inside the app that stores the intermediate value
+    html.Div(id='intermediate-value', style={'display': 'none'})
+])
+
+@app.callback(Output('intermediate-value', 'children'), Input('dropdown', 'value'))
+def clean_data(value):
+    if not value:
+        raise PreventUpdate
+    cleaned_df = pd.read_csv('solar.csv')
+
+    # more generally, this line would be
+    # json.dumps(cleaned_df)
+    print('Output intermediate value ...')
+    return cleaned_df.to_json(date_format='iso', orient='split')
+
+@app.callback(Output('display-1', 'children'),
+              Input('intermediate-value', 'children'))
+def update_output_1(value):
+    dff = pd.read_json(value, orient='split')
+    return str(dff)
+
+@app.callback(Output('display-2', 'children'),
+              Input('intermediate-value', 'children'))
+def update_output_1(value):
+    dff = pd.read_json(value, orient='split')
+    return str(dff)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Dash_5.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			<li>Save the data on the filesystem cache with a session ID and then reference the data using that session ID</li>
+			<li>Because data is saved on the server instead of transported over the network, this method is generally faster than the "hidden div" method</li>
+			<li>Note that filesystem cache doesn't work on systems with ephemeral filesystems like Heroku</li>
+		<pre class = "prettyprint linenums">
+import dash
+from dash.dependencies import Input, Output
+import dash_core_components as dcc
+import dash_html_components as html
+import datetime
+from flask_caching import Cache
+import os
+import pandas as pd
+import time
+import uuid
+
+external_stylesheets = [
+    # Dash CSS
+    'https://codepen.io/chriddyp/pen/bWLwgP.css',
+    # Loading screen CSS
+    'https://codepen.io/chriddyp/pen/brPBPO.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+cache = Cache(app.server, config={
+    'CACHE_TYPE': 'redis',
+    # Note that filesystem cache doesn't work on systems with ephemeral
+    # filesystems like Heroku.
+    'CACHE_TYPE': 'filesystem',
+    'CACHE_DIR': 'cache-directory',
+
+    # should be equal to maximum number of users on the app at a single time
+    # higher numbers will store more data in the filesystem / redis cache
+    'CACHE_THRESHOLD': 200
+})
+
+
+def get_dataframe(session_id):
+    @cache.memoize()
+    def query_and_serialize_data(session_id):
+        # expensive or user/session-unique data processing step goes here
+
+        # simulate a user/session-unique data processing step by generating
+        # data that is dependent on time
+        now = datetime.datetime.now()
+
+        # simulate an expensive data processing task by sleeping
+        time.sleep(5)
+
+        df = pd.DataFrame({
+            'time': [
+                str(now - datetime.timedelta(seconds=15)),
+                str(now - datetime.timedelta(seconds=10)),
+                str(now - datetime.timedelta(seconds=5)),
+                str(now)
+            ],
+            'values': ['a', 'b', 'a', 'c']
+        })
+        return df.to_json()
+
+    return pd.read_json(query_and_serialize_data(session_id))
+
+
+def serve_layout():
+    session_id = str(uuid.uuid4())
+
+    return html.Div([
+        html.Div(session_id, id='session-id', style={}),
+        html.Button('Get data', id='get-data-button'),
+        html.Div(id='output-1'),
+        html.Div(id='output-2')
+    ])
+
+
+app.layout = serve_layout
+
+
+@app.callback(Output('output-1', 'children'),
+              Input('get-data-button', 'n_clicks'),
+              Input('session-id', 'children'))
+def display_value_1(value, session_id):
+    df = get_dataframe(session_id)
+    return html.Div([
+        'Output 1 - Button has been clicked {} times'.format(value),
+        html.Pre(df.to_csv())
+    ])
+
+
+@app.callback(Output('output-2', 'children'),
+              Input('get-data-button', 'n_clicks'),
+              Input('session-id', 'children'))
+def display_value_2(value, session_id):
+    df = get_dataframe(session_id)
+    return html.Div([
+        'Output 2 - Button has been clicked {} times'.format(value),
+        html.Pre(df.to_csv())
+    ])
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Dash_6.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			<li>Use Store
+				<ul>
+					<li>Store JSON data in the browser</li>
+					<li>User sessions accessing the same app are independent</li>
+					<li>Support dict | list | number | string | boolean</li>
+					<li>It's generally safe to store up to 2MB in most environments, and 5~10MB in most desktop-only applications</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+import os
+import dash
+import pandas as pd
+
+from dash.dependencies import Output, Input, State
+from dash.exceptions import PreventUpdate
+
+import dash_html_components as html
+import dash_core_components as dcc
+import dash_table
+import plotly.graph_objects as go
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+def get_files():
+    container = []
+    for root, dirs, files in os.walk("./"):
+        for file in files:
+            if file.endswith(".csv"):
+                container.append(file)
+
+    return [{'label': file, 'value': file} for file in container]
+
+def get_fields(data):
+    fields = []
+    for item in data.columns:
+        t = data[item].dtype
+        if t == 'int' or t =='float':
+            fields.append(item)
+    return [{'label': field, 'value': field} for field in fields]
+
+app.layout = html.Div([
+    dcc.Store(id='memory'),
+    dcc.Dropdown(id='field1', options=get_files()),
+    html.Div(id='content'),
+])
+
+@app.callback(Output('memory', 'data'),
+              Input('field1', 'value'))
+def update_store(value):
+    if not value:
+        raise PreventUpdate
+
+    df = pd.read_csv(value)
+    return df.to_dict('records')
+
+@app.callback(Output('content', 'children'),
+              Input('memory', 'modified_timestamp'),
+              State('memory', 'data'))
+def update_fields(ts, data):
+    if ts is None:
+        raise PreventUpdate
+
+    df = pd.DataFrame.from_dict(data)
+    graph = dcc.Graph(id='graph')
+
+    fields = get_fields(df)
+
+    dropdown = dcc.Dropdown(id='field2', options=get_fields(df), multi=True)
+
+    return dropdown, graph
+
+@app.callback(Output('graph', 'figure'),
+              Input('field2', 'value'),
+              State('memory', 'data'))
+def update_fields2(value, data):
+    if not value:
+        raise PreventUpdate
+    if len(value) &lt; 2:
+        raise PreventUpdate
+
+    df = pd.DataFrame.from_dict(data)
+
+    fig = go.Figure()
+    for i in range(1, len(value)):
+        fig.add_trace(go.Scatter(x=df[value[0]], y=df[value[i]], mode='markers', name=value[i]))
+    return fig
+
+if __name__ == '__main__':
+    app.run_server(debug=True, threaded=True, port=10450)
 		</pre>
 		</div>
 		<div class = "subtitle">Reference</div>
