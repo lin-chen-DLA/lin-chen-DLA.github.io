@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Structure
+		</div>
+
+		<div class = "subtitle">Component without Loading</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+import time
+
+from dash.dependencies import Input, Output
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+        dcc.Input(id="input", value='Input triggers local spinner'),
+        html.Div(id="output")]
+)
+
+@app.callback(Output("output", "children"), Input("input", "value"))
+def input_triggers_nested(value):
+    time.sleep(1)
+    return value
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Component with Loading</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+import time
+
+from dash.dependencies import Input, Output
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+        dcc.Input(id="input", value='Input triggers local spinner'),
+        dcc.Loading(id='loading', children=html.Div(id="output"), type='default')]
+)
+
+@app.callback(Output("output", "children"), Input("input", "value"))
+def input_triggers_nested(value):
+    time.sleep(1)
+    return value
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+	</body>
+</html>

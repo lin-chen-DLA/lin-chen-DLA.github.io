@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Structure
+		</div>
+
+		<div class = "subtitle">One file</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+
+# Since we're adding callbacks to elements that don't exist in the app.layout,
+# Dash will raise an exception to warn us that we might be
+# doing something wrong.
+# In this case, we're adding the elements through a callback, so we can ignore
+# the exception.
+app = dash.Dash(__name__, suppress_callback_exceptions=True)
+
+app.layout = html.Div([
+    dcc.Location(id='url', refresh=False),
+    html.Div(id='page-content')
+])
+
+link_style = {'color':'blue', 'margin':'10px 5px 10px 5px', 'font-weight': 'bold', 'text-decoration': 'none'}
+
+index_page = html.Div([
+    dcc.Link('Home', href='/', style=link_style),
+    dcc.Link('Research', href='/page-research', style=link_style),
+    dcc.Link('Skill', href='/page-skill', style=link_style),
+    html.Br(),
+    html.Label('Homepage content')
+])
+
+page_research_layout = html.Div([
+    dcc.Link('Home', href='/', style=link_style),
+    dcc.Link('Research', href='/page-research', style=link_style),
+    dcc.Link('Skill', href='/page-skill', style=link_style),
+    html.Br(),
+    html.Label('Reserach-page content')
+])
+
+page_skill_layout = html.Div([
+    dcc.Link('Home', href='/', style=link_style),
+    dcc.Link('Research', href='/page-research', style=link_style),
+    dcc.Link('Skill', href='/page-skill', style=link_style),
+    html.Br(),
+    html.Label('Skill-page content')
+])
+
+@app.callback(dash.dependencies.Output('page-content', 'children'),
+              [dash.dependencies.Input('url', 'pathname')])
+def display_page(pathname):
+    if pathname == '/page-research':
+        return page_research_layout
+    elif pathname == '/page-skill':
+        return page_skill_layout
+    else:
+        return index_page
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Multiple files</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# index.py
+from layout import *
+from app import app
+import callbacks
+
+app.layout = content
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.py
+import dash
+
+app = dash.Dash(__name__, suppress_callback_exceptions=True)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# layout.py
+import dash_core_components as dcc
+import dash_html_components as html
+
+content = html.Div([
+    dcc.Location(id='url', refresh=False),
+    html.Div(id='page-content')
+])
+
+link_style = {'color':'blue', 'margin':'10px 5px 10px 5px', 'font-weight': 'bold', 'text-decoration': 'none'}
+
+index_page = html.Div([
+    dcc.Link('Home', href='/', style=link_style),
+    dcc.Link('Research', href='/page-research', style=link_style),
+    dcc.Link('Skill', href='/page-skill', style=link_style),
+    html.Br(),
+    html.Label('Homepage content')
+])
+
+page_research_layout = html.Div([
+    dcc.Link('Home', href='/', style=link_style),
+    dcc.Link('Research', href='/page-research', style=link_style),
+    dcc.Link('Skill', href='/page-skill', style=link_style),
+    html.Br(),
+    html.Label('Reserach-page content')
+])
+
+page_skill_layout = html.Div([
+    dcc.Link('Home', href='/', style=link_style),
+    dcc.Link('Research', href='/page-research', style=link_style),
+    dcc.Link('Skill', href='/page-skill', style=link_style),
+    html.Br(),
+    html.Label('Skill-page content')
+])
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# callbacks.py
+from dash.dependencies import Input, Output
+from layout import *
+from app import app
+
+@app.callback(Output('page-content', 'children'),
+              [Input('url', 'pathname')])
+def display_page(pathname):
+    if pathname == '/page-research':
+        return page_research_layout
+    elif pathname == '/page-skill':
+        return page_skill_layout
+    else:
+        return index_page
+		</pre>
+		</div>
+	</body>
+</html>

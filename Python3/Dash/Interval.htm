@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Interval
+		</div>
+
+		<div class = "subtitle">Clock</div>
+		<div class = "block">
+			<li>Update components on a predefined interval</li>
+		<pre class = "prettyprint linenums">
+import datetime
+
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import plotly
+from dash.dependencies import Input, Output
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app.layout = html.Div(
+    html.Div([
+        html.Div(id='live-update-text'),
+        dcc.Interval(
+            id='interval-component',
+            interval=1*1000, # in milliseconds
+            n_intervals=0
+        )
+    ])
+)
+
+@app.callback(Output('live-update-text', 'children'),
+              Input('interval-component', 'n_intervals'))
+def update_metrics(n):
+    current = datetime.datetime.now()
+    s, m, h = current.second, current.minute, current.hour
+    style = {'padding': '5px', 'fontSize': '16px'}
+    return html.Span('{:d}:{:d}:{:d}'.format(h, m, s)),
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+	</body>
+</html>

@@ -203,7 +203,7 @@ if __name__ == '__main__':
     app.run_server(debug=True)
 		</pre>
 		</div>
-		<div class = "subtitle">Inserted Component as Input</div>
+		<div class = "subtitle">Input Component not Exist in Intial State</div>
 		<div class = "block">
 			<p style = "text-align:center;"><img src = "img/Dash_2.png" width = "30%"></p>
 		</div>
@@ -246,6 +246,107 @@ def update_output_label(input_value):
         raise PreventUpdate
     return html.Label(str(input_value), id='my-label')
 
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Output Component not Exist in Intial State</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Dash_8.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+			<li>Callback function with non-existing component as output will be triggered once the component is inserted</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
+ 
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+ 
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+ 
+app.layout = html.Div([
+    html.Button(id='my-button'),
+    html.Label('Hello World!', id='my-label'),
+    html.Div(id='holder'),
+])
+ 
+app.config['suppress_callback_exceptions'] = True
+ 
+@app.callback(
+    Output(component_id='holder', component_property='children'),
+    Input(component_id='my-button', component_property='n_clicks')
+)
+def update_button(n_clicks):
+    if not n_clicks:
+        raise PreventUpdate
+    return html.Div(id='my-div', style={'border': 'solid', 'border-color': 'red'})
+ 
+@app.callback(
+    Output(component_id='my-div', component_property='children'),
+    Input(component_id='my-label', component_property='children')
+)
+def update_div(c):
+    return c
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Inverted Component Be Both Input and Output</div>
+		<div class = "block">
+			<li>Inserted component <span>cannot</span> be the input in one callback function and the output in another callback function</li>
+			<p style = "text-align:center;"><img src = "img/Dash_9.png" width = "40%"></p>
+		</div>
+		<div class = "subtitle">Use Display to Control Shown/Hidden</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+.holder-1 {
+	color: red;
+	background-color: yellow;
+}
+
+.holder-2 {
+	color: blue;
+	border: solid;
+}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+ 
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+ 
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+ 
+app.layout = html.Div([
+    html.Button('Submit', id='button'),
+    html.Div('Hold 1 ...', id='holder-1', className='holder-1'),
+    html.Div(html.Label('Label ...'), id='holder-2', className='holder-2'),
+])
+ 
+#app.config['suppress_callback_exceptions'] = True
+ 
+@app.callback(
+    Output(component_id='holder-2', component_property='style'),
+    Input(component_id='button', component_property='n_clicks'),
+)
+def update_button(n_clicks):
+    if not n_clicks:
+        raise PreventUpdate
+
+    if n_clicks%2 == 0:
+        return {'display':'block'}
+    else:
+        return {'display':'none'}
+ 
 if __name__ == '__main__':
     app.run_server(debug=True)
 		</pre>

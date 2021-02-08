@@ -16,37 +16,258 @@
 			Graph
 		</div>
 
-		<div class = "subtitle">Plotly Express</div>
+		<div class = "subtitle">Create from Direct Data</div>
 		<div class = "block">
-		<pre class = "prettyprint linenums">
-		</pre>
-		</div>
-		<div class = "subtitle">Graph Objects</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-		</pre>
-		</div>
-		<div class = "subtitle">Direct Data</div>
-		<div class = "block">
-			<li>
+			<li>data, list of dicts</li>
+			<li>layout, dict</li>
+			<li>frames, list of dicts, points to a list of figures, each of which will be cycled through when animation is triggered</li>
 		<pre class = "prettyprint linenums">
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
  
 app = dash.Dash(__name__)
-
-def get_fig():
-    return {
-        'data': [
-                {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'}
-        ],
-        'layout': {
-            'title': 'Dash Data Visualization'
-        }
+ 
+fig = {
+    'data': [
+        {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF', 'showlegend': False}
+    ],
+    'layout': {
+        'title': 'Dash Data Visualization',
+        'xaxis': {
+            'title': 'time'
+        },
+        'height': 400,
+        'width': 800,
+        'paper_bgcolor': 'navy',
+        'plot_bgcolor': 'blue',
+        'margin': {
+            'l': 0,
+            'r': 0,
+            }
     }
+}
+ 
+app.layout = html.Div(dcc.Graph(figure=fig))
+ 
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Create with Graph Objects</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+import plotly.graph_objects as go
+import pandas as pd
+ 
+app = dash.Dash(__name__)
 
-app.layout = html.Div(dcc.Graph(figure=get_fig()))
+df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
+temp = df[df['Country Name'] == 'Canada']
+temp = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+
+fig = go.Figure(go.Bar(x=temp['Year'], y=temp['Value']))
+
+child =  dcc.Graph(figure=fig)
+ 
+app.layout = html.Div(child)
+ 
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+import plotly.graph_objects as go
+import pandas as pd
+ 
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
+temp = df[df['Country Name'] == 'Canada']
+temp = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+
+fig = go.Figure()
+
+trace = go.Bar(x=temp['Year'], y=temp['Value'])
+
+fig.add_trace(trace)
+
+child =  dcc.Graph(figure=fig)
+ 
+app.layout = html.Div(child)
+ 
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Create with Plotly Express</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+import plotly.graph_objects as go
+import plotly.express as px
+import pandas as pd
+ 
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
+temp = df[df['Country Name'] == 'Canada']
+temp = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+
+fig = px.bar(temp, x='Year', y='Value')
+
+child =  dcc.Graph(figure=fig)
+ 
+app.layout = html.Div(child)
+ 
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Create with Pandas</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+import plotly.graph_objects as go
+import plotly.express as px
+import pandas as pd
+ 
+pd.options.plotting.backend = "plotly"
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
+temp = df[df['Country Name'] == 'Canada']
+temp = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+
+fig = temp.plot.bar(x='Year', y='Value')
+
+child =  dcc.Graph(figure=fig)
+ 
+app.layout = html.Div(child)
+ 
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Update Layout</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+import plotly.graph_objects as go
+import plotly.express as px
+import pandas as pd
+ 
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
+temp = df[df['Country Name'] == 'Canada']
+temp = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+
+fig = px.bar(temp, x='Year', y='Value')
+
+fig.update_layout(
+        width=600,
+        height=300,
+        title = {'text':'Layout', 'x':0.5, 'y':0.95},
+        plot_bgcolor='navy',
+        paper_bgcolor='LightBlue',
+        margin={'l': 40, 'b': 40, 't': 40, 'r': 0}, 
+        hovermode='closest')
+
+child =  dcc.Graph(figure=fig)
+ 
+app.layout = html.Div(child)
+ 
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Subplots</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import pandas as pd
+ 
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
+temp = df[df['Country Name'] == 'Canada']
+temp = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+temp2 = df[df['Country Name'] == 'United State']
+temp2 = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+
+fig = make_subplots(rows=1, cols=2)
+
+trace_1 = go.Bar(x=temp['Year'], y=temp['Value'])
+trace_2 = go.Bar(x=temp2['Year'], y=temp2['Value'])
+
+fig.add_trace(trace_1, row=1, col=1)
+fig.add_trace(trace_2, row=1, col=2)
+
+fig.update_layout(
+        width=600,
+        height=300,
+        title = {'text':'Layout', 'x':0.5, 'y':0.95},
+        plot_bgcolor='navy',
+        paper_bgcolor='LightBlue',
+        margin={'l': 40, 'b': 40, 't': 40, 'r': 0}, 
+        hovermode='closest')
+
+child =  dcc.Graph(figure=fig)
+ 
+app.layout = html.Div(child)
+ 
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Multiple Plots</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import pandas as pd
+ 
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
+temp = df[df['Country Name'] == 'Canada']
+temp = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+temp2 = df[df['Country Name'] == 'United State']
+temp2 = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+
+fig = go.Figure()
+
+trace_1 = go.Bar(x=temp['Year'], y=temp['Value'])
+trace_2 = go.Bar(x=temp2['Year'], y=temp2['Value'])
+
+fig.add_trace(trace_1)
+fig.add_trace(trace_2)
+
+child =  dcc.Graph(figure=fig)
+ 
+app.layout = html.Div(child)
  
 if __name__ == "__main__":
     app.run_server(debug=True)
@@ -59,11 +280,47 @@ if __name__ == "__main__":
 			<li>selectedData, data selected with box select or lasso select</li>
 			<li>relyoutData, click and drag on the graph to zoom or click on the zoom buttons in the graph's menu bar, or click on legend items</li>
 		<pre class = "prettyprint linenums">
+import json
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import pandas as pd
+ 
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
+temp = df[df['Country Name'] == 'Canada']
+temp = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+
+fig = go.Figure()
+
+trace_1 = go.Bar(x=temp['Year'], y=temp['Value'])
+
+fig.add_trace(trace_1)
+
+child =  dcc.Graph(figure=fig, id='graph')
+ 
+app.layout = html.Div([child, html.Div(id='output')])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('graph', 'hoverData'))
+def display_hover_data(hoverData):
+    print(hoverData)
+    return json.dumps(hoverData, indent=2)
+ 
+if __name__ == "__main__":
+    app.run_server(debug=True)
 		</pre>
 		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
-			<li><a href = "https://plotly.com/javascript/reference/">JavaScript Figure Reference</a></li>
+			<li><a href = "https://plotly.com/python/plotly-fundamentals/">Fundamentals</a></li>
+			<li><a href = "https://plotly.com/python/animations/">Intro to Animations in Python</a></li>
+			<li><a href = "https://plotly.com/javascript/reference/index/">JavaScript Figure Reference</a></li>
 		</div>
 	</body>
 </html>
