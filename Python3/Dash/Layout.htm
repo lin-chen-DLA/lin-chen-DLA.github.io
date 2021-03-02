@@ -295,10 +295,174 @@ if __name__ == '__main__':
     app.run_server(debug=True)
 		</pre>
 		</div>
+		<div class = "subtitle">One Output with One Input from Multiple Components</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Dash_15.png" width = "20%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
+ 
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+ 
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+ 
+app.layout = html.Div([
+    html.Button("Button", id='button-1'),
+    html.Div('Container 1', id='container-1'),
+    html.Div('Container 2', id='container-2'),
+    html.Div('Label 1', id='label-1')
+])
+ 
+app.config['suppress_callback_exceptions'] = True
+ 
+@app.callback(
+    Output(component_id='container-1', component_property='children'),
+    Input(component_id='button-1', component_property='n_clicks'),
+)
+def update_slidder_1(value):
+    if not value:
+        raise PreventUpdate
+
+    return str(value)
+
+@app.callback(
+    Output(component_id='container-2', component_property='children'),
+    Input(component_id='container-1', component_property='children'),
+)
+def update_slidder_2(value):
+    if not value:
+        raise PreventUpdate
+
+    return str(value)
+
+@app.callback(
+    Output(component_id='label-1', component_property='children'),
+    Input(component_id='container-2', component_property='children'),
+)
+def update_slidder_3(value):
+    if not value:
+        raise PreventUpdate
+
+    return str(value)
+ 
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
 		<div class = "subtitle">Inverted Component Be Both Input and Output</div>
 		<div class = "block">
 			<li>Inserted component <span>cannot</span> be the input in one callback function and the output in another callback function</li>
-			<p style = "text-align:center;"><img src = "img/Dash_9.png" width = "40%"></p>
+			<p style = "text-align:center;"><img src = "img/Dash_9.png" width = "25%"></p>
+		</div>
+		<div class = "subtitle">One Output with Two Independent Inputs</div>
+		<div class = "block">
+			<li>Two inputs in two callbacks have the same component as output is <span>not</span> allowed</li>
+			<p style = "text-align:center;"><img src = "img/Dash_12.png" width = "30%"></p>
+		</div>
+		<div class = "subtitle">One Output with One Input from Multiple Components</div>
+		<div class = "block">
+			<li>Instead of using multiple independent inputs, Dash uses multiple inputs from multiple components in one callbacks</li>
+			<p style = "text-align:center;"><img src = "img/Dash_13.png" width = "25%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
+ 
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+ 
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+ 
+app.layout = html.Div([
+    html.Button("Button 1", id='button-1'),
+    html.Button("Button 2", id='button-2'),
+    html.Label('Hello World!', id='my-label'),
+])
+ 
+app.config['suppress_callback_exceptions'] = True
+ 
+@app.callback(
+    Output(component_id='my-label', component_property='children'),
+    [Input(component_id='button-1', component_property='n_clicks'),
+    Input(component_id='button-2', component_property='n_clicks')]
+)
+def update_button_1(c1, c2):
+    if not c1 and not c2:
+        raise PreventUpdate
+
+    ctx = dash.callback_context
+    if ctx.triggered:
+        if 'button-1' in ctx.triggered[0]['prop_id']:
+            return "Button 1: "+str(ctx.triggered[0]['value'])
+        if 'button-2' in ctx.triggered[0]['prop_id']:
+            return "Button 2: "+str(ctx.triggered[0]['value'])
+        return "A button is clicked ..."
+ 
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Both Input and Output are from Inserted Components</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Dash_14.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
+ 
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+ 
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+ 
+app.layout = html.Div([
+    html.Button("Button", id='button-1'),
+    html.Div(id='container')
+])
+ 
+app.config['suppress_callback_exceptions'] = True
+ 
+def get_slidder():
+    return dcc.Slider(
+        id='slider',
+        min=1,
+        max=10,
+        value=1,
+        marks={num: {'label': str(num), 'style': {'color':'red'}} for num in range(1, 11)},
+        step=None
+    )
+
+@app.callback(
+    Output(component_id='container', component_property='children'),
+    Input(component_id='button-1', component_property='n_clicks'),
+)
+def update_button_1(c1):
+    if not c1:
+        raise PreventUpdate
+
+    return [html.Div(get_slidder()), html.Div(html.Label('Content 2', id = 'label'))]
+
+@app.callback(
+    Output(component_id='label', component_property='children'),
+    Input(component_id='slider', component_property='value'),
+)
+def update_slidder(value):
+    return str(value)
+ 
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
 		</div>
 		<div class = "subtitle">Use Display to Control Shown/Hidden</div>
 		<div class = "block">

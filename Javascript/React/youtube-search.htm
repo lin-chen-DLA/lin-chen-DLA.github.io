@@ -198,33 +198,35 @@ export default VideoListItem;
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 //video_detail.js
-import React, { Component } from 'react';
+import React from "react";
 
-class SearchBar extends React.Component {
-   constructor(props) {
-        super(props);
-
-        this.state = { term: "" };
+const VideoDetail = ({ video }) =&gt; {
+    if(!video){
+        return &lt;div&gt;Loading...&lt;/div&gt;;
     }
 
-    onInputChange(term) {
-        this.setState({term});
-        this.props.onSearchTermSearch({term});
-    }
+    const videoId = video.id.videoId;
+    // ES6 syntax for
+    // const url = 'https://www.youtube.com/embed/' + 'videoId';
+    const url = `https://www.youtube.com/embed/${videoId}`;
 
-    render() {
-        return (
-            &lt;div className="search-bar"&gt;
-                &lt;input
-		    value={this.state.term} //Controlled Component
-		onChange={event =&gt; this.onInputChange(event.target.value)}
-                /&gt;
+    return (
+        &lt;div className="video-detail col-md-8"&gt;
+            &lt;div className="embed-responsive embed-responsive-16by9"&gt;
+                &lt;div&gt;
+                    &lt;iframe className="embed-responsive-item" src={url} title={video.snippet.title}/&gt;
+                &lt;/div&gt;
             &lt;/div&gt;
-        );
-    }
-}
+            &lt;div className="details"&gt;
+                &lt;div&gt;{video.snippet.title}&lt;/div&gt;
+                &lt;div&gt;{video.snippet.description}&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    );
+};
 
-export default SearchBar;
+export default VideoDetail;
+
 		</pre>
 		</div>
 		<div class = "block">

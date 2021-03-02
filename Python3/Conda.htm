@@ -66,16 +66,24 @@
 			<li>conda create --name [environmentname] python=2.7, create an empty conda environment</li>
 				</ul>
 			</li>
-			<li>conda env remove --name [environmentname], remove an environment</li>
+			<li>conda remove --name [environmentname] --all, remove an environment</li>
 			<li>source activate [environmentname], active a specific environment on Mac and Linux
 				<ul>
 					<li>activate [environmentname], on Windows</li>
 				</ul>
 			</li>
-			<li>conda deactivate, deactivate the current environment on Mac and Linux</li>
+			<li>source deactivate, deactivate the current environment on Mac and Linux</li>
 			<li>conda info --envs (conda env list), list all the environments</li>
 			<li>conda env export --file SOME_FILE, export the environment to a file</li>
 			<li>conda env create -n [environmentname] -f=[SOME_FILE], create an environment based on an environment file</li>
+			<li>Install Ipython Notebook
+				<ul>
+					<li>conda config --env --add channels conda-forge</li>
+					<li>conda config --env --set channel_priority strict</li>
+					<li>conda install ipython-notebook, <span>install ipython in an environment</span>, otherwise "ipython notebook" will launch using base environment</li>
+					<li>pip install jupyter</li>
+				</ul>
+			</li>
 		</div>
 		<div class = "subtitle">Work with Pip</div>
 		<div class = "block">

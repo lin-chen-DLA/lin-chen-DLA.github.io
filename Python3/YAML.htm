@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			YAML
+		</div>
+
+		<div class = "subtitle">YAML File</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# foo.yaml
+foo: bar
+pleh: help
+stuff:
+  foo: bar
+  bar: foo
+		</pre>
+		</div>
+		<div class = "subtitle">Read YAML File</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import yaml
+
+with open('foo.yaml') as file:
+    content = yaml.load(file, Loader=yaml.FullLoader)
+
+print(content)
+		</pre>
+		</div>
+		<div class = "subtitle">Write YAML File</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import yaml
+
+dictionary = {'Name': 'Lin', 'Age': 41, 'Children': ['Hannah', 'Hadley'], 'Lobbies': {'Swim':'Normal', 'Running':'Professional'}}
+
+with open('temp.yaml', 'w') as file:
+    yaml.dump(dictionary, file)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# temp.yaml
+Age: 41
+Children:
+- Hannah
+- Hadley
+Lobbies:
+  Running: Professional
+  Swim: Normal
+Name: Lin
+		</pre>
+		</div>
+		<div class = "subtitle">Write YAML File</div>
+		<div class = "block">
+			<li><a href = "https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started/">YAML Tutorial: Everything You Need to Get Started in Minutes</a></li>
+			<li><a href = "https://stackabuse.com/reading-and-writing-yaml-to-a-file-in-python/">Tutorial</a></li>
+			<li><a href = "https://pyyaml.org/wiki/PyYAMLDocumentation">PyYAML</a></li>
+		</div>
+	</body>
+</html>
