@@ -135,16 +135,14 @@
 			    <li><span>git clone</span>
 
 			    <ul>
-
-				    <li>git clone [url], clone a repository to the current directory</li>
-
+				    <li><span>git clone [url]</span>, clone a repository to the current directory</li>
+				    <li><span>git clone --branch [branchName] [remote-repo-url]</span>, clone a specific branch</li>
 				    <li>git clone [url] [name], clone a repository to a target directory</li>
-
-				    <li>fetch all remote branch, but only create one local branch master</li>
-
-				    <li>git branch -a, display all branches</li>
-
-				    <li>git checkout b_1, synchronize the branch from the remote</li>
+				    <li>fetch all remote branch, but only create one local branch master
+					    <ul>
+						    <li>git branch -a, display all branches</li>
+					    </ul>
+				    </li>
 				    <li>git clone --bare my_project my_project.git, create a bare repository from the current git project
 					    <ul>
 						    <li>cp -Rf my_project/.git my_project.git</li>
@@ -195,7 +193,8 @@
 					    <li>must use the <span>add</span> command to add any <span>new</span> or <span>modified</span> files to the index</li>
 				    </ul>
 				    </li>
-				    <li>git add *, add all files not in the gitignore list by default</li>
+				    <li>git add *, add all files recursively in the current directory except for files whose name begin with a dot, add all files not in the gitignore list by default</li>
+				    <li><span>git add .</span>, Git adds the entire directory recursively including files whose names begin with a dot</li>
 				    <li>git add [directory], stage all changes in [directory] for the next commit</li>
 				    <li><span>git add -A</span>, adds, modifies, and removes index entries to match the working tree</li>
 			    </ul>
@@ -335,7 +334,7 @@ doc/**/*.pdf
 				    <li><span>git log --graph --all</span>, draw a graph of the commit history for all branches
 				    	<ul>
 				    		<li><span>git log --graph --all --pretty=oneline</span></li>
-				    		<li><span>git log --graph --all --oneline --decorate</span></li>
+				    		<li><span>git log --graph --all --oneline --decorate --pretty</span></li>
 				    	</ul>
 				    </li>
 				    <li>git log --name-status, show only names and status of changed files</li>
@@ -344,6 +343,7 @@ doc/**/*.pdf
 				    <li>git log -p, list commits with patches</li>
 				    <li>git log --stat, list commits with difference statement</li>
 				    <li><span>git log -S "str",</span> list commits that introduced a change to the code that added or removed that string</li>
+				    <li><span>git log -- filename/directoryname</span>, commits that introduced a change to those files
 			    </ul>
 			    </li>
 
@@ -419,17 +419,11 @@ doc/**/*.pdf
 			    <li><span>git remote</span>
 
 			    <ul>
-
-				    <li>remote -v, display the remote repositories</li>
-
+				    <li><span>remote -v</span>, display the remote repositories</li>
 				    <li>remote add [name] [url], add a remote repository</li>
-
 				    <li>remote rename [old] [new], rename a remote repository</li>
-
 				    <li>remote rm [name], remove a remote repository</li>
-
 				    <li>remote set-ul [name] [url], set the url for a remote repository</li>
-
 				    <li>remote show [name], display all branch information of the remote repository</li>
 
 			    </ul>
@@ -440,7 +434,7 @@ doc/**/*.pdf
 
 			    <ul>
 
-				    <li>git fetch [repName], fetch the all branches from the remote repository
+				    <li><span>git fetch [repName]</span>, fetch the all branches from the remote repository
 
 				    <ul>
 
@@ -454,7 +448,7 @@ doc/**/*.pdf
 
 				    <li>git merge origin/master, merge a remote branch to the current branch</li>
 
-				    <li>git fetch [repName] [branchName], fetch a specific branch from the remote repository</li>
+				    <li><span>git fetch [repName] [branchName]</span>, fetch a specific branch from the remote repository</li>
 			    </ul>
 
 			    </li>
@@ -465,8 +459,11 @@ doc/**/*.pdf
 				    <li>git push origin master, push the local master branch to the remote master branch</li>
 				    <li>git push origin b_1, push the local branch b_1 to the remote branch b_1</li>
 				    <li><span>git push origin master:b_1</span>, push the <span>local</span> master branch to the <span>remote</span> branch b_1</li>
+				    <li><span>git push origin HEAD</span>, push the current branch to the remote branch with the same name</li>
 				    <li>git push origin HEAD:master, push the current branch to the remote master branch</li>
-				    <li><span>git push origin --delete [branch]</span>, remove the branch in the remote repository</li>
+				    <li>git push origin v1.5, push a tag to the remote server</li>
+				    <li>git push origin --tags, push tags to the remote server</li>
+				    <li><span>git push origin --delete [branchName]</span>, remove the branch in the remote repository</li>
 			    </ul>
 			    </li>
 
@@ -515,7 +512,11 @@ doc/**/*.pdf
 			    <ul>
 
 				    <li>equals to "fetch", then "merge FETCH_HEAD"</li>
-
+				    <li>git pull [remoteRepName], fetch and merge to master branch
+					    <ul>
+						    <li>git checkout -b [branchName] [remoteBranchName], set up tracking branch for git pull instead of using default master branch</li>
+					    </ul>
+				    </li>
 				    <li>git pull [remoteRepName] [remoteBranchName], fetch and merge a branch in the remote repository into the current branch</li>
 
 			    </ul>
@@ -542,7 +543,7 @@ doc/**/*.pdf
 
 				    <li>git pull and git merge will stop without doing anything when local uncommitted changes overlap with files that git pull/git merge may need to update</li>
 
-				    <li>git merg B1, merge B1 to the current branch, B1 is not deleted</li>
+				    <li><span>git merg [branchName]</span>, merge the branch to the current branch, B1 is not deleted</li>
 
 				    <li>git log --graph, show the branch and merge history</li>
 
@@ -588,13 +589,18 @@ doc/**/*.pdf
 
 			    <li><span>git branch</span>
 			    <ul>
+				    <li>git branch [branchName], create a branch</li>
 				    <li>git branch, list the available branches</li>
-				    <Li>git branch -a, display all branches</li>
+				    <Li><span>git branch -a</span>, display all branches</li>
 				    <li>git branch -v, display branches and the commit in each branch</li>
 				    <li>git branch -r, list all remote branches</li>
-				    <li>git branch -m, rename a branch</li>
-				    <li>git branch -d, delete a branch</li>
-				    <li>git branch -r -d origin/b_1, delete a branch on the remote repository</li>
+				    <li>git branch -m [oldName] [newName], rename a branch</li>
+				    <li>git branch -d [branchName], delete a local branch</li>
+				    <li>git branch -r -d origin/b_1, delete a branch on the remote repository
+					    <ul>
+						    <li>git push origin --delete [branchName]</li>
+					    </ul>
+				    </li>
 			    </ul>
 			    </li>
 
@@ -630,7 +636,32 @@ doc/**/*.pdf
 			    </ul>
 
 			    </li>
-
+			    <li><span>git restore</span>
+				    <ul>
+					    <li>git restore --staged [fileName], restore a file in the index to match the version in HEAD</li>
+					    <li>git restore ., restore all the files in the current directory to the status of HEAD</li>
+					    <li>git restore '*.c', restore all the c files to the status of HEAD</li>
+					    <li>git restore [fileName], restore the file to the status of HEAD</li>
+					    <li>git restore --source [commit] [fileName], checkout the file from a commit to the current tree</li>
+						    <ul>
+							    <li>git checkout [commit] -- [fileName]</li>
+						    </ul>
+					    </li>
+				    </ul>
+			    </li>
+			    <li><span>git switch</span>
+				    <ul>
+					    <li>git switch [branchName]</li>
+					    <li>git switch -, switch to the previous branch</li>
+					    <li>git switch -c [branchName] [commit], switch to a commit and create a branch</li>
+					    <li>git switch -c [branchName]
+						    <ul>
+							    <li>git branch [branchName], create a branch</li>
+							    <li>git switch [branchName], switch to a created branch</li>
+						    </ul>
+					    </li>
+				    </ul>
+			    </li>
 			    <li><span>git checkout</span>
 
 			    <ul>
@@ -640,7 +671,7 @@ doc/**/*.pdf
 					    <li>--, avoid there is a branch having the same name as the file name</li>
 				    </ul>
 				    </li>
-				    <li>git checkout HEAD -- [fileName], restore a file from the last commit</li>
+				    <li><span>git checkout [commit] -- [fileName]</span>, restore a file from the last commit</li>
 				    <li>git checkout [branch] -- [fileName], restore a file from a specific branch</li>
 				    <li>git checkout [remoteBranch] -- [fileName], restore a file from a remote branch</li>
 				    <li>git checkout -f, throw any local changes
@@ -661,33 +692,30 @@ doc/**/*.pdf
 				    <ul>
 					    <li>switch back to the parent commit</li>
 					    <li>in a "detached HEAD" state, it a special branch, any commits in this state does not impact other branches, switching to another commit will drop it</li>
+					    <li>git switch -c [branchName], change the branch to a regular branch</li>
 					    <li>git checkout -b [branchName], change the branch to a regular branch</li>
 				    </ul>
 				    </li>
+				    <li>git checkout [tagName], switch to a commit with the specific tag</li>
 				    <li>git ls-files -d | xargs git checkout --, to restore all those deleted files in a folder</li>
 			    </ul>
 			    </li>
 
 			    <li><span>git alias</span>
-
 			    <ul>
-
-				    <li>git config --global alias.st status
-
-				    <ul>
-
-					    <li>git st, check the status</li>
-
-					    <li>saved in ~/.gitconfig</li>
-
-				    </ul>
-
+				    <li>git config --global alias.logpretty "log --graph --oneline --decorate --pretty"
+					    <ul>
+						    <li>git logpretty, check the logs with the pretty format</ai>
+					    </ul>
 				    </li>
-
+				    <li>git config --global alias.st status
+				    <ul>
+					    <li>git st, check the status</li>
+					    <li>saved in ~/.gitconfig</li>
+				    </ul>
+				    </li>
 			    </ul>
-
 			    </li>
-
 			    <li><span>.gitconfig</span>
 
 			    <ul>
