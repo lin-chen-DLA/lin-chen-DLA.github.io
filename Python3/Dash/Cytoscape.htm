@@ -1,16 +1,27 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Python</title>
-		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
-		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
-		<style>
-			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
-			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
 			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
 			span {color: red; font-weight: bold;}
-		</style>
-	</head>
+		</style>
+
+	</head>
+
 	<body>
 		<div class = "title">
 			Cytoscape
@@ -135,8 +146,108 @@ if __name__ == '__main__':
     app.run_server(debug=True)
 		</pre>
 		</div>
+		<div class = "subtitle">Compound Nodes</div>
+		<div class = "block">
+			<li>compound nodes are nodes that contain (parent), or are contained (child) inside another node</li>
+			<li>A parent node does not have have a position nor a size, since those values are automatically calculated based on how the children nodes are configured</li>
+		<pre class = "prettyprint linenums">
+# Parent Nodes
+{
+    'data': {'id': 'us', 'label': 'United States'}
+},
+# Children Nodes
+{
+    'data': {'id': 'nyc', 'label': 'New York', 'parent': 'us'},
+    'position': {'x': 100, 'y': 100}
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Layout</div>
+		<div class = "block">
+			<li>null, puts all nodes at (0, 0)</li>
+			<li>preset</li>
+			<li>circle, radius, startAngle, sweep</li>
+			<li>grid, rows, cols</li>
+			<li>breadthfirst, roots</li>
+			<li>external layouts
+				<ul>
+					<li>cose-bilkent, cola, euler, spread, dagre, klay</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+# Load extra layouts
+cyto.load_extra_layouts()
+		</pre>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_cytoscape as cyto
+import dash_html_components as html
+
+app = dash.Dash(__name__)
+
+nodes = [
+    {
+        'data': {'id': short, 'label': label},
+        'position': {'x': 20*lat, 'y': -20*long}
+    }
+    for short, label, long, lat in (
+        ('la', 'Los Angeles', 34.03, -118.25),
+        ('nyc', 'New York', 40.71, -74),
+        ('to', 'Toronto', 43.65, -79.38),
+        ('mtl', 'Montreal', 45.50, -73.57),
+        ('van', 'Vancouver', 49.28, -123.12),
+        ('chi', 'Chicago', 41.88, -87.63),
+        ('bos', 'Boston', 42.36, -71.06),
+        ('hou', 'Houston', 29.76, -95.37)
+    )
+]
+
+edges = [
+    {'data': {'source': source, 'target': target}}
+    for source, target in (
+        ('van', 'la'),
+        ('la', 'chi'),
+        ('hou', 'chi'),
+        ('to', 'mtl'),
+        ('mtl', 'bos'),
+        ('nyc', 'bos'),
+        ('to', 'hou'),
+        ('to', 'nyc'),
+        ('la', 'nyc'),
+        ('nyc', 'bos')
+    )
+]
+
+elements = nodes + edges
+
+app.layout = html.Div([
+    cyto.Cytoscape(
+        id='cytoscape-compound',
+	layout={'name': 'breadthfirst', 'roots': '#nyc, #hou'},
+        style={'width': '100%', 'height': '450px'},
+        elements=elements
+        )
+])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Styling</div>
+		<div class = "block">
+			<li>stylesheet
+				<ul>
+					<li>'selector', select nodes</li>
+					<li>'style', width, height, color of a node, shape of the arrow on an edge, or many more</li>
+				</ul>
+			</li>
+			<li>content, value to display above or next to the element on the screen
+		<pre class = "prettyprint linenums">
+		</pre>
+		</div>
 		<div class="subtitle">Reference</div>
 		<div class="block">
+			<li><a href = "https://js.cytoscape.org/#layouts">Layout</a></li>
 			<li><a href = "https://js.cytoscape.org/">Cytoscape.js</a></li>
 			<li><a href = "https://dash.plotly.com/cytoscape">Dash Cytoscape</a></li>
 		</div>
