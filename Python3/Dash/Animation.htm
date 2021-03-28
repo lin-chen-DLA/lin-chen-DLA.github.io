@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Animation
+		</div>
+
+		<div class = "subtitle">Collapse Menu</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.py
+import dash
+from dash.dependencies import Input, Output
+import dash_html_components as html
+import dash_core_components as dcc
+
+app = dash.Dash(__name__)
+
+def get_menu_content():
+    return html.Div([
+        html.Li('Item 1', className='list_item'),
+        html.Li('Item 2', className='list_item')
+        ], id='menu_content', className='menu_content', style={'display': 'none'})
+
+def get_menu_content2():
+    return html.Div([
+        html.Li('Item 1', className='list_item'),
+        html.Li('Item 2', className='list_item')
+        ], id='menu_content2', className='menu_content', style={'display': 'none'})
+
+def get_menu_title_container():
+    return html.Div([
+        html.Div('File', id='menu_title', className='menu_title'),
+        ], id = 'menu_title_container2', className='menu_title_container'
+    )
+
+def get_menu_title_container2():
+    return html.Div([
+        html.Div('Help', id='menu_title_help', className='menu_title'),
+        ], id = 'menu_title_container', className='menu_title_container'
+    )
+
+def get_menu2():
+    return html.Div([
+        get_menu_title_container2(),
+        get_menu_content2()
+        ], id = 'menu2', className='menu')
+
+def get_menu():
+    return html.Div([
+        get_menu_title_container(),
+        get_menu_content()
+        ], id = 'menu', className='menu')
+
+def get_layout():
+    return html.Div([
+        get_menu(),
+        get_menu2(),
+        html.Div('Content', id='content', className='content')
+        ])
+
+app.layout = get_layout()
+
+
+@app.callback(Output('menu_content', 'style'),
+              Input('menu_title', 'n_clicks'))
+def display_confirm(value):
+    if not value:
+        return {'display': 'none'}
+    if value % 2 == 0:
+        return {'display': 'none'}
+    else:
+        return {'display': 'block'}
+
+@app.callback(Output('menu_content2', 'style'),
+              Input('menu_title_help', 'n_clicks'))
+def display_confirm(value):
+    if not value:
+        return {'display': 'none'}
+    if value % 2 == 0:
+        return {'display': 'none'}
+    else:
+        return {'display': 'block'}
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# assets/style.css
+.menu {
+	width: 30%;
+	border: solid red;
+	float: left;
+}
+
+.menu_title_container {
+	overflow: hidden;
+	width: 100%;
+	border-bottom: 1px solid blue;
+	/*border: solid blue;*/
+}
+
+.menu_title {
+	color: CornflowerBlue;
+	width: 100%;
+	/*border: solid red;*/
+	margin: 5px auto;
+	text-align: center;
+	font-weight: bold;
+	float: left;
+}
+
+.menu_logo {
+	width: 30px;
+	height: 30px;
+	/*border: solid red;*/
+	float: right;
+}
+
+.menu_content {
+	width: 30%;
+	z-index: 999;
+	position:absolute;
+	background-color: SteelBlue;
+	/*border: solid red;*/
+}
+
+.list_item {
+	list-style-type: none;
+	width: 100%;
+	text-align: center;
+	border-bottom: 1px dashed silver;
+}
+
+.content {
+	clear: both;
+	width: 100%;
+	border: solid red;
+}
+		</pre>
+		</div>
+		<div class = "subtitle">Popup Layer</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.py
+import dash
+from dash.dependencies import Input, Output
+import dash_html_components as html
+import dash_core_components as dcc
+
+app = dash.Dash(__name__)
+
+def get_layout():
+    return html.Div([
+        html.Button('Submit', id='submit'),
+        html.Div([html.Button('Close', id='close', className='close'), 'Option-panel'], id='option-panel', className='option-panel', style={'display': 'none'}),
+        html.Div('Content')
+        ])
+
+app.layout = get_layout()
+
+
+@app.callback(Output('option-panel', 'style'),
+              [Input('submit', 'n_clicks'),
+               Input('close', 'n_clicks'),
+               Input('option-panel', 'style')
+               ])
+def display_confirm(value, close_value, style):
+    if not value:
+        return {'display': 'none'}
+    if style['display'] == 'none':
+        return {'display': 'block'}
+    else:
+        return {'display': 'none'}
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+.option-panel {
+	width: 100%;
+	height: 600px;
+	z-index: 999;
+	position:fixed;
+    	padding:0;
+    	margin:0;
+	top:0;
+	left:0;
+	height: 100%;
+	opacity: 0.6;
+	background-color: SteelBlue;
+	border: solid red;
+}
+
+.close {
+	float: right;
+}
+		</pre>
+		</div>
+	</body>
+</html>

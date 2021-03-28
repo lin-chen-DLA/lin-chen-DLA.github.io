@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			DAQ
+		</div>
+
+		<div class = "subtitle">ThemeProvider</div>
+		<div class = "block">
+			<li>Control the theme of DAQ components</li>
+			<li>Primary color has to be changed directly with setattr, secondary color, detail color, and dark and be set with theme</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_daq as daq
+import dash_html_components as html
+
+external_stylesheets = ['https://codepen.io/anon/pen/mardKv.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+theme =  {
+    'dark': True,
+    'detail': '#007439',
+    'primary': '#00EA64',
+    'secondary': '#6E6E6E',
+}
+
+rootLayout = html.Div([
+    daq.Gauge(
+        min=0,
+        max=10,
+        value=6,
+        color=theme['primary'],
+        id='darktheme-daq-gauge',
+        className='dark-theme-control'
+    ), html.Br(),
+])
+
+
+app.layout = html.Div(id='dark-theme-container', children=[
+    html.Div(
+        id='theme-colors',
+        children=[
+            daq.ColorPicker(
+                id='primary-color',
+                label='Primary color',
+                value=dict(hex='#00EA64')
+            ),
+            daq.ColorPicker(
+                id='detail-color',
+                label='Detail color',
+                value=dict(hex='#007439')
+            )
+        ]
+    ),
+    html.Div(id='dark-theme-components', children=[
+        daq.DarkThemeProvider(theme=theme, children=rootLayout)
+    ], style={'border': 'solid 1px #A2B1C6', 'border-radius': '5px', 'padding': '50px', 'margin-top': '20px'})
+], style={'padding': '50px'})
+
+
+@app.callback(
+    dash.dependencies.Output('dark-theme-components', 'children'),
+     [dash.dependencies.Input('primary-color', 'value'),
+     dash.dependencies.Input('detail-color', 'value')]
+)
+def edit_theme(p, d):
+
+    if p is not None:
+        theme.update(
+            primary=p['hex']
+        )
+        for child in getattr(rootLayout, 'children'):
+            if hasattr(child, 'color'):
+                setattr(child, 'color', p['hex'])
+
+    if d is not None:
+        theme.update(
+            detail=d['hex']
+        )
+    return daq.DarkThemeProvider(theme=theme, children=rootLayout)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+	</body>
+</html>

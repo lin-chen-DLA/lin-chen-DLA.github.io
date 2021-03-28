@@ -237,16 +237,413 @@ if __name__ == '__main__':
 		<div class = "block">
 			<li>stylesheet
 				<ul>
-					<li>'selector', select nodes</li>
+					<li>'selector', select nodes
+						<ul>
+							<li>'selector': '[weight &gt; 3]',</li>
+							<li>'selector': '[firstname *= "ert"]', 'firstname' contains the substring 'ert'</li>
+							<li>'selector': '[firstname !*= "ert"]', 'firstname' does not contain 'ert'</li>
+							<li>'selector': '[firstname ^= "Alb"]', select the prefix</li>
+							<li>'selector': '[firstname @^= "alb"]', matched case insensitive</li>
+						</ul>
+					</li>
 					<li>'style', width, height, color of a node, shape of the arrow on an edge, or many more</li>
 				</ul>
 			</li>
 			<li>content, value to display above or next to the element on the screen
 		<pre class = "prettyprint linenums">
+import dash
+import dash_cytoscape as cyto
+import dash_html_components as html
+import math
+
+app = dash.Dash(__name__)
+
+weighted_elements = [
+    {'data': {'id': 'A'}},
+    {'data': {'id': 'B'}},
+    {'data': {'id': 'C'}},
+    {'data': {'id': 'D'}},
+    {'data': {'id': 'E'}},
+
+    {'data': {'source': 'A', 'target': 'B', 'weight': 1}},
+    {'data': {'source': 'A', 'target': 'C', 'weight': 2}},
+    {'data': {'source': 'B', 'target': 'D', 'weight': 3}},
+    {'data': {'source': 'B', 'target': 'E', 'weight': 4}},
+    {'data': {'source': 'C', 'target': 'E', 'weight': 5}},
+    {'data': {'source': 'D', 'target': 'A', 'weight': 6}}
+]
+
+cyto.load_extra_layouts()
+
+app.layout = html.Div([
+    cyto.Cytoscape(
+    id='cytoscape-styling-2',
+    layout={'name': 'circle'},
+    style={'width': '100%', 'height': '400px'},
+    elements=weighted_elements,
+    stylesheet=[
+        {
+            'selector': 'edge',
+            'style': {
+                'label': 'data(weight)'
+            }
+        },
+        {
+            'selector': '[weight &gt; 3]',
+            'style': {
+                'line-color': 'blue'
+            }
+        }
+    ]
+    )
+])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_cytoscape as cyto
+import dash_html_components as html
+import math
+
+app = dash.Dash(__name__)
+
+directed_edges = [
+    {'data': {'id': src+tgt, 'source': src, 'target': tgt}}
+    for src, tgt in ['BA', 'BC', 'CD', 'DA']
+]
+
+directed_elements = [{'data': {'id': id_}} for id_ in 'ABCD'] + directed_edges
+
+app.layout = html.Div([
+    cyto.Cytoscape(
+    id='cytoscape-styling-2',
+    layout={'name': 'circle'},
+    style={'width': '100%', 'height': '400px'},
+    elements=directed_elements,
+    stylesheet=[
+        {
+            'selector': 'node',
+            'style': {
+                'label': 'data(id)'
+            }
+        },
+        {
+            'selector': 'edge',
+            'style': {
+                # The default curve style does not work with certain arrows
+                'curve-style': 'bezier'
+            }
+        },
+        {
+            'selector': '#BA',
+            'style': {
+                'source-arrow-color': 'red',
+                'source-arrow-shape': 'triangle',
+                'line-color': 'red'
+            }
+        },
+        {
+            'selector': '#DA',
+            'style': {
+                'target-arrow-color': 'blue',
+                'target-arrow-shape': 'vee',
+                'line-color': 'blue'
+            }
+        },
+        {
+            'selector': '#BC',
+            'style': {
+                'mid-source-arrow-color': 'green',
+                'mid-source-arrow-shape': 'diamond',
+                'mid-source-arrow-fill': 'hollow',
+                'line-color': 'green',
+            }
+        },
+        {
+            'selector': '#CD',
+            'style': {
+                'mid-target-arrow-color': 'black',
+                'mid-target-arrow-shape': 'circle',
+                'arrow-scale': 2,
+                'line-color': 'black',
+            }
+        }
+    ]
+    )
+])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Callbacks</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_cytoscape as cyto
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output
+
+app = dash.Dash(__name__)
+
+nodes = [
+    {
+        'data': {'id': short, 'label': label},
+        'position': {'x': 20*lat, 'y': -20*long}
+    }
+    for short, label, long, lat in (
+        ('la', 'Los Angeles', 34.03, -118.25),
+        ('nyc', 'New York', 40.71, -74),
+        ('to', 'Toronto', 43.65, -79.38),
+        ('mtl', 'Montreal', 45.50, -73.57),
+        ('van', 'Vancouver', 49.28, -123.12),
+        ('chi', 'Chicago', 41.88, -87.63),
+        ('bos', 'Boston', 42.36, -71.06),
+        ('hou', 'Houston', 29.76, -95.37)
+    )
+]
+
+edges = [
+    {'data': {'source': source, 'target': target}}
+    for source, target in (
+        ('van', 'la'),
+        ('la', 'chi'),
+        ('hou', 'chi'),
+        ('to', 'mtl'),
+        ('mtl', 'bos'),
+        ('nyc', 'bos'),
+        ('to', 'hou'),
+        ('to', 'nyc'),
+        ('la', 'nyc'),
+        ('nyc', 'bos')
+    )
+]
+
+elements = nodes + edges
+
+app.layout = html.Div([
+    cyto.Cytoscape(
+    id='cytoscape-update-layout',
+    elements=elements,
+    style={'width': '100%', 'height': '400px'},
+    layout={
+        'name': 'grid'
+    }
+    ),
+    dcc.Dropdown(
+    id='dropdown-update-layout',
+    value='grid',
+    clearable=False,
+    options=[
+        {'label': name.capitalize(), 'value': name}
+        for name in ['grid', 'random', 'circle', 'cose', 'concentric']
+    ]
+    )
+])
+
+@app.callback(Output('cytoscape-update-layout', 'layout'),
+              Input('dropdown-update-layout', 'value'))
+def update_layout(layout):
+    return {
+        'name': layout,
+        'animate': True
+    }
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Interactions</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import json
+
+import dash
+import dash_cytoscape as cyto
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+styles = {
+    'pre': {
+        'border': 'thin lightgrey solid',
+        'overflowX': 'scroll'
+    }
+}
+
+
+nodes = [
+    {
+        'data': {'id': short, 'label': label},
+        'position': {'x': 20*lat, 'y': -20*long}
+    }
+    for short, label, long, lat in (
+        ('la', 'Los Angeles', 34.03, -118.25),
+        ('nyc', 'New York', 40.71, -74),
+        ('to', 'Toronto', 43.65, -79.38),
+        ('mtl', 'Montreal', 45.50, -73.57),
+        ('van', 'Vancouver', 49.28, -123.12),
+        ('chi', 'Chicago', 41.88, -87.63),
+        ('bos', 'Boston', 42.36, -71.06),
+        ('hou', 'Houston', 29.76, -95.37)
+    )
+]
+
+edges = [
+    {'data': {'source': source, 'target': target}}
+    for source, target in (
+        ('van', 'la'),
+        ('la', 'chi'),
+        ('hou', 'chi'),
+        ('to', 'mtl'),
+        ('mtl', 'bos'),
+        ('nyc', 'bos'),
+        ('to', 'hou'),
+        ('to', 'nyc'),
+        ('la', 'nyc'),
+        ('nyc', 'bos')
+    )
+]
+
+
+default_stylesheet = [
+    {
+        'selector': 'node',
+        'style': {
+            'background-color': '#BFD7B5',
+            'label': 'data(label)'
+        }
+    }
+]
+
+
+app.layout = html.Div([
+    cyto.Cytoscape(
+        id='cytoscape-event-callbacks-1',
+        layout={'name': 'preset'},
+        elements=edges+nodes,
+        stylesheet=default_stylesheet,
+        style={'width': '100%', 'height': '450px'}
+    ),
+    html.Pre(id='cytoscape-tapNodeData-json', style=styles['pre'])
+])
+
+
+@app.callback(Output('cytoscape-tapNodeData-json', 'children'),
+              Input('cytoscape-event-callbacks-1', 'tapNodeData'))
+def displayTapNodeData(data):
+    if data is None:
+        raise PreventUpdate
+    return data['id']+' '+data['label']
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Selecting Multiple Elements</div>
+		<div class = "block">
+			<li>Select by shift+click or drag</li>
+		<pre class = "prettyprint linenums">
+import json
+
+import dash
+import dash_cytoscape as cyto
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+styles = {
+    'pre': {
+        'border': 'thin lightgrey solid',
+        'overflowX': 'scroll'
+    }
+}
+
+
+nodes = [
+    {
+        'data': {'id': short, 'label': label},
+        'position': {'x': 20*lat, 'y': -20*long}
+    }
+    for short, label, long, lat in (
+        ('la', 'Los Angeles', 34.03, -118.25),
+        ('nyc', 'New York', 40.71, -74),
+        ('to', 'Toronto', 43.65, -79.38),
+        ('mtl', 'Montreal', 45.50, -73.57),
+        ('van', 'Vancouver', 49.28, -123.12),
+        ('chi', 'Chicago', 41.88, -87.63),
+        ('bos', 'Boston', 42.36, -71.06),
+        ('hou', 'Houston', 29.76, -95.37)
+    )
+]
+
+edges = [
+    {'data': {'source': source, 'target': target}}
+    for source, target in (
+        ('van', 'la'),
+        ('la', 'chi'),
+        ('hou', 'chi'),
+        ('to', 'mtl'),
+        ('mtl', 'bos'),
+        ('nyc', 'bos'),
+        ('to', 'hou'),
+        ('to', 'nyc'),
+        ('la', 'nyc'),
+        ('nyc', 'bos')
+    )
+]
+
+
+default_stylesheet = [
+    {
+        'selector': 'node',
+        'style': {
+            'background-color': '#BFD7B5',
+            'label': 'data(label)'
+        }
+    }
+]
+
+
+app.layout = html.Div([
+    cyto.Cytoscape(
+        id='cytoscape-event-callbacks-1',
+        layout={'name': 'preset'},
+        elements=edges+nodes,
+        stylesheet=default_stylesheet,
+        style={'width': '100%', 'height': '450px'}
+    ),
+    html.Div(id='output')
+])
+
+
+@app.callback(Output('output', 'children'),
+              Input('cytoscape-event-callbacks-1', 'selectedNodeData'))
+def displayTapNodeData(data_list):
+    if data_list is None:
+        raise PreventUpdate
+    return str(data_list)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
 		</pre>
 		</div>
 		<div class="subtitle">Reference</div>
 		<div class="block">
+			<li><a href = "http://manual.cytoscape.org/en/stable/">Cytoscape Manual</a></li>
+			<li><a href = "https://dash.plotly.com/cytoscape/reference">Cytoscape Reference</a></li>
 			<li><a href = "https://js.cytoscape.org/#layouts">Layout</a></li>
 			<li><a href = "https://js.cytoscape.org/">Cytoscape.js</a></li>
 			<li><a href = "https://dash.plotly.com/cytoscape">Dash Cytoscape</a></li>

@@ -77,16 +77,27 @@ if __name__ == "__main__":
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-docker build -r lchenlangley/cat .
+# create image
+docker build -t lchenlangley/cat .
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# push the image to Docker Hub
+docker login
+docker push lchenlangley/cat
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# run image
+docker pull lchenlangley/cat
 docker run -p 8000:8000 lchenlangley/cat
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# open on web browser
 http://0.0.0.0:8000/
 		</pre>
 		</div>

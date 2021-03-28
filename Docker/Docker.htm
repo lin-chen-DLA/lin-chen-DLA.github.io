@@ -22,7 +22,8 @@
 		<div class = "block">
 			<li>Deploy applications in a sandbox (called containers) to run on the host operating system</li>
 			<li>Allows users to package an application with all of its dependencies into a standardized unit for software development</li>
-			<li><span>Containers</span> provide most of the isolation of virtual machines at a fraction of the computing power</li>
+			<li><span>Container</span>, provide most of the isolation of virtual machines at a fraction of the computing power</li>
+			<li><span>Image</span>, contains the container's filesystem, it must contain everything needed to run an application - all dependencies, configuration, scripts, binaries, etc.</li>
 		</div>
 		<div class = "subtitle">Commands</div>
 		<div class = "block">
@@ -46,7 +47,7 @@
 docker run busybox echo "hello from busybox" // runs a command in container busybox
 		</pre>
 		<pre class = "prettyprint linenums">
-docker run -it busybox sh // -it, attaches to an interactive tty in the container
+docker run -it busybox sh // -it, attaches to an interactive tty in the container, can be used to explore the image system
 		</pre>
 		<li>docker ps, shows all containers that are currently running
 			<ul>
@@ -105,7 +106,7 @@ docker build -t yourusername/repository-name .
 		</pre>
 			<li>Push</li>
 		<pre class = "prettyprint linenums">
-docker log # log in Docker Hub
+docker login # log in Docker Hub
 docker push [imageName] # push an image to Docker Hub
 		</pre>
 			<li>Tag</li>
@@ -114,36 +115,40 @@ docker tag lchenlangley/cat lchenlangley/cat:v2.0 # create an image named lchenl
 docker push lchenlangley/cat:v2.0 # push the image with the tag to Docker Hub
 		</pre>
 		</div>
-		<div class = "subtitle">hello</div>
+		<div class = "subtitle">Container Volumes</div>
 		<div class = "block">
+			<li>While containers can create, update, and delete files, those changes are lost when the container is removed</li>
+			<li>Connect specific paths of the container to the host machine, changes in the container are also seen on the host machine</li>
+			<li>Named volumes
+				<ul>
+					<li>docker volume create [name], create a volume</li>
+					<li>docker volume ls, list volumes</li>
+					<li>docker volume inspect [volumeName], show volume information
+						<ul>
+							<li>Docker for Mac runs a virtual machine behind, and the volume's path is the path on the virtual machine</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
 		<pre class = "prettyprint linenums">
-print("Hello World!")
-		</pre>
-		</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-FROM python:3
+docker volume create sandbox-home # create a named volume "sandbox-home"
+docker run -v sandbox-home:/home -it busybox sh # run the sandbox linux
 
-# set a directory for the app
-WORKDIR /usr/src/app
+# create a readme file under /home and exit the sanbox
+cd /home
+touch readme
+exit
 
-# copy all the files to the container
-COPY . .
+# remove the container
+docker rm [containerName]
 
-# run the command
-CMD ["python", "./hello.py"]
+docker run -v sandbox-home:/home -it busybox sh # run the sandbox linux again
+
+# check the /home directory, readme file is still there
+cd /home
+ls
 		</pre>
-		</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-# build
-docker build -t lchenlangley/hello .
-		</pre>
-		</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-docker run lchenlangley/hello
-		</pre>
+		<li>Bind Mounts</li>
 		</div>
 		<div class = "subtitle">Images</div>
 		<div class = "block">
@@ -151,8 +156,19 @@ docker run lchenlangley/hello
 			<li>docker run hello-world, hello-world</li>
 			<li>docker run -d -p 80:80 docker/getting-started, local tutorial</a></li>
 		</div>
+		<div class = "subtitle">Amazon Linux 2</div>
+		<div class = "block">
+			<li>sudo yum update -y</li>
+			<li>sudo amazon-linux-extras install docker</li>
+			<li>sudo service docker start</li>
+			<li>sudo docker run busybox echo "hello from busybox", test docker</li>
+		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+			<li><a href = "https://docs.docker.com/engine/reference/commandline/docker/">Docker Command</a></li>
+			<li><a href = "https://docs.docker.com/get-started/">Docker Guides</a></li>
+			<li><a href = "https://www.docker.com/101-tutorial">Docker 101 Tutorial</a></li>
+			<li><a href = "https://labs.play-with-docker.com/">Play with Docker</a></li>
 			<li><a href = "https://hub.docker.com/search?q=&type=image">Docker Registry</a></li>
 			<li><a href = "https://docker-curriculum.com/">Tutorial</a></li>
 		</div>
