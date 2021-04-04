@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+		<div class = "title">
+			Datatable
+		</div>
+
+		<div class = "subtitle">Select a Single Row</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+from dash.dependencies import Input, Output, State
+import dash_table
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.exceptions import PreventUpdate
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+params = [
+    'Weight', 'Torque', 'Width', 'Height',
+    'Efficiency', 'Power', 'Displacement'
+]
+
+app.layout = html.Div([
+    dash_table.DataTable(
+        id='table-editing-simple',
+        columns=(
+            [{'id': 'Model', 'name': 'Model', 'deletable':True, 'selectable':True}] +
+            [{'id': p, 'name': p} for p in params]
+        ),
+        data=[
+            dict(Model=i, **{param: 0 for param in params})
+            for i in range(1, 5)
+        ],
+        row_selectable='single',
+        cell_selectable=False
+    ),
+    html.Div(id='display')
+])
+
+
+@app.callback(
+    Output('display', 'children'),
+    Input('table-editing-simple', 'derived_viewport_selected_rows'),
+    State('table-editing-simple', 'data'),
+    State('table-editing-simple', 'columns'))
+def display_output(index, rows, columns):
+    if not index:
+        raise PreventUpdate
+    if len(index) == 0:
+        raise PreventUpdate
+    return str(rows[index[0]])
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Backend Paging</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+from dash.dependencies import Input, Output
+import dash_table
+import pandas as pd
+
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
+
+df[' index'] = range(1, len(df) + 1)
+
+app = dash.Dash(__name__)
+
+PAGE_SIZE = 5
+
+app.layout = dash_table.DataTable(
+    id='datatable-paging',
+    columns=[
+        {"name": i, "id": i} for i in sorted(df.columns)
+    ],
+    page_current=0,
+    page_size=PAGE_SIZE,
+    page_action='custom'
+)
+
+
+@app.callback(
+    Output('datatable-paging', 'data'),
+    Output('datatable-paging', 'page_count'),
+    Input('datatable-paging', "page_current"),
+    Input('datatable-paging', "page_size"))
+def update_table(page_current,page_size):
+    num = int(df.shape[0]/PAGE_SIZE)
+    if df.shape[0]%PAGE_SIZE &gt; 0:
+        num += 1
+    return df.iloc[
+        page_current*page_size:(page_current+ 1)*page_size
+    ].to_dict('records'), num
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Sorting</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+import dash_table
+from dash.exceptions import PreventUpdate
+import pandas as pd
+
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
+
+df[' index'] = range(1, len(df) + 1)
+
+app = dash.Dash(__name__)
+
+PAGE_SIZE = 5
+num = int(df.shape[0]/PAGE_SIZE)
+if df.shape[0]%PAGE_SIZE > 0:
+    num += 1
+
+app.layout = html.Div([dash_table.DataTable(
+    id='datatable-paging',
+    columns=[
+        {"name": i, "id": i} for i in sorted(df.columns)
+    ],
+    row_selectable='single',
+    cell_selectable=False,
+    page_current=0,
+    page_count=num,
+    page_size=PAGE_SIZE,
+    page_action='custom',
+    sort_action='custom',
+    sort_mode='multi',
+    sort_by=[]
+    ),
+    html.Div(id='display')])
+
+
+@app.callback(
+    Output('datatable-paging', 'data'),
+    Input('datatable-paging', "page_current"),
+    Input('datatable-paging', "page_size"),
+    Input('datatable-paging', "sort_by"))
+def update_table(page_current,page_size, sort_by):
+    print(sort_by)
+    if len(sort_by):
+        dff = df.sort_values(
+            [col['column_id'] for col in sort_by],
+            ascending=[
+                col['direction'] == 'asc'
+                for col in sort_by
+            ],
+            inplace=False
+        )
+        print('Sorted ...')
+    else:
+        # No sort is applied
+        dff = df
+    return dff.iloc[
+        page_current*page_size:(page_current+ 1)*page_size
+    ].to_dict('records')
+
+@app.callback(
+    Output('display', 'children'),
+    Input('datatable-paging', 'derived_viewport_selected_rows'),
+    State('datatable-paging', 'data'))
+def display_output(index, rows):
+    print(index)
+    if not index:
+        raise PreventUpdate
+    if len(index) == 0:
+        raise PreventUpdate
+    return str(rows[index[0]])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://dash.plotly.com/datatable">Documentation</a></li>
+		</div>
+	</body>
+</html>
