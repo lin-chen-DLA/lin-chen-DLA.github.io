@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Google Cloud</title>
+		<title>Amazon AWS</title>
 		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
 		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
 		<style>
 			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
 			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
 			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red;}
 		</style>
 	</head>
 	<body>
@@ -15,11 +16,86 @@
 			Amazon Linux 2
 		</div>
 
-		<div class = "subtitle">Basic Operations</div>
+		<div class = "subtitle">Amazon Work Space</div>
 		<div class = "block">
 			<ol>
 				<li><a href = "https://clients.amazonworkspaces.com/">Amazon WorkSpace</a></li>
 			</ol>
+		</div>
+		<div class = "subtitle">S3</div>
+		<div class = "block">
+			<li><a href = "https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html#cliv2-linux-install">Install AWS CLI version 2 on Linux</a></li>
+			<li>aws configure
+				<ul>
+					<li>create <span>.aws</span> which contains <span>config</span> and <span>credentials</span></li>
+					<li>config, use default</li>
+					<li>credentials, default user, access key, secret access key</li>
+				</ul>
+			</li>
+			<li>cp
+				<ul>
+					<li>aws s3 cp localFile s3://bucket, copy a local file to S3</li>
+					<li>aws s3 cp s3://bucket/fileName ., copy a file in a bucket to local</li>
+					<li>aws s3 cp localFolder s3://bucket/folderName --recursive, copy a local folder to a bucket</li>
+					<li>aws s3 cp s3://bucket/folderName localFolder --recursive, copy a folder in a bucket to local</li>
+				</ul>
+			</li>
+			<li>ls
+				<ul>
+					<li>aws s3 ls, list user owned buckets</li>
+					<li>aws s3 ls s3://bucketName, list all prefixes and objects in a bucket</li>
+					<li>aws s3 ls s3://bucketName/Data/, all prefixes and objects in a bucke</li>
+					<li>aws s3 ls s3://bucketName --recursive --human-readable, recursively listing all prefixes and objects in a bucket</li>
+				</ul>
+			</li>
+			<li>mb, create a bucket, an Amazon S3 bucket name is globally <span>unique</span>, and the namespace is shared by all AWS accounts</li>
+				<ul>
+					<li>aws s3 mb s3://bucketName</li>
+				</ul>
+			</li>
+			<li>mv
+				<ul>
+					<li>aws s3 mv fileName s3://bucketName, move a file from the local to a bucket</li>
+					<li>aws s3 mv folderName s3://bucket/folderName, move a folder to a bucket</li>
+				</ul>
+			</li>
+			<li>presign, generate a pre-signed URL for an Amazon S3 object
+				<ul>
+					<li>default is one hour lifetime</li>
+					<li>aws s3 presign s3://bucket/fileName --expires-in seconds, create a pre-signed URL</li>
+				</ul>
+			</li>
+			<li>rm
+				<ul>
+					<li>aws s3 rm s3://bucketName/fileName, delete a file in a bucket</li>
+					<li>aws s3 rm s3://bucketName/folderName, delete a folder in a bucket</li>
+				</ul>
+			</li>
+			<li>rb
+				<ul>
+					<li>aws s3 rb s3://bucketName, remove a bucket, the bucket must be empty in order to remove</li>
+				</ul>
+			</li>
+			<li>sync
+				<ul>
+					<li>aws s3 sync folderName s3://bucketName/folderName, only copies over files that are new and updated</li>
+				</ul>
+			</li>
+			<li>website, configures a bucket as a static website</li>
+			<li>Access Point
+				<ul>
+					<li>Create an access point
+						<ul>
+							<li>aws s3control create-access-point --name <span>access_point_name</span> --account-id <span>123456789012</span> --bucket <span>bucket_name</span>, create a bucket as an access point</li>
+						</ul>
+					</li>
+					<li>Access an access point
+						<ul>
+							<li>aws s3 cp s3://arn:aws:s3:<span>region</span>:<span>account_id</span>:accesspoint/<span>access_point_name</span>/Hello.py ./, copy a file from an access point to local</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
 		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
