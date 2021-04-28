@@ -13,7 +13,7 @@
 	</head>
 	<body>
 		<div class = "title">
-			Test
+			Unit Test
 		</div>
 		<div class = "subtitle">General Rules</div>
 		<div class = "block">
@@ -31,74 +31,32 @@
 			<li>FAIL, the test does not pass, and raises an AssertionError exception</li>
 			<li>ERROR, the test raises an exception other than AssertionError</li>
 		</div>
-		<div class = "subtitle">Layout and pytest, <a href = "Unittest_source.htm">Source Code</a></div>
+		<div class = "subtitle">Layout and pytest</div>
 		<div class = "block">
-			<p style = "text-align:center;"><img src = "img/Test_1.png" width = "20%"></p>
-		</div>
-		<div class = "block">
-			<span>setup.py</span>
+			<li><a href = "Unittest_source.htm">Source Code</a></li>
 		<pre class = "prettyprint linenums">
-from setuptools import setup
- 
-with open('requirements.txt') as f:
-    requirements = f.read().splitlines()
- 
-setup(
-    setup_requires=[
-        'pytest-runner',
-    ],
-    name='vsucs4900c', # a unique name for PyPI
-    version='0.1',
-    description='Demo for building a Python project',
-    author='Lin Chen',
-    author_email='lichen@valdosta.edu',
-    url='https://github.com/lin-chen-GA/prime',
-    install_requires=requirements,
-    packages=['primepackage', ], # packages and subpackages containing .py files
-    package_dir={'':'src'}, # location to find the packages
-    scripts=['src/generator',], # the executable files will be installed for user
-    license='Creative Commons Attribution-Noncommercial-Share Alike license',
-    long_description=open('README').read(),
-    classifiers=[
-      'Development Status :: 4 - Beta',
-      'Environment :: X11 Applications :: GTK',
-      'Intended Audience :: End Users/Desktop',
-      'Intended Audience :: Developers',
-      'License :: OSI Approved :: GNU General Public License (GPL)',
-      'Operating System :: POSIX :: Linux',
-      'Programming Language :: Python',
-      'Topic :: Desktop Environment',
-      'Topic :: Text Processing :: Fonts'
-      ],
-)
+# get source code 
+git clone https://github.com/lin-chen-Langley/prime
 		</pre>
+			<p style = "text-align:center;"><img src = "img/Build_2.png" width = "40%"></p>
 		</div>
-		<div class = "block">
-			<span>setup.cfg</span>
-		<pre class = "prettyprint linenums">
-[aliases]
-test=pytest
-		</pre>
-		</div>
+		<div class = "subtitle">Option 1. pytest</div>
 		<div class = "block">
 			<li>Use <span>pytest</span> instead of default test, the default test may ignore some exceptions</li>
-			<li>Implement test (3 options)
+			<li>Implement test (2 options)
 				<ul>
 					<li>python setup.py test, aliase pytest to test</li>
 					<li>python setup.py pytest</li>
-					<li>pytest</li>
 				</ul>
 			</li>
-			<li>pytest will search for test_*.py or *_test.py files, imported by their test package name, collect test_ prefixed test functions or methods as test items</li>
-			<li>test does not install dependencies to system, it install the copies of dependencies to .eggs in the project folder</li>
+			<li>pytest will search for <span>test_*.py</span> or <span>*_test.py</span> files in <span>test</span> folder, imported by their test package name, collect test_ prefixed test functions or methods as test items</li>
+			<li>test does not install dependencies to system, it install the copies of dependencies to <span>.eggs</span> in the project folder</li>
 			<li>test files must have unique names, the test files will be imported as top-level modules by adding test/ to sys.path</li>
 		</div>
 		<div class = "block">
 			<span>developer</span>
 		<pre class = "prettyprint linenums">
-python setup.py test # assure that the source code can pass all tests
-git push origin master # deposite the code to the git repository
-python setup.py sdist upload # deposite the archive file to PyPI repository
+python setup.py test # assure that the source code can pass all tests before is deposited to a repository
 		</pre>
 			<span>users</span>
 		<pre class = "prettyprint linenums">
@@ -110,7 +68,46 @@ or
 pip install
 		</pre>
 		</div>
-		<div class = "subtitle">Unittest</div>
+		<div class = "subtitle">Option 2. tox</div>
+		<div class = "block">
+			<ol>
+				<li>configuration, load tox.in, use Python3.9</li>
+				<li>packaging, create a source distribution</li>
+				<li>environment, create a virtual environment with virtualenv in <span>.tox</span> folder, install packages and dependencies, run commands</li>
+				<li>report, print out a report of outcomes for each tox environment</li>
+			</ol>
+		</div>
+		<div class = "block">
+			<span>tox.ini</span>
+		<pre class = "prettyprint linenums">
+# content of: tox.ini , put in same dir as setup.py
+[tox]
+envlist = py39
+
+[testenv]
+# install pytest in the virtualenv where commands will be executed
+deps = pytest
+commands =
+    # NOTE: you can run any command line tool here - not just tests
+    pytest
+		</pre>
+		</div>
+		<div class = "block">
+			<span>developer</span>
+		<pre class = "prettyprint linenums">
+tox # implement tests
+		</pre>
+			<span>users</span>
+		<pre class = "prettyprint linenums">
+git clone URL
+tox # make sure that the code can pass all the tests
+python setup.py install # install the program
+
+or
+pip install
+		</pre>
+		</div>
+		<div class = "subtitle">Unit Test Option 1. Unittest</div>
 		<div class = "block">
 			<li>test fixture, the preparation needed to perform one or more tests
 				<ul>
@@ -130,9 +127,9 @@ pip install
 					<li>allTests = unittest.TestSuite([suite, suite_2])</li>
 				</ul>
 			</li>
-			<li>test runner, orchestrates the execution of tests and provides the outcome to the user
+			<li>test runner, orchestrates the execution of tests and provides the outcomes to the user
 				<ul>
-					<li>unittest.TextTestRunner(verbosity=2).run(allTests</li>
+					<li>unittest.TextTestRunner(verbosity=2).run(allTests)</li>
 					<li>unittest.main()</li>
 				</ul>
 			</li>
@@ -238,48 +235,113 @@ if __name__ == '__main__':
 		</pre>
 		</div>
 		<div class = "block">
-			<ul>
-				<li>python testCode.py -v, implement a single test file</li>
-				<li>python -m unittest discover testDir "*_test.py", use test discover to implement multiple test file</li>
-			</ul>
+		<pre class = "prettyprint linenums">
+# in /Prime folder
+python setup.py test
+		</pre>
 		</div>
-		<div class = "subtitle">assert</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# use test discover to implement multiple test files
+# in /src folder
+python -m unittest discover ../test "test*.py"
+		</pre>
+		</div>
+		<div class = "subtitle">Unit Test Option 2. assert</div>
 		<div class = "block">
 			<span>test/test_assert.py</span>
 		<pre class = "prettyprint linenums">
 #!/usr/bin/python
-
+ 
 from primepackage import is_prime
-
+ 
 def test_numbers():
-
-    try:
-        response = is_prime(1)
-        assert response == False
-    except Exception as err:
-        print(err)
-
-    try:
-        response = is_prime(2)
-        assert response == True
-    except Exception as err:
-        print(err)
-
-    try:
-        response = is_prime(3.14)
-    except Exception as err:
-        print(err)
+    response = is_prime(1)
+    assert response == False
+ 
+    response = is_prime(2)
+    assert response == True
 		</pre>
 		</div>
-		<div class = "subtitle"><a href = "http://nose.readthedocs.io/en/latest/">Nose</a></div>
 		<div class = "block">
+		<pre class = "prettyprint linenums">
+# in /Prime folder
+python setup.py test
+		</pre>
+		</div>
+		<div class = "subtitle">Unit Test Option 3. Nose</div>
+		<div class = "block">
+			<span>test/test_nose.py</span>
 			<pre class = "prettyprint linenums">
 #!/usr/bin/python
+ 
+from primepackage import is_prime
 
-def test_numbers_3_4():
-    assert 3*5 &gt;= 12
+def test_is_prime():
+    response = is_prime(5)
+    assert response == False
 			</pre>
-			nosetests testCode.py -v
+		</div>
+		<div class = "block">
+			<span>setup.py</span>
+			<pre class = "prettyprint linenums">
+import setuptools
+ 
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
+ 
+setuptools.setup(
+    test_suite = 'nose.collector',
+    tests_require=['nose'],
+    name='linlangleyprime', # a unique name for PyPI
+    version='0.7',
+    author='Lin Chen, Yanhua Feng',
+    author_email='lin.chen@ieee.org, yf@vims.edu',
+    description='Demo for building a Python project',
+    long_description=open('README.md').read(),
+    long_description_content_type="text/markdown",
+    url='http://lin-chen-langley.github.io',
+    project_urls = {
+        'PyPI': 'https://pypi.org/manage/project/linlangleyprime/releases/',
+        'Conda': 'https://anaconda.org/linchenVA/linlangleyprime'
+        },
+    classifiers=[
+      'Development Status :: 4 - Beta',
+      'Environment :: X11 Applications :: GTK',
+      'Intended Audience :: End Users/Desktop',
+      'Intended Audience :: Developers',
+      'License :: OSI Approved :: GNU General Public License (GPL)',
+      'Operating System :: POSIX :: Linux',
+      'Programming Language :: Python',
+      'Topic :: Desktop Environment',
+      'Topic :: Text Processing :: Fonts'
+      ],
+    install_requires=requirements,
+    package_dir={'':'src'}, # location to find the packages
+    packages=setuptools.find_packages(where="src"),
+    #packages=['primepackage', ], # packages and subpackages containing .py files
+    python_requires="&gt;=3.9",
+    scripts=['src/generator',], # the executable files will be installed for user
+    license='Creative Commons Attribution-Noncommercial-Share Alike license',
+)
+			</pre>
+		</div>
+		<div class = "block">
+			<span>setup.cfg</span>
+			<pre class = "prettyprint linenums">
+[nosetests]
+verbosity=1
+detailed-errors=1
+with-coverage=1
+cover-package=nose
+debug=nose.loader
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# in /Prime folder
+python setup.py test
+			</pre>
 		</div>
 		<div class = "block">
 			<li>setup_module() | teardown_module(), before and end of the module</li>
@@ -287,7 +349,7 @@ def test_numbers_3_4():
 			<li>setup() | teardown(), before and end of each function in the class</li>
 			<li>setup_class() | teardown_class(), before and end of the class</li>
 		</div>
-			<div class = "subtitle">Doctest</div>
+			<div class = "subtitle">Unit Test Option 4. Doctest</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
 #!/usr/bin/python
@@ -309,19 +371,16 @@ if __name__ == '__main__':
 			</pre>
 			python testCode.py -v
 		</div>
-			<div class = "subtitle">Pytest</div>
-		<div class = "block">
-			<a href = "http://pythontesting.net/framework/pytest/pytest-introduction/">Python Testing</a><br>
-			pytest testCode.py -v<br>
-			python -m pytest testCode.py -v
-		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
-			<li><a href = "https://docs.python.org/2/library/unittest.html">unittest documentation</a></li>
+			<li><a href = "https://nose.readthedocs.io/en/latest/testing.html">Testing with Nose</a></li>
+			<li><a href = "https://nose.readthedocs.io/en/latest/">Nose</a></li>
+			<li><a href = "https://tox.readthedocs.io/en/latest/">tox</a></li>
+			<li><a href + "https://pythontesting.net/framework/pytest/pytest-introduction/">pytest introduction</a></li>
+			<li><a href = "https://docs.python.org/3/library/unittest.html">unittest documentation</a></li>
 			<li><a href = "http://pythontesting.net/framework/nose/nose-introduction/">nose introduction</a></li>
 			<li><a href = "https://dmorgan.info/posts/python-unittest-fixtures/">Python unittest Fixtures</a></li>
 			<li><a href = "https://pymotw.com/3/unittest/">unittest at PYMOTW</a></li>
-			<li><a href = "https://docs.pytest.org/en/latest/goodpractices.html">Good Integration Practices</a></li>
 			<li><a href = "https://docs.python-guide.org/writing/tests/">Hitchhiker’s Guide</a></li>
 		</div>
 	</body>

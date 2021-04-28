@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<title>Python</title>
-		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
-		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
 		<style>
 			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
 			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
@@ -19,75 +19,69 @@
 		<div class = "block">
 			Sphinx is widely used to generate python document. Here is a brief tutorial to generate your own doc
 		</div>
+		<div class = "subtitle">0. Source Code Layout</div>
+		<div class = "block">
+			<li><a href = "./Unittest_source.htm">Source Code</a></li>
+		<pre class = "prettyprint linenums">
+# get source code 
+git clone https://github.com/lin-chen-Langley/prime
+		</pre>
+			<p style = "text-align:center;"><img src = "img/Build_2.png" width = "40%"></p>
+		</div>
 		<div class = "subtitle">1. Quick Start</div>
 		<div class = "block">
-			<p style = "text-align:center;"><img src = "img/Sphinx_1.png" width = "40%"></p>
-
-			<span>sphinx-quickstart</span>, inside "S4" folder, <span>sphinx-quickstart doc</span>, if on Linux system
+			Inside "Prime" folder, <span>sphinx-quickstart doc</span>, if on Linux system
 	<ul>
-		<li>Root paht for the documentation [.]: doc</li>
 		<li>Separate source and build directories (y/n) [n], press "Enter"</li>
-		<li>Name prefix for templates and static dir [_], press "Enter"</li>
 		<li>Project name: yourProjectName</li>
 		<li>Author Name: yourName</li>
 		<li>Project version []: yourProjectVersion</li>
 		<li>Project release [0.1], press "Enter"</li>
 		<li>Project language [en], press "Enter"</li>
-		<li>Source file suffix [.rst], press "Enter"</li>
-		<li>Name of your master document (without suffix) [index], press "Enter"</li>
-		<li>Do you want to use the epub builder (y/n) [n], press "Enter"</li>
-		<li>autodoc: automatically insert docstrings from modules (y/n) [n]: y</li>
-		<li>doctest: automatically test code snippets in doctest blocks (y/n) [n]: y</li>
-		<li>intersphinx: link between Sphinx documentation of different projects (y/n) [n], press "Enter"</li>
-		<li>todo: write "todo" entries that can be shown or hidden on build (y/n) [n], press "Enter"</li>
-		<li>coverage: checks for documentation coverage (y/n) [n], press "Enter"</li>
-		<li>imgmath: include math, rendered as PNG or SVG images (y/n) [n], press "Enter"</li>
-		<li>mathjax: include math, rendered in the browser by MathJax (y/n) [n]: y</li>
-		<li>ifconfig: conditional inclusion of content based on config values (y/n) [n], press "Enter"</li>
-		<li>viewcode: include links to the source code of documented Python objects (y/n) [n]: y</li>
-		<li>githubpages: create .nojekyll file to publish the document on GitHub pages (y/n) [n], press "Enter"</li>
-		<li>Create Makefile? (y/n) [y], press "Enter"</li>
-		<li>Create Windows command file? (y/n) [y], press "Enter"</li>
 	</ul>
 	<ul>
-			<p style = "text-align:center;"><img src = "img/Sphinx_2.png" width = "40%"></p>
-		<span>Generate _build (to save html files), _static (to save the css files), _templates (to save the layout template), conf.py, index.rst</span>
+			<p style = "text-align:center;"><img src = "img/Doc_1.png" width = "40%"></p>
 </ul>
 </li>
 		</div>
 		<div class = "subtitle">2. Generate rst files</div>
 		<div class = "block">
-			<span>sphinx-apidoc -o doc .</span> inside "S4" folder, generate a rst file for each py file or each package under "S4" folder, and save them to "doc" folder
-			<p style = "text-align:center;"><img src = "img/Sphinx_3.png" width = "40%"></p>
+			<span>sphinx-apidoc -o doc ./src</span> inside "Prime" folder, generate a rst file for each py file or each package under "src" folder, and save them to "doc" folder
+			<p style = "text-align:center;"><img src = "img/Doc_2.png" width = "40%"></p>
 		</div>
 		<div class = "subtitle">3. Configuration</div>
 		<div class = "block">
 1. edit conf.py in "doc" folder, define where to search the source code
 <pre>
-import os
-import sys
-sys.path.insert(0, os.path.abspath('..'))
+<span>import os</span>
+<span>import sys</span>
+<span>sys.path.insert(0, os.path.abspath('../src'))</span>
 </pre>
-2. edit theme
+2. edit theme, <a href = "https://www.sphinx-doc.org/en/master/usage/theming.html#builtin-themes">built-in themes</a>
 <pre>
-html_theme = 'classic'
+<span>html_theme = 'classic'</span>
 </pre>
 3. edit extensions
 <pre>
-extensions = ['sphinx.ext.autodoc']
+<span>extensions = ['sphinx.ext.autodoc']</span>
 </pre>
 		</div>
 		<div class = "subtitle">4. Add display content</div>
 		<div class = "block">
-edit index.rst in "doc" folder, add rst files for the modules and packages that will be shown in index.html, use reStructuredText to edit the file, rst files are initial documentation files
+			edit <span>index.rst</span> in "doc" folder, add rst files for the modules and packages that will be shown in <span>index.html</span>, use <a href = "https://docutils.sourceforge.io/docs/user/rst/quickref.html">reStructuredText</a> to edit the file, rst files are initial documentation files
 <pre>
 .. toctree:: 
      :maxdepth: 2
      <strike>:caption: Contents:</strike>
      :glob: 
 ---Blank Line--- 
+.. use three spaces instead of a tab
      modules.rst
 </pre>
+		</div>
+		<div class = "subtitle">5. Organize display content </div>
+		<div class = "block">
+			edit <span>modules.rst</span>, change the title from "src" to "packages"
 		</div>
 		<div class = "subtitle">5. Generate documentaion</div>
 		<div class = "block">
@@ -95,12 +89,12 @@ edit index.rst in "doc" folder, add rst files for the modules and packages that 
 		</div>
 		<div class = "subtitle">Add logo</div>
 		<div class = "block">
-			<p style = "text-align:center;"><img src = "img/Sphinx_4.png" width = "40%"></p>
+			<p style = "text-align:center;"><img src = "img/Doc_3.png" width = "40%"></p>
 			1. edit conf.py in "doc" folder
 			<pre>
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = '../img/logo.jpg' 
+<span>html_logo = 'img/prime.jepg'</span>
 			</pre>
 			2. <span>make html</span>, in "doc" folder
 		</div>
@@ -125,10 +119,8 @@ html_logo = '../img/logo.jpg'
 		<div class = "block">
 			<li><a href = "https://sphinx-themes.org/">Sphinx Themes</a></li>
 			<li><a href = "https://codeandchaos.wordpress.com/2012/07/30/sphinx-autodoc-tutorial-for-dummies/">Sphinx Autodoc Tutorial for Dummies</a></li>
-			<li><a href = "http://www.sphinx-doc.org/en/master/theming.html">Sphinx themes</a></li>
 			<li><a href = "https://github.com/ReactiveX/RxPY/pull/101/commits/69ccb18d84eb73558e92e44d32fac1c1098e9e4f">Sphinx Docs, Logo and Updated Docstrings</a></li>
 			<li><a href = "https://media.readthedocs.org/pdf/brandons-sphinx-tutorial/latest/brandons-sphinx-tutorial.pdf">Brandon’s Sphinx Tutorial</a></li>
-			<li><a href = "https://docs.typo3.org/typo3cms/extensions/sphinx/AdministratorManual/RenderingPdf/InstallingLaTeXLinux.html">Installing LaTeX on Linux or Mac OS X</a></li>
 		</div>
 	</body>
 </html>

@@ -13,7 +13,7 @@
 	</head>
 	<body>
 		<div class = "title">
-			Source Code for Unit Test
+			Source Code
 		</div>
 		<div class = "block">
 			<span>generator</span>
@@ -42,10 +42,9 @@ def main():
 
     try:
         prime_list = read_primes('output.csv')
+    	print(prime_list)
     except IOError as err:
         print(err)
-
-    print(prime_list)
 
 if __name__ == '__main__':
     main()
@@ -74,7 +73,7 @@ Example:
 
 __author__ = 'Lin Chen'
 __version__ = 0.1
-__email__ = 'lichen@valdosta.edu'
+__email__ = 'lin.chen@ieee.org'
 __status__ = 'Prototype'
 
 import csv
@@ -135,7 +134,7 @@ Example:
 
 __author__ = "Lin Chen"
 __version__ = 0.1
-__email__ = "lichen@valdosta.edu"
+__email__ = "lin.chen@ieee.org"
 __status__ = "Prototype"
 
 def is_prime(number):

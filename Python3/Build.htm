@@ -13,7 +13,7 @@
 	</head>
 	<body>
 		<div class = "title">
-			Build with PyPI
+			Build
 		</div>
 
 		<div class = "subtitle">Benefits of packaging</div>
@@ -26,10 +26,15 @@
 
 		<div class = "subtitle">1. Setup files</div>
 		<div class = "block">
-			<p style = "text-align:center;"><img src = "img/Build_1.png" width = "25%"></p>
+			<li><a href = "Unittest_source.htm">Source Code</a></li>
+		<pre class = "prettyprint linenums">
+# get source code 
+git clone https://github.com/lin-chen-Langley/prime
+		</pre>
+			<p style = "text-align:center;"><img src = "img/Build_2.png" width = "40%"></p>
 		</div>
 		<div class = "block">
-			<span>README</span>, recommend writing README file with <a href = "../Python/Markdown/Pieces.htm">Markdown</a> syntax</li>
+			<span>README.md</span>, recommend writing README.md file with <a href = "../Python/Markdown/Pieces.htm">Markdown</a> syntax</li>
 		<pre class = "prettyprint linenums">
 This is a simple example package. You can use
 [Github-flavored Markdown](https://guides.github.com/features/mastering-markdown/)
@@ -61,26 +66,61 @@ SOFTWARE.
 		</pre>
 		</div>
 		<div class = "block">
-			<span>setup.py</span>
+			<span>requirements.txt</span>
 		<pre class = "prettyprint linenums">
-from setuptools import setup
+pip freeze &gt; requirements.txt
+		</pre>
+		</div>
+		<div class = "block">
+			<li><a href = "https://packaging.python.org/guides/using-manifest-in/#using-manifest-in">include files in source distributions</a></li>
+			<span>MANIFEST.in</span>, add other files that will be included in the archive file
+		<pre class = "prettyprint linenums">
+include README.md LICENSE requirements.txt
+recursive-include doc/_build/html *
+		</pre>
+		</div>
+		<div class = "block">
+			<li><a href = "https://packaging.python.org/guides/distributing-packages-using-setuptools/">setup() args</a></li>
+			<li>name, project name used at PyPI or Conda</li>
+			<li>version, project version</li>
+			<li>author, author names</li>
+			<li>author_email, author emails</li>
+			<li>description, a brief summary of the project</li>
+			<li>long_description, detailed description of the project</li>
+			<li>long_description_content_type, content type, such as Markdown</li>
+			<li>url, the URL for the homepage of the project</li>
+			<li>project_urls, extra links</li>
+			<li>classifiers, additional metadata</li>
+			<li>install_requires, dependency packages</li>
+			<li>package_dir, package names and directories</li>
+			<li>packages, package names</li>
+			<li>python_requires, versions of Python required</li>
+			<li>scripts, executable scripts</li>
+			<li>license, license used in the project</li>
+			<span>setup.py</span>, dynamic metadata
+		<pre class = "prettyprint linenums">
+import setuptools
  
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
  
-setup(
-    name='vsucsprime2', # a unique name for PyPI
-    version='0.1',
+setuptools.setup(
+    setup_requires=[
+        'pytest-runner',
+    ],
+    tests_require=['pytest'],
+    name='linlangleyprime', # a unique name for PyPI
+    version='0.5',
+    author='Lin Chen, Yanhua Feng',
+    author_email='lin.chen@ieee.org, yf@vims.edu',
     description='Demo for building a Python project',
-    author='Lin Chen',
-    author_email='lichen@valdosta.edu',
-    url='http://lin-chen-va.github.io',
-    install_requires=requirements,
-    packages=['primepackage', ], # packages and subpackages containing .py files
-    package_dir={'':'src'}, # location to find the packages
-    scripts=['src/generator',], # the executable files will be installed for user
-    license='Creative Commons Attribution-Noncommercial-Share Alike license',
-    long_description=open('README').read(),
+    long_description=open('README.md').read(),
+    long_description_content_type="text/markdown",
+    url='http://lin-chen-langley.github.io',
+    project_urls = {
+        'PyPI': 'https://pypi.org/manage/project/linlangleyprime/releases/',
+        'Conda': 'https://anaconda.org/linchenVA/linlangleyprime'
+        },
     classifiers=[
       'Development Status :: 4 - Beta',
       'Environment :: X11 Applications :: GTK',
@@ -92,36 +132,28 @@ setup(
       'Topic :: Desktop Environment',
       'Topic :: Text Processing :: Fonts'
       ],
+    install_requires=requirements,
+    package_dir={'':'src'}, # location to find the packages
+    packages=setuptools.find_packages(where="src"),
+    #packages=['primepackage', ], # packages and subpackages containing .py files
+    python_requires="&gt;=3.9",
+    scripts=['src/generator',], # the executable files will be installed for user
+    license='Creative Commons Attribution-Noncommercial-Share Alike license',
 )
 		</pre>
 		</div>
 		<div class = "block">
-			<span>requirements.txt</span>
+			<span>setup.cfg</span>, static metadata, contains option defaults for setup.py commands
 		<pre class = "prettyprint linenums">
-pip freeze &gt; requirements.txt
-		</pre>
-		</div>
-		<div class = "block">
-			<span>MANIFEST.in</span>, add other files that will be included in the archive file
-		<pre class = "prettyprint linenums">
-include README LICENSE requirements.txt
-recursive-include doc/_build/html *
+[aliases]
+test=pytest
 		</pre>
 		</div>
 		<div class = "subtitle">2A. Publish Option 1 - Github</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # developer
-git push origin master # push the code to the git repository, such as github
-		</pre>
-		<pre class = "prettyprint linenums">
-# user
-git clone url # download the code to local
-python setup.py install # install the executable program and packages
-
-# implementation
-import primepackage # use the primepackage as a package
-generator # run generator as a command
+git push origin local_branch:remote_branch # push the code to the git repository, such as github
 		</pre>
 		</div>
 		<div class = "subtitle">2B. Publish Option 2 - Pypi</div>
@@ -130,33 +162,274 @@ generator # run generator as a command
 			Add a <span>.pypirc</span> file under $HOME directory
 		<pre class = "prettyprint linenums">
 [distutils]
-index-servers =
-    pypi
+index-servers =pypi
 
 [pypi]
 repository: https://upload.pypi.org/legacy/
 username: yourUserName
 password: yourPassword
 		</pre>
+		</div>
+		<div class = "block">
 		<pre class = "prettyprint linenums">
 # developer
-python setup.py sdist # build an archive file (.tar.gz) in /dist folder
-python setup.py sdist upload # deposite the archive file to PyPI repository
+python setup.py sdist # build a source file (.tar.gz) in /dist folder
+twine upload dist/* # deposite the archive file to PyPI repository
+
+or
+
+python setup.py bdist_wheel # build a whl file in /dist folder
+twine upload dist/* # deposite the wheel file to PyPI repository
+		</pre>
+		</div>
+		<div class = "subtitle">2C. Publish Option 3 - Pypi with pyproject.toml</div>
+		<div class = "block">
+			<span>pyproject.toml</span>
+		<pre class = "prettyprint linenums">
+[build-system]
+requires = [
+    "setuptools&gt;=42",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+python -m build # build source file (.tar.gz) and wheel file (.whl) in /dist folder
+twine upload dist/* # deposite the built files to PyPI repository
+		</pre>
+		</div>
+		<div class = "subtitle">3. Installation</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# user installation from a git repository
+git clone url # download the code to local
+python setup.py install # install the executable program and packages
+
+python setup.py install --home='directory' # install to an alternative directory
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# user installation from PyPI
+pip install linlangleyprime
+
+pip install --target='directory' linlangleyprime # install to an alternative directory
+		</pre>
+		</div>
+		<div class = "subtitle">4. Implementation</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+generator # run app
+
+import primepackage # import python package
+		</pre>
+		</div>
+		<div class = "subtitle">5. Uninstall</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+pip uninstall linlangleyprime
+		</pre>
+		</div>
+		<div class = "subtitle">setuptools</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+python setup.py --help-commands # get help
+
+python setup.py bdist # build a tar.gz file in /dist and conduct a installation in /build folder
+
+python setup.py bdist_rpm # create rpm Linux distribution
+or
+python setup.py bdist --formats=rpm
+
+python setup.py bdist_wininst # create exe distribution for Windows
+or
+python setup.py bdist --formats=wininst
+		</pre>
+		</div>
+		<div class = "subtitle">git repository</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# install
+pip install git+https://github.com/lin-chen-Langley/prime
+
+# uninstall
+pip uninstall linlangleyprime
+		</pre>
+		</div>
+		<div class = "subtitle">conda</div>
+		<div class = "block">
+			<li><a href = "https://anaconda.org/">Create Anaconda Account</a></li>
+		<pre class = "prettyprint linenums">
+conda install anaconda-client conda-build # install need modules
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# for pip package
+# build
+python setup.py sdist # 
+
+# deposit
+anaconda upload dist/*
+
+# install
+pip install -i https://pypi.anaconda.org/linchenva/simple linlangleyprime
+
+# uninstall
+pip uninstall linlangleyprime
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# for a package existing at PyPI
+# 1. create meta.yaml
+conda skeleton pypi linlangleyprime # create a meta.yaml in /linlangleyprime folder
+
+# 2. build
+conda-build linlangleyprime # create ~/anaconda3/envs/[environment_name]/conda-bld/osx-64/linlangleyprime-0.3-py39_0.tar.bz2
+
+# 3. deposit
+anaconda upload ~/anaconda3/envs/[environment_name]/conda-bld/osx-64/linlangleyprime-0.3-py39_0.tar.bz2
+
+# 4. install
+conda install -c linchenva linlangleyprime
+
+# 5. uninstall
+conda install linlangleyprime
 		</pre>
 		<pre class = "prettyprint linenums">
-# user
-pip install vsucsprime2
+# meta.yaml
+{% set name = "linlangleyprime" %}
+{% set version = "0.3" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  url: "https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz"
+  sha256: 5c7c41ba47d6b0226a4d66e3be34642298c64e7c8ea1d9675cefd0a7a6f4d7e0
+
+build:
+  number: 0
+  script: "{{ PYTHON }} -m pip install . -vv"
+
+requirements:
+  host:
+    - certifi ==2020.12.5
+    - pip
+    - python
+  run:
+    - certifi ==2020.12.5
+    - python
+
+test:
+  imports:
+    - primepackage
+
+about:
+  home: "http://lin-chen-va.github.io"
+  license: "GNU General Public (GPL)"
+  license_family: LGPL
+  license_file:
+  summary: "Demo for building a Python project"
+  doc_url:
+  dev_url:
+
+extra:
+  recipe-maintainers:
+    - your-github-id-here
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# for a package at a git repository
+# 1. create meta.yaml in /linlangleyprime folder
+
+# 2. build
+conda-build linlangleyprime # create ~/anaconda3/envs/[environment_name]/conda-bld/osx-64/linlangleyprime-0.3-py39_0.tar.bz2
+
+# 3. deposit
+anaconda upload ~/anaconda3/envs/[environment_name]/conda-bld/osx-64/linlangleyprime-0.3-py39_0.tar.bz2
+
+# 4. install
+conda install -c linchenva linlangleyprime
+
+# 5. uninstall
+conda install linlangleyprime
+		</pre>
+		<pre class = "prettyprint linenums">
+# meta.yaml
+{% set name = "linlangleyprime" %}
+{% set version = "0.3" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  git_rev: master
+  git_url: https://github.com/lin-chen-Langley/prime
+
+build:
+  number: 0
+  script: "{{ PYTHON }} -m pip install . -vv"
+
+requirements:
+  host:
+    - certifi ==2020.12.5
+    - pip
+    - python
+  run:
+    - certifi ==2020.12.5
+    - python
+
+test:
+  imports:
+    - primepackage
+
+about:
+  home: "http://lin-chen-langley.github.io"
+  license: "GNU General Public (GPL)"
+  license_family: LGPL
+  license_file:
+  summary: "Demo for building a Python project"
+  doc_url:
+  dev_url:
+
+extra:
+  recipe-maintainers:
+    - your-github-id-here
 		</pre>
 		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+			<li>layout
+				<ul>
+					<li><a href = "https://www.python.org/dev/peps/pep-0631/">Dependency Specification</a></li>
+					<li><a href = "https://packaging.python.org/guides/distributing-packages-using-setuptools/">Packaging and Distributing Projects</a></li>
+					<li><a href = "https://packaging.python.org/tutorials/packaging-projects/">PyPI tutorial for Python 3</a></li>
+				</ul>
+			</li>
+			<li>conda
+				<ul>
+					<li><a href = "https://docs.anaconda.com/anaconda-repository/2.23/user/using/">Anaconda Repository</a></li>
+					<li><a href = "https://docs.conda.io/projects/conda-build/en/latest/user-guide/tutorials/index.html">Conda Build</a></li>
+				</ul>
+			</li>
+			<li>setuptools
+				<ul>
+					<li><a href = "https://docs.python.org/3/distutils/builtdist.html">Built Distributions</a></li>
+					<li><a href = "https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html#lay-out-your-project">The Hitchhiker's Guide</a></li>
+					<li><a href = "https://wiki.python.org/moin/Distutils/Tutorial">Introduction to distutils</a></li>
+					<li><a href = "https://setuptools.readthedocs.io/en/latest/">setuptools Documentation</a></li>
+					<li><a href = "https://github.com/pypa/setuptools">setuptools source code</a></li>
+					<li><a href = "https://pythonhosted.org/an_example_pypi_project/setuptools.html">setuptools tutorial</a></li>
+				</ul>
+			</li>
 			<li><a href = "https://www.pyinstaller.org/">pyinstaller</a></li>
-			<li><a href = "https://pythonhosted.org/an_example_pypi_project/setuptools.html">setuptools tutorial</a></li>
-			<li><a href = "https://docs.python.org/2/distutils/introduction.html">An Introduction to Distutils</a></li>
-			<li><a href = "https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html#lay-out-your-project">The Hitchhiker's Guide</a></li>
-			<li><a href = "https://wiki.python.org/moin/Distutils/Tutorial">Introduction to distutils</a></li>
-			<li><a href = "https://docs.python.org/2/distutils/packageindex.html">PyPI Documentation for Python 2</a></li>
-			<li><a href = "https://packaging.python.org/tutorials/packaging-projects/">PyPI tutorial for Python 3</a></li>
 		</div>
 	</body>
 </html>
