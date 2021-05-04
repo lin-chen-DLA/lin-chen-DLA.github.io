@@ -404,6 +404,64 @@ extra:
     - your-github-id-here
 		</pre>
 		</div>
+		<div class = "subtitle">pyinstaller</div>
+		<div class = "block">
+			<li>App is self-contained</li>
+			<li>Users do not need to have Python installed at all</li>
+			<li>Distribute an application for more than one OS, for example both Windows and Mac OS X, must install PyInstaller on each platform and bundle the app separately on each</li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# hello.py
+import pandas
+
+def f():
+    print('Hello World!')
+
+if __name__ == '__main__':
+    f()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create one folder app
+pyinstaller hello.py 
+# create /build, log file and working files
+# create /dist, hello executable folder
+# create hello.spec
+
+# deliver /dist/hello folder to user, which contain executable file and dependencies
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# implementation
+./hello/hello
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create one file app
+pyinstaller --onefile hello.py
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# optimization
+python -OO -m PyInstaller hello.py
+
+python -O -m PyInstaller --onefile hello.py # -OO may not work
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# options
+-h, help
+-v, version
+--onedir, create one folder app
+--onefile, create one file app
+		</pre>
+		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
 			<li>layout
@@ -429,7 +487,12 @@ extra:
 					<li><a href = "https://pythonhosted.org/an_example_pypi_project/setuptools.html">setuptools tutorial</a></li>
 				</ul>
 			</li>
-			<li><a href = "https://www.pyinstaller.org/">pyinstaller</a></li>
+			<li>pyinstaller
+				<ul>
+					<li><a href = "https://mounirboulwafa.medium.com/creating-a-single-executable-file-exe-from-a-python-program-abda6a41f74f">Creating a Single Executable File (.exe) from a Python Program</a></li>
+					<li><a href = "https://www.pyinstaller.org/">Documentation</a></li>
+				</ul>
+			</li>
 		</div>
 	</body>
 </html>
