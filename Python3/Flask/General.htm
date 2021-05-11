@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			General
+		</div>
+
+		<div class = "subtitle">Install</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+pip install Flask
+        </pre>
+        </div>
+		<div class = "subtitle">Local Server</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+http://127.0.0.1:5000/
+        </pre>
+        </div>
+		<div class = "subtitle">App</div>
+		<div class = "block">
+            <li>app.route(rule, options)
+                <ul>
+                    <li>create a URL for the function</li>
+                    <li><span>rule</span>, represents the URL defined</li>
+                    <li><span>options</span>, a list of parameters to be forwarded to the underlying Rule object</li>
+                </ul>
+            </li>
+            <li>app.run(host, port, debug, options)
+                <ul>
+                    <li>runs the application on the local development server</li>
+                    <li><span>host</span>, default is 127.0.0.1, set to 0.0.0.0 to have server available externally</li>
+                    <li><span>port</span>, default is 5000</li>
+                    <li><span>debug</span>, True, provides debug information, will reload the app if the code changes; False, otherwise</li>
+                    <li><span>options</span>, to be forwarded underlying Werkzeug server</li>
+                </ul>
+            </li>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+from flask import Flask
+app = Flask(__name__)
+
+
+@app.route('/')
+def hello_world():
+    return '&lt;h1&gt;Hello World&lt;/h1&gt;'
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Define URL</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/hello_temp')
+def hello_world():
+    return '&lt;h1&gt;Hello World&lt;/h1&gt;'
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+        </pre>
+		<pre class = "prettyprint linenums">
+http://127.0.0.1:5000/hello_temp
+        </pre>
+        </div>
+		<div class = "block">
+            <li><span>rule</span>, the URL rule as string</li>
+            <li><span>endpoint</span>, the registration key for a URL, used to reference the route from other parts of your application</li>
+            <li><span>view_func</span>, the function to call</li>
+		<pre class = "prettyprint linenums">
+from flask import Flask
+app = Flask(__name__)
+
+def hello_world():
+    return '&lt;h1&gt;Hello World&lt;/h1&gt;'
+
+app.add_url_rule('/hello_temp', 'hello_world', hello_world)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+        </pre>
+		<pre class = "prettyprint linenums">
+http://127.0.0.1:5000/hello_temp
+        </pre>
+        </div>
+		<div class = "subtitle">Variable</div>
+		<div class = "block">
+            <li><a href = "https://flask.palletsprojects.com/en/1.1.x/api/#url-route-registrations">URL Route Registrations</a></li>
+		<pre class = "prettyprint linenums">
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/hello/&lt;int:id&gt;')
+def hello_world(id):
+    return '&lt;h1&gt;Hello, '+str(id)+'&lt;/h1&gt;'
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+        </pre>
+		<pre class = "prettyprint linenums">
+http://127.0.0.1:5000/hello/100 # Hello, 100
+        </pre>
+		<pre class = "prettyprint linenums">
+http://127.0.0.1:5000/hello/world # Not Found
+        </pre>
+        </div>
+		<div class = "subtitle">HTTP methods</div>
+		<div class = "block">
+            <li>By default, the Flask route responds to the <span>GET</span> requests</li>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# login.html
+&lt;html&gt;
+   &lt;body&gt;
+      &lt;form action = "http://localhost:5000/login" method = "post"&gt;
+         &lt;p&gt;Enter Name:&lt;/p&gt;
+         &lt;p&gt;&lt;input type = "text" name = "nm" /&gt;&lt;/p&gt;
+         &lt;p&gt;&lt;input type = "submit" value = "submit" /&gt;&lt;/p&gt;
+      &lt;/form&gt;
+   &lt;/body&gt;
+&lt;/html&gt;
+        </pre>
+		<pre class = "prettyprint linenums">
+# app.py
+from flask import Flask, redirect, url_for, request
+app = Flask(__name__)
+
+@app.route('/success/<name>')
+def success(name):
+   return 'welcome %s' % name
+
+@app.route('/login', methods = ['POST'])
+def login():
+    # POST
+    user = request.form['nm']
+    return redirect(url_for('success',name = user))
+
+if __name__ == '__main__':
+   app.run(debug = True)
+        </pre>
+		<pre class = "prettyprint linenums">
+login.html
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# login.html
+&lt;html&gt;
+   &lt;body&gt;
+      &lt;form action = "http://localhost:5000/login" method = "get"&gt;
+         &lt;p&gt;Enter Name:&lt;/p&gt;
+         &lt;p&gt;&lt;input type = "text" name = "nm" /&gt;&lt;/p&gt;
+         &lt;p&gt;&lt;input type = "submit" value = "submit" /&gt;&lt;/p&gt;
+      &lt;/form&gt;
+   &lt;/body&gt;
+&lt;/html&gt;
+        </pre>
+		<pre class = "prettyprint linenums">
+# app.py
+from flask import Flask, redirect, url_for, request
+app = Flask(__name__)
+
+@app.route('/success/<name>')
+def success(name):
+   return 'welcome %s' % name
+
+@app.route('/login')
+def login():
+    # GET
+    user = request.args.get('nm')
+    return redirect(url_for('success',name = user))
+
+if __name__ == '__main__':
+   app.run(debug = True)
+        </pre>
+		<pre class = "prettyprint linenums">
+login.html
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://programminghistorian.org/en/lessons/creating-apis-with-python-and-flask">Creating Web APIs with Python and Flask</a></li>
+            <li><a href = "https://flask.palletsprojects.com/en/1.1.x/">Flask Documentation</a></li>
+            <li><a href = "https://www.tutorialspoint.com/flask/index.htm">Tutorialspoint</a></li>
+        </div>
+    </body>
+</html>
