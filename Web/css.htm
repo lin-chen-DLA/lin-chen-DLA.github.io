@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CSS</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			CSS
+		</div>
+
+		<div class = "subtitle">Selector</div>
+		<div class = "block">
+            <li>Simple selectors
+                <ul>
+                    <li>Element name</li>
+                    <li>Id, is unique within a page</li>
+                    <li>Class, multiple HTML elements can share the same class</li>
+                </ul>
+            </li>
+			<pre class = "prettyprint linenums">
+/* select by element name */
+li {color: red; font-weight: bold}
+			</pre>
+			<pre class = "prettyprint linenums">
+/* select by id */
+#sel {color: red; font-weight: bold}
+
+&lt;li id = "sel"&gt;Hello World!&lt;/li&gt;
+            </pre>
+			<pre class = "prettyprint linenums">
+/* select by class */
+.sel {color: red; font-weight: bold}
+
+&lt;li class = "sel"&gt;Hello&lt;/li&gt;
+&lt;div class = "sel"&gt;World!&lt;/div&gt;
+            </pre>
+			<pre class = "prettyprint linenums">
+/* combine element name and class */
+li.sel {color:red; font-weight: bold}
+
+&lt;li class = "sel"&gt;Hello World!&lt;/li&gt;
+            </pre>
+			<pre class = "prettyprint linenums">
+/* combine multiple classes */
+.sel1 {color:red}
+.sel2 {font-weight: bold}
+
+&lt;li class = "sel1 sel2"&gt;Hello World!&lt;/li&gt;
+            </pre>
+			<pre class = "prettyprint linenums">
+/* universal selector, affect every HTML element on the page */
+* {color: red}
+            </pre>
+			<pre class = "prettyprint linenums">
+/* group selects with the same style definitions, separated by comma */
+li, div {color: red; font-weight: bold}
+            </pre>
+		</div>
+		<div class = "block">
+            <li>Combinator selectors
+                <ul>
+                    <li>descendant selector, space</li>
+                    <li>child selector, &gt;</li>
+                    <li>adjacent sibling selector, +</li>
+                    <li>general sibling selector, ~</li>
+                </ul>
+            </li>
+			<pre class = "prettyprint linenums">
+/* Descendant Selector */
+div li {color: red; font-weight: bold}
+            </pre>
+			<pre class = "prettyprint linenums">
+/* Child Selector, all children li of div */
+div &gt; li {color: red; font-weight: bold}
+            </pre>
+			<pre class = "prettyprint linenums">
+/* Adjacent Sibling Selector, div and li have the same parent, li immediately follow div */
+div + li {color: red; font-weight: bold}
+            </pre>
+			<pre class = "prettyprint linenums">
+/* General Sibling Selector, all sibling li of div */
+div ~ li {color: red; font-weight: bold}
+            </pre>
+        </div>
+		<div class = "block">
+            <li>Pseudo-classes, define a special state of an element</li>
+			<pre class = "prettyprint linenums">
+/* Anchor Pseudo-classes */
+a:link {color: #FF0000;}
+
+/* ID Pseudo-classes */
+#note:hover {color: red}
+
+/* Class Pseduo-classes */
+.note:hover {color: red}
+
+/* Combinator Pseduo-classes */
+p&gt;:hover {color: red}
+            </pre>
+        </div>
+		<div class = "block">
+            <li>Pseudo-elements, style specified parts of an element</li>
+			<pre class = "prettyprint linenums">
+/* add a special effect to the first character */
+li::first-letter {color: #ff0000;}
+            </pre>
+        </div>
+		<div class = "block">
+            <li>Attribute Selectors, style HTML elements that have specific attributes or attribute values</li>
+			<pre class = "prettyprint linenums">
+/* selects all &lt;a&gt; elements with a target="_blank" attribute */
+a[target=_blank] {
+  background-color: yellow;
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Box Model</div>
+        <div class = "block">
+            <li><span>Content</span>, defined by width and height</li>
+            <li><span>Padding</span>, area between content and border, is transparent</li>
+            <li><span>Border</span>, element border, has width, style, and color</li>
+            <li><span>Margin</span>, area outside the border, is transparent</li>
+        </div>
+		<div class = "subtitle">Display</div>
+        <div class = "block">
+            <li><span>block</span>, starts on a new line and takes up the full width available</li>
+            <li><span>inline</span>, not start on a new line and only takes up as much width as necessary</li>
+            <li><span>none</span>, hide elements without deleting and recreating them</li>
+        </div>
+		<div class = "subtitle">Max-Width</div>
+        <div class = "block">
+            <li><span>width</span>
+                <ul>
+                    <li>The element has fixed width</li>
+                    <li>When the browser window is smaller than the width of the element, the browser then adds a horizontal scrollbar to the page</li>
+                </ul>
+            </li>
+            <li><span>max-width</span>
+                <ul>
+                    <li>The element takes the max-width when browser window is wider than the width of the element</li>
+                    <li>When the browser window is smaller than the width of the element, the element take the width of the window</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "subtitle">Position</div>
+        <div class = "block">
+            <li>top, bottom, left, and right properties will not work unless the position property is set first</li>
+            <li>default position is static</li>
+            <li><span>static</span>, use the normal flow of the page, top/bottom/left/right does not work</li>
+            <li><span>relative</span>, is positioned relative to its normal position, top/bottom/left/right works</li>
+            <li><span>fixed</span>, is positioned relative to the viewport, which means it always stays in the same place even if the page is scrolled</li>
+            <li><span>absolute</span>, is positioned relative to the nearest positioned ancestor
+                <ul>
+                    <li>if an absolute positioned element has no positioned ancestors, it uses the document body</li>
+                    <li>A "positioned" element is one whose position is anything except static</li>
+                </ul>
+            </li>
+            <li><span>sticky</span>, toggles between relative and fixed, depending on the scroll position</li>
+            <li><span>z-index</span>, specifies the stack order of an elemen, only works on elements with a position value other than static</li>
+			<pre class = "prettyprint linenums">
+/* static */
+div {
+    position: static;
+    left: 100px;
+    max-width: 800px;
+    height: 100px;
+    background-color: red;
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+/* relative */
+div {
+    position: relative;
+    left: 100px;
+    max-width: 800px;
+    height: 100px;
+    background-color: red;
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+/* fixed */
+div {
+    position: fixed;
+    right: 100px;
+    bottom: 100px;
+    width: 800px;
+    height: 100px;
+    background-color: red;
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+/* absolute */
+div.child {
+    position: absolute;
+    top: 20px;
+    left: 100px;
+    width: 100 px;
+    background-color: yellow;
+}
+
+div.parent {
+    position: relative;
+    max-width: 800px;
+    height: 100px;
+    background-color: red;
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+/* sticky */
+div {
+    position: sticky;
+    top: 0px;
+    left: 100px;
+    width: 100 px;
+    background-color: yellow;
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+/* z-index */
+div {
+    position: absolute;
+    top: 0px;
+    left: 100px;
+    width: 100 px;
+    height: 100 px;
+    z-index: -100;
+    border: 1px solid blue;
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Specificity Hierarchy</div>
+        <div class = "block">
+            <li><span>Inline styles</span>, 1000</li>
+            <li><span>IDs</span>, 100</li>
+            <li><span>Classes</span>, attributes and pseudo-classes, 10</li>
+            <li><span>Elements and pseudo-elements</span>, 1</li>
+            <li><span>Universal selector</span>, 0</li>
+        </div>
+		<div class = "subtitle">!important</div>
+        <div class = "block">
+            <li>Override ALL previous styling rules for that specific property on that element</li>
+        </div>
+		<div class = "subtitle">Variable</div>
+		<div class = "block">
+            <li>Global variable
+                <ul>
+                    <li>can be accessed/used through the entire document</li>
+                    <li>declare global variables inside <span>:root</span> selector, :root selector matches the document's root element</li>
+                </ul>
+            </li>
+            <li>Local variable
+                <ul>
+                    <li>can be accessed/used inside a selector</li>
+                </ul>
+            </li>
+			<pre class = "prettyprint linenums">
+/* global variable */
+:root {
+    --mycolor: #1e90ff;
+}
+
+li {background-color: var(--mycolor);}
+            </pre>
+			<pre class = "prettyprint linenums">
+/* local variable */
+li {
+    --mycolor2: red;
+    background-color: var(--mycolor2);
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Media Query</div>
+		<div class = "block">
+            <li>Media Type
+                <ul>
+                    <li>all, default</li>
+                    <li>print, printers</li>
+                    <li>screen, computer screens, tablets, smart-phones etc.</li>
+                    <li>speech, screenreaders</li>
+                </ul>
+            </li>
+            <li><a href = "https://www.w3schools.com/cssref/css3_pr_mediaquery.asp">Media Features</a></li>
+			<pre class = "prettyprint linenums">
+@media not|only mediatype and (mediafeature and|or|not mediafeature) {
+  CSS-Code;
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Flexbox</div>
+		<div class = "block">
+            <li>Parent Element (Container)
+                <ul>
+                    <li>flex-direction
+                        <ul>
+                            <li>columns</li>
+                            <li>column-reverse</li>
+                            <li>row</li>
+                            <li>row-reverse</li>
+                        </ul>
+                    </li>
+                    <li>flex-wrap, specifies whether the flex items should wrap or not
+                        <ul>
+                            <li>wrap</li>
+                            <li>nowrap</li>
+                            <li>wrap-reverse</li>
+                        </ul>
+                    </li>
+                    <li>flex-flow, setting both the flex-direction and flex-wrap</li>
+                    <li>justify-content, align the flex items
+                        <ul>
+                            <li>center</li>
+                            <li>flex-start</li>
+                            <li>flex-end</li>
+                            <li>space-around</li>
+                            <li>space-between</li>
+                        </ul>
+                    </li>
+                    <li>align-items, align the flex items
+                        <ul>
+                            <li>center</li>
+                            <li>flex-start</li>
+                            <li>flex-end</li>
+                            <li>stretch</li>
+                            <li>baseline</li>
+                        </ul>
+                    </li>
+                    <li>align-content, align the flex lines
+                        <ul>
+                            <li>space-between</li>
+                            <li>space-around</li>
+                            <li>stretch</li>
+                            <li>center</li>
+                            <li>flex-start</li>
+                            <li>flex-end</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>Child Elements (Items)
+                <ul>
+                    <li>order, specifies the order of the flex items</li>
+                    <li>flex-grow</li>
+                    <li>flex-shrink</li>
+                    <li>flex-basis, specifies the initial length of a flex item</li>
+                    <li>flex, a shorthand property for the flex-grow, flex-shrink, and flex-basis</li>
+                    <li>align-self</li>
+                </ul>
+            </li>
+			<pre class = "prettyprint linenums">
+.flex-container {
+  display: flex;
+}
+
+.flex-container &gt; div {
+  background-color: #f1f1f1;
+  margin: 10px;
+  padding: 20px;
+  font-size: 30px;
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Responsive Web Design</div>
+		<div class = "block">
+            <li>What is RWD
+                <ul>
+                    <li>makes your web page look good on all devices</li>
+                    <li>uses only HTML and CSS</li>
+                </ul>
+            </li>
+            <li>Setting The Viewport
+                <ul>
+                    <li>control the page's dimensions and scaling</li>
+                    <li><span>width=device-width</span>, the width of the page follows the screen-width of the device</li>
+                    <li><span>initial-scale=1.0</span>, sets the initial zoom level when the page is first loaded by the browser</li>
+                </ul>
+            </li>
+			<pre class = "prettyprint linenums">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+            </pre>
+            <li>Size Content to The Viewport
+                <ul>
+                    <li>Do NOT use large fixed width elements</li>
+                    <li>Do NOT let the content rely on a particular viewport width to render well</li>
+                    <li>Use CSS media queries to apply different styling for small and large screens</li>
+                </ul>
+            </li>
+            <li>Grid-View
+                <ul>
+                    <li>A responsive grid-view often has 12 columns, and has a total width of 100%</li>
+                    <li>have the <span>box-sizing</span> property set to <span>border-box</span>, makes sure that the padding and border are included in the total width and height of the elements</li>
+                </ul>
+            </li>
+            <li>Media Queries
+                <ul>
+                    <li>Always Design for Mobile First</li>
+                </ul>
+            </li>
+			<pre class = "prettyprint linenums">
+/* For mobile phones: */
+[class*="col-"] {
+  width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+  /* For desktop: */
+  .col-1 {width: 8.33%;}
+  .col-2 {width: 16.66%;}
+  .col-3 {width: 25%;}
+}
+            </pre>
+            <li>Typical Device Breakpoints</li>
+			<pre class = "prettyprint linenums">
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {...}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {...}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {...}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {...}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {...}
+            </pre>
+            <li>Frameworks
+                <ul>
+                    <li>W3.CSS</li>
+                    <li>Bootstrap</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "subtitle">Grid</div>
+		<div class = "block">
+            <li>display
+                <ul>
+                    <li>grid</li>
+                    <li>inline-grid</li>
+                </ul>
+            </li>
+            <li>Gap
+                <ul>
+                    <li>grid-column-gap</li>
+                    <li>grid-row-gap</li>
+                    <li>grid-gap</li>
+                </ul>
+            </li>
+            <li><span>grid-template-columns</span>, defines the number of columns</li>
+            <li><span>grid-template-rows</span>, defines the height of each row</li>
+            <li><span>justify-content</span>, align the whole grid inside the container
+                <ul>
+                    <li>space-evenly</li>
+                    <li>space-around</li>
+                    <li>space-between</li>
+                    <li>center</li>
+                    <li>start</li>
+                    <li>end</li>
+                </ul>
+            </li>
+            <li>align-content, ertically align the whole grid inside the container</li>
+            <li>Child Elements (Items)
+                <ul>
+                    <li>grid-column</li>
+                    <li>grid-row</li>
+                    <li>grid-area</li>
+                </ul>
+            </li>
+			<pre class = "prettyprint linenums">
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.grid-item {
+  text-align: center;
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://www.w3schools.com/cssref/css_default_values.asp">Default Values</a></li>
+            <li><a href = "https://www.w3schools.com/cssref/css_selectors.asp">Selector</a></li>
+            <li><a href = "https://www.w3schools.com/cssref/css_functions.asp">Function</a></li>
+        </div>
+    </body>
+</html>

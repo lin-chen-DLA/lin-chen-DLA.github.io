@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Eland</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Configuration</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14259,333 +14259,31 @@ a.anchor-link {
 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Eland"><center>Eland</center><a class="anchor-link" href="#Eland">&#182;</a></h2>
+<h2 id="Configuration"><center>Configuration</center><a class="anchor-link" href="#Configuration">&#182;</a></h2>
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Elastic-Stack">Elastic Stack<a class="anchor-link" href="#Elastic-Stack">&#182;</a></h4><ul>
-<li>Logstach, ingest</li>
-<li>Elasticsearch, store, search, and analyze</li>
-<li>Kibana, visualize and manage</li>
-</ul>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="1.-Elasticsearch">1. Elasticsearch<a class="anchor-link" href="#1.-Elasticsearch">&#182;</a></h4><ul>
-<li>Run Elasticsearch from Docker Image<ol>
+<h4 id="1.-Docker">1. Docker<a class="anchor-link" href="#1.-Docker">&#182;</a></h4><ul>
 <li>docker network create elastic</li>
 <li>docker pull docker.elastic.co/elasticsearch/elasticsearch:7.12.1</li>
 <li>docker run --name es01-test --net elastic -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.12.1</li>
-</ol>
-</li>
-</ul>
-<ul>
-<li>Run Elasticsearch from local<ol>
-<li><a href = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.12.1-darwin-x86_64.tar.gz">Download</a></li>
-<li>bin/elasticsearch</li>
-</ol>
-</li>
-</ul>
-<ul>
-<li>Run Kibana from Docker Image<ol>
 <li>docker pull docker.elastic.co/kibana/kibana:7.12.1</li>
 <li>docker run --name kib01-test --net elastic -p 5601:5601 -e "ELASTICSEARCH_HOSTS=<a href="http://es01-test:9200">http://es01-test:9200</a>" docker.elastic.co/kibana/kibana:7.12.1</li>
-</ol>
-</li>
+</ul>
+<h4 id="Pros">Pros<a class="anchor-link" href="#Pros">&#182;</a></h4><ul>
+<li>Easy to load</li>
+<li>Be able to start elasticsearch server and kibana</li>
+</ul>
+<h4 id="Cons">Cons<a class="anchor-link" href="#Cons">&#182;</a></h4><ul>
+<li>Not persistent</li>
 </ul>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># install elasticsearch</span>
-<span class="o">!</span>pip install elasticsearch
-<span class="o">!</span>pip install elasticsearch_dsl
-<span class="o">!</span>pip install eland
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create elasticsearch connection</span>
-<span class="kn">from</span> <span class="nn">elasticsearch</span> <span class="kn">import</span> <span class="n">Elasticsearch</span>
-<span class="n">es</span> <span class="o">=</span> <span class="n">Elasticsearch</span><span class="p">([{</span><span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">9200</span><span class="p">}])</span> <span class="c1"># run  elasticsearch server at the backend</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># save data to elasticsearch server</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="n">doc</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;kimchy&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;Elasticsearch: cool. bonsai cool.&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
-<span class="p">}</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;test-index&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">doc</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">])</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>updated
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># fetch data</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;test-index&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;_source&#39;</span><span class="p">])</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>{&#39;author&#39;: &#39;kimchy&#39;, &#39;text&#39;: &#39;Elasticsearch: cool. bonsai cool.&#39;, &#39;timestamp&#39;: &#39;2021-05-10T15:53:29.519173&#39;}
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">es</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;test-index&quot;</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>{&#39;_shards&#39;: {&#39;total&#39;: 2, &#39;successful&#39;: 1, &#39;failed&#39;: 0}}</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># search</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;test-index&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;match_all&quot;</span><span class="p">:</span> <span class="p">{}}})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">])</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>{&#39;total&#39;: {&#39;value&#39;: 1, &#39;relation&#39;: &#39;eq&#39;}, &#39;max_score&#39;: 1.0, &#39;hits&#39;: [{&#39;_index&#39;: &#39;test-index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;1&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;kimchy&#39;, &#39;text&#39;: &#39;Elasticsearch: cool. bonsai cool.&#39;, &#39;timestamp&#39;: &#39;2021-05-10T15:53:29.519173&#39;}}]}
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># search with elasticsearch_dsl</span>
-<span class="kn">from</span> <span class="nn">elasticsearch_dsl</span> <span class="kn">import</span> <span class="n">Search</span><span class="p">,</span> <span class="n">Q</span>
-<span class="n">search</span> <span class="o">=</span> <span class="n">Search</span><span class="p">(</span><span class="n">using</span><span class="o">=</span><span class="n">es</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s2">&quot;test-index&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;match_all&quot;</span><span class="p">)</span>
-
-<span class="n">documents</span> <span class="o">=</span> <span class="p">[</span><span class="n">hit</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">search</span><span class="o">.</span><span class="n">scan</span><span class="p">()]</span>
-
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span> <span class="c1"># dataframe in memory</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>author</th>
-      <th>text</th>
-      <th>timestamp</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>kimchy</td>
-      <td>Elasticsearch: cool. bonsai cool.</td>
-      <td>2021-05-10T15:53:29.519173</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="2.-Eland">2. Eland<a class="anchor-link" href="#2.-Eland">&#182;</a></h4><ul>
-<li>Panda like DataFrame</li>
-<li>Process large data without holding data in-memory</li>
-<li>Uploading datasets</li>
-</ul>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Terms">Terms<a class="anchor-link" href="#Terms">&#182;</a></h4><ul>
-<li>DataFrame, Index</li>
-<li>Row, Document</li>
-<li>Column, Field</li>
-<li>df.dtypes, Mapping Types</li>
-<li>df.index, _id/@timestamp</li>
-</ul>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">eland</span> <span class="k">as</span> <span class="nn">ed</span>
@@ -14597,77 +14295,10 @@ a.anchor-link {
 </div>
 </div>
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Load-Data">Load Data<a class="anchor-link" href="#Load-Data">&#182;</a></h4>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">es</span> <span class="o">=</span> <span class="n">Elasticsearch</span><span class="p">([{</span><span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">9200</span><span class="p">}])</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># connect to elasticsearch server</span>
-<span class="n">es</span> <span class="o">=</span> <span class="n">Elasticsearch</span><span class="p">([{</span><span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">9200</span><span class="p">}])</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">es</span><span class="p">,</span> <span class="n">es_index_pattern</span><span class="o">=</span><span class="s2">&quot;test-index&quot;</span><span class="p">)</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="s2">&quot;localhost:9200&quot;</span><span class="p">,</span> <span class="n">es_index_pattern</span><span class="o">=</span><span class="s2">&quot;test-index&quot;</span><span class="p">)</span>
-
-<span class="nb">type</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>eland.dataframe.DataFrame</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Upload-Data">Upload Data<a class="anchor-link" href="#Upload-Data">&#182;</a></h4>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[36]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
@@ -14686,11 +14317,10 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># convert Pandas DataFrame to Eland DataFrame which is hosted on elasticsearch server</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">pandas_to_eland</span><span class="p">(</span><span class="n">purchases</span><span class="p">,</span> <span class="s2">&quot;localhost:9200&quot;</span><span class="p">,</span> <span class="s2">&quot;fruit&quot;</span><span class="p">,</span> <span class="n">es_if_exists</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">,</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">pandas_to_eland</span><span class="p">(</span><span class="n">purchases</span><span class="p">,</span> <span class="s2">&quot;localhost:9200&quot;</span><span class="p">,</span> <span class="s2">&quot;fruit&quot;</span><span class="p">,</span> <span class="n">es_if_exists</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">,</span> 
                         <span class="n">es_refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># waiting data to be indexed before returning</span>
                        <span class="p">)</span>
 </pre></div>
@@ -14700,13 +14330,14 @@ a.anchor-link {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[38]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">elasticsearch</span> <span class="kn">import</span> <span class="n">Elasticsearch</span>
+<span class="n">es</span> <span class="o">=</span> <span class="n">Elasticsearch</span><span class="p">([{</span><span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">9200</span><span class="p">}])</span> <span class="c1"># run  elasticsearch server at the backend</span>
 </pre></div>
 
      </div>
@@ -14714,49 +14345,14 @@ a.anchor-link {
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>&lt;class &#39;eland.dataframe.DataFrame&#39;&gt;
-Index: 4 entries, 0 to 3
-Data columns (total 2 columns):
- #   Column   Non-Null Count  Dtype
----  ------   --------------  -----
- 0   apples   4 non-null      int64
- 1   oranges  4 non-null      int64
-dtypes: int64(2)
-memory usage: 64.000 bytes
-Elasticsearch storage usage: 3.536 KB
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="DataFrame">DataFrame<a class="anchor-link" href="#DataFrame">&#182;</a></h4>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># convert Eland DataFrame to Pandas DataFrame</span>
-<span class="n">ed</span><span class="o">.</span><span class="n">eland_to_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># connect to elasticsearch server</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">es</span><span class="p">,</span> <span class="n">es_index_pattern</span><span class="o">=</span><span class="s2">&quot;fruit&quot;</span><span class="p">)</span> <span class="c1"># eland.dataframe.DataFrame</span>
 </pre></div>
 
      </div>
@@ -14764,119 +14360,159 @@ Elasticsearch storage usage: 3.536 KB
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-Index: 4 entries, 0 to 3
-Data columns (total 2 columns):
- #   Column   Non-Null Count  Dtype
----  ------   --------------  -----
- 0   apples   4 non-null      int64
- 1   oranges  4 non-null      int64
-dtypes: int64(2)
-memory usage: 96.0+ bytes
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Search">Search<a class="anchor-link" href="#Search">&#182;</a></h4><ul>
-<li>DataFrame.es_query, Eland DataFrame is backed by elasticsearch</li>
+<h4 id="search-fruit-index">search fruit index<a class="anchor-link" href="#search-fruit-index">&#182;</a></h4><ul>
+<li>GET /_cat/indices/fruit?v=true&amp;s=index</li>
+<li>GET /fruit/_search</li>
 </ul>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">es_query</span><span class="p">({</span><span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;apples&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}})</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[24]:</div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>apples</th>
-      <th>oranges</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>3</td>
-      <td>0</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-<p>1 rows × 2 columns</p>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Machine-Learning">Machine Learning<a class="anchor-link" href="#Machine-Learning">&#182;</a></h4>
+<h4 id="2.-Local-Source-Code">2. Local Source Code<a class="anchor-link" href="#2.-Local-Source-Code">&#182;</a></h4><ul>
+<li>elasticsearch<ul>
+<li>Download <a href = "https://www.elastic.co/downloads/elasticsearch">elasticsearch</a></li>
+<li>bin/elasticsearch</li>
+<li><a href="http://127.0.0.1:9200/">http://127.0.0.1:9200/</a></li>
+</ul>
+</li>
+<li>kibana<ul>
+<li>Download <a href = "https://www.elastic.co/downloads/kibana">kibana</a></li>
+<li>config/kibana.yml<ul>
+<li>server.port: 5601</li>
+<li>elasticsearch.hosts: ["<a href="http://localhost:9200">http://localhost:9200</a>"]</li>
+</ul>
+</li>
+<li>bin/kibana</li>
+<li>Enable node-re2 in security setting</li>
+<li><a href="http://localhost:5601">http://localhost:5601</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="Pros">Pros<a class="anchor-link" href="#Pros">&#182;</a></h4><ul>
+<li>Persistent</li>
+</ul>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[86]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">eland</span> <span class="k">as</span> <span class="nn">ed</span>
+<span class="kn">from</span> <span class="nn">eland.conftest</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">elasticsearch</span> <span class="kn">import</span> <span class="n">Elasticsearch</span>
+<span class="n">es</span> <span class="o">=</span> <span class="n">Elasticsearch</span><span class="p">([{</span><span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">9200</span><span class="p">}])</span> <span class="c1"># run  elasticsearch server at the backend</span>
+
+<span class="c1"># connect to elasticsearch server</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">es</span><span class="p">,</span> <span class="n">es_index_pattern</span><span class="o">=</span><span class="s2">&quot;fruit&quot;</span><span class="p">)</span> <span class="c1"># eland.dataframe.DataFrame</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="3.-Multiple-Nodes">3. Multiple Nodes<a class="anchor-link" href="#3.-Multiple-Nodes">&#182;</a></h4><ul>
+<li>Elasticsearch cluster<ul>
+<li>nodes are able to identify each other to connect</li>
+<li>replicates shards in different nodes</li>
+</ul>
+</li>
+<li>Single Computer<ul>
+<li>bin/elasticsearch -Epath.data=data1 -Epath.logs=log1 # <a href="http://127.0.0.1:9200/">http://127.0.0.1:9200/</a></li>
+<li>bin/elasticsearch -Epath.data=data2 -Epath.logs=log2 # <a href="http://127.0.0.1:9201/">http://127.0.0.1:9201/</a></li>
+</ul>
+</li>
+<li>Multiple Computers<ul>
+<li>For the elasticsearch.yml on each copy<ul>
+<li>cluster.name: my-cluster # set up cluster name</li>
+<li>node.name: "es-node-1" # give each node a name</li>
+<li>node.master: true</li>
+<li>node.data: true</li>
+<li>network.host: [IP]</li>
+<li>http.port: 9200</li>
+<li>discovery.zen.ping.unicast.hosts: [IP_1, IP_2]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">es2</span> <span class="o">=</span> <span class="n">Elasticsearch</span><span class="p">([{</span><span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">9201</span><span class="p">}])</span> <span class="c1"># run  elasticsearch server at the backend</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">es2</span><span class="p">,</span> <span class="n">es_index_pattern</span><span class="o">=</span><span class="s2">&quot;fruit&quot;</span><span class="p">)</span> <span class="c1"># eland.dataframe.DataFrame</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Check-status">Check status<a class="anchor-link" href="#Check-status">&#182;</a></h4><ul>
+<li>curl -XGET '<a href="http://localhost:9200/_cluster/state?pretty">http://localhost:9200/_cluster/state?pretty</a>'</li>
+<li>curl -XGET '<a href="http://localhost:9201/_cluster/state?pretty">http://localhost:9201/_cluster/state?pretty</a>'</li>
+</ul>
+<h4 id="Check-Cluster-Health">Check Cluster Health<a class="anchor-link" href="#Check-Cluster-Health">&#182;</a></h4><ul>
+<li>curl -XGET '<a href="http://localhost:9200/_cluster/health?pretty">http://localhost:9200/_cluster/health?pretty</a>'</li>
+<li>curl -XGET '<a href="http://localhost:9201/_cluster/health?pretty">http://localhost:9201/_cluster/health?pretty</a>'</li>
+</ul>
+<h4 id="Cluster-Stats">Cluster Stats<a class="anchor-link" href="#Cluster-Stats">&#182;</a></h4><ul>
+<li>curl -XGET '<a href="http://localhost:9200/_cluster/stats?human&amp;pretty">http://localhost:9200/_cluster/stats?human&amp;pretty</a>'</li>
+<li>curl -XGET '<a href="http://localhost:9201/_cluster/stats?human&amp;pretty">http://localhost:9201/_cluster/stats?human&amp;pretty</a>'</li>
+</ul>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="5.-Nodes">5. Nodes<a class="anchor-link" href="#5.-Nodes">&#182;</a></h4><ul>
+<li>Data nodes — stores data and executes data-related operations such as search and aggregation</li>
+<li>Master nodes — in charge of cluster-wide management and configuration actions such as adding and removing nodes</li>
+<li>Client nodes — forwards cluster requests to the master node and data-related requests to data nodes</li>
+<li>Ingest nodes — for pre-processing documents before indexing</li>
+<li>data_content</li>
+<li>data_hot</li>
+<li>data_warm</li>
+<li>data_cold</li>
+<li>data_frozen</li>
+<li>ml</li>
+<li>remote_cluster_client</li>
+<li>transform</li>
+</ul>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="6.-ML-Nodes">6. ML Nodes<a class="anchor-link" href="#6.-ML-Nodes">&#182;</a></h4><ul>
+<li>node.roles: [ master, data,  ml, remote_cluster_client]</li>
+<li>xpack.ml.enabled: true</li>
+<li><font color="red">ConnectionTimeout</font></li>
+</ul>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[66]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
@@ -14891,10 +14527,10 @@ memory usage: 96.0+ bytes
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[67]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
@@ -14903,8 +14539,48 @@ memory usage: 96.0+ bytes
 <span class="c1"># train a model in local</span>
 <span class="n">sk_classifier</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
 <span class="n">sk_classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+</pre></div>
 
-<span class="c1"># store the trained model to elasticsearch server</span>
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[67]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>DecisionTreeClassifier(class_weight=None, criterion=&#39;gini&#39;, max_depth=None,
+                       max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=None, splitter=&#39;best&#39;)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># store the trained model to elasticsearch server</span>
 <span class="n">ed_classifier</span> <span class="o">=</span> <span class="n">MLModel</span><span class="o">.</span><span class="n">import_model</span><span class="p">(</span>
   <span class="s1">&#39;localhost:9200&#39;</span><span class="p">,</span>
   <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;wine-classifier&quot;</span><span class="p">,</span>
@@ -14925,62 +14601,10 @@ memory usage: 96.0+ bytes
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="3.-Could">3. Could<a class="anchor-link" href="#3.-Could">&#182;</a></h4><ul>
-<li>Access via REST API</li>
-</ul>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<ul>
-<li>Logging<ul>
-<li>Create a deployment</li>
-<li>Observability -&gt; Get Started -&gt; Sample Data -&gt; Add Sample Web Log -&gt; View Data<ul>
-<li>-&gt; Logs </li>
-<li>-&gt; Dashboard</li>
-</ul>
-</li>
-<li>Ingest Data<ul>
-<li>Create by following instructions</li>
-<li>Load from a file (up to 100MB)</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<ul>
-<li>App Search (Enterprise Deployment)<ul>
-<li>Enterprise Search -&gt; Launch -&gt; Launch App Search -&gt; Add JSON file -&gt; Open Dashboard </li>
-<li>-&gt; Query Tester</li>
-<li>-&gt; Schema</li>
-<li>-&gt; API Logs</li>
-<li>Search<ul>
-<li>Reference UI -&gt; source code for searching</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="Reference">Reference<a class="anchor-link" href="#Reference">&#182;</a></h4><ul>
-<li><a href = "https://www.elastic.co/guide/en/elasticsearch/reference/current/rest-apis.html">REST API</a></li>
-<li><a href = "https://www.elastic.co/training/">Elasticsearch Training</a></li>
-<li><a href = "https://logz.io/blog/elasticsearch-queries/">Elasticsearch Query</a></li>
-<li><a href = "https://www.youtube.com/watch?v=U8fnkzp_sfo">Introduction into Eland - DataFrames and Machine Learning backed by Elasticsearch</a></li>
-<li><a href = "https://github.com/elastic/eland">Eland Github</a></li>
-<li><a href = "https://eland.readthedocs.io/en/latest/examples/index.html">Eland Documentation</a></li>
-<li><a href = "https://elasticsearch-py.readthedocs.io/en/v7.12.1/">Elasticsearch Python</a></li>
-<li><a href = "https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html">Elasticsearch Getting Started</a>&lt;/li&gt;</li>
+<li><a href = "https://tryolabs.com/blog/2015/02/17/python-elasticsearch-first-steps/">Python + Elasticsearch. First steps</a></li>
+<li><a href = "https://logz.io/blog/elasticsearch-cluster-tutorial/">Creating an Elasticsearch Cluster: Getting Started</a></li>
+<li><a href = "https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html">Elasticsearch Guide</a></li>
 </ul>
 
 </div>

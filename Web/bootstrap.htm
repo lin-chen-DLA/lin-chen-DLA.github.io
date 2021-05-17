@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Bootstrap</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Bootstrap 4
+		</div>
+
+		<div class = "subtitle">Template</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    &lt;!-- Latest compiled and minified CSS --&gt;
+    &lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"&gt;
+
+    &lt;!-- jQuery library --&gt;
+    &lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"&gt;&lt;/script&gt;
+
+    &lt;!-- Popper JS --&gt;
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"&gt;&lt;/script&gt;
+
+    &lt;!-- Latest compiled JavaScript --&gt;
+    &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"&gt;&lt;/script&gt;
+  &lt;/head&gt;
+&lt;/html&gt;
+            </pre>
+        </div>
+		<div class = "subtitle">Container</div>
+		<div class = "block">
+            <li><span>.container-sm|md|lg|xl</span>, default is .container-sm</li>
+            <li><span>.container</span>, fixed width container
+                <ul>
+                    <li>Extra Small, 100%</li>
+                    <li>Small, 540px</li>
+                    <li>Medium, 768px</li>
+                    <li>Large, 960px</li>
+                    <li>Extra Large, 1140px</li>
+                </ul>
+            </li>
+            <li><span>.container-fluid</span>, full width container</li>
+        </div>
+		<div class = "subtitle">Grid System</div>
+		<div class = "block">
+            <li>is built with flexbox and allows up to 12 column</li>
+            <li>Grid System Rules
+                <ul>
+                    <li>Rows must be placed within a .container (fixed-width) or .container-fluid (full-width) for proper alignment and padding</li>
+                    <li>Use rows to create horizontal groups of columns</li>
+                    <li>only columns may be immediate children of rows</li>
+                    <li>Column widths are in percentage, so they are always fluid and sized relative to their parent element</li>
+                </ul>
+            </li>
+            <li>Grid Classes
+                <ul>
+                    <li><span>.col-</span></li>
+                    <li><span>.col-sm-</span></li>
+                    <li><span>.col-md-</span></li>
+                    <li><span>.col-lg-</span></li>
+                    <li><span>.col-xl-</span></li>
+                </ul>
+            </li>
+			<pre class = "prettyprint linenums">
+&lt;div class=".container" style="background-color:red"&gt;
+          &lt;div class="row"&gt;
+            &lt;div class="col-sm-4" style="background-color:blue"&gt;.col-sm-4&lt;/div&gt;
+            &lt;div class="col-sm-8" style="background-color:yellow"&gt;.col-sm-8&lt;/div&gt;
+          &lt;/div&gt;
+&lt;/div&gt;
+            </pre>
+        </div>
+		<div class = "subtitle">Text Colors</div>
+		<div class = "block">
+            <li>.text-muted, .text-primary, .text-success, .text-info, .text-warning, .text-danger, .text-secondary, .text-white, .text-dark, .text-body (default body color/often black) and .text-light</li>
+        </div>
+		<div class = "subtitle">Background Colors</div>
+		<div class = "block">
+            <li>.bg-primary, .bg-success, .bg-info, .bg-warning, .bg-danger, .bg-secondary, .bg-dark and .bg-light</li>
+        </div>
+		<div class = "subtitle">Change Theme</div>
+		<div class = "block">
+            <ol>
+                <li>Download <a href = "https://bootswatch.com/">Bootstrap Theme</a></li>
+                <li>Replace the default bootstrap.min.css</li>
+            </ol>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://www.w3schools.com/bootstrap4/bootstrap_utilities.asp">Utilities</a></li>
+            <li><a href = "https://www.w3schools.com/bootstrap4/default.asp">Bootstrap 4 Tutorial</a></li>
+        </div>
+    </body>
+</html>
