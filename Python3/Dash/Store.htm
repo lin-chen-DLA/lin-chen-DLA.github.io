@@ -17,62 +17,72 @@
 		</div>
 
 		<div class = "block">
+            <li>Store dash components, strings, dictionaries, numbers, None,
+                or lists of those</li>
 			<p style = "text-align:center;"><img src = "img/Dash_7.png" width = "40%"></p>
 		</div>
 		<div class = "subtitle">Store Type</div>
 		<div class = "block">
-			<li>memory, the memory store reverts to the default on every page refresh</li>
-			<li>local, memorize data until it is cleared, initialized only the first time the page is loaded</li>
-			<li>session, same as the local store but will lose the data when the browser/tab closes</li>
+            <li><span>memory</span>
+                <ul>
+                    <li>default</li>
+                    <li>the memory store reverts to the default on every page refresh</li>
+                </ul>
+            </li>
+            <li><span>local</span>
+                <ul>
+                    <li>Share data between multiple pages in a browser, and keep it until it is cleared</li>
+                    <li>Restarting the browser does not lose data</li>
+                    <li>Different browsers keep differnt copies</li>
+                </ul>
+            </li>
+            <li><span>session</span>
+                <ul>
+                    <li>Keep data in a single page</li>
+                    <li>Not share data with other pages</li>
+                    <li>Closing page will lose data</li>
+                </ul>
+            </li>
 		<pre class = "prettyprint linenums">
 import dash
-
-import dash_html_components as html
 import dash_core_components as dcc
-from dash.dependencies import Output, Input, State
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
+from os import path
 
-# This stylesheet makes the buttons and table pretty.
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
 
-app.layout = html.Div(children=[
-    dcc.Store(id='memory', storage_type='memory'),
-    html.Button('memory', id='memory-button'),
-    html.Div(0, id='memory-clicks'),
-])
+app.layout = html.Div([
+        dcc.Input(id = 'input'),
+        html.H1(id = 'content'),
+        dcc.Store(id='cache') # default, memory
+        #dcc.Store(id='cache', storage_type='local') # local
+        #dcc.Store(id='cache', storage_type='session') # session
+    ], className='container')
 
-@app.callback(Output('memory', 'data'),
-              Input('memory-button', 'n_clicks'),
-              State('memory', 'data'))
-def on_click(n_clicks, data):
-    if n_clicks is None:
-        # prevent the None callbacks is important with the store component.
-        # you don't want to update the store for nothing.
+@app.callback(
+    Output('cache', 'data'),
+    Input('input', 'value'),
+)
+def update_output_1(value):
+    if not value:
         raise PreventUpdate
+    print(value)
+    return value
 
-    # Give a default data dict with 0 clicks if there's no data
-    data = data or {'clicks': 0}
-
-    data['clicks'] = data['clicks'] + 1
+@app.callback(
+    Output('content', 'children'),
+    Input('cache', 'data'),
+)
+def update_output_2(data):
     return data
 
-@app.callback(Output('memory-clicks', 'children'),
-              Input('memory', 'modified_timestamp'),
-              State('memory', 'data'))
-def on_data(ts, data):
-    if ts is None:
-        raise PreventUpdate
-
-    data = data or {}
-    print(data)
-
-    return data.get('clicks', 0)
-
-
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8077, threaded=True)
+    app.run_server(debug=True)
 		</pre>
 		</div>
 		<div class = "subtitle">Share Data between Callbacks</div>

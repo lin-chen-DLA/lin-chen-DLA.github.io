@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Frontend and Backend
+		</div>
+
+		<div class = "block">
+            <ol>
+                <li>Load the components in the layout on <span>server</span> side</li>
+                <li>Implement callbacks with default inputs on <span>server</span> side</li>
+                <li>Open a session on web browser</li>
+                <li>Load the components in the layout from <span>server</span> side to <span>client</span> side with outputs from default inputs</li>
+                <li>Receive inputs from user interaction on <span>client</span> side, implment corresponding callbacks on <span>server</span> side, then return outputs to <span>client</span> side</li>
+            </ol>
+			<p style = "text-align:center;"><img src = "img/Dash_30.png" width = "50%"></p>
+        </div>
+		<div class = "subtitle">Global Variable</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+shared = None
+
+app.layout = html.Div([
+    dcc.Input(value=shared, id = 'input'),
+    html.H1(id = 'content'),
+], className='container')
+
+@app.callback(
+    Output('content', 'children'),
+    Input('input', 'value')
+)
+def update_output_div(value):
+    global shared
+    temp = shared
+    shared = value
+    return temp
+
+app.scripts.config.serve_locally = True
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+        <div class = "block">
+            <li>Sessions share the same copy of the global variable</li>
+		<pre class = "prettyprint linenums">
+# single worker
+python app.py
+or
+gunicorn app:server --workers 1
+        </pre>
+			<p style = "text-align:center;"><img src = "img/Dash_24.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+            <li>Each worker keeeps a copy of the global variable</li>
+            <li>May a different worker responses the request every time a session sends a request</li>
+            <li>As though a random global copy is returned</li>
+		<pre class = "prettyprint linenums">
+# multiple workers
+gunicorn app:server --workers 8
+        </pre>
+			<p style = "text-align:center;"><img src = "img/Dash_25.png" width = "50%"></p>
+        </div>
+		<div class = "subtitle">Sharing Data Between Callbacks within a Single Session</div>
+		<div class = "block">
+            <li>Option 1. Each session access an independent file (database)</li>
+			<p style = "text-align:center;"><img src = "img/Dash_26.png" width = "50%"></p>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+from os import path
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+app.layout = html.Div([
+    dcc.Input(id = 'session_name'),
+    dcc.Input(id = 'input'),
+    html.H1(id = 'content'),
+    html.Button('Click', id = 'button')
+], className='container')
+
+@app.callback(
+    Output('content', 'children'),
+    Input('button', 'n_clicks'),
+    State('input', 'value'),
+    State('session_name', 'value')
+)
+def update_output_div(n_clicks, value, value_2):
+    if not n_clicks:
+        raise PreventUpdate
+    if not path.exists(value_2):
+        f = open(value_2, "w")
+        f.write('Init')
+        f.close()
+        output_str = 'None'
+    else:
+        f = open(value_2, "r")
+        output_str = f.readline()
+        f.close()
+        f = open(value_2, "w")
+        f.write(str(value))
+        f.close()
+    return output_str
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Option 2. In the user's browser session via dcc.Store
+                <ul>
+                    <li>Store the data in memory in the browser client</li>
+                    <li>Data will be transported over the network between each callback</li>
+                    <li>It's generally safe to store up to 2MB in most environments, and 5~10MB in most desktop-only applications</li>
+                </ul>
+            </li>
+			<p style = "text-align:center;"><img src = "img/Dash_27.png" width = "50%"></p>
+		<pre class = "prettyprint linenums">
+import dash
+from dash.dependencies import Input, Output
+import dash_html_components as html
+import dash_core_components as dcc
+
+import pandas as pd
+
+df = pd.DataFrame({
+    'x': [1, 2, 3, 4, 5, 6],
+    'y': [3, 1, 2, 3, 5, 6],
+    'z': ['A', 'A', 'B', 'B', 'C', 'C']
+})
+
+app = dash.Dash()
+
+app.layout = html.Div([
+    dcc.Dropdown(
+        id='dropdown',
+        options=[{'label': i, 'value': i} for i in ['A', 'B', 'C']],
+        value='A'
+    ),
+    dcc.Graph(
+        id='graph'
+    ),
+    dcc.Store(id='cache')
+])
+
+
+@app.callback(Output('cache', 'data'), Input('dropdown', 'value'))
+def update_cache(value):
+    filtered_df = df[df['z'] == value]
+    return filtered_df.to_json()
+
+
+@app.callback(Output('graph', 'figure'), Input('cache', 'data'))
+def update_graph(cached_data):
+    filtered_df = pd.read_json(cached_data)
+    print(type(filtered_df))
+    print(filtered_df)
+    return {
+        'data': [{
+            'x': filtered_df['x'],
+            'y': filtered_df['y'],
+            'type': 'bar'
+        }]
+    }
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+import json
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+app.layout = html.Div([
+    dcc.Input(id = 'input_1'),
+    dcc.Input(id = 'input_2'),
+    html.Div(id = 'content'),
+    html.Button('Click', id = 'button'),
+    dcc.Store(id='cache')
+], className='container')
+
+@app.callback(
+    Output('cache', 'data'),
+    Input('button', 'n_clicks'),
+    State('input_1', 'value'),
+    State('input_2', 'value')
+)
+def update_cache_div(n_clicks, value, value_2):
+    d = {'input_1': value, 'input_2': value_2}
+    return d
+
+@app.callback(
+    Output('content', 'children'),
+    Input('cache', 'data'),
+)
+def update_output_div(d):
+    dict_object = d
+    return str(dict_object['input_1']) + ' '+str(dict_object['input_2'])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Option 3. Save in hidden div via the browser's DOM</li>
+			<p style = "text-align:center;"><img src = "img/Dash_28.png" width = "50%"></p>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+import json
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+app.layout = html.Div([
+    dcc.Input(id = 'input_1'),
+    dcc.Input(id = 'input_2'),
+    html.Div(id = 'content'),
+    html.Button('Click', id = 'button'),
+    html.Div(id='cache', style={'display': 'none'})
+], className='container')
+
+@app.callback(
+    Output('cache', 'children'),
+    Input('button', 'n_clicks'),
+    State('input_1', 'value'),
+    State('input_2', 'value')
+)
+def update_cache_div(n_clicks, value, value_2):
+    d = {'input_1': value, 'input_2': value_2}
+    return json.dumps(d)
+
+@app.callback(
+    Output('content', 'children'),
+    Input('cache', 'children'),
+)
+def update_output_div(d):
+    dict_object = json.loads(d)
+    return str(dict_object['input_1']) + ' '+str(dict_object['input_2'])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Option 4. storing “global variables” in the cache on the server-side
+                <ul>
+                    <li>The expensive function will be run one time, the return will be saved in a global cache</li>
+                    <li>further calling will access the return from the global cache directly without repeating the expensive process</li>
+                </ul>
+            </li>
+			<p style = "text-align:center;"><img src = "img/Dash_29.png" width = "50%"></p>
+		<pre class = "prettyprint linenums">
+import time
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+from os import path
+from flask_caching import Cache
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+cache = Cache(app.server, config={
+    'CACHE_TYPE': 'filesystem',
+    'CACHE_DIR': 'cache'
+})
+
+app.layout = html.Div([
+    html.H1(id = 'content'),
+    html.H1(id = 'content_2'),
+    html.Button('Click', id = 'button'),
+], className='container')
+
+@cache.memoize()
+def compute_expensive_data(value):
+    print('Read from server side')
+    time.sleep(5)
+    f = open('readme.txt', "r")
+    output_str = f.readline()
+    f.close()
+    return output_str + ' ' + str(value)
+
+@app.callback(
+    Output('content', 'children'),
+    Input('button', 'n_clicks'),
+)
+def update_output_1(n_clicks):
+    if not n_clicks:
+        raise PreventUpdate
+    return compute_expensive_data(1)
+
+@app.callback(
+    Output('content_2', 'children'),
+    Input('button', 'n_clicks'),
+)
+def update_output_2(n_clicks):
+    if not n_clicks:
+        raise PreventUpdate
+    return compute_expensive_data(1)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Option 5. storing cache data for each session on server side</li>
+		<pre class = "prettyprint linenums">
+import time
+import uuid
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+from os import path
+from flask_caching import Cache
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+cache = Cache(app.server, config={
+    'CACHE_TYPE': 'filesystem',
+    'CACHE_DIR': 'cache',
+    'CACHE_THRESHOLD': 200
+})
+
+def get_layout():
+    uid = str(uuid.uuid4())
+
+    return html.Div([
+        html.H1(id = 'content'),
+        html.H1(id = 'content_2'),
+        html.Button('Click', id = 'button'),
+        dcc.Store(data = uid, id='session-id')
+    ], className='container')
+
+# a new session is created each time the page is loaded
+app.layout = get_layout # not get_layout()
+
+@cache.memoize()
+def compute_expensive_data(session_id):
+    time.sleep(5)
+    f = open('readme.txt', "r")
+    output_str = f.readline()
+    f.close()
+    return output_str + ' ' + str(session_id)
+
+@app.callback(
+    Output('content', 'children'),
+    Input('button', 'n_clicks'),
+    State('session-id', 'data')
+)
+def update_output_1(n_clicks, data):
+    if not n_clicks:
+        raise PreventUpdate
+    return compute_expensive_data(data)
+
+@app.callback(
+    Output('content_2', 'children'),
+    Input('button', 'n_clicks'),
+    State('session-id', 'data')
+)
+def update_output_2(n_clicks, data):
+    if not n_clicks:
+        raise PreventUpdate
+    return compute_expensive_data(data)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://github.com/plotly/dash-recipes/blob/master/dash-cached-data-hidden-div.py">Hidden Div</a></li>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Authentication
+		</div>
+
+		<div class = "subtitle">Basic Auth</div>
+		<div class = "block">
+            <li>Users can not log out of applications</li>
+            <li>Viewers can not create their own account and cannot change their password</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_auth
+import dash_core_components as dcc
+import dash_html_components as html
+import plotly
+
+# Keep this out of source code repository - save in a file or a database
+VALID_USERNAME_PASSWORD_PAIRS = {
+    'hello': 'world',
+    'lin': 'chen'
+}
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+auth = dash_auth.BasicAuth(
+    app,
+    VALID_USERNAME_PASSWORD_PAIRS
+)
+
+app.layout = html.Div([
+    html.H1('Welcome to the app'),
+], className='container')
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Get Username</div>
+		<div class = "block">
+            <li>Use request of Flask in a callback function to avoid "RuntimeError: Working outside of request context"</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_auth
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+from flask import request
+
+# Keep this out of source code repository - save in a file or a database
+VALID_USERNAME_PASSWORD_PAIRS = {
+    'hello': 'world',
+    'lin': 'chen'
+}
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+auth = dash_auth.BasicAuth(
+    app,
+    VALID_USERNAME_PASSWORD_PAIRS
+)
+
+app.layout = html.Div([
+    html.H1('Welcome to the app'),
+    html.H1(id = 'content'),
+    html.Button('Click', id = 'button')
+], className='container')
+
+@app.callback(
+    Output(component_id='content', component_property='children'),
+    [Input(component_id='button', component_property='n_clicks')]
+)
+def update_output_div(n_clicks):
+    username = request.authorization['username']
+    if n_clicks:
+        return username
+    else:
+        return
+
+app.scripts.config.serve_locally = True
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Change Username</div>
+		<div class = "block">
+            <li>Type "chrome://restart" to restart Chrome</li>
+            <li>Command + Shift + n to use incognito mode</li>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://dash.plotly.com/authentication">Documentation</a></li>
+        </div>
+    </body>
+</html>

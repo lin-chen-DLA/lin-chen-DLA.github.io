@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Upload
+		</div>
+
+        <div class = "block">
+            <li>Files can be text files, images, zip files, excel spreadsheets, etc.</li>
+            <li>Does not support hdf5 files</li>
+            <li>Each file is converted to a base64 encoded string</li>
+            <li>Size limits
+                <ul>
+                    <li>249M, <span>OK</span></li>
+                    <li>624M, <span style = "color:blue">No Response</span></li>
+                </ul>
+            </li>
+        </div>
+		<div class = "subtitle">Upload a Single File</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import base64
+import dash
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+import dash_core_components as dcc
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    dcc.Upload(id = 'upload-data',
+            children=html.Div([
+            'Drag and Drop or Select a File',
+        ]),
+               style={
+            'width': '100%',
+            'height': '60px',
+            'lineHeight': '60px',
+            'borderWidth': '1px',
+            'borderStyle': 'dashed',
+            'borderRadius': '5px',
+            'textAlign': 'center',
+            'margin': '10px'
+        },
+               multiple=False),
+    html.Div(id = 'content')
+])
+
+def parse(content):
+    content_type, content_string = content.split(',') # split the received content
+    decoded = base64.b64decode(content_string) # convert printable ASCII characters to bytes
+    decoded_str = decoded.decode('utf-8') # convert binary data to string
+
+    return decoded_str
+
+@app.callback(Output('content', 'children'),
+              Input('upload-data', 'contents'),
+              )
+def get_update_content(content):
+    if not content:
+        raise PreventUpdate
+
+    decoded_str = parse(content)
+
+    return decoded_str
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "subtitle">Upload Multiple Files</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import base64
+import dash
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+import dash_core_components as dcc
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    dcc.Upload(id = 'upload-data',
+            children=html.Div([
+            'Drag and Drop or Select a File',
+        ]),
+               style={
+            'width': '100%',
+            'height': '60px',
+            'lineHeight': '60px',
+            'borderWidth': '1px',
+            'borderStyle': 'dashed',
+            'borderRadius': '5px',
+            'textAlign': 'center',
+            'margin': '10px'
+        },
+               multiple=True),
+    html.Div(id = 'content')
+])
+
+def parse(content):
+    content_type, content_string = content.split(',') # split the received content
+    decoded = base64.b64decode(content_string) # convert printable ASCII characters to bytes
+    decoded_str = decoded.decode('utf-8') # convert binary data to string
+
+    return decoded_str
+
+@app.callback(Output('content', 'children'),
+              Input('upload-data', 'contents'),
+              )
+def get_update_content(contents):
+    if not contents:
+        raise PreventUpdate
+
+    temp = ''
+
+    for content in contents:
+        temp += parse(content)
+
+    return temp
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Upload Data in CSV</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import io
+import base64
+import dash
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+import dash_core_components as dcc
+from dash.exceptions import PreventUpdate
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    dcc.Upload(id = 'upload-data',
+            children=html.Div([
+            'Drag and Drop or Select a File',
+        ]),
+               style={
+            'width': '100%',
+            'height': '60px',
+            'lineHeight': '60px',
+            'borderWidth': '1px',
+            'borderStyle': 'dashed',
+            'borderRadius': '5px',
+            'textAlign': 'center',
+            'margin': '10px'
+        },
+               multiple=False),
+    html.Div(id = 'output-content')
+])
+
+def parse(content):
+    content_type, content_string = content.split(',') # split the received content
+    decoded = base64.b64decode(content_string) # convert printable ASCII characters to bytes
+    decoded_str = decoded.decode('utf-8') # convert binary data to string
+
+    df = pd.read_csv(io.StringIO(decoded_str))
+
+    return str(df.shape)
+
+@app.callback(Output('output-content', 'children'),
+              Input('upload-data', 'contents'),
+              State('upload-data', 'filename'),
+              )
+def get_update_content(content, filename):
+    if not content:
+        raise PreventUpdate
+
+    data_string = parse(content)
+
+    return data_string
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Upload an Image</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import io
+import base64
+import dash
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+import dash_core_components as dcc
+from dash.exceptions import PreventUpdate
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    dcc.Upload(id = 'upload-data',
+            children=html.Div([
+            'Drag and Drop or Select a File',
+        ]),
+               style={
+            'width': '100%',
+            'height': '60px',
+            'lineHeight': '60px',
+            'borderWidth': '1px',
+            'borderStyle': 'dashed',
+            'borderRadius': '5px',
+            'textAlign': 'center',
+            'margin': '10px'
+        },
+               multiple=False),
+    html.Div(id = 'output-content')
+])
+
+@app.callback(Output('output-content', 'children'),
+              Input('upload-data', 'contents'),
+              State('upload-data', 'filename'),
+              )
+def get_update_content(content, filename):
+    if not content:
+        raise PreventUpdate
+
+    return html.Img(src=content)
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://dash.plotly.com/dash-core-components/upload">Documentation</a></li>
+        </div>
+    </body>
+</html>

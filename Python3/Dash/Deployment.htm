@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Deployment
+		</div>
+
+		<div class = "subtitle">Stateless Framework</div>
+		<div class = "block">
+            <li>Stateless server keeps no state information</li>
+            <li>Using a stateless file server, the client must,specify complete file names in each request specify location for reading or writing re-authenticate for each request</li>
+            <li>Pros
+                <ul>
+                    <li>easily recover from failure</li>
+                    <li>server implementation remains</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "subtitle">Multiple Servers</div>
+		<div class = "block">
+            <li>gunicorn will check which process isn't busy running a callback and send the new callback request to that process</li>
+            <li>a few processes can balance the requests of 10s or 100s of concurrent user</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+server = app.server
+
+app.layout = html.Div([
+    html.Div(dcc.Input(id='input-on-submit', type='text')),
+    html.Button('Submit', id='submit-val', n_clicks=0),
+    html.Div(id='container-button-basic',
+             children='Enter a value and press submit')
+])
+
+
+@app.callback(
+    dash.dependencies.Output('container-button-basic', 'children'),
+    [dash.dependencies.Input('submit-val', 'n_clicks')],
+    [dash.dependencies.State('input-on-submit', 'value')])
+def update_output(c, v):
+    return 'The input value was "{}" and the button has been clicked {} times'.format(
+        v,
+        c
+    )
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+gunicorn app:server --workers 8
+        </pre>
+        </div>
+		<div class = "subtitle">Embedding Dash App in Public Websites</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+/* index.htm */
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;iframe src="http://localhost:8000" width=700 height=600&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://practice.geeksforgeeks.org/problems/difference-between-stateful-and-stateless-server">Geeksforgeeks</a></li>
+        </div>
+    </body>
+</html>
