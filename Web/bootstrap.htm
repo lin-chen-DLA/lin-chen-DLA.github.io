@@ -58,8 +58,8 @@
             <li>is built with flexbox and allows up to 12 column</li>
             <li>Grid System Rules
                 <ul>
-                    <li>Rows must be placed within a .container (fixed-width) or .container-fluid (full-width) for proper alignment and padding</li>
-                    <li>Use rows to create horizontal groups of columns</li>
+                    <li>Rows must be placed within a <span>.container</span> (fixed-width) or <span>.container-fluid</span> (full-width) for proper alignment and padding</li>
+                    <li>Use <span>rows</span> to create horizontal groups of columns</li>
                     <li>only columns may be immediate children of rows</li>
                     <li>Column widths are in percentage, so they are always fluid and sized relative to their parent element</li>
                 </ul>
@@ -74,7 +74,7 @@
                 </ul>
             </li>
 			<pre class = "prettyprint linenums">
-&lt;div class=".container" style="background-color:red"&gt;
+&lt;div class="container" style="background-color:red"&gt;
           &lt;div class="row"&gt;
             &lt;div class="col-sm-4" style="background-color:blue"&gt;.col-sm-4&lt;/div&gt;
             &lt;div class="col-sm-8" style="background-color:yellow"&gt;.col-sm-8&lt;/div&gt;
@@ -82,13 +82,22 @@
 &lt;/div&gt;
             </pre>
         </div>
-		<div class = "subtitle">Text Colors</div>
+		<div class = "subtitle">Colors</div>
 		<div class = "block">
-            <li>.text-muted, .text-primary, .text-success, .text-info, .text-warning, .text-danger, .text-secondary, .text-white, .text-dark, .text-body (default body color/often black) and .text-light</li>
+            <li>Text colors, .text-muted, .text-primary, .text-success, .text-info, .text-warning, .text-danger, .text-secondary, .text-white, .text-dark, .text-body (default body color/often black) and .text-light</li>
+            <li>Background colors, .bg-primary, .bg-success, .bg-info, .bg-warning, .bg-danger, .bg-secondary, .bg-dark and .bg-light</li>
         </div>
-		<div class = "subtitle">Background Colors</div>
+		<div class = "subtitle">Spacing</div>
 		<div class = "block">
-            <li>.bg-primary, .bg-success, .bg-info, .bg-warning, .bg-danger, .bg-secondary, .bg-dark and .bg-light</li>
+            <li>Margin and Padding
+                <ul>
+                    <li>Place, t (top), b (bottom), l (left), r (right), x (left and right), y (top and bottom)</li>
+                    <li>Size, 0 (0rem), 1 (0.25rem), 2 (0.5rem), 3 (1rem = 16px), 4 (1.5rem), 5 (3rem), auto</li>
+                </ul>
+			<pre class = "prettyprint linenums">
+&lt;div class="pt-4 bg-warning"&gt;(1.5rem = 24px)&lt;/div&gt;
+            </pre>
+            </li>
         </div>
 		<div class = "subtitle">Change Theme</div>
 		<div class = "block">
@@ -99,6 +108,7 @@
         </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://github.com/facultyai/dash-bootstrap-components">Github</a></li>
             <li><a href = "https://www.w3schools.com/bootstrap4/bootstrap_utilities.asp">Utilities</a></li>
             <li><a href = "https://www.w3schools.com/bootstrap4/default.asp">Bootstrap 4 Tutorial</a></li>
         </div>

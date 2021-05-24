@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Dash Bootstrap Components (DBC)
+		</div>
+
+		<div class = "subtitle">Layout</div>
+		<div class = "block">
+            <li><span>Container</span>, center content horizontally
+                <ul>
+                    <li>default, equivalent to '.container' in Bootstrap</li>
+                    <li>fluid=True, equivalent to '.container-fluid'</li>
+                </ul>
+            </li>
+            <li><span>Row</span>, a wrapper for columns</li>
+            <li><span>Col</span>, a wrapper for content, should always be used as an immediate child of Row</li>
+            <li>Responsive tiers
+                <ul>
+                    <li><span>xs, sm, md, lg, and xl</span></li>
+                    <li>md = 4, column occupies 4 of 12 grids, when the window is greater than medium (&gt;= 768px)</li>
+                </ul>
+            </li>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+/* Bootstrap style using Container and Row */
+app.layout = html.Div([
+    dbc.Container([
+        dbc.Row([
+            html.Div(id = 'output', className = 'output col-md-4'),
+            html.Div('Ouput', id = 'output2', className = 'output col-md-6')
+        ])
+    ], className='container')
+])
+        </pre>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+/* Dash Bootstrap style using Container, Row, and Col */
+app.layout = html.Div([
+    dbc.Container([
+        dbc.Row([
+            dbc.Col(html.Div('Col 1', id = 'output', className = 'output h-100'), md = 4),
+            dbc.Col(html.Div([html.Div('Ouput'), html.Div('Second Line')], id = 'output2', className = 'output h-100'), md=6)
+        ])
+    ], className='container')
+])
+        </pre>
+        </div>
+		<div class = "subtitle">DBC Component</div>
+		<div class = "block">
+            <li>Button</li>
+		<pre class = "prettyprint linenums">
+/* assets/style.css */
+.button {
+    color: red;
+}
+		</pre>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_bootstrap_components as dbc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app.layout = html.Div([
+    dbc.Button("Click", color="primary", size = 'lg', block = True, className="mx-3 button", id = 'button'),
+    html.Div(id = 'output')
+]
+)
+
+@app.callback(
+    Output("output", "children"), Input("button", "n_clicks")
+)
+def on_button_click(n):
+    if n is None:
+        return "Not clicked."
+
+    return 'Hello'
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "block">
+            <li>Collapse</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_bootstrap_components as dbc
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app.layout = html.Div([
+        dbc.Button(
+            "Click", className='w-50', id="button", color="primary"),
+        dbc.Collapse(
+            dbc.Card(dbc.CardBody("This content is hidden in the collapse")),
+            id="collapse"),
+    ])
+
+@app.callback(
+    Output("collapse", "is_open"),
+    [Input("button", "n_clicks")],
+    [State("collapse", "is_open")],
+)
+def toggle_collapse(n, is_open):
+    # Initial value (None, None)
+    if n:
+        return not is_open
+    return is_open # None is False in Python
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Menu
+                <ul>
+                    <li>Each DropdownMenuItem can be used like <span>dash_core_components.Link</span> or a <span>Button</span></li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_bootstrap_components as dbc
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output, State
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app.layout = html.Div([
+    dcc.Location(id='url', refresh=False),
+    dbc.DropdownMenu([
+        dbc.DropdownMenuItem('Item 1', href = "https://www.google.com/"),
+        dbc.DropdownMenuItem('Item 2', href = '/content'),
+    ], label = 'Menu'),
+    html.Div(id = 'content')
+])
+
+@app.callback(dash.dependencies.Output('content', 'children'),
+              [dash.dependencies.Input('url', 'pathname')])
+def display_page(pathname):
+    if pathname == '/content':
+        return 'Content ...'
+    else:
+        return "404"
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Input</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_bootstrap_components as dbc
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app.layout = html.Div(
+    [
+        dbc.Input(placeholder = 'input number', id = 'input'),
+        dbc.Button('Click', id = 'button')
+    ]
+)
+
+
+@app.callback(
+    [Output("input", "valid"),
+     Output('input', 'invalid')],
+    Input("button", "n_clicks"),
+    State('input', 'value')
+)
+def toggle_fade(n, value):
+    if not n:
+        raise PreventUpdate
+    if value.isnumeric():
+        return True, False
+    else:
+        return False, True
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Modal</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_bootstrap_components as dbc
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app.layout = html.Div(
+    [
+        dbc.Button("Open modal", id="open"),
+        dbc.Modal(
+            [
+                dbc.ModalHeader("Header"),
+                dbc.ModalBody("This is the content of the modal"),
+                dbc.ModalFooter(
+                    dbc.Button("Close", id="close", className="ml-auto")
+                ),
+            ],
+            id="modal",
+        ),
+    ]
+)
+
+@app.callback(
+    Output("modal", "is_open"),
+    [Input("open", "n_clicks"), Input("close", "n_clicks")],
+    [State("modal", "is_open")],
+)
+def toggle_fade(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Popover</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_bootstrap_components as dbc
+import dash_html_components as html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app.layout = html.Div(
+    [
+        dbc.Button("Open modal", id="button"),
+        dbc.Popover(
+            [
+    dbc.PopoverHeader("Popover header"),
+    dbc.PopoverBody("And here's some amazing content. Cool!"),
+    ],
+            id="popover",
+            target="button", # the component to attach the popover to
+            trigger="hover", # toggles the popover when the target is hovered over with the cursor
+        ),
+    ]
+)
+
+@app.callback(
+    Output("popover", "is_open"),
+    Input("button", "n_clicks"),
+    [State("popover", "is_open")],
+)
+def toggle_fade(n, is_open):
+    if n:
+        return not is_open
+    return is_open
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Progress</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_bootstrap_components as dbc
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app.layout = html.Div(
+    [
+        dcc.Interval(id="progress-interval", n_intervals=0, interval=100),
+        dbc.Progress(id="progress"),
+    ],
+    id = 'content'
+)
+
+@app.callback(
+    [Output("progress", "value"), Output("progress", "children")],
+    [Input("progress-interval", "n_intervals")],
+)
+def update_progress(n):
+    progress = min(n % 110, 100)
+    return progress, f"{progress} %" if progress >= 5 else ""
+
+@app.callback(
+    Output('content', 'children'),
+    [Input("progress-interval", "n_intervals")],
+)
+def update_progress(n):
+    if n &lt;= 100:
+        raise PreventUpdate
+    return 'Content'
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Spinner</li>
+		<pre class = "prettyprint linenums">
+import time
+import dash
+import dash_bootstrap_components as dbc
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app.layout = html.Div(
+    [
+        dbc.Button("Click", id="button"),
+        dbc.Spinner(html.Div(id="content"), color = 'primary', type = 'grow'),
+    ],
+)
+
+@app.callback(
+    Output("content", "children"), Input("button", "n_clicks")
+)
+def load_output(n):
+    if not n:
+        raise PreventUpdate
+    time.sleep(1)
+    return 'Hello World!'
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Toast</li>
+		<pre class = "prettyprint linenums">
+import time
+import dash
+import dash_bootstrap_components as dbc
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app.layout = html.Div(
+    [
+        dbc.Button('Click', id = 'button', color="primary", className="mb-3"),
+        dbc.Toast([
+            html.Div('Content')
+        ],
+                  id = 'toast',
+                  header="This is the header",
+            icon="primary",
+                  dismissable=True,
+                  is_open = False,
+                  ),
+        html.Div('Content')
+    ],
+)
+
+@app.callback(
+    Output("toast", "is_open"), Input("button", "n_clicks")
+)
+def load_output(n):
+    if not n:
+        raise PreventUpdate
+    return True;
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Tooltip</li>
+		<pre class = "prettyprint linenums">
+import time
+import dash
+import dash_bootstrap_components as dbc
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app.layout = html.Div(
+    [
+        html.Div([
+            html.Span('Lin', id = 'name', style={"textDecoration": "underline", "cursor": "pointer"},),
+            html.Span(' ,'),
+            html.Span('Welcome ...')
+        ]),
+        dbc.Tooltip('Lin Chen', target = 'name')
+    ],
+)
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Theme</div>
+		<div class = "block">
+            <li>Use <a href = "https://dash-bootstrap-components.opensource.faculty.ai/docs/themes/#available-themes">available thems</a></li>
+		<pre class = "prettyprint linenums">
+app = dash.Dash(external_stylesheets=[dbc.themes.CYBORG])
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Manually linking to a CDN</li>
+		<pre class = "prettyprint linenums">
+BS = "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+app = dash.Dash(external_stylesheets=[BS])
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Linking local CSS
+                <ul>
+                    <li><a href = "https://bootswatch.com/">Download</a> css</li>
+                    <li>Save it to "assets" folder under the project folder</li>
+                </ul>
+            </li>
+            <p style = "text-align:center;"><img src = "img/Dash_31.png" width = "30%"></p>
+		<pre class = "prettyprint linenums">
+app = dash.Dash()
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://www.w3schools.com/bootstrap4/bootstrap_grid_basic.asp">Grid in Bootstrap</a></li>
+            <li><a href = "https://www.w3schools.com/bootstrap4/bootstrap_utilities.asp">Utilities in Bootstrap</a></li>
+            <li><a href = "https://dash-bootstrap-components.opensource.faculty.ai/docs/components/button/">Components</a></li>
+            <li><a href = "https://dash-bootstrap-components.opensource.faculty.ai/docs/">Faculty AI</a></li>
+        </div>
+    </body>
+</html>
