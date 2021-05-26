@@ -24,7 +24,7 @@
 			<pre class = "prettyprint linenums">
 import imaplib
 mail = imaplib.IMAP4_SSL('imap.gmail.com')
-mail.login('eagletiger1@gmail.com', 'Kingstonct507!')
+mail.login('eagletiger1@gmail.com', '********')
 mail.list()
 # Out: list of "folders" aka labels in gmail.
 mail.select("inbox") # connect to inbox.
@@ -62,7 +62,7 @@ elif maintype == 'text':
 			<pre class = "prettyprint linenums">
 import imaplib
 mail = imaplib.IMAP4_SSL('pod51004.outlook.com')
-mail.login('lchen@ecsu.edu', 'Eagle19800311!')
+mail.login('lchen@ecsu.edu', '********')
 mail.list()
 # Out: list of "folders" aka labels in gmail.
 mail.select("inbox") # connect to inbox.

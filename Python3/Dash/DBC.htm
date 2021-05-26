@@ -425,6 +425,59 @@ if __name__ == "__main__":
     app.run_server(debug=True)
         </pre>
         </div>
+		<div class = "subtitle">Figure</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_bootstrap_components as dbc
+import dash_html_components as html
+import dash_core_components as dcc
+import plotly.graph_objects as go
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+import pandas as pd
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
+temp = df[df['Country Name'] == 'Canada']
+temp = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+
+def get_fig():
+    fig = go.Figure()
+    trace = go.Bar(x=temp['Year'], y=temp['Value'])
+    fig.add_trace(trace)
+    fig.update_layout(
+                font_color = 'white',
+                showlegend=False,
+                xaxis_title=None,
+                yaxis={'title':''},
+                margin=dict(
+        l=0,
+        r=0,
+        b=10,
+        t=0,
+        pad=0
+    ),
+            paper_bgcolor='rgba(51, 51, 51, 1)',
+            plot_bgcolor='rgba(51, 51, 51, 1)',
+                )
+    return fig
+
+app.layout = html.Div(
+    dbc.Container(
+        dbc.Row([
+            html.Div(dcc.Graph(figure=get_fig()), className = 'col-lg-4'),
+            html.Div(dcc.Graph(figure=get_fig()), className = 'col-lg-4'),
+            html.Div(dcc.Graph(figure=get_fig()), className = 'col-lg-4')
+        ]
+    ), fluid = True
+))
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
 		<div class = "subtitle">Theme</div>
 		<div class = "block">
             <li>Use <a href = "https://dash-bootstrap-components.opensource.faculty.ai/docs/themes/#available-themes">available thems</a></li>
