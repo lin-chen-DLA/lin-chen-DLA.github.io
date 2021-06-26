@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			mySQL
+		</div>
+
+		<div class = "subtitle">Installation</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+pip install mysql-connector-python
+            </pre>
+        </div>
+		<div class = "subtitle">Selection</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import mysql.connector
+
+# connect to database
+cnx = mysql.connector.connect(user='root', password='root',
+                              host='127.0.0.1',
+                              port=8889,
+                              database='University')
+
+# create a cursor
+cursor = cnx.cursor(buffered=True)
+
+# create query
+query = (
+    "SELECT * \
+    from Department")
+
+# execute query
+cursor.execute(query)
+
+# fetch result
+result = cursor.fetchall() # list of tuple
+
+for record in result:
+    print(record) # tuple
+
+# convert result to pandas DataFrame
+df = pd.DataFrame.from_records(result)
+print(df)
+
+# close connection
+cnx.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Join</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import mysql.connector
+import pandas as pd
+
+# connect to database
+cnx = mysql.connector.connect(user='root', password='root',
+                              host='127.0.0.1',
+                              port=8889,
+                              database='University')
+
+# create a cursor
+cursor = cnx.cursor(buffered=True)
+
+# create query
+query = ("select Department.Mgr_ssn, Dept_locations.Dlocation \
+         from Dept_locations, Department \
+         where Dept_locations.Dnumber = Department.Dnumber")
+
+# execute query
+cursor.execute(query)
+
+# fetch result
+df = pd.DataFrame.from_records(cursor.fetchall(), columns=['Manager_SSN', 'Department_Location'])
+
+print(df)
+
+# close connection
+cnx.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Like</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import mysql.connector
+import pandas as pd
+
+# connect to database
+cnx = mysql.connector.connect(user='root', password='root',
+                              host='127.0.0.1',
+                              port=8889,
+                              database='University')
+
+# create a cursor
+cursor = cnx.cursor(buffered=True)
+
+# create query
+query = ("SELECT Fname, Lname, Dno\
+    from Employee \
+    where Employee.Fname like 'J%'")
+
+# execute query
+cursor.execute(query)
+
+# fetch result
+df = pd.DataFrame.from_records(cursor.fetchall(), columns=['First', 'Last', 'Dno'])
+
+print(df)
+
+# close connection
+cnx.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Query Parameter</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import mysql.connector
+import pandas as pd
+
+# connect to database
+cnx = mysql.connector.connect(user='root', password='root',
+                              host='127.0.0.1',
+                              port=8889,
+                              database='University')
+
+# create a cursor
+cursor = cnx.cursor(buffered=True)
+
+# create query
+query = ("SELECT Fname, Lname, Dno\
+    from Employee \
+    where Employee.Dno = %s and Employee.Fname like %s")
+
+# execute query
+cursor.execute(query, ('5', 'J%'))
+
+# fetch result
+df = pd.DataFrame.from_records(cursor.fetchall(), columns=['First', 'Last', 'Dno'])
+
+print(df)
+
+# close connection
+cnx.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Update</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import mysql.connector
+import pandas as pd
+
+# connect to database
+cnx = mysql.connector.connect(user='root', password='root',
+                              host='127.0.0.1',
+                              port=8889,
+                              database='University')
+
+# create a cursor
+cursor = cnx.cursor(buffered=True)
+
+# create query
+sql = ("Update Employee \
+    Set ssn = '123111789' \
+    WHERE Fname = 'Jennifer'")
+
+# execute query
+cursor.execute(sql)
+
+# commit
+cnx.commit()
+
+# close connection
+cnx.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://dev.mysql.com/doc/connector-python/en/connector-python-examples.html">mysql</a></li>
+            <li><a href = "https://www.w3schools.com/python/python_mysql_getstarted.asp">W3C</a></li>
+        </div>
+    </body>
+</html>

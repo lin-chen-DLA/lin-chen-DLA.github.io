@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			SQLite
+		</div>
+
+		<div class = "subtitle">Selection</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import sqlite3
+
+# connect database
+con = sqlite3.connect('/Applications/MAMP/db/sqlite/University')
+
+# create cursor
+cur = con.cursor()
+
+# execute query
+cur.execute("Select * from Department")
+
+# fetch result
+result = cur.fetchall()
+
+print(result)
+
+# close connection
+con.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Join</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import sqlite3
+import pandas as pd
+
+# connect database
+con = sqlite3.connect('/Applications/MAMP/db/sqlite/University')
+
+# create cursor
+cur = con.cursor()
+
+# execute query
+cur.execute("select Department.Mgr_ssn, Dept_locations.Dlocation \
+         from Dept_locations, Department \
+         where Dept_locations.Dnumber = Department.Dnumber")
+
+# fetch result
+df = pd.DataFrame.from_records(cur.fetchall(), columns=['Manager_SSN', 'Department_Location'])
+
+print(df)
+
+# close connection
+con.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Like</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import sqlite3
+import pandas as pd
+
+# connect database
+con = sqlite3.connect('/Applications/MAMP/db/sqlite/University')
+
+# create cursor
+cur = con.cursor()
+
+# execute query
+cur.execute("SELECT Fname, Lname, Dno\
+    from Employee \
+    where Employee.Fname like 'J%'")
+
+# fetch result
+df = pd.DataFrame.from_records(cur.fetchall(), columns=['First', 'Last', 'Dno'])
+
+print(df)
+
+# close connection
+con.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Query Parameter</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import sqlite3
+import pandas as pd
+
+# connect database
+con = sqlite3.connect('/Applications/MAMP/db/sqlite/University')
+
+# create cursor
+cur = con.cursor()
+
+# execute query
+cur.execute("SELECT Fname, Lname, Dno\
+    from Employee \
+    where Employee.Dno = ? and Employee.Fname like ?", ('5', 'J%'))
+
+# fetch result
+df = pd.DataFrame.from_records(cur.fetchall(), columns=['First', 'Last', 'Dno'])
+
+print(df)
+
+# close connection
+con.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Update</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import sqlite3
+import pandas as pd
+
+# connect database
+con = sqlite3.connect('/Applications/MAMP/db/sqlite/University')
+
+# create cursor
+cur = con.cursor()
+
+cur.execute('PRAGMA foreign_keys = ON')
+
+# execute query
+cur.execute("Update Employee \
+    Set ssn = '987654321' \
+    WHERE Fname = 'Jennifer'")
+
+# commit
+con.commit()
+
+# close connection
+con.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Installation</div>
+		<div class = "block">
+            <li><a href = "https://docs.python.org/3/library/sqlite3.html">pySqlite</a></li>
+        </div>
+    </body>
+</html>

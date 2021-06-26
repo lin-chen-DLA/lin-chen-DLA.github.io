@@ -27,6 +27,62 @@
 			Datatable
 		</div>
 
+		<div class = "subtitle">Style</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Styles Priority
+1. style_data_conditional
+2. style_data
+3. style_filter_conditional
+4. style_filter
+5. style_header_conditional
+6. style_header
+7. style_cell_conditional
+8. style_cell
+        </pre>
+		<pre class = "prettyprint linenums">
+# style_cell
+style_cell = {'background-color': 'rgba(51, 51, 51, 1)', # background color
+    'text-align':'center', # text alignment
+    'minWidth': 95, 'maxWidth': 95, 'width': 95, # fixed cell width
+    }
+        </pre>
+		<pre class = "prettyprint linenums">
+# style_table
+style_table = {'color': 'silver'} # font color
+        </pre>
+		<pre class = "prettyprint linenums">
+# style_header
+style_header = {'color': 'red'}
+        </pre>
+		<pre class = "prettyprint linenums">
+# style_data
+style_data = {'font-size': '18px'} # excludes the header and filter cells
+        </pre>
+		<pre class = "prettyprint linenums">
+# widths of individual columns
+style_cell_conditional=[
+        {'if': {'column_id': 'Date'},
+         'width': '30%'},
+        {'if': {'column_id': 'Region'},
+         'width': '30%'},
+    ]
+        </pre>
+		<pre class = "prettyprint linenums">
+# different styles for even/odd rows
+style_data_conditional=[
+           {
+               'if': {'row_index': 'odd'},
+               'backgroundColor': 'rgb(248, 248, 248)',
+               'color': 'white',
+           }
+       ],
+        </pre>
+		<pre class = "prettyprint linenums">
+style_as_list_view=True, # not have borders between the columns
+fixed_columns = {'headers': True, 'data': 2} # fix columns
+        </pre>
+        </div>
 		<div class = "subtitle">Select a Single Row</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
@@ -48,10 +104,7 @@ params = [
 app.layout = html.Div([
     dash_table.DataTable(
         id='table-editing-simple',
-        columns=(
-            [{'id': 'Model', 'name': 'Model', 'deletable':True, 'selectable':True}] +
-            [{'id': p, 'name': p} for p in params]
-        ),
+        columns=[{'id': 'Model', 'name': 'Model', 'deletable':True, 'selectable':True}] +[{'id': p, 'name': p} for p in params],
         data=[
             dict(Model=i, **{param: 0 for param in params})
             for i in range(1, 5)
@@ -65,9 +118,10 @@ app.layout = html.Div([
 
 @app.callback(
     Output('display', 'children'),
-    Input('table-editing-simple', 'derived_viewport_selected_rows'),
-    State('table-editing-simple', 'data'),
-    State('table-editing-simple', 'columns'))
+    Input('table-editing-simple', 'selected_rows'), # list of indices of selected rows
+    State('table-editing-simple', 'data'), # table data
+    State('table-editing-simple', 'columns') # describes various aspects about columns
+    )
 def display_output(index, rows, columns):
     if not index:
         raise PreventUpdate
@@ -80,6 +134,74 @@ if __name__ == '__main__':
     app.run_server(debug=True)
 		</pre>
 		</div>
+		<div class = "subtitle">Select Columns</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+from dash.dependencies import Input, Output, State
+import dash_table
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.exceptions import PreventUpdate
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+params = [
+    'Weight', 'Torque', 'Width', 'Height',
+    'Efficiency', 'Power', 'Displacement'
+]
+
+app.layout = html.Div([
+    dash_table.DataTable(
+        id='table-editing-simple',
+        columns=
+            [{'id': 'Model', 'name': 'Model', 'selectable':True}] +
+        [{'id': p, 'name': p, 'selectable': True} for p in params],
+        data=[
+            dict(Model=i, **{param: 0 for param in params})
+            for i in range(1, 5)
+        ],
+        column_selectable='multi',
+        selected_columns = [],
+        cell_selectable=False
+    ),
+    html.Div(id='display')
+])
+
+
+@app.callback(
+    Output('display', 'children'),
+    Input('table-editing-simple', 'selected_columns'),
+    State('table-editing-simple', 'data'),
+    State('table-editing-simple', 'columns'))
+def display_output(index, rows, columns):
+    if not index:
+        raise PreventUpdate
+    if len(index) == 0:
+        raise PreventUpdate
+    return str(index)
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Row IDs</div>
+		<div class = "block">
+            <li><span>derived_virtual_indices</span>, the indices of rows across all pages after filtering and sorting</li>
+            <li><span>derived_viewport_indices</span>, the indices of rows on the currently visible page</li>
+            <li><span>selected_rows and row_selectable</span>, indices of rows that are selected</li>
+            <li><span>derived_virtual_selected_rows</span>,  the set of selected rows after filtering and sorting, across all page</li>
+            <li><span>derived_viewport_selected_rows</span>, the set of selected rows on the currently visible page</li>
+        </div>
+		<div class = "subtitle">Cell</div>
+		<div class = "block">
+            <li><span>active_cell</span>, the data cell the user has put the cursor on, by clicking and/or arrow keys</li>
+            <li><span>start_cell</span>, the initial cell of the selected cells</li>
+            <li><span>end_cell</span>, the last cell of the selected cells</li>
+            <li><span>selected_cells</span>, the selected cells</li>
+        </div>
 		<div class = "subtitle">Backend Paging</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
@@ -127,6 +249,32 @@ if __name__ == '__main__':
 		</pre>
 		</div>
 		<div class = "subtitle">Sorting</div>
+		<div class = "block">
+            <li>Default sorting</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_table
+import pandas as pd
+
+df = pd.read_csv('Train_25.csv')
+#df = df.iloc[:10, :10]
+
+app = dash.Dash(__name__)
+
+app.layout = dash_table.DataTable(
+    id='table',
+    data=df.to_dict('records'),
+    columns=[{"id": i, "name": i} for i in df.columns],
+    page_size = 10,
+    sort_action="native",
+    sort_mode="multi",
+)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Custom Sorting</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 import dash

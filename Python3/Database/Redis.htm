@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Redis
+		</div>
+
+        <div class = "block">
+            <li>Only accepts user data as <span>bytes</span>, <span>strings</span> or <span>numbers (ints, longs and floats)</span></li>
+        </div>
+		<div class = "subtitle">Installation</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+pip install redis
+            </pre>
+        </div>
+		<div class = "subtitle">Connect Redis</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import redis
+r = redis.Redis(host='localhost', port=6379, db=0)
+            </pre>
+        </div>
+		<div class = "subtitle">Keys</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+r.keys() # display all keys
+
+r.exists('key1') # check if a key exists
+            </pre>
+        </div>
+		<div class = "subtitle">String</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+r.set('key1', 'value1', ex=60) # create a key-value pair with a 60 seconds of expiration time
+
+s = r.get('key1')
+s = s.decode("utf-8")
+
+print(type(s), s)
+            </pre>
+        </div>
+		<div class = "subtitle">Int</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+r.set('key2', 2)
+
+int(r.get('key2'))
+            </pre>
+        </div>
+		<div class = "subtitle">Dict</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+r.hset('name', 'key', 'value')
+r.hset('name', 'key2', 0)
+
+int(r.hget('name', 'key2').decode('utf-8'))
+            </pre>
+        </div>
+		<div class = "subtitle">List</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+r.lpush('list', 'e1', 'e2')
+
+r.lindex('list', 0).decode('utf-8')
+r.lrange('list', 0, -1)
+            </pre>
+        </div>
+		<div class = "subtitle">Pandas DataFrame</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import pandas as pd
+import pickle
+import zlib
+
+data = {
+    'apples': [3, 2, 0, 1],
+    'oranges': [0, 3, 7, 2]
+}
+
+df = pd.DataFrame(data)
+
+r.set('data', zlib.compress(pickle.dumps(df)))
+
+pickle.loads(zlib.decompress(r.get("data"))) # pandas dataframe
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://redis.io/commands">Command Documentation</a></li>
+            <li><a href = "https://github.com/andymccurdy/redis-py">Github</a></li>
+            <li><a href = "https://pypi.org/project/redis/">Documentation</a></li>
+        </div>
+    </body>
+</html>

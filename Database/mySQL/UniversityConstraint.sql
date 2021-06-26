@@ -256,7 +256,7 @@ ALTER TABLE `Dept_locations`
 -- Constraints for table `Employee`
 --
 ALTER TABLE `Employee`
-  ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Super_ssn`) REFERENCES `Employee` (`Ssn`),
+  ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Super_ssn`) REFERENCES `Employee` (`Ssn`) ON UPDATE CASCADE,
   ADD CONSTRAINT `employee_ibfk_2` FOREIGN KEY (`Dno`) REFERENCES `Department` (`Dnumber`) ON UPDATE CASCADE;
 
 --

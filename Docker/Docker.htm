@@ -16,28 +16,31 @@
 			Docker
 		</div>
 		<div class = "block">
-			<li>an open-source project that automates the deployment of software applications inside containers by providing an additional layer of abstraction and automation of OS-level virtualization on Linux</li>
-		</div>
-		<div class = "subtitle">General Rules</div>
-		<div class = "block">
 			<li>Deploy applications in a sandbox (called containers) to run on the host operating system</li>
 			<li>Allows users to package an application with all of its dependencies into a standardized unit for software development</li>
+			<li>An open-source project that automates the deployment of software applications inside containers by providing an additional layer of abstraction and automation of OS-level virtualization on Linux</li>
+			<li><span>Image,</span> the blueprints of our application which form the basis of containers</li>
+			<li><span>Container,</span> created from Docker images and run the actual application</li>
+			<li><span>Docker Daemon,</span> the background service running on the host that manages building, running and distributing Docker containers</li>
+			<li><span>Docker Client,</span> the command line tool that allows the user to interact with the daemon</li>
+			<li><span>Docker Hub,</span> a directory of all available Docker images</li>
+		</div>
+		<div class = "subtitle">Flowchart</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_1.png" width = "60%"></p>
+			<li><span>Image</span>, contains the container's filesystem, it must contain everything needed to run an application - all dependencies, configuration, scripts, binaries, etc.
+                <ul>
+                    <li>docker images, show a list of all images on the local system</li>
+					<li>docker rmi, remove a image</li>
+					<li>docker rmi $(docker images -a -q), remove all images</li>
+                    <li>docker pull imageName, fetch an Docker image from Docker Registry</li>
+					<li>docker push [imageName:tagname], default is latest</li>
+                </ul>
+            </li>
 			<li><span>Container</span>, provide most of the isolation of virtual machines at a fraction of the computing power</li>
-			<li><span>Image</span>, contains the container's filesystem, it must contain everything needed to run an application - all dependencies, configuration, scripts, binaries, etc.</li>
 		</div>
 		<div class = "subtitle">Commands</div>
 		<div class = "block">
-			<li>docker pull imageName, fetch an Docker image from Docker Registry
-				<ul>
-					<li>docker push [imageName:tagname], default is latest</li>
-				</ul>
-			</li>
-			<li>docker images, show a list of all images on the local system
-				<ul>
-					<li>docker rmi, remove a image</li>
-					<li>docker rmi $(docker images -a -q), remove all images</li>
-				</ul>
-			</li>
 			<li>docker run imageName, the Docker client finds the image, loads up the container, runs a command in that container
 				<ul>
 					<li>docker run --help, show a list of all flags of run</li>
@@ -54,7 +57,8 @@ docker run -it busybox sh // -it, attaches to an interactive tty in the containe
 				<li>docker ps, show containers running</li>
 				<li>docker ps -a, show all containers ran</li>
 				<li>docker stop [containerName], stop a container running</li>
-				<li>docker kill [contaierID], kill a container</li>
+				<li>docker kill [contaierID], kill a running container</li>
+                <li>docker start -ia [containerName], start a stopped container</li>
 				<li>docker rm, remove a container from the local system that is not running</li>
 				<li>docker rm -rm , removes the container when it exits</li>
 				<li>docker rm $(docker ps -a -f status=exited -q), remove all exited containers</li>
@@ -68,14 +72,6 @@ docker run -it busybox sh // -it, attaches to an interactive tty in the containe
 			</ul>
 		</li>
 		<li>docker port [containerName], get port</li>
-		</div>
-		<div class = "subtitle">Terms</div>
-		<div class = "block">
-			<li><span>Image,</span> the blueprints of our application which form the basis of containers</li>
-			<li><span>Container,</span> created from Docker images and run the actual application</li>
-			<li><span>Docker Daemon,</span> the background service running on the host that manages building, running and distributing Docker containers</li>
-			<li><span>Docker Client,</span> the command line tool that allows the user to interact with the daemon</li>
-			<li><span>Docker Hub,</span> a directory of all available Docker images</li>
 		</div>
 		<div class = "subtitle">Image Creation</div>
 		<div class = "block">

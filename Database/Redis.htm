@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Database</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Redis
+		</div>
+
+		<div class = "subtitle">What is Redis?</div>
+		<div class = "block">
+            <li>Redis (Remote dictionary server) is an <span>in-memory</span>, <span>key-value</span> database, commonly referred to as a data structure server. It’s also an example of a NoSQL database</li>
+        </div>
+		<div class = "subtitle">Why Redis?</div>
+		<div class = "block">
+            <li>Reading and writing are fast since Redis stores data in memory</li>
+            <li>Mainly used for <span>caching</span> purpose like a memcache</li>
+            <li>Can also be used as a <span>datastore</span></li>
+        </div>
+		<div class = "subtitle">Key Features</div>
+		<div class = "block">
+            <li>Speed</li>
+            <li>Persistence</li>
+            <li>Data Structures, up to 512MB</li>
+            <li>High availability and scalability</li>
+        </div>
+		<div class = "subtitle">Installation</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+brew update
+brew install redis
+brew services start redis # start redis service
+brew services stop redis # stop redis service
+brew services restart redis # restart redis service
+redis-cli
+            </pre>
+        </div>
+		<div class = "subtitle">Data Types</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# String
+set key1 value1 Ex 60 # setup a key-value pair, expire in 60 seconds
+get key1 # get value
+mset key1 value1 key2 value2 # setup multiple key-value pairs
+
+set visit 0
+incr visit # increase integer value by 1
+decr visit # decrease integer value by 1
+
+# Hashes (dict type)
+hset name2 field1 value1 # setup a field-value for a hash
+hset name2 field2 value2
+hmset name1 field1 value1 field2 value2 # setup muiltiple field-value pairs for a hash
+
+hget name1 field1 # get the value of a field in a hash
+hkeys name1 # get fields in a hash
+hvals name2 # get values in a hash
+
+# List
+lpush list1 value1 # push a value to the left of a list
+lpush list1 value2
+rpush list1 value3 # push a value to the right of a list
+
+lrange list1 0 -1 # list values in a list
+lindex list1 0 # get a value of a list by index
+
+# HyperLogLog
+pfadd key value1 value2 value3 value1
+pfcount key # count the number of unique values
+            </pre>
+        </div>
+		<div class = "subtitle">Backup</div>
+		<div class = "block">
+            <li>Redis saves key-value pairs to dump.rdb for backup</li>
+            <li>Redis saves dump.rdb when stop and load dump.rdb when start, makes it persistent</li>
+			<pre class = "prettyprint linenums">
+CONFIG get dir # find the location of dump.rdb
+SAVE # manually save a dump.rdb file
+            </pre>
+        </div>
+		<div class = "subtitle">Commands</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+Keys * # list keys
+type key # check the type of a key
+expire key seconds # setup expire time for a key
+select index # select database by index
+            </pre>
+        </div>
+		<div class = "subtitle">Publish/Subscribe</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# client 1
+subscribe channel1 # subscribe a channel
+
+# client 2
+publish channel1 message # publish a message to the channel and client 1 will receive it from the channel
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://tableplus.com/blog/2018/06/best-redis-gui-client-tableplus.html">Best Redis GUI client for Mac - TablePlus</a></li>
+        </div>
+    </body>
+</html>
