@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Docker</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Intro
+		</div>
+		<div class = "block">
+			<li>Deploy applications in a sandbox (called containers) to run on the host operating system</li>
+			<li>Allows users to package an application with all of its dependencies into a standardized unit for software development</li>
+			<li>An open-source project that automates the deployment of software applications inside containers by providing an additional layer of abstraction and automation of OS-level virtualization on Linux</li>
+			<li><span>Image,</span> the blueprints of our application which form the basis of containers</li>
+			<li><span>Container,</span> created from Docker images and run the actual application</li>
+			<li><span>Docker Daemon,</span> the background service running on the host that manages building, running and distributing Docker containers</li>
+			<li><span>Docker Client,</span> the command line tool that allows the user to interact with the daemon</li>
+            <li><span><a href = "https://hub.docker.com/">Docker Hub</a></span>, a repository of Docker images</li>
+		</div>
+		<div class = "subtitle">Installation</div>
+		<div class = "block">
+            <li><span>Amazon Linux 2</span>
+                <ul>
+			        <li>sudo yum update -y</li>
+			        <li>sudo amazon-linux-extras install docker</li>
+			        <li>sudo service docker start</li>
+			        <li>sudo docker run busybox echo "hello from busybox", test docker</li>
+                </ul>
+            </li>
+		</div>
+		<div class = "subtitle">Development Flowchart</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_1.png" width = "60%"></p>
+		</div>
+		<div class = "subtitle">Operation Flowchart</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_2.png" width = "60%"></p>
+		</div>
+		<div class = "subtitle">Port Mapping</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_3.png" width = "40%"></p>
+		</div>
+		<div class = "subtitle">Useful Images</div>
+		<div class = "block">
+            <li>docker/whalesay
+                <ul>
+                    <li>docker pull docker/whalesay</li>
+                    <li>docker run docker/whalesay cowsay hello world</li>
+                </ul>
+            </li>
+			<li>docker run -it ubuntu bash, Ubuntu</li>
+			<li>docker run hello-world, hello-world</li>
+			<li>docker run -d -p 80:80 docker/getting-started, local tutorial</a></li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://beta.kodekloud.com/courses/">Kodekloud Lab</a></li>
+			<li><a href = "https://docs.docker.com/engine/reference/commandline/docker/">Docker Command</a></li>
+			<li><a href = "https://docs.docker.com/get-started/">Docker Guides</a></li>
+			<li><a href = "https://www.docker.com/101-tutorial">Docker 101 Tutorial</a></li>
+			<li><a href = "https://labs.play-with-docker.com/">Play with Docker</a></li>
+			<li><a href = "https://hub.docker.com/search?q=&type=image">Docker Registry</a></li>
+			<li><a href = "https://docker-curriculum.com/">Tutorial</a></li>
+		</div>
+	</body>
+</html>

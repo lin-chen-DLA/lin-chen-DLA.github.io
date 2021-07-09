@@ -90,15 +90,22 @@ docker push lchenlangley/cat
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# push the image with a tag to Docker Hub
+docker tag lchenlangley/cat lchenlangley/cat:v2.0 # create an image named lchenlangley/cat:v2.0
+docker push lchenlangley/cat:v2.0 # push the image with the tag to Docker Hub
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
 # run image
 docker pull lchenlangley/cat
-docker run -p 8000:8000 lchenlangley/cat
+docker run -p 8080:8000 lchenlangley/cat # map container port 8000 to host port 8080
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # open on web browser
-http://0.0.0.0:8000/
+http://0.0.0.0:8080/ # host_ip:host_port
 		</pre>
 		</div>
 		<div class = "subtitle">Reference</div>

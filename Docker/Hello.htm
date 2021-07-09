@@ -22,6 +22,7 @@ print("Hello World!")
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# 885.45M, python3 image have many development tools installed
 FROM python:3
 
 # set a directory for the app
@@ -34,6 +35,23 @@ COPY . .
 CMD ["python", "./hello.py"]
 		</pre>
 		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 140.68M
+FROM ubuntu
+
+RUN apt-get update && apt-get install -y python3.8
+
+# set a directory for the app
+WORKDIR /usr/src/app
+
+# copy all the files to the container
+COPY . .
+
+# run the command
+CMD ["/usr/bin/python3.8", "./hello.py"]
+        </pre>
+        </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # build

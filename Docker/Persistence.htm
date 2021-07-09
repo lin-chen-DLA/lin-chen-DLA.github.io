@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Docker</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Persistence
+		</div>
+        <div class = "block">
+            <li>While containers can create, update, and delete files, those changes are <span>lost</span> when the container is <span>removed</span></li>
+            <li>Stopped container still keep the changes and can be restored by restarting the container</li>
+            <li>Store files in the <span>host machine</span>, so that the files are persisted even after the container is removed</li>
+        </div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_4.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle">Volumes</div>
+		<div class = "block">
+            <li>Volumes are stored in a part of the host filesystem and managed by Docker</li>
+            <li>Non-Docker processes should not modify this part of the filesystem</li>
+            <li>A given volume can be mounted into <span>multiple containers</span> simultaneousl</li>
+			<li>Docker for Mac runs a virtual machine behind, and the volume's path is the path on the virtual machine</li>
+		<pre class = "prettyprint linenums">
+docker volume create [name] # create a volume
+docker volume ls # list volumes
+docker volume rm [volumeName] # remove one or more volumes
+docker volume inspect [volumeName] # show volume information
+        </pre>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+docker volume create sandbox-home # create a named volume "sandbox-home"
+docker run -v sandbox-home:/home -it busybox sh # run the sandbox linux
+
+# create a readme file under /home and exit the sanbox
+cd /home
+touch readme
+exit
+
+# remove the container
+docker rm [containerName]
+
+docker run -v sandbox-home:/home -it busybox sh # run the sandbox linux again
+
+# check the /home directory, readme file is still there
+cd /home
+ls
+		</pre>
+		</div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+docker run -v sandbox-home:/home -it lchenlangley/hello sh # mount the volumn to a container running another image
+
+# check the /home directory, readme file is there
+cd /
+ls
+        </pre>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# two containers share one volumn
+# changes in the mounted directory on one container will appear in the mounted directory on another container
+docker run -v sandbox-home:/home -it lchenlangley/hello sh
+docker run -v sandbox-home:/home -it busybox sh
+
+# on the container with busybox
+cd /home
+touch hello2.py # create a file
+
+# on the container of lchenlangley/hello
+# check the /home directory, hello2.py file is there
+cd /home
+ls
+        </pre>
+        </div>
+		<div class = "subtitle">Bind Mounts</div>
+		<div class = "block">
+            <li>Bind a host directory to a container directory</li>
+            <li>The files created on host or container do not appear in the container directory. Instead, they <span>exist</span> in the <span>host</span> directory</li>
+            <li>Both host and container can access the created files</li>
+		<pre class = "prettyprint linenums">
+# docker run -it -v [hostDirectory]:[containerDirectory] busybox sh, need absolute path
+docker run -it -v $PWD/temp:/home busybox sh
+
+# on container
+cd /home
+touch hello.py
+ls # no file is there
+
+# on host
+cd $PWD/temp
+ls # hello.py file is here
+echo "print('Hello')" &gt; hello.py
+
+# on container
+cat hello.py # can access hello.py, though hello.py does not appear in /home on container
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.docker.com/storage/">Storage</a></li>
+		</div>
+	</body>
+</html>

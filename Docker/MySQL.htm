@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Docker</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			MySQL
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 1. Create a Docker network
+docker network create asgard
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 2. Create the MySQL container
+docker volume create sandbox-home # ensure volume is empty
+
+# -d, running on the backend
+# -v, persistence
+# --name, setup container name
+# --network, setup network name
+# -e, configure MySQL
+# -p, setup exposed port number
+docker run -d -v sandbox-home:/var/lib/mysql  --name mysqlserver --network asgard -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 mysql:8.0.12
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 3. Create the phpMyAdmin container
+docker run -d --network asgard -e PMA_HOST=mysqlserver -p 8080:80 phpmyadmin/phpmyadmin
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+http://localhost:8080/
+		</pre>
+		</div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://blog.thenets.org/how-to-install-mysql-and-phpmyadmin-with-docker/">How to install MySQL and phpMyAdmin with Docker</a></li>
+        </div>
+	</body>
+</html>
