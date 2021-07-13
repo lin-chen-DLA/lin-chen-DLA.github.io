@@ -98,6 +98,10 @@ docker cp local_src_path [containerID/containerName]:container_dest_path # copy 
         </pre>
         <li>Remotely Access a Container</li>
 		<pre class = "prettyprint linenums">
+docker attach [containerName]
+
+or
+
 docker exec -it [containerName] sh
         </pre>
         <li>Convert Container to Image</li>
@@ -117,6 +121,38 @@ docker start -ia [containerName] # start a stopped container
 		<pre class = "prettyprint linenums">
 docker rm [containerID/containerName] # remove a container that is not running
 docker rm $(docker ps -a -f status=exited -q), remove all exited containers
+        </pre>
+        </div>
+        <div class = "subtitle">Network</div>
+        <div class = "block">
+            <li>List networks
+		<pre class = "prettyprint linenums">
+docker network ls
+        </pre>
+        <li>Inspect network</li>
+		<pre class = "prettyprint linenums">
+docker network inspect [networkName]
+        </pre>
+        <li>Create network</li>
+		<pre class = "prettyprint linenums">
+docker network create -d [driverName] [networkName] # default driver is bridge
+        </pre>
+        <li>Connect network</li>
+		<pre class = "prettyprint linenums">
+docker run -itd --network=[networkName] [image] # start a container and connect it to a network
+
+# ip, specify the IP address a container on a network
+docker network connect --ip [ip] [networkName] [containerName] # connect a running container to a network
+        </pre>
+        <li>Disconnect network</li>
+		<pre class = "prettyprint linenums">
+docker network disconnect [networkName] [containerName] # disconnect a container from a network
+        </pre>
+        <li>Remove network</li>
+		<pre class = "prettyprint linenums">
+docker network rm [networkName], remove a network
+
+docker network prune, remove all networks
         </pre>
         </div>
         <div class = "subtitle">Docker Registry</div>

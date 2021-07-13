@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Docker</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			MySQL Access
+		</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_8.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 1. Create a Docker network
+docker network create asgard
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 2. Create the MySQL container
+docker volume create sandbox-home # ensure volume is empty
+
+docker run -d -v sandbox-home:/var/lib/mysql  --name mysqlserver --network asgard -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 mysql:8.0.12
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 3. Create the phpMyAdmin container
+docker run -d --network asgard -e PMA_HOST=mysqlserver -p 8080:80 phpmyadmin/phpmyadmin
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 4. Create the app container
+docker run --network asgard -e MYSQL_HOST=mysqlserver -p 8081:8080 mysql_access
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+http://localhost:8080/ # access phpmyadmin, root, root
+http://localhost:8081/ # access app
+		</pre>
+		</div>
+        <div class = "subtitle">App Code</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.py
+import os
+import mysql.connector
+import pandas as pd
+import datetime
+
+import dash
+import dash_html_components as html
+
+app = dash.Dash(__name__)
+
+def get_ip():
+    return os.getenv('MYSQL_HOST', '172.19.0.2')
+
+def get_data():
+    # connect to database
+    cnx = mysql.connector.connect(user='root', password='root', host=get_ip(), port=3306, database='University')
+
+    # create a cursor
+    cursor = cnx.cursor(buffered=True)
+
+    # create query
+    query = (
+        "SELECT * \
+        from Department")
+
+    # execute query
+    cursor.execute(query)
+
+    # fetch result
+    result = cursor.fetchall() # list of tuple
+
+    # convert result to pandas DataFrame
+    df = pd.DataFrame.from_records(result)
+
+    # close connection
+    cnx.close()
+
+    return df
+
+def getLayout():
+    df = get_data()
+    return html.Div(df.to_string())
+
+app.layout = getLayout()
+
+if __name__ == "__main__":
+    app.run_server(host='0.0.0.0', port=8080)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Dockerfile
+FROM python:3.8
+ 
+WORKDIR /usr/src/app
+ 
+COPY . .
+ 
+RUN pip install pandas
+RUN pip install dash
+RUN pip install mysql-connector-python
+ 
+EXPOSE 8080
+ 
+CMD ["python", "./app.py"]
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+docker build -t mysql_access .
+        </pre>
+        </div>
+	</body>
+</html>

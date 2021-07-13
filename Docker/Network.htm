@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Docker</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Network
+		</div>
+        <div class = "block">
+            <li>Create multiple container app, each container should do <span>one thing</span> and do it well</li>
+            <li>By default, containers run in <span>isolation</span> and don’t know anything about other processes or containers on the same machine. Use <span>networking</span> allow one container to talk to another</li>
+        </div>
+        <div class = "subtitle">Link</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_5.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Start a database
+docker run -d --name db -e sourceVar=PostgreSQL training/postgres
+
+# link container web to container db
+# --link [source name]:[alias]
+
+# source provides information to recipient with environment variables and /etc/hosts
+
+# define three environment variables for each exposed port on source container
+# [alias]_PORT_[port]_[protocol]
+# WEBDB_PORT_5432_TCP_ADDR=172.17.0.82
+# WEBDB_PORT_5432_TCP_PORT=543
+# WEBDB_PORT_5432_TCP_PROTO=tcp
+
+# define the URL of the source container’s first exposed port
+# [alias]_PORT
+
+# pass environment variables on source to recipient
+# [alias]_ENV_[name]
+docker run -d -P --name web --link db:webdb training/webapp python app.py
+
+# check environment variable on recipient
+docker exec -it web bash
+env
+
+# test access from recipient to source
+apt-get install -yqq inetutils-ping
+# ping [alias]
+ping webdb
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# start MySQL server
+docker run -d -v sandbox-home:/var/lib/mysql  --name mysqlserver -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 mysql:8.0.12
+
+# start phpmyadmin
+docker run -d --link mysqlserver -e PMA_HOST=mysqlserver -p 8080:80 phpmyadmin/phpmyadmin
+
+# access phpmyadmin
+http://localhost:8080/ #root, root
+        </pre>
+        </div>
+        <div class = "subtitle">Networking</div>
+        <div class = "block">
+            <li>Docker automatically includes three default networks, <span>bridge</span>, <span>host</span>, and <span>none</span></li>
+            <p style = "text-align:center;"><img src = "img/Docker_6.png" width = "50%"></p>
+		</div>
+        <div class = "block">
+            <li><a href = "https://docs.docker.com/network/bridge/">bridge</a>
+                <ul>
+                    <li>Multiple containers to communicate on a <span>single</span> Docker host</li>
+                    <li>By default, a launched container is in <span>bridge</span> network. The default bridge network is considered a legacy detail of Docker and is <span>not recommended</span> for production use</li>
+                    <li>Containers on different bridge networks cannot communicate directly with each other using <span>container IPs</span> and <span>container ports</span></li>
+                    <li>Default bridge network and user-defined bridge network
+                        <ul>
+                            <li>User-defined bridges provide automatic DNS resolution between containers, default bridge can only access each other by IP unless using link option</li>
+                            <li>Be able to connect or disconnect a running container to a user-defined bridge network. Removing a container from default bridge network needs to stop the container</li>
+                            <li>Share environment variables by volume, compose file, or use swarm services</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# default network
+
+# start MySQL server
+docker run -d -v sandbox-home:/var/lib/mysql  --name mysqlserver -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 mysql:8.0.12
+
+# start phpmyadmin
+# 172.17.0.2, ip of mysqlserver on host
+# can ping 172.17.0.2 [ip], cannot ping mysqlserver [containerName] from phpmyadmin
+docker run --name phpmyadmin -d -e PMA_HOST=172.17.0.2 -p 8080:80 phpmyadmin/phpmyadmin
+
+# inspect default network
+docker network inspect bridge
+
+# access phpmyadmin
+http://localhost:8080/ #root, root
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# user defined network
+
+# create a Docker network
+docker network create asgard
+
+# start MySQL server
+docker volume create sandbox-home # ensure volume is empty
+docker run -d -v sandbox-home:/var/lib/mysql  --name mysqlserver --network asgard -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 mysql:8.0.12
+
+# start phpmyadmin
+docker run -d --network asgard -e PMA_HOST=mysqlserver -p 8080:80 phpmyadmin/phpmyadmin
+
+# inspect default network
+docker network inspect asgard
+
+# access phpmyadmin
+http://localhost:8080/ #root, root
+        </pre>
+        </div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_7.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+docker network create alpine-net
+
+docker run -dit --name alpine1 --network alpine-net alpine ash
+docker run -dit --name alpine2 --network alpine-net alpine ash
+docker run -dit --name alpine3 alpine ash
+docker run -dit --name alpine4 --network alpine-net alpine ash
+docker network connect bridge alpine4
+        </pre>
+        </div>
+        <div class = "block">
+            <li><a href = "https://docs.docker.com/network/host/">host</a>, no isolation between host and containers on this network, to the outside world they are on the same network</li>
+            <li><a href = "https://docs.docker.com/network/overlay/">overlay</a>, need containers running on <span>multiple</span> Docker hosts to communicate</li>
+            <li><a href = "https://docs.docker.com/network/macvlan/">macvlan</a>, need containers to look like physical hosts on your network, each with a unique MAC address</li>
+            <li>none, disable all networking</li>
+            <li><a href = "https://docs.docker.com/engine/extend/plugins_services/">network plugins</a>, install and use third-party network plugins</li>
+        </div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://www.aquasec.com/cloud-native-academy/docker-container/docker-networking/">Aqua Cloud Native Academy</a></li>
+            <li><a href = "https://docs.docker.com/engine/tutorials/networkingcontainers/">Network containers</a></li>
+            <li><a href = "https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started">YAML Tutorial</a></li>
+        </div>
+    </body>
+</html>
