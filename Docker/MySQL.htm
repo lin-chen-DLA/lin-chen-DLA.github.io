@@ -32,7 +32,7 @@ docker volume create sandbox-home # ensure volume is empty
 # --network, setup network name
 # -e, configure MySQL
 # -p, setup exposed port number
-docker run -d -v sandbox-home:/var/lib/mysql  --name mysqlserver --network asgard -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 mysql:8.0.12
+docker run -d -v sandbox-home:/var/lib/mysql  --name mysqlserver --network asgard -e MYSQL_ROOT_PASSWORD=root -p 52000:3306 mysql:8.0.12
 		</pre>
 		</div>
 		<div class = "block">
