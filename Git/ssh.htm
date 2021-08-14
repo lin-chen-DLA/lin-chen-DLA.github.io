@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Docker</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			ssh
+		</div>
+        <div class = "subtitle">1. Create ssh keys</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create a key pair under .ssh
+ssh-keygen -t [name] -C "your_email@example.com"
+		</pre>
+		</div>
+        <div class = "subtitle">2. Edit config file</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+Host [github_name]
+    HostName github.com
+    IdentityFile ~/.ssh/[private_key_file_name]
+    PubKeyAuthentication yes
+    ServerAliveInterval 300
+    TCPKeepAlive no
+    User git
+        </pre>
+        </div>
+        <div class = "subtitle">3. Store passphrase in the keychain</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+ssh-add -K ~/.ssh/[private_key_file_name]
+        </pre>
+        </div>
+        <div class = "subtitle">4. Add public key to github</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# setting/SSH and GPG keys
+        </pre>
+        </div>
+        <div class = "subtitle">5. Add remote repository at github</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# github account, lin-chen-Langley
+git remote add origin git@github.com:lin-chen-Langley/[repository_name]
+
+# http
+# git remote add origin https://github.com/lin-chen-Langley/[repository_name]
+        </pre>
+        </div>
+        <div class = "subtitle">6. Push to repository</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+git push -u origin main
+        </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generating a new SSH key and adding it to the ssh-agent</a></li>
+        </div>
+	</body>
+</html>
