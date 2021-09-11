@@ -15,37 +15,6 @@
 		<div class = "title">
 			Docker Commands
 		</div>
-		<div class = "subtitle">Run Images</div>
-		<div class = "block">
-            <li>Get help</li>
-		<pre class = "prettyprint linenums">
-docker run --help # show a list of all flags of run
-        </pre>
-            <li>Run an image
-                <ul>
-                    <li>Docker client finds the image, loads up the container, runs a command in that container</li>
-                    <li>Default command is defined in Dockerfile</li>
-                </ul>
-            </li>
-		<pre class = "prettyprint linenums">
-docker run [imageName] [command]
-
-# -it, attaches to an interactive tty in the container, can be used to explore the image system
-docker run -it [imageName] sh # access the Linux system of a container
-
-docker run busybox echo "hello from busybox" runs a command in container busybox
-docker run -it busybox sh
-
-# -d, detach the terminal, running on backend
-# -P, publish all exposed ports to random ports
-# -p [docker_host_port]:[container_port], map port number
-# --name, give the container a name
-docker run -d -P --name [containerName] [imageName]
-docker run -p 80:8080 [imageName]
-
-docker create --name [containerName ]-it [imageName] [command] # create a container
-docker start -ia [containerName] # start the container
-        </div>
         <div class = "subtitle">Image</div>
         <div class = "block">
 			<li>contains the container's filesystem, it must contain everything needed to run an application - all dependencies, configuration, scripts, binaries, etc.</li>
@@ -79,7 +48,25 @@ docker load -i name.tar
         </div>
         <div class = "subtitle">Container</div>
         <div class = "block">
-			<li>provide most of the isolation of virtual machines at a fraction of the computing power</li>
+            <li>Run an image</li>
+		<pre class = "prettyprint linenums">
+# Docker client finds the image, loads up in a new container, runs a command in that container
+# Default command is defined in Dockerfile
+docker run [imageName:tag] [command]
+
+# -it, attaches to an interactive tty in the container, can be used to explore the image system
+docker run -it [imageName] sh # access the Linux system of a container
+
+docker run busybox echo "hello from busybox" runs a command in container busybox
+docker run -it busybox sh
+
+# -d, detach the terminal, running on backend
+# -P, publish all exposed ports to random ports
+# -p [docker_host_port]:[container_port], map port number
+# --name, give the container a name
+docker run -d -P --name [containerName] [imageName]
+docker run -p 80:8080 [imageName]
+        </pre>  
             <li>Show Containers</li>
 		<pre class = "prettyprint linenums">
 # show containers running
@@ -121,6 +108,10 @@ docker start -ia [containerName] # start a stopped container
 		<pre class = "prettyprint linenums">
 docker rm [containerID/containerName] # remove a container that is not running
 docker rm $(docker ps -a -f status=exited -q), remove all exited containers
+        </pre>
+		<pre class = "prettyprint linenums">
+docker create --name [containerName ]-it [imageName] [command] # create a container
+docker start -ia [containerName] # start the container
         </pre>
         </div>
         <div class = "subtitle">Network</div>
