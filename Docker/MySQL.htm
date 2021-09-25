@@ -15,34 +15,48 @@
 		<div class = "title">
 			MySQL
 		</div>
+        <div class = "subtitle">Deployment Mode</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_10.png" width = "30%"></p>
+		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # 1. Create a Docker network
 docker network create asgard
-		</pre>
-		</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-# 2. Create the MySQL container
+
+# 2. Create a Docker volume
 docker volume create sandbox-home # ensure volume is empty
 
-# -d, running on the backend
-# -v, persistence
-# --name, setup container name
-# --network, setup network name
-# -e, configure MySQL
-# -p, setup exposed port number
-docker run -d -v sandbox-home:/var/lib/mysql  --name mysqlserver --network asgard -e MYSQL_ROOT_PASSWORD=root -p 52000:3306 mysql:8.0.12
+# 3. Create the MySQL container
+docker run -d -v sandbox-home:/var/lib/mysql  --name mysqlserver -e MYSQL_ROOT_PASSWORD=root mysql:8.0.12
+
+# 4. Create the phpMyAdmin container
+docker run -d --name myphpmyadmin -e PMA_HOST=mysqlserver -p 8080:80 phpmyadmin/phpmyadmin
+
+# 5. Add the MySQL container to the network
+# docker network connect NETWORK CONTAINER
+docker network connect asgard mysqlserver
+
+# 6. Add the phpMyAdmin container to the network
+docker network connect asgard myphpmyadmin
+
+http://localhost:8080/ #root, root
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# 3. Create the phpMyAdmin container
+# 1. Create a Docker network
+docker network create asgard
+
+# 2. Create a Docker volume
+docker volume create sandbox-home # ensure volume is empty
+
+# 3. Create the MySQL container
+docker run -d -v sandbox-home:/var/lib/mysql  --name mysqlserver --network asgard -e MYSQL_ROOT_PASSWORD=root mysql:8.0.12
+
+# 4. Create the phpMyAdmin container
 docker run -d --network asgard -e PMA_HOST=mysqlserver -p 8080:80 phpmyadmin/phpmyadmin
-		</pre>
-		</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
+
 http://localhost:8080/ #root, root
 		</pre>
 		</div>

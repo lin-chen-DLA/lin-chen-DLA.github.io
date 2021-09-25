@@ -16,18 +16,157 @@
 			Compose
 		</div>
         <div class = "block">
-            <li>Define and share multi-container applications</li>
+            <li>A YAML file defining <span>version</span> (DEPRECATED), <span>services</span> (REQUIRED), <span>networks</span>, <span>volumes</span>, <span>configs</span> and <span>secrets</span></li>
+            <li>Default path is <span>compose.yaml</span> (or compose.yml, docker-compose.yaml, docker-compose.yml) in working directory</li>
         </div>
-        <div class = "subtitle">Link</div>
+        <div class = "subtitle">Services</div>
         <div class = "block">
-            <p style = "text-align:center;"><img src = "img/Docker_5.png" width = "40%"></p>
+            <li>Abstract concept implementing <span>docker run</span></li>
+            <li><span>profiles</span>
+                <ul>
+                    <li>If unassigned, the service is always started</li>
+                    <li>If assigned, the service is only started if the profile is activated</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+services:
+  foo:
+    image: foo
+  bar:
+    image: bar
+    profiles:
+      - test
+  baz:
+    image: baz
+    depends_on:
+      - bar
+    profiles:
+      - test
+  zot:
+    image: zot
+    depends_on:
+      - bar
+    profiles:
+      - debug
+
+# enable test (bar, baz) and foo
+docker-compose --profile test up
+
+# invalid, profile debug (zot) is enabled, but zot depends on bar which is in the profile test
+docker-compose --profile debug up
+
+# enable test(bar, baz), debug(zot) and foo
+docker-compose --profile debug --profile test up
+
+# enable bar, profile test is active, but baz is not enabled
+docker-compose up bar
+
+# enable baz, profile test is active, bar is enabled by depends_on constraint
+docker-compose up baz
+
+# enable zot and test, bar is enabled by depends_on constraint
+docker-compose --profile test up zot
+		</pre>
+        <li><span>build</span>
+            <ul>
+                <li>Development use-case to run application on local machine</li>
+                <li>Support (re)building application from sources</li>
+                <li>Only a subset of Compose file services MAY define such a Build subsection</li>
+                <li>Others being created based on Image attribut</li>
+                <li>Allow the service to miss the image attribute</li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
+        </pre>
+        </div>
+        <div class = "subtitle">Networks</div>
+		<div class = "block">
+            <li>Capability abstraction to establish an IP route between containers, analogous to <span>docker network create</span></li>
+		<pre class = "prettyprint linenums">
+		</pre>
+		</div>
+        <div class = "subtitle">Volumes</div>
+		<div class = "block">
+            <li>Analogous to <span>docker volume create</span></li>
+		<pre class = "prettyprint linenums">
+		</pre>
+		</div>
+        <div class = "subtitle">Configs</div>
+		<div class = "block">
+            <li>Grant access to configs on a per-service basis</li>
+		<pre class = "prettyprint linenums">
+		</pre>
+		</div>
+        <div class = "subtitle">Secret</div>
+		<div class = "block">
+            <li>Grant access to secrets on a per-service basis</li>
+		<pre class = "prettyprint linenums">
+		</pre>
+		</div>
+        <div class = "subtitle">Example</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_11.png" width = "50%"></p>
 		</div>
 		<div class = "block">
+            <li>2 services, backed by Docker images: webapp and database</li>
+            <li>1 secret (HTTPS certificate), injected into the frontend</li>
+            <li>1 configuration (HTTP), injected into the frontend</li>
+            <li>1 persistent volume, attached to the backend</li>
+            <li>2 networks: front-tier and back-tier</li>
 		<pre class = "prettyprint linenums">
+services:
+  frontend:
+    image: awesome/webapp
+    ports:
+      - "443:8043"
+    networks:
+      - front-tier
+      - back-tier
+    configs:
+      - httpd-config
+    secrets:
+      - server-certificate
+
+  backend:
+    image: awesome/database
+    volumes:
+      - db-data:/etc/data
+    networks:
+      - back-tier
+
+volumes:
+  db-data:
+    driver: flocker
+    driver_opts:
+      size: "10GiB"
+
+configs:
+  httpd-config:
+    external: true
+
+secrets:
+  server-certificate:
+    external: true
+
+networks:
+  # The presence of these objects is sufficient to define them
+  front-tier: {}
+  back-tier: {}
+		</pre>
+		</div>
+        <div class = "subtitle">docker-compose</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# start services
+docker-compose up [service list]
+
+# turn off services
+docker-compose down
 		</pre>
 		</div>
         <div class = "subtitle">Reference</div>
         <div class = "block">
+            <li><a href = "https://docs.docker.com/compose/compose-file/compose-file-v3/">Compose File Reference</a></li>
             <li><a href = "https://docs.docker.com/compose/">User Guide</a></li>
             <li><a href = "https://github.com/compose-spec/compose-spec/blob/master/spec.md">The Compose Specification</a></li>
         </div>

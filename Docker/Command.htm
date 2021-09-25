@@ -64,6 +64,8 @@ docker run -it busybox sh
 # -P, publish all exposed ports to random ports
 # -p [docker_host_port]:[container_port], map port number
 # --name, give the container a name
+# --network, configure network
+# -e, environment variables
 docker run -d -P --name [containerName] [imageName]
 docker run -p 80:8080 [imageName]
         </pre>  

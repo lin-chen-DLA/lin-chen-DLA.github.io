@@ -17,6 +17,25 @@
 		</div>
         <div class = "subtitle">Create a Dockerfile</div>
 		<div class = "block">
+            <li>1. Start from a Linux image</li>
+		<pre class = "prettyprint linenums">
+docker run -it ubuntu bash
+or
+docker run -it alpine sh
+        </pre>
+        <li>2. Copy the code to the running Linux container</li>
+		<pre class = "prettyprint linenums">
+docker cp
+        </pre>
+        <li>3. Install packages</li>
+		<pre class = "prettyprint linenums">
+pip install --no-cache-dir -r requirements.txt
+        </pre>
+        <li>4. Run and test the app in the container, may need to map port in step 1</li>
+        <li>5. Create a Dockerfile using the commonds conducted in step 1-4</li>
+        </div>
+        <div class = "subtitle">Dockerfile Format</div>
+		<div class = "block">
 		<pre class = "prettyprint linenums">
 # A Dockerfile must begin with a FROM instruction
 # Specifies the Parent Image

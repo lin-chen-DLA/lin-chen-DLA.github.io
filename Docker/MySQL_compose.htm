@@ -13,73 +13,48 @@
 	</head>
 	<body>
 		<div class = "title">
-			Hello App
+			MySQL
+		</div>
+        <div class = "subtitle">Deployment Mode</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_10.png" width = "30%"></p>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-print("Hello World!")
+# docker-compose.yml
+version: "3.9"  # optional since v1.27.0
+services:
+  mysqlserver:
+    image: mysql:8.0.12
+    volumes:
+      - type: volume
+        source: sandbox-home
+        target: /var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST=mysqlserver
+volumes:
+  sandbox-home:
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# 885.45M, python3 image have many development tools installed
-FROM python:3
-
-# set a directory for the app
-WORKDIR /usr/src/app
-
-# copy all the files to the container
-COPY . .
-
-# run the command
-CMD ["python", "./hello.py"]
+docker-compose up
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# 140.68M
-FROM ubuntu
-
-RUN apt-get update && apt-get install -y python3.8
-
-# set a directory for the app
-WORKDIR /usr/src/app
-
-# copy all the files to the container
-COPY . .
-
-# run the command
-CMD ["/usr/bin/python3.8", "./hello.py"]
-        </pre>
-        </div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-# 77.5M
-FROM alpine
-
-RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
-RUN python3 -m ensurepip
-RUN pip3 install --no-cache --upgrade pip setuptools
-
-# set a directory for the app
-WORKDIR /usr/src/app
-
-# copy all the files to the container
-COPY . .
-
-# run the command
-CMD ["python", "./hello.py"]
-        </pre>
-        </div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-# build
-docker build -t lchenlangley/hello .
+http://localhost:8080/ #root, root
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-docker run lchenlangley/hello
+docker-compose down
 		</pre>
 		</div>
 	</body>
