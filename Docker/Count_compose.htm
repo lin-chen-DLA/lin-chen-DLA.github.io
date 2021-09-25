@@ -15,6 +15,93 @@
 		<div class = "title">
 			Count
 		</div>
+        <div class = "subtitle">Development Mode</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_13.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.py
+import os
+import time
+import redis
+from flask import Flask
+
+def get_ip():
+    return os.getenv('MYREDIS_HOST', 'localhost')
+
+app = Flask(__name__)
+cache = redis.Redis(host=get_ip(), port=6379)
+
+def get_hit_count():
+    retries = 5
+    while True:
+        try:
+            return cache.incr('hits')
+        except redis.exceptions.ConnectionError as exc:
+            if retries == 0:
+                raise exc
+            retries -= 1
+            time.sleep(0.5)
+
+@app.route('/')
+def hello():
+    count = get_hit_count()
+    return 'Hello from Docker! I have been seen {} times.\n'.format(count)
+
+if __name__ == '__main__':
+    app.run(port=5000)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Dockerfile
+FROM python:3.7-alpine
+WORKDIR /code
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+RUN apk add --no-cache gcc musl-dev linux-headers
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+EXPOSE 5000
+COPY . .
+CMD ["flask", "run"]
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Create the dependent package list
+pip freeze > requirements.txt
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# compose.yaml
+version: "3.9"
+services:
+  webapp:
+    image: lchenlangley/count
+    build: .
+    ports:
+      - 8000:5000
+    environment:
+      - MYREDIS_HOST=redisserver
+      - FLASK_ENV=development
+    depends_on:
+      - redisserver
+  redisserver:
+    image: "redis:alpine"
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# start containers
+docker-compose up
+
+# access the app
+http://localhost:8000/
+        </pre>
+        </div>
         <div class = "subtitle">Deployment Mode</div>
         <div class = "block">
             <p style = "text-align:center;"><img src = "img/Docker_13.png" width = "30%"></p>
