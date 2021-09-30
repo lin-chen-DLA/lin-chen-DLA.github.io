@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Gunicorn
+		</div>
+
+		<div class = "subtitle">Installation</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+pip install gunicorn
+        </pre>
+        </div>
+		<div class = "subtitle">Source Code</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import dash_html_components as html
+
+app = dash.Dash(__name__)
+server = app.server
+
+app.layout = html.Div('Hello World!')
+
+if __name__ == "__main__":
+    app.run_server(host='0.0.0.0', port=8080)
+		</pre>
+		</div>
+		<div class = "subtitle">Command Line</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# guncorn [app_file_name]:[server_name]
+# --bind [ip]:[port], specify host ip and socket
+# --workers [num], number of worker processes, generally 2-4 per core
+# --timeout [seconds], http time out
+# --worker-class [workerclass], one of sync (default), eventlet, gevent, tornado, gthread
+# --reload, restart workers when code changes
+# --access-logfile, specify log file
+# --error-logfile, specify error log file
+# --log-level, one of 'debug', 'info' (default), 'warning', 'error', 'critical'
+gunicorn --bind=localhost:8000 --workers=2 --timeout=120 --reload --access-logfile=log.txt app:server
+		</pre>
+		</div>
+		<div class = "subtitle">Config File</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# gunicorn.conf.py
+bind = "127.0.0.1:8000"
+workers = 2
+timeout = 120
+        </pre>
+		<pre class = "prettyprint linenums">
+gunicorn --config gunicorn.conf.py app:server
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.gunicorn.org/en/stable/index.html">Document</a></li>
+		</div>
+	</body>
+</html>
