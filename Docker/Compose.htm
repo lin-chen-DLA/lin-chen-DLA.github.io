@@ -48,7 +48,8 @@ services:
       - bar
     profiles:
       - debug
-
+        </pre>
+		<pre class = "prettyprint linenums">
 # enable test (bar, baz) and foo
 docker-compose --profile test up
 
@@ -69,14 +70,36 @@ docker-compose --profile test up zot
 		</pre>
         <li><span>build</span>
             <ul>
-                <li>Development use-case to run application on local machine</li>
-                <li>Support (re)building application from sources</li>
-                <li>Only a subset of Compose file services MAY define such a Build subsection</li>
-                <li>Others being created based on Image attribut</li>
-                <li>Allow the service to miss the image attribute</li>
+                <li>Build image from local source code, allow to miss the image attribute</li>
             </ul>
         </li>
 		<pre class = "prettyprint linenums">
+services:
+  # build an image from source and give an image name
+  # need Dockerfile
+  frontend:
+    image: awesome/webapp # image name
+    build: ./webapp # source code path
+
+  # build an image from source and give an image name
+  # specify the dockerfile path
+  backend:
+    image: awesome/database # image name
+    build:
+        context: backend # source code path
+        dockerfile: ../backend.Dockerfile # Dockerfile path
+
+  # build an image from source code, need Dockerfile
+  custom:
+    build: ~/custom # source code path
+        </pre>
+        <li><span>image</span>
+            <ul>
+                <li>Specifies the image to start the container from</li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
+image: redis
         </pre>
         </div>
         <div class = "subtitle">Networks</div>
@@ -158,6 +181,8 @@ networks:
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # start services
+# --build, build images from source code instead of loading built images before starting containers
+# -d, detached
 docker-compose up [service list]
 
 # turn off services
@@ -166,6 +191,7 @@ docker-compose down
 		</div>
         <div class = "subtitle">Reference</div>
         <div class = "block">
+            <li><a href = "https://docs.docker.com/compose/reference/">docker-compose CLI</a></li>
             <li><a href = "https://docs.docker.com/compose/compose-file/compose-file-v3/">Compose File Reference</a></li>
             <li><a href = "https://docs.docker.com/compose/">User Guide</a></li>
             <li><a href = "https://github.com/compose-spec/compose-spec/blob/master/spec.md">The Compose Specification</a></li>
