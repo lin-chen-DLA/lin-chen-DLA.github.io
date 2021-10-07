@@ -101,6 +101,17 @@ services:
 		<pre class = "prettyprint linenums">
 image: redis
         </pre>
+        <li><span>expose</span>
+            <ul>
+                <li>Specify the port number exposed from container</li>
+                <li>Same as expose in Dockerfile, it functions as a type of documentation</li>
+                <li>The expose port number in compose file, the expose number in dockerfile, and the access port number in app should match</li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
+expose:
+  - "5000"
+        </pre>
         </div>
         <div class = "subtitle">Networks</div>
 		<div class = "block">
