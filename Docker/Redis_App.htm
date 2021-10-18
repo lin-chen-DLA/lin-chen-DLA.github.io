@@ -15,6 +15,7 @@
 		<div class = "title">
 			Redis App
 		</div>
+        <div class = "subtitle">Deployment Mode</div>
         <div class = "block">
             <p style = "text-align:center;"><img src = "img/Docker_9.png" width = "30%"></p>
 		</div>
@@ -37,7 +38,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
 def get_ip():
-    return os.getenv('MYREDIS_HOST', '172.19.0.2')
+    return os.getenv('MYREDIS_HOST', 'localhost')
 
 cache = Cache(app.server, config={
     'CACHE_TYPE': 'RedisCache',

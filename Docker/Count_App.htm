@@ -108,14 +108,14 @@ def hello():
     return 'Hello World from Docker! I have been seen {} times.\n'.format(count)
 
 if __name__ == '__main__':
-    app.run(port=5000) # remove debug mode
+    app.run(host='0.0.0.0', port=5000)
         </pre>
         </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # Dockerfile
 FROM python:3.7-alpine
-WORKDIR usr/src/app
+WORKDIR /code
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 RUN apk add --no-cache gcc musl-dev linux-headers
@@ -123,21 +123,21 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 EXPOSE 5000
 COPY . .
-CMD ["flask", "run"]
+CMD ["python", "app.py"]
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # Developer Side
 
-# Create the dependent package list
+# 1. Create the dependent package list
 pip freeze > requirements.txt
 
-# Create an image docker.io/library/lchenlangley/count
+# 2. Create an image docker.io/library/lchenlangley/count
 # lchenlangey is the account at Docker Hub
 docker build -t lchenlangley/count .
 
-# Push the image to Docker Hub, each organizaiton may have their own private image registry
+# 3. Push the image to Docker Hub, each organizaiton may have their own private image registry
 docker login
 docker push lchenlangley/count
         </pre>
@@ -146,13 +146,13 @@ docker push lchenlangley/count
 		<pre class = "prettyprint linenums">
 # Deployment on Host
 
-# Create a bridge network
+# 1. Create a bridge network
 docker network create asgard
 
-# Create a redis container named as redisserver
+# 2. Create a redis container named as redisserver
 docker run -d --name redisserver --network asgard redis
 
-# Create a container for the app
+# 3. Create a container for the app
 # Pass redis container name to the app with an environment variable
 docker run -d --network asgard -e MYREDIS_HOST=redisserver -p 8000:5000 lchenlangley/count
         </pre>
@@ -163,5 +163,9 @@ docker run -d --network asgard -e MYREDIS_HOST=redisserver -p 8000:5000 lchenlan
 http://localhost:8000/
 		</pre>
 		</div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.docker.com/compose/gettingstarted/">Docker Manuals</a></li>
+        </div>
 	</body>
 </html>

@@ -122,8 +122,134 @@ expose:
         <div class = "subtitle">Volumes</div>
 		<div class = "block">
             <li>Analogous to <span>docker volume create</span></li>
+            <li>Volume</li>
 		<pre class = "prettyprint linenums">
+# Short Syntax
+services:
+  app:
+    # ...
+    volumes: # volumes for a particular service
+      - [source]:[target]:[mode]
+        # source, named volume, defined in the top level "volumes"
+        # target, an absolute path in container
+        # mode, read-only or read-write
+
+volumes: # define volumes
 		</pre>
+		<pre class = "prettyprint linenums">
+version: "3.9"
+services:
+  webapp:
+    image: lchenlangley/count
+    build: .
+    ports:
+      - 8000:5000
+    volumes:
+      - voltemp:/code
+    environment:
+      - MYREDIS_HOST=redisserver
+      - FLASK_ENV=development
+    depends_on:
+      - redisserver
+  redisserver:
+    image: "redis:alpine"
+volumes:
+  voltemp: # volume name length should greater than five
+        </pre>
+		<pre class = "prettyprint linenums">
+# Syntax
+services:
+  app:
+    # ...
+    volumes: # volumes for a particular service
+      - type: volume
+        source: [volume_name]
+        target: [path]
+
+volumes: # define volumes
+        </pre>
+		<pre class = "prettyprint linenums">
+version: "3.9"
+services:
+  webapp:
+    image: lchenlangley/count
+    build: .
+    ports:
+      - 8000:5000
+    volumes:
+      - type: volume
+        source: voltemp
+        target: /code
+    environment:
+      - MYREDIS_HOST=redisserver
+      - FLASK_ENV=development
+    depends_on:
+      - redisserver
+  redisserver:
+    image: "redis:alpine"
+volumes:
+  voltemp:
+        </pre>
+            <li>Bind Mount</li>
+		<pre class = "prettyprint linenums">
+# Short Syntax
+services:
+  app:
+    # ...
+    volumes: # volumes for a particular service
+      - [source]:[target]:[mode]
+        # source, a path (absolute or relate)
+        # target, an absolute path in container
+        # mode, read-only or read-write
+        </pre>
+		<pre class = "prettyprint linenums">
+version: "3.9"
+services:
+  webapp:
+    image: lchenlangley/count
+    build: .
+    ports:
+      - 8000:5000
+    volumes:
+      - .:/code
+    environment:
+      - MYREDIS_HOST=redisserver
+      - FLASK_ENV=development
+    depends_on:
+      - redisserver
+  redisserver:
+    image: "redis:alpine"
+        </pre>
+		<pre class = "prettyprint linenums">
+# Syntax
+services:
+  app:
+    # ...
+    volumes: # volumes for a particular service
+      - type: bind
+        source: [path]
+        target: [path]
+        </pre>
+		<pre class = "prettyprint linenums">
+version: "3.9"
+services:
+  webapp:
+    image: lchenlangley/count
+    build: .
+    ports:
+      - 8000:5000
+    volumes:
+      - type: bind
+        source: .
+        target: /code
+    environment:
+      - MYREDIS_HOST=redisserver
+      - FLASK_ENV=development
+    depends_on:
+      - redisserver
+  redisserver:
+    image: "redis:alpine"
+        </pre>
 		</div>
         <div class = "subtitle">Configs</div>
 		<div class = "block">
@@ -194,7 +320,10 @@ networks:
 # start services
 # --build, build images from source code instead of loading built images before starting containers
 # -d, detached
-docker-compose up [service list]
+# docker-compose up [service list]
+
+docker-compose up # start all services
+docker-compose up webapp # start service webapp
 
 # turn off services
 docker-compose down
@@ -202,6 +331,7 @@ docker-compose down
 		</div>
         <div class = "subtitle">Reference</div>
         <div class = "block">
+            <li><a href = "https://maximorlov.com/docker-compose-syntax-volume-or-bind-mount/">Docker Compose Syntax: Volume or Bind Mount?</a></li>
             <li><a href = "https://docs.docker.com/compose/reference/">docker-compose CLI</a></li>
             <li><a href = "https://docs.docker.com/compose/compose-file/compose-file-v3/">Compose File Reference</a></li>
             <li><a href = "https://docs.docker.com/compose/">User Guide</a></li>

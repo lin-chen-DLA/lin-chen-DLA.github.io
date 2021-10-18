@@ -15,6 +15,7 @@
 		<div class = "title">
 			MySQL Access
 		</div>
+        <div class = "subtitle">Deployment Mode</div>
         <div class = "block">
             <p style = "text-align:center;"><img src = "img/Docker_8.png" width = "50%"></p>
 		</div>
@@ -65,7 +66,7 @@ import dash_html_components as html
 app = dash.Dash(__name__)
 
 def get_ip():
-    return os.getenv('MYSQL_HOST', '172.19.0.2')
+    return os.getenv('MYSQL_HOST', 'localhost')
 
 def get_data():
     # connect to database

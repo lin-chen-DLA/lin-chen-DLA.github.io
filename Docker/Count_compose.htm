@@ -17,7 +17,7 @@
 		</div>
         <div class = "subtitle">Development Mode</div>
         <div class = "block">
-            <p style = "text-align:center;"><img src = "img/Docker_13.png" width = "30%"></p>
+            <p style = "text-align:center;"><img src = "img/Docker_16.png" width = "50%"></p>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
@@ -50,7 +50,13 @@ def hello():
     return 'Hello from Docker! I have been seen {} times.\n'.format(count)
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(host='0.0.0.0', port=5000)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Create the dependent package list
+pip freeze > requirements.txt
         </pre>
         </div>
 		<div class = "block">
@@ -65,13 +71,7 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 EXPOSE 5000
 COPY . .
-CMD ["flask", "run"]
-        </pre>
-        </div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-# Create the dependent package list
-pip freeze > requirements.txt
+CMD ["python", "app.py"]
         </pre>
         </div>
 		<div class = "block">
@@ -84,6 +84,8 @@ services:
     build: .
     ports:
       - 8000:5000
+    volumes:
+      - .:/code # enable hot reloading
     environment:
       - MYREDIS_HOST=redisserver
       - FLASK_ENV=development
@@ -95,11 +97,25 @@ services:
         </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# start containers
+# Add directories to allow bind mount in "FILE SHARING" under "Resources" of Docker Desktop
+# 1. Create app.py
+# 2. Create requirements.txt
+# 3. Create Dockerfile
+# 4. Create compose.yaml
+# 5. Start containers
+
 docker-compose up
 
-# access the app
+# 6. Access the app
 http://localhost:8000/
+
+# 7. Continue to edit app.py with hot reloading
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# end containers
+docker-compose down
         </pre>
         </div>
         <div class = "subtitle">Deployment Mode</div>
@@ -137,14 +153,20 @@ def hello():
     return 'Hello from Docker! I have been seen {} times.\n'.format(count)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', port=5000)
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# Create the dependent package list
+pip freeze &gt; requirements.txt
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
 # Dockerfile
 FROM python:3.7-alpine
-WORKDIR usr/src/app
+WORKDIR /code
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 RUN apk add --no-cache gcc musl-dev linux-headers
@@ -152,25 +174,25 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 EXPOSE 5000
 COPY . .
-CMD ["flask", "run"]
+CMD ["python", "app.py"]
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # Developer Side
- 
-# Create the dependent package list
-pip freeze > requirements.txt
- 
-# Create an image docker.io/library/lchenlangley/count
-# lchenlangey is the account at Docker Hub
+# 1. Create app.py
+# 2. Create requirements.txt
+# 3. Create Dockerfile
+# 4. Create an image docker.io/library/lchenlangley/count, lchenlangey is the account at Docker Hub
+
 docker build -t lchenlangley/count .
- 
-# Push the image to Docker Hub, each organizaiton may have their own private image registry
+
+# 5. Push the image to public registry (Docker Hub), or private registry (e.g. AWS ECR, Azure ACR)
+
 docker login
 docker push lchenlangley/count
-		</pre>
-		</div>
+        </pre>
+        </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # Deployment on Host
@@ -189,16 +211,23 @@ services:
       - redisserver
   redisserver:
     image: "redis:alpine"
-
-# start containers
+        </pre>
+		<pre class = "prettyprint linenums">
+# Start containers
 docker-compose up
-		</pre>
-		</div>
+        </pre>
+        </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # User Side
 
 http://localhost:8000/
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Stop the app
+docker-compose down
         </pre>
         </div>
 	</body>
