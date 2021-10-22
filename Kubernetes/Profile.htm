@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Kubernetes</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Profile
+		</div>
+        <div class = "subtitle">Deployment</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+kubectl create -f .
+        </pre>
+        </div>
+        <div class = "subtitle">Access the App</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+kubectl port-forward svc/webapp-service 8080:3000
+
+http://localhost:8080
+        </pre>
+        </div>
+        <div class = "subtitle">Access the App</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# kubectl get deployment
+
+# kubectl get service
+        </pre>
+        </div>
+        <div class = "subtitle">Compose</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# mongo-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-config # same as the configuration file name
+data:
+  mongo-url: mongo-service # service name
+        </pre>
+		<pre class = "prettyprint linenums">
+# mongo-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongo-secret
+type: Opaque
+data:
+  mongo-user: bW9uZ291c2Vy
+  mongo-password: bW9uZ29wYXNzd29yZA==
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# mongo.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mogo-deployment
+  labels:
+    app: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo # let deployment know which pod for this deployment
+  template: # configuration for pods
+    metadata:
+      labels:
+        app: mongo # each pod has a unique name, but pods can share the same label
+    spec:
+      containers: # containers in a pod, usually add one container per pod
+      - name: mongodb
+        image: mongo:5.0 # pull image from Docker Hub
+        ports:
+        - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret # file name for secret configuration
+              key: mongo-user
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret # file name for secret configuration
+              key: mongo-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service # service name accessed by app
+spec:
+  selector:
+    app: mongo # match the pod labels
+  ports:
+    - protocol: TCP
+      port: 27017 # service port
+      targetPort: 27017 # pod port
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  labels:
+    app: webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp # let deployment know which pod for this deployment
+  template: # configuration for pods
+    metadata:
+      labels:
+        app: webapp # each pod has a unique name, but pods can share the same label
+    spec:
+      containers: # containers in a pod, usually add one container per pod
+      - name: webapp
+        image: nanajanashia/k8s-demo-app:v1.0 # pull image from Docker Hub
+        ports:
+        - containerPort: 3000
+        env:
+        - name: USER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret # file name for secret configuration
+              key: mongo-user
+        - name: USER_PWD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret # file name for secret configuration
+              key: mongo-password
+        - name: DB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-config # file name for configuration
+              key: mongo-url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service # service name accessed by app
+spec:
+  type: NodePort # default is ClusterIP which is an internal service
+  selector:
+    app: webapp # match the pod labels
+  ports:
+    - protocol: TCP
+      port: 3000 # service port
+      targetPort: 3000 # pod port
+      nodePort: 30100 # 30000 - 32767, external service
+        </pre>
+        </div>
+    </body>
+</html>

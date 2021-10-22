@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Kubernetes</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Guestbook
+		</div>
+        <div class = "subtitle">Deployment</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+kubectl apply -f redis-leader-deployment.yaml
+kubectl apply -f redis-leader-service.yaml
+kubectl apply -f redis-follower-deployment.yaml
+kubectl apply -f redis-follower-service.yaml
+kubectl apply -f frontend-deployment.yaml
+kubectl apply -f frontend-service.yaml
+        </pre>
+        </div>
+        <div class = "subtitle">Access the App</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+kubectl port-forward svc/frontend 8080:80
+
+http://localhost:8080
+        </pre>
+        </div>
+        <div class = "subtitle">Cleaning Up</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# kubectl get deployment
+kubectl delete deployment frontend
+kubectl delete deployment redis-follower
+kubectl delete deployment redis-leader
+
+# kubectl get service
+kubectl delete service frontend
+kubectl delete service redis-follower
+kubectl delete service redis-leader
+        </pre>
+        </div>
+        <div class = "subtitle">Compose</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# redis-leader-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-leader
+  labels:
+    app: redis
+    role: leader
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+        role: leader
+        tier: backend
+    spec:
+      containers:
+      - name: leader
+        image: "docker.io/redis:6.0.5"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 6379
+        </pre>
+		<pre class = "prettyprint linenums">
+# redis-leader-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-leader
+  labels:
+    app: redis
+    role: leader
+    tier: backend
+spec:
+  ports:
+  - port: 6379
+    targetPort: 6379
+  selector:
+    app: redis
+    role: leader
+    tier: backend
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# redis-follower-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-follower
+  labels:
+    app: redis
+    role: follower
+    tier: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+        role: follower
+        tier: backend
+    spec:
+      containers:
+      - name: follower
+        image: gcr.io/google_samples/gb-redis-follower:v2
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 6379
+        </pre>
+		<pre class = "prettyprint linenums">
+# redis-follower-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-follower
+  labels:
+    app: redis
+    role: follower
+    tier: backend
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 6379
+  selector:
+    app: redis
+    role: follower
+    tier: backend
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# frontend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+        app: guestbook
+        tier: frontend
+  template:
+    metadata:
+      labels:
+        app: guestbook
+        tier: frontend
+    spec:
+      containers:
+      - name: php-redis
+        image: gcr.io/google_samples/gb-frontend:v5
+        env:
+        - name: GET_HOSTS_FROM
+          value: "dns"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 80
+        </pre>
+		<pre class = "prettyprint linenums">
+# frontend-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    app: guestbook
+    tier: frontend
+spec:
+  # if your cluster supports it, uncomment the following to automatically create
+  # an external load-balanced IP for the frontend service.
+  # type: LoadBalancer
+  #type: LoadBalancer
+  ports:
+    # the port that this service should serve on
+  - port: 80
+  selector:
+    app: guestbook
+    tier: frontend
+        </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li><a href = "https://kubernetes.io/docs/tutorials/stateless-application/guestbook/">Guestbook</a></li>
+        </div>
+    </body>
+</html>

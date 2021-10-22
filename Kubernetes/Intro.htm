@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Kubernetes</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Intro
+		</div>
+        <div class = "subtitle">Architecture</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/k8s_1.png" width = "60%"></p>
+		</div>
+		<div class = "block">
+            <li>One Master node
+                                <ul>
+                                    <li>4 processes run on every master node
+                                        <ul>
+                                            <li><span>API server</span>, entry point to K8s cluster</li>
+                                            <li><span>Controll manager</span>, detect cluster state changes</</li>
+                                            <li><span>Scheduler</span>, decide which node will host a new pod</li>
+                                            <li><span>etcd</span>, cluster brain, backing store</li>
+                                        </ul>
+                                    </li>
+                                    <li>Master processes</li>
+                                    <li>Much more important</li>
+                                    <li>Less resources</li>
+                                    <li>Should have a backup</li>
+                                </ul>
+                            </li>
+                            <li>Multiple Worker nodes, do the actually work
+                                <ul>
+                                    <li>3 processes must be installed on each worker node
+                                        <ul>
+                                            <li><span>kubelet</span>, interacts with both container and node, starts the pod with a container inside</li>
+                                            <li><span>kube proxy</span>, forwards the request</li>
+                                            <li><span>Container runtime</span>, such as Docker</li>
+                                        </ul>
+                                    </li>
+                                    <li>Each node has multiple pods</li>
+                                    <li>Each pod can have multiple containers, though usually each pod has one container</li>
+                                    <li>Higher workload</li>
+                                    <li>Much bigger and more resources</li>
+                                </ul>
+                            </li>
+        </div>
+        <div class = "subtitle">Components</div>
+		<div class = "block">
+            <li><span>Node</span>, virtual or physical machine</li>
+                    <li><span>Pod</span>
+                        <ul>
+                            <li>Smallest unit in Kubernetes</li>
+                            <li>Abstraction over container</li>
+                            <li>Usually one application container per pod</li>
+                            <li>Each pod get its own IP address</li>
+                            <li>Pods are ephemeral, can die very easily
+                                <ul>
+                                    <li>If a pod dies, a new pod will be created with a new IP address</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><span>Service and Ingress</span>
+                        <ul>
+                            <li>Service is a permanent id address attached to a pod</li>
+                            <li>Lifecycle of Pod and Service not connected</li>
+                            <li>Specify the type of Service on creation</li>
+                            <li>Internal service is the default type</li>
+                            <li>Translate a URL to ip/port pair, the request goes to ingress, then is forwarded to service</li>
+                        </ul>
+                    </li>
+                    <li><span>ConfigMap</span>
+                        <ul>
+                            <li>External configuration of your application</li>
+                            <li>Contains configuration data like urls of a database</li>
+                            <li>Kubernetes connects to pod, then pod gets the data that configMap contains</li>
+                        </ul>
+                    </li>
+                    <li><span>Secret</span>
+                        <ul>
+                            <li>Contains external configuration like configMap</li>
+                            <li>Used to store secret data, credentials, in base64 encode format</li>
+                        </ul>
+                    </li>
+                    <li><span>Volumes</span>
+                        <ul>
+                            <li>Storage on local machine, same node where pod is running</li>
+                            <li>Or remote, outside of K8s cluster</li>
+                        </ul>
+                    </li>
+                    <li><span>Deployment &amp; StatefulSet</span></li>
+                    <li>DaemonSet</li>
+        </div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://kubernetes.io/docs/home/">Documentation</a></li>
+            <li><a href = "https://www.youtube.com/watch?v=s_o8dwzRlu4">Kubernetes Crash Course for Absolute Beginners</a></li>
+            <li><a href = "https://www.youtube.com/watch?v=umXEmn3cMWY&t=5s">Kubernetes Architecture explained</a></li>
+            <li><a href = "https://azure.microsoft.com/en-us/topic/kubernetes-vs-docker/">Kubernetes vs. Docker</a></li>
+        </div>
+    </body>
+</html>
