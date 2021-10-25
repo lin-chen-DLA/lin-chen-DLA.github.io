@@ -29,15 +29,25 @@ kubectl port-forward svc/webapp-service 8080:3000
 http://localhost:8080
         </pre>
         </div>
-        <div class = "subtitle">Access the App</div>
+        <div class = "subtitle">Cleaning Up</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # kubectl get deployment
+kubectl delete deploy webapp-deployment
+kubectl delete deploy mogo-deployment
 
 # kubectl get service
+kubectl delete service mongo-service
+kubectl delete service webapp-service
+
+# kubectl get configmap
+kubectl delete configmap mongo-config
+
+# kubectl get secret
+kubectl delete secret mongo-secret
         </pre>
         </div>
-        <div class = "subtitle">Compose</div>
+        <div class = "subtitle">Menifest</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # mongo-config.yaml
