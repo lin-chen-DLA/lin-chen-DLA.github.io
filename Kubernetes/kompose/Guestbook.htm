@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Kubernetes</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Guestbook
+		</div>
+        <div class = "subtitle">Docker Compose File</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# docker-compose.yml
+version: "2"
+
+services:
+
+  redis-master:
+    image: k8s.gcr.io/redis:e2e
+    ports:
+      - "6379"
+
+  redis-slave:
+    image: gcr.io/google_samples/gb-redisslave:v3
+    ports:
+      - "6379"
+    environment:
+      - GET_HOSTS_FROM=dns
+
+  frontend:
+    image: gcr.io/google-samples/gb-frontend:v4
+    ports:
+      - "80:80"
+    environment:
+      - GET_HOSTS_FROM=dns
+    labels:
+      kompose.service.type: LoadBalancer
+        </pre>
+        </div>
+        <div class = "subtitle">Create K8s Manifest Files</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# convert docker-compose.yml
+kompose convert
+
+# convert a specific docker-compose file
+# kompose -f [compose_file_name] convert
+kompose -f compose.yaml convert
+
+# convert multiple docker-compose file
+kompose -f docker-compose.yml -f docker-guestbook.yml convert
+        </pre>
+        </div>
+        <div class = "subtitle">Deployment</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+kubectl apply -f redis-leader-deployment.yaml
+kubectl apply -f redis-leader-service.yaml
+kubectl apply -f redis-follower-deployment.yaml
+kubectl apply -f redis-follower-service.yaml
+kubectl apply -f frontend-deployment.yaml
+kubectl apply -f frontend-service.yaml
+        </pre>
+        </div>
+        <div class = "subtitle">Access the App</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+kubectl port-forward svc/frontend 8080:80
+
+http://localhost:8080
+        </pre>
+        </div>
+        <div class = "subtitle">Cleaning Up</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# kubectl get deployment
+kubectl delete deployment frontend
+kubectl delete deployment redis-follower
+kubectl delete deployment redis-leader
+
+# kubectl get service
+kubectl delete service frontend
+kubectl delete service redis-follower
+kubectl delete service redis-leader
+        </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li><a href = "https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/">Guestbook</a></li>
+        </div>
+    </body>
+</html>

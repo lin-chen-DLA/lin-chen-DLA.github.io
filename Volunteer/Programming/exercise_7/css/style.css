@@ -1,0 +1,18 @@
+.head-window {width: 80%; height: 100px; background-image:url(https://www.cjr.org/wp-content/uploads/2019/07/AdobeStock_100000042-e1563305717660-1300x500.jpeg); text-align: center; font-size: 40px; color: navy; margin: auto; padding-top: 60px; border-radius: 10px;}
+
+.body-window {width: 80%; height: 500px; margin: auto;}
+
+.foot-window {width: 80%; height: 50px; margin: auto; background:silver;text-align:center; color:navy; font-size: 18px; border-radius: 10px; position: relative}
+.left-window {height: 500px; width: 30%; float:left}
+
+.right-window {height: 500px; width: 65%; border-left: 1px solid silver; padding-left: 20px; padding-top: 20px; font-size: 18px; float:left}
+
+.button {width: 90%; height: 50px; padding-top: 20px; margin: auto; margin-top:10px; margin-bottom: 10px; background: gray; text-align: center; font-size: 24px; font-style: bold; color: white; border-radius: 40px;}
+
+.button:hover {width: 90%; height: 50px; padding-top: 20px; margin: auto; margin-top:10px; margin-bottom: 10px; background: gray; text-align: center; font-size: 24px; font-style: bold; color: navy; border-radius: 40px;}
+
+.button:active {width: 90%; height: 50px; padding-top: 20px; margin: auto; margin-top:10px; margin-bottom: 10px; background: navy; text-align: center; font-size: 24px; font-style: bold; color: gray; border-radius: 40px; box-shadow: 5px 5px}
+
+.title {font-size: 36px; font-weight: bold}
+
+a {text-decoration: none}

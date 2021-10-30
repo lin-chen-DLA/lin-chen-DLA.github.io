@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Helm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Intro
+		</div>
+        <div class = "subtitle">Repository</div>
+		<div class = "block">
+            <pre class = "prettyprint linenums">
+# search https://artifacthub.io/
+# helm search hub [chart]
+helm search hub wordpress
+
+# add repository
+# helm repo add [repository_name] [url]
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+# search a repository
+helm search repo [repository_name]
+helm search repo bitnami
+            </pre>
+        </div>
+        <div class = "subtitle">Install</div>
+		<div class = "block">
+            <pre class = "prettyprint linenums">
+# install a package with a specific name
+# helm install [release_name] [chart_name]
+helm install happy-panda bitnami/wordpress
+
+# install a package and generate a name
+# helm install [chart_name] --generate-name
+helm install bitnami/mysql --generate-name
+
+# list releases
+helm list
+
+# uninstall a release
+# helm uninstall [release_name]
+helm uninstall mysql-1612624192
+            </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+        </div>
+    </body>
+</html>
