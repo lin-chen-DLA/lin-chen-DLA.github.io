@@ -16,12 +16,249 @@
 			Interactive Graph
 		</div>
 
-		<div class = "subtitle">Hover</div>
+		<div class = "subtitle">Add Index as Customdata</div>
 		<div class = "block">
+            <li>express
+                <ul>
+                    <li><span>custom_data</span>
+                        <ul>
+                            <li>assign data in one or more columns to each record</li>
+                            <li>combine with "color" to assign customdata to each record</li>
+                        </ul>
+                    </li>
+                    <li>customdata
+                        <ul>
+                            <li>assign a list of data to each trace</li>
+                            <li>combining with "color" will apply the same list of data to several traces</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
 		<pre class = "prettyprint linenums">
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = pd.DataFrame({
+    "x": [1,2,1,2, 1],
+    "y": [1,2,3,4, 5],
+    "label": ['s1', 's2', 's3', 's4', 's5'],
+    "fruit": ["apple", "apple", "orange", "orange", "mango"]
+})
+
+fig = px.scatter(df, x="x", y="y", color="fruit", custom_data = ['label'])
+
+fig.update_traces(marker_size=20)
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='hover-data')
+    ])
+
+
+@app.callback(
+    Output('hover-data', 'children'),
+    Input('basic-interactions', 'hoverData'))
+def display_hover_data(hoverData):
+    return json.dumps(hoverData, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
         </pre>
 		</div>
-		<div class = "subtitle">Interactive Graph</div>
+		<div class = "block">
+            <li>graph object
+                <ul>
+                    <li><span>customdata</span>
+                        <ul>
+                            <li>assign a list of data to a trace</li>
+                            <li>use the different lists of data to different traces</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.graph_objects as go
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = pd.DataFrame({
+    "x": [1,2,1,2, 1],
+    "y": [1,2,3,4, 5],
+    "label": ['s1', 's2', 's3', 's4', 's5'],
+    "fruit": ["apple", "apple", "orange", "orange", "mango"]
+})
+
+fig = go.Figure()
+
+temp = df[df['fruit'] == 'apple']
+trace = go.Scatter(x = temp['x'], y = temp['y'], mode='markers', customdata = temp.index)
+fig.add_trace(trace)
+
+temp = df[df['fruit'] == 'orange']
+trace = go.Scatter(x = temp['x'], y = temp['y'], mode='markers', customdata = temp.index)
+fig.add_trace(trace)
+
+temp = df[df['fruit'] == 'mango']
+trace = go.Scatter(x = temp['x'], y = temp['y'], mode='markers', customdata = temp.index)
+fig.add_trace(trace)
+
+fig.update_traces(marker_size=20)
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='hover-data')
+    ])
+
+
+@app.callback(
+    Output('hover-data', 'children'),
+    Input('basic-interactions', 'hoverData'))
+def display_hover_data(hoverData):
+    return json.dumps(hoverData, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Mode</div>
+		<div class = "block">
+            <li>clickmode, determines the mode of single click interactions
+                <ul>
+                    <li>event (default), emits the "plotly_click" event, not select the clicked data point</li>
+                    <li>select, select the clicked data point, not emit the "plotly_click" event</li>
+                    <li><span>event+select</span>, emits the "plotly_click" event, and select the clicked data point</li>
+                    <li>none, not emits the "plotly_click" event, not select the clicked data point</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = pd.DataFrame({
+    "x": [1,2,1,2, 1],
+    "y": [1,2,3,4, 5],
+    "label": ['s1', 's2', 's3', 's4', 's5'],
+    "fruit": ["apple", "apple", "orange", "orange", "mango"]
+})
+
+fig = px.scatter(df, x="x", y="y", color="fruit", custom_data = ['label'])
+
+fig.update_layout(clickmode='event+select')
+
+fig.update_traces(marker_size=20)
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'clickData'))
+def display_click_data(clickData):
+    return json.dumps(clickData, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+		</div>
+		<div class = "block">
+            <li><span>dragmode</span>, determines the mode of drag interactions
+                <ul>
+                    <li>select and lasso, select the record points, return points and range</li>
+                    <li>zoom (default), zoom the selected area, no return</li>
+                    <li>pan, drag the plot</li>
+                    <li>orbit and turntable, apply to 3D traces</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = pd.DataFrame({
+    "x": [1,2,1,2, 1],
+    "y": [1,2,3,4, 5],
+    "label": ['s1', 's2', 's3', 's4', 's5'],
+    "fruit": ["apple", "apple", "orange", "orange", "mango"]
+})
+
+fig = px.scatter(df, x="x", y="y", color="fruit", custom_data = ['label'])
+
+fig.update_layout(dragmode = "select")
+
+fig.update_traces(marker_size=20)
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'selectedData'))
+def display_selected_data(selectedData):
+    return json.dumps(selectedData, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+		</div>
+		<div class = "block">
+            <li>hovermode, determines the mode of hover interactions
+                <ul>
+                    <li>closet (default), a single hoverlabel will appear for the "closest" point within the "hoverdistance"</li>
+                </ul>
+            </li>
+		</div>
+		<div class = "subtitle">Interactive Information</div>
 		<div class = "block">
 			<li>hoverData, data when mouse is hovered</li>
 			<li>clickData, data selected by clicking</li>
@@ -29,49 +266,64 @@
 			<li>relyoutData, click and drag on the graph to zoom or click on the zoom buttons in the graph's menu bar, or click on legend items</li>
 		<pre class = "prettyprint linenums">
 import json
+
 import dash
-import dash_html_components as html
-import dash_core_components as dcc
+from dash import dcc
+from dash import html
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import pandas as pd
- 
+
 app = dash.Dash(__name__)
 
-df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
-temp = df[df['Country Name'] == 'Canada']
-temp = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+df = pd.DataFrame({
+    "x": [1,2,1,2, 1],
+    "y": [1,2,3,4, 5],
+    "label": ['s1', 's2', 's3', 's4', 's5'],
+    "fruit": ["apple", "apple", "orange", "orange", "mango"]
+})
+
+df.index = ['r1', 'r2', 'r3', 'r4', 'r5']
 
 fig = go.Figure()
 
-trace_1 = go.Bar(x=temp['Year'], y=temp['Value'])
+trace = go.Scatter(x = df['x'], y = df['y'], mode='markers', customdata = df.index)
+fig.add_trace(trace)
 
-fig.add_trace(trace_1)
+fig.update_layout(clickmode='event+select', dragmode = "lasso")
 
-child =  dcc.Graph(figure=fig, id='graph')
- 
-app.layout = html.Div([child, html.Div(id='output')])
+fig.update_traces(marker_size=20)
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
 
 @app.callback(
     Output('output', 'children'),
-    Input('graph', 'hoverData'))
-def display_hover_data(hoverData):
-    print(hoverData)
-    return json.dumps(hoverData, indent=2)
- 
-if __name__ == "__main__":
+    Input('basic-interactions', 'selectedData'))
+def display_selected_data(selectedData):
+    if selectedData:
+        indices = [p['customdata'] for p in selectedData['points']]
+        temp = df.loc[indices]
+        return temp.to_string()
+    return json.dumps(selectedData, indent=2)
+
+if __name__ == '__main__':
     app.run_server(debug=True)
 		</pre>
 		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://plotly.com/python/reference/layout/">Mode</a></li>
 			<li><a href = "https://plotly.github.io/plotly.py-docs/plotly.graph_objects.html">Graph Objects</a></li>
 			<li><a href = "https://plotly.com/python-api-reference/plotly.express.html">Express</a></li>
 			<li><a href = "https://plotly.com/python/reference/index/">Python Figure Reference</a></li>
-			<li><a href = "https://plotly.com/python/plotly-fundamentals/">Fundamentals</a></li>
-			<li><a href = "https://plotly.com/python/animations/">Intro to Animations in Python</a></li>
-			<li><a href = "https://plotly.com/javascript/reference/index/">JavaScript Figure Reference</a></li>
+            <li><a href = "https://dash.plotly.com/interactive-graphing">Tutorial</a></li>
 		</div>
 	</body>
 </html>
