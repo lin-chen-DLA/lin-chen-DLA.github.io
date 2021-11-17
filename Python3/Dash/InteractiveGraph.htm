@@ -263,8 +263,57 @@ if __name__ == '__main__':
 			<li>hoverData, data when mouse is hovered</li>
 			<li>clickData, data selected by clicking</li>
 			<li>selectedData, data selected with box select or lasso select</li>
-			<li>relyoutData, click and drag on the graph to zoom or click on the zoom buttons in the graph's menu bar, or click on legend items</li>
+			<li>relayoutData, click and drag on the graph to zoom or click on the zoom buttons in the graph's menu bar, or click on legend items</li>
+        </div>
+		<div class = "subtitle">Scatter</div>
+		<div class = "block">
 		<pre class = "prettyprint linenums">
+# Plotly Express
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = pd.DataFrame({
+    "x": [1,2,1,2, 1],
+    "y": [1,2,3,4, 5],
+    "label": ['s1', 's2', 's3', 's4', 's5'],
+    "fruit": ["apple", "apple", "orange", "orange", "mango"]
+})
+
+fig = px.scatter(df, x="x", y="y", color="fruit", custom_data = ['label'])
+
+fig.update_traces(marker_size=20)
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'relayoutData'))
+def display_relayout_data(relayoutData):
+    return json.dumps(relayoutData, indent=2)
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Graph Objective
 import json
 
 import dash
@@ -317,6 +366,476 @@ if __name__ == '__main__':
     app.run_server(debug=True)
 		</pre>
 		</div>
+		<div class = "subtitle">Pie</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Plotly Express
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = px.data.gapminder().query("year == 2007").query("continent == 'Europe'")
+df.loc[df['pop'] &lt; 2.e6, 'country'] = 'Other countries'
+
+fig = px.pie(df, values='pop', names='country', custom_data = ['country'], title='Population of European continent')
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'clickData'))
+def display_selected_data(data):
+    if data:
+        country = data['points'][0]['label']
+        return df[df['country'] == country].to_string()
+    return json.dumps(data, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Graph Objective
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.express as px
+import plotly.graph_objects as go
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = px.data.gapminder().query("year == 2007").query("continent == 'Europe'")
+df.loc[df['pop'] &lt; 2.e6, 'country'] = 'Other countries'
+
+fig = go.Figure()
+
+trace = go.Pie(values = df['pop'], labels = df['country'])
+fig.add_trace(trace)
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'clickData'))
+def display_selected_data(data):
+    #if data:
+        #country = data['points'][0]['label']
+        #return df[df['country'] == country].to_string()
+    return json.dumps(data, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Histogram</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Plotly Express
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = px.data.gapminder().query("year == 2007").query("continent == 'Europe'")
+df.loc[df['pop'] &lt; 2.e6, 'country'] = 'Other countries'
+
+df = px.data.tips()
+fig = px.histogram(df, x="total_bill", nbins=40)
+
+fig.update_layout(bargap=0.1)
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'clickData'))
+def display_selected_data(data):
+    return json.dumps(data, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Graph Objective
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.express as px
+import plotly.graph_objects as go
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = px.data.gapminder().query("year == 2007").query("continent == 'Europe'")
+df.loc[df['pop'] &lt; 2.e6, 'country'] = 'Other countries'
+
+df = px.data.tips()
+
+fig = go.Figure()
+trace = go.Histogram(x = df["total_bill"])
+fig.add_trace(trace)
+
+fig.update_layout(bargap=0.1)
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'clickData'))
+def display_selected_data(data):
+    if data:
+        return df.iloc[data['points'][0]['pointNumbers']].to_string()
+    return json.dumps(data, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Bar</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Plotly Express
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = px.data.gapminder().query("year == 2007").query("continent == 'Europe'")
+df.loc[df['pop'] &lt; 2.e6, 'country'] = 'Other countries'
+
+fig = px.bar(df, x='country', y='pop')
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'clickData'))
+def display_selected_data(data):
+    if data:
+        country = data['points'][0]['label']
+        return df[df['country'] == country].to_string()
+    return json.dumps(data, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Graph Objective
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.graph_objects as go
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = px.data.gapminder().query("year == 2007").query("continent == 'Europe'")
+df.loc[df['pop'] &lt; 2.e6, 'country'] = 'Other countries'
+
+fig = go.Figure()
+trace = go.Bar(x = df['country'], y = df['pop'])
+fig.add_trace(trace)
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'clickData'))
+def display_selected_data(data):
+    if data:
+        #return df.iloc[data['points'][0]['pointNumbers']].to_string()
+        country = data['points'][0]['label']
+        return df[df['country'] == country].to_string()
+    return json.dumps(data, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Line</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Plotly Express
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = px.data.gapminder().query("continent=='Americas'")
+fig = px.line(df, x="year", y="lifeExp", color='country', markers=True, custom_data=['country', 'year'])
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'clickData'))
+def display_selected_data(data):
+    if data:
+        country = data['points'][0]['customdata'][0]
+        year = data['points'][0]['customdata'][1]
+        return df.loc[(df['country'] == country) &amp; (df['year'] == year)].to_string()
+    return json.dumps(data, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Box</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Plotly Express
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = px.data.gapminder()
+fig = px.box(df, x = 'country', y="lifeExp")
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'clickData'))
+def display_selected_data(data):
+    if data:
+        country = data['points'][0]['x']
+        return df[df['country'] == country].to_string()
+    return json.dumps(data, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Graph Objective
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.graph_objects as go
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = px.data.gapminder()
+
+fig = go.Figure()
+trace = go.Box(x = df['country'], y = df['lifeExp'])
+fig.add_trace(trace)
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'clickData'))
+def display_selected_data(data):
+    if data:
+        country = data['points'][0]['x']
+        return df[df['country'] == country].to_string()
+    return json.dumps(data, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Violin</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Plotly Express
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = px.data.gapminder()
+fig = px.violin(df, x = ['country'], y="lifeExp")
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'clickData'))
+def display_selected_data(data):
+    if data:
+        country = data['points'][0]['x']
+        return df[df['country'] == country].to_string()
+    return json.dumps(data, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Graph Objective
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import plotly.graph_objects as go
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = px.data.gapminder()
+
+fig = go.Figure()
+trace = go.Violin(x = df['country'], y = df['lifeExp'])
+fig.add_trace(trace)
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=fig
+    ),
+
+    html.Pre(id='output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('basic-interactions', 'clickData'))
+def display_selected_data(data):
+    if data:
+        country = data['points'][0]['x']
+        return df[df['country'] == country].to_string()
+    return json.dumps(data, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
             <li><a href = "https://plotly.com/python/reference/layout/">Mode</a></li>
