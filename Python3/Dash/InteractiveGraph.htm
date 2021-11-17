@@ -145,7 +145,7 @@ if __name__ == '__main__':
         </div>
 		<div class = "subtitle">Mode</div>
 		<div class = "block">
-            <li>clickmode, determines the mode of single click interactions
+            <li><span>clickmode</span>, determines the mode of single click interactions
                 <ul>
                     <li>event (default), emits the "plotly_click" event, not select the clicked data point</li>
                     <li>select, select the clicked data point, not emit the "plotly_click" event</li>
@@ -252,7 +252,7 @@ if __name__ == '__main__':
         </pre>
 		</div>
 		<div class = "block">
-            <li>hovermode, determines the mode of hover interactions
+            <li><span>hovermode</span>, determines the mode of hover interactions
                 <ul>
                     <li>closet (default), a single hoverlabel will appear for the "closest" point within the "hoverdistance"</li>
                 </ul>
@@ -260,10 +260,10 @@ if __name__ == '__main__':
 		</div>
 		<div class = "subtitle">Interactive Information</div>
 		<div class = "block">
-			<li>hoverData, data when mouse is hovered</li>
-			<li>clickData, data selected by clicking</li>
-			<li>selectedData, data selected with box select or lasso select</li>
-			<li>relayoutData, click and drag on the graph to zoom or click on the zoom buttons in the graph's menu bar, or click on legend items</li>
+            <li><span>hoverData</span>, data when mouse is hovered</li>
+            <li><span>clickData</span>, data selected by clicking</li>
+            <li><span>selectedData</span>, data selected with box select or lasso select</li>
+            <li><span>relayoutData</span>, click and drag on the graph to zoom or click on the zoom buttons in the graph's menu bar, or click on legend items</li>
         </div>
 		<div class = "subtitle">Scatter</div>
 		<div class = "block">
@@ -831,6 +831,122 @@ def display_selected_data(data):
         country = data['points'][0]['x']
         return df[df['country'] == country].to_string()
     return json.dumps(data, indent=2)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Cross Interaction between Graphs</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import json
+
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
+import plotly.graph_objects as go
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = px.data.gapminder()
+
+sub_operation = False
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='g1',
+    ),
+
+    dcc.Graph(
+        id='g2',
+    ),
+
+    html.Pre(id='output1'),
+    ])
+
+def get_g1_plot(data):
+    fig = go.Figure()
+
+    trace = go.Scatter(x = data['lifeExp'], y = data['gdpPercap'], mode='markers')
+    fig.add_trace(trace)
+
+    return fig
+
+def get_g2_plot(data):
+    fig = go.Figure()
+
+    trace = go.Pie(values = data['pop'], labels = data['continent'])
+    fig.add_trace(trace)
+
+    return fig
+
+def data_screened(data, data_g1, data_g2, sub):
+    temp = data
+
+    if data_g1 and 'xaxis.range[0]' in data_g1:
+        xl = data_g1['xaxis.range[0]']
+        xr = data_g1['xaxis.range[1]']
+        yl = data_g1['yaxis.range[0]']
+        yr = data_g1['yaxis.range[1]']
+        temp = temp.loc[(temp.lifeExp &gt; xl) &amp; (temp.lifeExp &lt; xr) &amp; (temp.gdpPercap &gt; yl) &amp; (temp.gdpPercap &lt; yr)]
+
+    if data_g2 and sub:
+        country = data_g2['points'][0]['label']
+        temp = temp[temp['continent'] == country]
+
+    return temp
+
+@app.callback(
+    Output('g1', 'figure'),
+    Output('g2', 'figure'),
+    Output('output1', 'children'),
+    Input('g1', 'relayoutData'),
+    Input('g2', 'clickData')
+    )
+def display_selected_data(data_g1, data_g2):
+    ctx = dash.callback_context
+    global sub_operation
+
+    if data_g1:
+        # auto selection
+        if 'xaxis.range[0]' not in data_g1:
+            # operations by clicking reset button
+            if 'xaxis.autorange' in data_g1:
+                # reset operation
+                if sub_operation:
+                    sub_operation = False
+                    return get_g1_plot(df), get_g2_plot(df), str(df.shape)
+                # click operation on pie chart
+                else:
+                    sub_operation = True
+                    temp = data_screened(df, data_g1, data_g2, sub_operation)
+                    return get_g1_plot(temp), get_g2_plot(temp), temp.to_string()
+            # click operation following auto selection
+            if data_g2:
+                sub_operation = True
+                temp = data_screened(df, data_g1, data_g2, sub_operation)
+                return get_g1_plot(temp), get_g2_plot(temp), temp.to_string()
+            # intial auto selection
+            sub_operation = False
+            return get_g1_plot(df), get_g2_plot(df), str(df.shape)
+
+        # select operation on scatter plot
+        if ctx.triggered[0]['prop_id'].split('.')[0] == 'g1':
+            temp = data_screened(df, data_g1, data_g2, sub_operation)
+            return get_g1_plot(temp), get_g2_plot(temp), temp.to_string()
+
+        # click operation on pie chart
+        if ctx.triggered[0]['prop_id'].split('.')[0] == 'g2':
+            sub_operation = True
+            temp = data_screened(df, data_g1, data_g2, sub_operation)
+            return get_g1_plot(temp), get_g2_plot(temp), temp.to_string()
+
+    # initial state
+    return go.Figure(), go.Figure(), 'Plotting ...'
 
 if __name__ == '__main__':
     app.run_server(debug=True)
