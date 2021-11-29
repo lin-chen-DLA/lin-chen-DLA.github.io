@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Database</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Data Types
+		</div>
+		<div class = "subtitle">String</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+set key1 value1 Ex 60 # setup a key-value pair, expire in 60 seconds
+get key1 # get value
+getrange mykey 0 6 # get a sub string from start to end, both indices are inclusive
+mset key1 value1 key2 value2 # setup multiple key-value pairs
+mget key1 key2, # get multiple keys
+
+strlen key1 # get value length
+
+incr num # increase the integer value of a key by 1
+incrby num # increase the number stored at the key by the specified value
+decr num # decrease the integer value of a key by 1
+decrby num 5 # decrease the number stored at the key by the specified value
+append key1 value # add some value in a key
+            </pre>
+        </div>
+		<div class = "subtitle">Hash</div>
+		<div class = "block">
+            <li>Hashes (dict type), maps between the string fields and the string values</li>
+			<pre class = "prettyprint linenums">
+hset name2 field1 value1 # setup a field-value for a hash
+hset name2 field2 value2
+hsetnx name2 field3 value3 # store a field-value pair if the field does not yet exist
+hmset name1 field1 value1 field2 value2 # setup muiltiple field-value pairs for a hash
+
+hkeys name1 # get keys in a hash
+hvals name1 # get values in a hash
+hgetall name1 # list the fields and values in a hash
+hget name1 field1 # get the value of a field in a hash
+
+hlen name1 # get the number of fields in a hash
+hexists name1 field1 # whether the hash has a specific field
+
+hincrby name1 field1 # increase the number stored at the field in a hash by the specified value
+hincrbyfloat name1 field1 # increase the number at the specified field of a hash by the specified float value
+            </pre>
+        </div>
+		<div class = "subtitle">List</div>
+		<div class = "block">
+            <li>List, a list of strings, sorted by inserted order</li>
+			<pre class = "prettyprint linenums">
+lpush list1 str1 str2 str3 # push strings to the left of a list
+lpushx list str1 # push a string to the left of a list if the list exists
+rpush list1 value3 # push a value to the right of a list
+rpushx list str1 # push a string to the right of a list if the list exists
+linsert list before value1 value2 # insert value2 before value1
+linsert list after value1 value2 # insert value2 after value1
+lset list 1 value2 # sets the list element at an index to value2
+
+lrange list1 0 -1 # list values in a list
+lindex list1 0 # access a value of a list by index
+llen list1 # return list size
+
+# when all elements are removed from the list, the list is removed from the database
+lpop list1 # remove the first element of the list
+rpop list1 # remove the last element of the list
+blpop list1 100 # remove the first element of the list, if not exist, blocks the client for specific time
+brpop list1 100 # remove the last element of the list, if not exist, blocks the client for specific time
+lrem list 0 value1 # remove all the elements equal to value1
+lrem list 1 value1 # remove the first occurrence of elements equal to value1 from the head to tail
+lrem list -1 value1 # remove the first occurrence of elements equal to value1 from the tail to head
+ltrim list 0 2 # trime the list to a specific range
+            </pre>
+        </div>
+		<div class = "subtitle">Set</div>
+		<div class = "block">
+            <li>Set, an unordered collection of unique strings</li>
+			<pre class = "prettyprint linenums">
+sadd container value1 value2 value1 # add value1 and value2 into a set
+smembers container # the container keeps non-repeat values
+scard container # get the cardinality of the set
+sismember set1 value1 # if value1 is a member of set1
+srandmember set1 # get a random element of set1
+
+smove set1 set2 value1 # move value1 in set1 to set2
+spop set1 # randomly remove an element from set1
+srem set1 value1 # remove value1 from set1
+
+sdiff set1 set2 # return the elements in set1, but not in set2
+sdiffstore set3 set1 set2 # save the difference to set3
+sinter set1 set2 # intersection of all specified sets
+sinterstore set3 set1 set2 # save the interaction to set3
+sunion set1 set2 # union of set1 and set2
+sunionstore set3 set1 set2 # save the union to set3
+            </pre>
+        </div>
+		<div class = "subtitle">Sorted Set</div>
+		<div class = "block">
+            <li>Sorted Set, unique strings with members sorted by scores from smallest to greatest</li>
+			<pre class = "prettyprint linenums">
+zadd zs 1 s1 2 s2 3 s3 # add s1, s2, and 3 with scores 1, 2, and 3
+
+zcard zs # get the number of the elements in zs
+zcount zs 1 4 # get the range of the elements between min score and max score, inclusive
+zcount zs (1 4 # get the range of the elements between min score and max score, exclusive
+zlexcount zs - (s2 # get the range of the elements by lexicographical order
+zscore zs s1 # get the score of s1
+zrank zs s3 # get the rank of s3
+zrevrank zs s1 # get the rank of s1 in a reverse order
+
+zrange zs 0 -1 # get all elements of zs, get the specified range of elements, by index
+zrangebylex zs - + # get all elements of zs
+zrangebylex zs - (value1 # get the elements before value1
+zrangebyscore zs 0 5 # output the elements with scores from 0 to 5
+zrevrange zs 0 -1 # get elements ordered from the highest to the lowest score
+zrevrangebyscore zs 2 0 # get elements by their scores from the high score to the low score
+
+zincrby zs 10 s1 # increase the score of s1 by 10
+
+zinterstore zs3 2 zs zs2 # save the interaction of zs and zs2 to zs3, the score of an element in the interaction is the summation of its scores in previously sets
+zunionstore zs3 2 zs zs2 # save the union of zs and zs2 to zs3, the score of an element in the union is the summation of its scores in previously sets
+
+zrem zs s1 # remove s1 from zs
+zremrangebyrank zs 1 3 # remove elements by their ranks
+zremrangebyscore zs 0 5 # remove elements by their scores
+            </pre>
+        </div>
+		<div class = "subtitle">HyperLogLog</div>
+		<div class = "block">
+            <li>HyperLogLog, an approximation of the number of unique elements in a set, using just a constant, and small amount of memory</li>
+			<pre class = "prettyprint linenums">
+pfadd key value1 value2 value3 value1
+pfcount key #3, count the number of unique values
+pfmerge hlog3 hlog hlog2 # merge hlog and hlog2 to hlog3
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://www.openmymind.net/redis.pdf">The Little Redis Book</a></li>
+            <li><a href = "https://kb.objectrocket.com/category/redis">Redis Knowledge Base</a></li>
+            <li><a href = "https://redis.io/commands">Redis Commands</a></li>
+            <li><a href = "https://redis.io/documentation">Redis Documentation</a></li>
+        </div>
+    </body>
+</html>

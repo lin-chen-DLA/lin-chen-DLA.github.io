@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Database</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Persistence
+		</div>
+		<div class = "subtitle">RDB</div>
+		<div class = "block">
+            <li><span>RDB (Redis Database)</span>: The RDB persistence performs point-in-time snapshots of your dataset at specified intervals
+                <ul>
+                    <li>Redis saves key-value pairs to dump.rdb for backup</li>
+                    <li>Redis saves dump.rdb when stop normally, does not automatically save dump.rdb when system crash or the redis processes are killed</li>
+                    <li>Load dump.rdb when start, makes it persistent</li>
+                    <li>Pros
+                        <ul>
+                            <li>Compact, single file of Redis data</li>
+                            <li>Perfect for backups</li>
+                            <li>Performance is good</li>
+                            <li>Allows Faster Restarts</li>
+                        </ul>
+                    </li>
+                    <li>Cons
+                        <ul>
+                            <li>Chanes of data loss</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+			<pre class = "prettyprint linenums">
+# Edit /usr/local/etc/redis.conf to configure save, restart redis
+
+CONFIG get dir # find the location of dump.rdb, /usr/local/var/db/redis
+SAVE # manually save a dump.rdb file
+
+save 60 1000 # dump the dataset to disk every 60 seconds if at least 1000 keys changed
+            </pre>
+        </div>
+		<div class = "subtitle">AOF</div>
+        <div class = "block">
+            <li><span>AOF (Append Only File)</span>, logs every write operation received by the server, that will be played again at server startup, reconstructing the original dataset
+                <ul>
+                    <li>Pros
+                        <ul>
+                            <li>High Durability</li>
+                            <li>Allows different fsync policies</li>
+                            <li>Append only log, less chances of corruption</li>
+                            <li>Corrupted file can be fixed by redis-check-aof tool</li>
+                            <li>AOF File can be parsed, lines can be removed</li>
+                        </ul>
+                    </li>
+                    <li>Cons
+                        <ul>
+                            <li>Size is bigger than RDB</li>
+                            <li>Slower than RDB</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+			<pre class = "prettyprint linenums">
+# Edit /usr/local/etc/redis.conf, change "appendonly no" to "appendonly yes", restart redis
+# once you set appendonly yes in redis.conf, and restart Redis, it will load data from AOF file instead of dump.rdb
+            </pre>
+        </div>
+		<div class = "subtitle">No Persistence</div>
+        <div class = "block">
+            <li>be able to disable persistence completely</li>
+        </div>
+		<div class = "subtitle">RDB + AOF</div>
+        <div class = "block">
+            <li>combine both AOF and RDB in the same instance</li>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://redis.io/topics/persistence">Redis Persistence</a></li>
+            <li><a href = "https://kb.objectrocket.com/category/redis">Redis Knowledge Base</a></li>
+            <li><a href = "https://redis.io/commands">Redis Commands</a></li>
+            <li><a href = "https://redis.io/documentation">Redis Documentation</a></li>
+        </div>
+    </body>
+</html>

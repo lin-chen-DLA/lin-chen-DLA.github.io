@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Database</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Commands
+		</div>
+		<div class = "subtitle">Commands</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+redis-cli # start a redis client
+
+# keys [pattern], list keys
+keys * 
+
+# scan [cursor] match [pattern] count [num]
+# cursor, the scan position
+# pattern, search pattern
+# num, the maxium search num, default is 10
+scan 0 count 3 # return cursor 12 and three names
+scan 12 # continue scan from cursor 12
+
+# rename [key_name] [new_key_name], rename a key
+rename key1 key2
+
+# del [key], delete a key
+del container
+
+# exists [key], if exist a key, 1, yes; otherwise, no
+exists key
+exists key1 key2
+
+# return the number of keys in the currently-selected database
+dbsize
+
+#type [key], check the type of a key
+type container
+
+#expire [key] [seconds], setup expire time for a key
+expire container 5
+
+# expireat [key] [timestamp]
+# timestamp is a Unix timestamp, which is seconds since Jan 01, 1970 (UTC)
+# convert time to timestamp, https://www.unixtimestamp.com/
+expireat container 1637195373
+
+# ttl [key], check expiration time
+ttl container
+
+# persist [key], remove the expiration from a key
+persist container
+
+# randomkey, get a random key from Redis database
+randomkey
+
+# remove all keys
+flushall
+
+# exit
+exit
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://www.openmymind.net/redis.pdf">The Little Redis Book</a></li>
+            <li><a href = "https://kb.objectrocket.com/category/redis">Redis Knowledge Base</a></li>
+            <li><a href = "https://redis.io/commands">Redis Commands</a></li>
+            <li><a href = "https://redis.io/documentation">Redis Documentation</a></li>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Database</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Introduction
+		</div>
+
+		<div class = "subtitle">What is Redis?</div>
+		<div class = "block">
+            <li>Redis (Remote dictionary server) is an <span>in-memory</span>, <span>key-value</span> database, commonly referred to as a data structure server, an example of a NoSQL database</li>
+        </div>
+		<div class = "subtitle">Why Redis?</div>
+		<div class = "block">
+            <li>Reading and writing are fast since Redis stores data in memory</li>
+            <li>Mainly used for <span>caching</span> purpose like a memcache</li>
+            <li>Can also be used as a <span>datastore</span></li>
+        </div>
+		<div class = "subtitle">Key Features</div>
+		<div class = "block">
+            <li>Speed</li>
+            <li>Persistence</li>
+            <li>Data Structures, up to 512MB</li>
+            <li>High availability and scalability</li>
+        </div>
+		<div class = "subtitle">Installation</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Mac
+brew update
+brew install redis
+brew services start redis # start redis service
+brew services stop redis # stop redis service
+brew services restart redis # restart redis service
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# download Redis
+http://download.redis.io/
+
+# uncompress
+tar -xvf redis-stable.tar.gz
+
+# enter Redis folder
+make
+
+# start a redis server
+./src/redis-server # start redis server
+            </pre>
+        </div>
+		<div class = "subtitle">CLI</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# view redis host ip and port number
+ps -e | grep redis
+
+# start redis-cli interactive environment
+redis-cli -h [ip] -p [port]
+
+# command line
+redis-cli [command]
+
+# online environment
+https://try.redis.io/
+            </pre>
+        </div>
+		<div class = "subtitle">Publish/Subscribe</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# client 1
+subscribe channel1 # subscribe channel1
+unsubscribe channel1 # unsubscribe channel1
+
+# client 2
+publish channel1 message # publish a message to the channel and client 1 will receive it from the channel
+
+psubscribe pattern # subscribe the channels with the specific pattern
+punsubscribe pattern # unsubscribe the channels with the specific pattern
+
+pubsub channels # list the active channels
+            </pre>
+        </div>
+		<div class = "subtitle">Transaction</div>
+		<div class = "block">
+            <li>allow the execution of a group of commands in a single step</li>
+            <li><span>atomic</span>, either all of the commands or none are processed</li>
+            <li>if errors occur then the transaction is aborted</li>
+			<pre class = "prettyprint linenums">
+multi # start a transaction
+incr count
+incr count
+get count
+exec # execute the transaction
+            </pre>
+			<pre class = "prettyprint linenums">
+discard # discards all commands issued after MULTI
+            </pre>
+			<pre class = "prettyprint linenums">
+# will be implemented only if num is not changed
+watch num
+multi
+incr num
+get num
+exec
+            </pre>
+        </div>
+		<div class = "subtitle">Server</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# gets information and statistics about the server
+info
+
+# return the information and statistics about the client connections
+client list
+
+# listens for all the requests received by the server in real time
+monitor
+
+# get the maximum number of clients
+config get maxclients
+
+# list all Redis commands
+command
+            </pre>
+        </div>
+		<div class = "subtitle">Databases</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# get the number of databases
+config get databases
+
+# select database by index
+select index 
+
+# list the databases for which some keys are defined
+info keyspace
+            </pre>
+        </div>
+		<div class = "subtitle">Pipeline</div>
+		<div class = "block">
+            <li>Send multiple commands to the server without waiting for the replies, and finally read the replies in a single step</li>
+			<pre class = "prettyprint linenums">
+# command line
+echo "set s v" | redis-cli
+echo "set s v" | nc localhost 6379
+
+# pass several Redis commands to a Redis server
+echo "select 1\r\nset s4 v4" | redis-cli
+
+# Client PING
+# Client PING
+# Client PING
+# Server OK
+# Server OK
+# Server OK
+(printf "PING\r\nPING\r\nPING\r\n"; sleep 1) | nc localhost 6379
+
+# import from a csv file
+# country.csv
+# China CN
+# America US
+awk '{print "set " $1 " "$2}' country.csv | redis-cli
+awk '{print "set " $1 " "$2}' country.csv | nc localhost 6379
+awk '{print "set " $1 " "$2}' country.csv | redis-cli --pipe # bulk, one summary reply instead of one reply for each instruction
+            </pre>
+        </div>
+		<div class = "subtitle">Use a Different Port</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Edit /usr/local/etc/redis.conf
+# Change port number
+
+brew services restart redis
+
+redis-cli -p [portNumber]
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://redis.io/download#installation">Installation</a></li>
+            <li><a href = "https://redis.io/topics/pipelining">Pipelining</a></li>
+            <li><a href = "https://www.openmymind.net/redis.pdf">The Little Redis Book</a></li>
+            <li><a href = "https://kb.objectrocket.com/category/redis">Redis Knowledge Base</a></li>
+            <li><a href = "https://redis.io/commands">Redis Commands</a></li>
+            <li><a href = "https://redis.io/documentation">Redis Documentation</a></li>
+            <li><a href = "https://sysadminxpert.com/how-to-install-redis-on-amazon-linux-or-centos/">Install Redis on Amazon Linux</a></li>
+            <li><a href = "https://tableplus.com/blog/2018/06/best-redis-gui-client-tableplus.html">Best Redis GUI client for Mac - TablePlus</a></li>
+        </div>
+    </body>
+</html>
