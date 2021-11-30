@@ -15,13 +15,36 @@
 		<div class = "title">
 			Commands
 		</div>
-		<div class = "subtitle">Commands</div>
+		<div class = "subtitle">CLI Operations</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
 redis-cli # start a redis client
 
+# exit
+exit
+            </pre>
+        </div>
+		<div class = "subtitle">Key Operations</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
 # keys [pattern], list keys
 keys * 
+
+# return the number of keys in the currently-selected database
+dbsize
+
+#type [key], check the type of a key
+type key1
+
+# exists [key], if exist a key, 1, yes; otherwise, no
+exists key
+exists key1 key2
+
+# rename [key_name] [new_key_name], rename a key
+rename key1 key2
+
+# randomkey, get a random key from Redis database
+randomkey
 
 # scan [cursor] match [pattern] count [num]
 # cursor, the scan position
@@ -30,24 +53,18 @@ keys *
 scan 0 count 3 # return cursor 12 and three names
 scan 12 # continue scan from cursor 12
 
-# rename [key_name] [new_key_name], rename a key
-rename key1 key2
-
 # del [key], delete a key
 del container
 
-# exists [key], if exist a key, 1, yes; otherwise, no
-exists key
-exists key1 key2
-
-# return the number of keys in the currently-selected database
-dbsize
-
-#type [key], check the type of a key
-type container
-
+# remove all keys
+flushall
+            </pre>
+        </div>
+		<div class = "subtitle">Key Expiration</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
 #expire [key] [seconds], setup expire time for a key
-expire container 5
+expire key1 5
 
 # expireat [key] [timestamp]
 # timestamp is a Unix timestamp, which is seconds since Jan 01, 1970 (UTC)
@@ -58,22 +75,44 @@ expireat container 1637195373
 ttl container
 
 # persist [key], remove the expiration from a key
-persist container
+persist key1
 
-# randomkey, get a random key from Redis database
-randomkey
+            </pre>
+        </div>
+        <div class = "subtitle">Server</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# gets information and statistics about the server
+info
 
-# remove all keys
-flushall
+# return the information and statistics about the client connections
+client list
 
-# exit
-exit
+# listens for all the requests received by the server in real time
+monitor
+
+# get the maximum number of clients
+config get maxclients
+
+# list all Redis commands
+command
+            </pre>
+        </div>
+        <div class = "subtitle">Databases</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# get the number of databases
+config get databases
+
+# select database by index
+select index
+
+# list the databases for which some keys are defined
+info keyspace
             </pre>
         </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
-            <li><a href = "https://www.openmymind.net/redis.pdf">The Little Redis Book</a></li>
-            <li><a href = "https://kb.objectrocket.com/category/redis">Redis Knowledge Base</a></li>
             <li><a href = "https://redis.io/commands">Redis Commands</a></li>
             <li><a href = "https://redis.io/documentation">Redis Documentation</a></li>
         </div>

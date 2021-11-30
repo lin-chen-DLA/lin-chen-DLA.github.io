@@ -1,17 +1,26 @@
-<!DOCTYPE html>
-<html>
-	<head>
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
 		<title>Database</title>
 		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
 		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
 		<style>
-			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
-			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
-			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
             span {color: red; font-weight: bold;}
-		</style>
-	</head>
-	<body>
+		</style>
+
+	</head>
+
+	<body>
+
 		<div class = "title">
 			Introduction
 		</div>
@@ -75,6 +84,17 @@ redis-cli [command]
 https://try.redis.io/
             </pre>
         </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Use a different port
+# Edit /usr/local/etc/redis.conf
+# Change port number
+
+brew services restart redis
+
+redis-cli -p [portNumber]
+            </pre>
+        </div>
 		<div class = "subtitle">Publish/Subscribe</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
@@ -115,38 +135,6 @@ get num
 exec
             </pre>
         </div>
-		<div class = "subtitle">Server</div>
-		<div class = "block">
-			<pre class = "prettyprint linenums">
-# gets information and statistics about the server
-info
-
-# return the information and statistics about the client connections
-client list
-
-# listens for all the requests received by the server in real time
-monitor
-
-# get the maximum number of clients
-config get maxclients
-
-# list all Redis commands
-command
-            </pre>
-        </div>
-		<div class = "subtitle">Databases</div>
-		<div class = "block">
-			<pre class = "prettyprint linenums">
-# get the number of databases
-config get databases
-
-# select database by index
-select index 
-
-# list the databases for which some keys are defined
-info keyspace
-            </pre>
-        </div>
 		<div class = "subtitle">Pipeline</div>
 		<div class = "block">
             <li>Send multiple commands to the server without waiting for the replies, and finally read the replies in a single step</li>
@@ -173,17 +161,6 @@ echo "select 1\r\nset s4 v4" | redis-cli
 awk '{print "set " $1 " "$2}' country.csv | redis-cli
 awk '{print "set " $1 " "$2}' country.csv | nc localhost 6379
 awk '{print "set " $1 " "$2}' country.csv | redis-cli --pipe # bulk, one summary reply instead of one reply for each instruction
-            </pre>
-        </div>
-		<div class = "subtitle">Use a Different Port</div>
-		<div class = "block">
-			<pre class = "prettyprint linenums">
-# Edit /usr/local/etc/redis.conf
-# Change port number
-
-brew services restart redis
-
-redis-cli -p [portNumber]
             </pre>
         </div>
 		<div class = "subtitle">Reference</div>

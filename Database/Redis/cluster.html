@@ -15,11 +15,6 @@
 		<div class = "title">
 			Cluster
 		</div>
-		<div class = "subtitle">Replication</div>
-		<div class = "block">
-			<pre class = "prettyprint linenums">
-            </pre>
-        </div>
 		<div class = "subtitle">Download a Stable Redis</div>
         <div class = "block">
 			<pre class = "prettyprint linenums">
@@ -34,22 +29,108 @@ tar -xvf redis-stable.tar.gz
 make
             </pre>
         </div>
-		<div class = "subtitle">Start/Stop a Redis Cluster</div>
+		<div class = "subtitle">Create a Redis Cluster</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-# start a redis cluster
+# start six redis servers
 ./utils/create-cluster/create-cluster start
-./utils/create-cluster/create-cluster create
 
-# check masters, replicas, and their slots
-redis-cli -p 30001 cluster nodes
-redis-cli --cluster check 127.0.0.1:30001
+# create a cluster with the started six redis servers
+# three master node, each of them has one replica node
+./utils/create-cluster/create-cluster create
 
 # stop a redis cluster
 # remove .log, .aof, .rdb, and .conf
 ./utils/create-cluster/create-cluster stop
             </pre>
         </div>
+		<div class = "subtitle">Redis Cluster Operations</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# list cluster nodes
+ps -e | grep redis
+
+# check masters, replicas, and their slots
+redis-cli -p 30001 cluster nodes
+cluster nodes # under redis-cli interactive environment
+redis-cli --cluster check 127.0.0.1:30001
+
+# access a node with cluster mode
+redis-cli -c -p 30001
+
+# add a key-value pair to cluster
+# use CRC16%16384 to decide which node to save a specific key-value pair
+set k1 v1
+
+# get the value of a key
+# use CRC16%16384 to decide which node to get the value of a specific key
+get k1
+            </pre>
+        </div>
+		<div class = "subtitle">Resharding</div>
+		<div class = "block">
+            <li>Currently there is no way for redis-cli to automatically rebalance the cluster checking the distribution of keys across the cluster nodes</li>
+			<pre class = "prettyprint linenums">
+# check cluster node IDs
+redis-cli --cluster check 127.0.0.1:30001
+
+# move slots from one master node to another node master
+redis-cli --cluster reshard 127.0.0.1:30002 --cluster-from [from_master_node_id] --cluster-to [to_master_node_id] --cluster-slots [number_of_slots] --cluster-yes
+            </pre>
+        </div>
+		<div class = "subtitle">Add a Node</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# create a server
+# redis-server is under ./src folder
+redis-server ./redis.conf
+
+# add the server to be a master node to the cluster
+redis-cli --cluster add-node 127.0.0.1:30009 127.0.0.1:30002
+
+# add the server to be a replica node to the cluster
+redis-cli --cluster add-node 127.0.0.1:30009 127.0.0.1:30002 --cluster-slave
+
+# add the server to be a replica node of a specific master node on the cluster
+redis-cli --cluster add-node 127.0.0.1:30009 127.0.0.1:30002 --cluster-slave --cluster-master-id [master_node_id]
+            </pre>
+        </div>
+		<div class = "subtitle">Manual failover</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# manually failover a master node
+# its replica will be changed to the master node
+redis-cli -p 30001 debug segfault
+
+# forget the node from the cluster
+# otherwise, the node ID exists even the node has been removed
+redis-cli -p 30002 cluster forget [removed_node_id]
+
+# view running masters, failover master, and replicas
+redis-cli -p 30002 cluster nodes
+
+# list cluster nodes
+redis-cli --cluster check 127.0.0.1:30002
+ps -e | grep redis
+            </pre>
+        </div>
+		<div class = "subtitle">Remove a Node</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# remove a node from the cluster, it will run as an independent server
+redis-cli --cluster del-node 127.0.0.1:30002 [node_id]
+            </pre>
+        </div>
+		<div class = "subtitle">Replicas Migration</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# login a replica node
+redis-cli -c -p 30006
+
+cluster replicate [master_node_id]
+            </pre>
+        </div>
+		<div class = "subtitle">redis-py-cluster</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
 # install redis-py-cluster
