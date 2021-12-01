@@ -163,82 +163,88 @@ print(r); # ****-***-***, This is Phone Number
 			<li>a sequence of code points, immutable</li>
 			<li>Python keep characters as unicode in memory</li>
 			<li>type 'str' represents unicode in Python 3, type 'bytes' represent byte string</li>
+            <li>byte string can only contain ASCII literal characters, appropriate for storing data on the filesystem or sending across the internet</li>
+		</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/String_1.png" width = "40%"></p>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 #!/usr/bin/python
 
-# unicode to str
-s = 'Café';
-print(type(s), len(s)); #'unicode', 4
-s = u'Café';
-print(type(s), len(s)); #'unicode', 4
-print(type(s.encode('utf-8'))); #'bytes'
+# unicode and str
+# same in Python 3
+s = 'Café' # str
+s = u'Café' # str
 
-# read string from a file and print it to screen
-f = open('temp.txt', 'rb');
-l = next(f); #read a line and save it to byte string
-print(type(l)) # byte string
-l = l.decode('utf-8'); #decode str to unicode
-print(type(l)); # 'unicode'
-print(l); #陈, print encode unicode to str with utf-8
-f.close();
+# byte string
+s = b'lin' # bytes
+
+# str to byte string
+s = 'Café'
+s.encode('utf-8') # utf-8 is the default encode standard
+
+# byte to str
+s = b'Caf\xc3\xa9'
+s.decode('utf-8')
 
 # get unicode code point
-c = ord(u'陈'); #38472
-print(chr(38472)); #陈, do not print code point, it is encoded to str
-		</pre>
-		<li>read unicode, output unicode
+c = ord(u'陈') #38472, int
+chr(38472)) #陈, str
+        </pre>
+        </div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/String_2.png" width = "40%"></p>
+		</div>
+        <div class = "block">
+		<li>read str, output str
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
+f = open('temp.txt', 'r') # read str
+l = next(f);
 
-# read string from a file and print it to screen
-f = open('temp.txt', 'r');
-
-l = next(f); # 陈, read a line and save it to byte string
-print(type(l)) # unicode
-
-o = open('output.txt', 'w')
-o.write(l) # convert byte string to unicode
-
-o.close()
-f.close();
-		</pre>
-		<li>read byte string, output unicode
-		<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
-# read string from a file and print it to screen
-f = open('temp.txt', 'rb');
-
-l = next(f); # 陈, read a line and save it to byte string
-print(type(l)) # byte string
-
-o = open('output.txt', 'w') # write with Text IO
-o.write(l.decode('utf-8')) # convert byte string to unicode
-
-o.close()
-f.close();
-		</pre>
-		<li>read byte string, output byte string
-		<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
-# read string from a file and print it to screen
-f = open('temp.txt', 'rb');
-
-l = next(f); # 陈, read a line and save it to byte string
-print(type(l)) # byte string
-
-o = open('output.txt', 'wb') # write with Byte IO
+o = open('output.txt', 'w') # write str
 o.write(l)
 
 o.close()
-f.close();
+f.close()
+		</pre>
+		<li>read str, output byte string
+		<pre class = "prettyprint linenums">
+f = open('temp.txt', 'r') # read str
+l = next(f)
+ 
+o = open('output.txt', 'wb') # write byte string
+o.write(l.encode('utf-8')) 
+ 
+o.close()
+f.close()
+        </pre>
+		<li>read byte string, output str
+		<pre class = "prettyprint linenums">
+f = open('temp.txt', 'rb') # read byte string
+l = next(f);
+ 
+o = open('output.txt', 'w') # write str
+o.write(l.decode('utf-8')) 
+ 
+o.close()
+f.close()
+		</pre>
+		<li>read byte string, output byte string
+		<pre class = "prettyprint linenums">
+f = open('temp.txt', 'rb') # read byte string
+l = next(f);
+ 
+o = open('output.txt', 'wb') # write byte string
+o.write(l) 
+ 
+o.close()
+f.close()
 		</pre>
 		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://betterprogramming.pub/strings-unicode-and-bytes-in-python-3-everything-you-always-wanted-to-know-27dc02ff2686">Strings, Unicode, and Bytes in Python 3: Everything You Always Wanted to Know</a></li>
 			<li><a href = "https://www.tutorialspoint.com/python3/python_strings.htm">Tutorialspoint String</a></li>
 			<li><a href = "https://www.tutorialspoint.com/python3/python_reg_expressions.htm">Regular Expression</a></li>
 			<li><a href = "https://www.pythonsheets.com/notes/python-unicode.html#encode-unicode-code-point-to-bytes">Unicode cheat sheet</a></li>
