@@ -147,6 +147,29 @@ r.sunionstore('s3', 's1', 's2') # get the union of s1 and s2 and save the result
 		<div class = "subtitle">Sorted Set</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
+r.zadd('z1', {'s1':1, 's2':2, 's3':3}) # add s1, s2, and 3 with scores 1, 2, and 3
+
+r.zcard('z1') # get the number of the elements in zs
+r.zcount('z1', 1, 2) #  get the range of the elements between min score and max score, inclusive
+r.zcount('z1', '('+str(1), 2) # get the range of the elements between min score and max score, exclusive
+r.zscore('z1', 's2') # get the score of s1
+r.zrank('z1', 's2') # get the rank of s3
+r.zrevrank('z1', 's1') # get the rank of s1 in a reverse order
+
+r.zrange('z1', 0, -1) # get all elements of z1, get the specified range of elements, by index
+r.zrangebyscore('z1', 0, 3) # output the elements with scores from 0 to 3
+r.zrevrange('z1', 0, -1) # get elements ordered from the highest to the lowest score
+r.zrevrangebyscore('z1', 3, 0) # get elements by their scores from the high score to the low score
+
+r.zincrby('z1', 10, 's1') # increase the score of s1 by 10
+            </pre>
+        </div>
+		<div class = "subtitle">Commands</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+r.info() # gets information and statistics about the server
+
+r.client_list() # return the information and statistics about the client connections
             </pre>
         </div>
 		<div class = "subtitle">Pandas DataFrame</div>
@@ -168,17 +191,9 @@ r.set('data', zlib.compress(pickle.dumps(df)))
 pickle.loads(zlib.decompress(r.get("data"))) # pandas dataframe
             </pre>
         </div>
-		<div class = "subtitle">Commands</div>
-		<div class = "block">
-			<pre class = "prettyprint linenums">
-r.info() # gets information and statistics about the server
-
-r.client_list() # return the information and statistics about the client connections
-            </pre>
-        </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
-            <li><a href = "https://pythontic.com/database/redis">redis-py</a></li>
+            <li><a href = "https://www.kite.com/python/docs/redis">redis-py API</a></li>
             <li><a href = "https://redis.io/commands">Command Documentation</a></li>
             <li><a href = "https://github.com/andymccurdy/redis-py">Github</a></li>
             <li><a href = "https://pypi.org/project/redis/">Documentation</a></li>
