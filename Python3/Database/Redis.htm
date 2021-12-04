@@ -18,6 +18,7 @@
 
         <div class = "block">
             <li>Only accepts user data as <span>bytes</span>, <span>strings</span> or <span>numbers (ints, longs and floats)</span></li>
+            <li>Redis returns byte strings</li>
         </div>
 		<div class = "subtitle">Installation</div>
 		<div class = "block">
@@ -36,45 +37,139 @@ r = redis.Redis(host='localhost', port=6379, db=0)
 		<div class = "block">
 			<pre class = "prettyprint linenums">
 r.keys() # display all keys
+r.keys('k*') # search keys by a pattern
+r.dbsize() # the number of keys
+
+r.type('k1') # get the type of a key
+r.rename('k1', 'k4') # rename a key
+
+r.randomkey() # get a random key
 
 r.exists('key1') # check if a key exists
+
+r.delete('k4') # remove a key
+
+r.expire('k2', 5) # set up expiration time for a key
+r.expireat('n1', 1638490877) # set up expiration time point, convert time to timestamp, https://www.unixtimestamp.com/
+r.ttl('n1') # check expiration time
+r.persist('n1') # remove the expiration from a key
+
+r.flushall() # remove all keys
             </pre>
         </div>
 		<div class = "subtitle">String</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-r.set('key1', 'value1', ex=60) # create a key-value pair with a 60 seconds of expiration time
+# set
+r.set('k1', 'v1', ex=60) # create a key-value pair with a 60 seconds of expiration time
+r.mset({'k2':'v2', 'k3':'v3'}) # set multiple key/value pairs
 
-s = r.get('key1')
-s = s.decode("utf-8")
+# get
+s = r.get('k1') # byte string
+s = s.decode("utf-8") # str
+r.mget(['k1', 'k2', 'k3']) # a list of byte strings
 
-print(type(s), s)
+r.append('k1', 'va') # append a value to a key
+
+r.strlen('k1') # get the length of the value of a key
             </pre>
         </div>
 		<div class = "subtitle">Int</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
 r.set('key2', 2)
-
 int(r.get('key2'))
+
+r.set('num', 0)
+r.incr('num') # increase the integer value of a key by 1
+r.incrby('num', 2) # increase the number stored at the key by the specified value
+r.decr('num') # decrease the integer value of a key by 1
+r.decrby('num', 2) # decrease the number stored at the key by the specified value
             </pre>
         </div>
 		<div class = "subtitle">Dict</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-r.hset('name', 'key', 'value')
-r.hset('name', 'key2', 0)
+r.hset('n1', 'k1', 'v1')
+r.hmset('n1', {'k2':'v2', 'k3':'v3'})
 
-int(r.hget('name', 'key2').decode('utf-8'))
+r.hget('n1', 'k1') # byte string
+r.hget('n1', 'k1').decode('utf-8') # str
+
+r.hkeys('n1') # a list of byte strings, keys in a dict
+r.hvals('n1') # a list of byte strings, values in a dict
+
+r.hgetall('n1') # get a dict
+r.hlen('n1') # get the numbers of key-value pairs in a dict
+
+r.hincrby('n1', 'k4', 2) # increase the number stored at the field in a hash by the specified value
+r.hincrbyfloat('n1', 'k4', 0.1) # increase the number at the specified field of a hash by the specified float value
             </pre>
         </div>
 		<div class = "subtitle">List</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-r.lpush('list', 'e1', 'e2')
+r.lpush('l1', 'v1', 'v2', 'v3') # push strings to a lift from the left
+r.lrange('l1', 0, -1) # a list of byte string, list the elements within a range of a list
+r.lindex('l1', 0) # access a value of a list by index
+r.llen('l1') # return list size
 
-r.lindex('list', 0).decode('utf-8')
-r.lrange('list', 0, -1)
+r.lpop('l1') # pop up an element from the left
+r.lrem('l1', 0, 'v2') # remove all the elements equal to v2
+r.lrem('l1', 1, 'v1') # remove the first occurrence of elements equal to value1 from the head to tail
+r.lrange('l1', 0, -1) # emove the first occurrence of elements equal to value1 from the tail to head
+
+r.ltrim('l1', 0, 2) # trime the list to a specific range
+            </pre>
+        </div>
+		<div class = "subtitle">Set</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+r.sadd('s1', 'v1', 'v2', 'v3', 'v4', 'v1') # # add values into a set by removing the repeat values
+r.smembers('s1') # the non-repeat values in a set
+r.scard('s1') # get the cardinality of the set
+
+r.sismember('s1', 'v1') # if value1 is a member of set1
+r.srandmember('s1') # get a random element of set1
+
+r.smove('s1', 's2', 'v1') # move value1 in set1 to set2
+r.spop('s1') # randomly remove an element from set1
+r.srem('s2', 'v2') # remove a specific from a set
+
+r.sdiff('s1', 's2') # difference, return the elements in s1, but not in s2
+r.sdiffstore('s3', 's1', 's3') # get the difference of s1 and s2 and save the results to s3
+r.sinter('s1', 's2') # intersection
+r.sinterstore('s3', 's1', 's2') # get the intersection of s1 and s2 and save the results to s3
+r.sunion('s1', 's2') # union
+r.sunionstore('s3', 's1', 's2') # get the union of s1 and s2 and save the results to s3
+            </pre>
+        </div>
+		<div class = "subtitle">Sorted Set</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+r.zadd('z1', {'s1':1, 's2':2, 's3':3}) # add s1, s2, and 3 with scores 1, 2, and 3
+
+r.zcard('z1') # get the number of the elements in zs
+r.zcount('z1', 1, 2) #  get the range of the elements between min score and max score, inclusive
+r.zcount('z1', '('+str(1), 2) # get the range of the elements between min score and max score, exclusive
+r.zscore('z1', 's2') # get the score of s1
+r.zrank('z1', 's2') # get the rank of s3
+r.zrevrank('z1', 's1') # get the rank of s1 in a reverse order
+
+r.zrange('z1', 0, -1) # get all elements of z1, get the specified range of elements, by index
+r.zrangebyscore('z1', 0, 3) # output the elements with scores from 0 to 3
+r.zrevrange('z1', 0, -1) # get elements ordered from the highest to the lowest score
+r.zrevrangebyscore('z1', 3, 0) # get elements by their scores from the high score to the low score
+
+r.zincrby('z1', 10, 's1') # increase the score of s1 by 10
+            </pre>
+        </div>
+		<div class = "subtitle">Commands</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+r.info() # gets information and statistics about the server
+
+r.client_list() # return the information and statistics about the client connections
             </pre>
         </div>
 		<div class = "subtitle">Pandas DataFrame</div>
@@ -98,6 +193,7 @@ pickle.loads(zlib.decompress(r.get("data"))) # pandas dataframe
         </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://www.kite.com/python/docs/redis">redis-py API</a></li>
             <li><a href = "https://redis.io/commands">Command Documentation</a></li>
             <li><a href = "https://github.com/andymccurdy/redis-py">Github</a></li>
             <li><a href = "https://pypi.org/project/redis/">Documentation</a></li>
