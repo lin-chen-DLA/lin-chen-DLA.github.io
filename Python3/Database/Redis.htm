@@ -162,6 +162,17 @@ r.zrevrange('z1', 0, -1) # get elements ordered from the highest to the lowest s
 r.zrevrangebyscore('z1', 3, 0) # get elements by their scores from the high score to the low score
 
 r.zincrby('z1', 10, 's1') # increase the score of s1 by 10
+
+# save the interaction of z1 and z2 to z3
+# the score of an element in the interaction is the summation of its scores in previously sets
+r.zinterstore('z3', ['z1', 'z2'])
+# save the union of z1 and z2 to z3
+the score of an element in the union is the summation of its scores in previously sets
+r.zunionstore('z3', ['z1', 'z2'])
+
+r.zrem('z3', 's3') # remove s3 from z3
+r.zremrangebyrank('z3', 1, 2) # remove elements by their ranks
+r.zremrangebyscore('z3', 2, 15) # remove elements by their scores
             </pre>
         </div>
 		<div class = "subtitle">Commands</div>
