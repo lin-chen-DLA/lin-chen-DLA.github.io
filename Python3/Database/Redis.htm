@@ -202,6 +202,27 @@ r.set('data', zlib.compress(pickle.dumps(df)))
 pickle.loads(zlib.decompress(r.get("data"))) # pandas dataframe
             </pre>
         </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# read a csv file
+df = pd.read_csv('Test_25.csv') # 131M on hard drive, 649M in memory, 2.05 s
+            </pre>
+			<pre class = "prettyprint linenums">
+# IO with string
+r.set('data', df.to_string()) # 289M in memory, 2 min
+pd.read_csv(StringIO(str(r.get('data')))) # 32M in memory, 3.98 s
+            </pre>
+			<pre class = "prettyprint linenums">
+# IO with pickle serialization
+r.set('data', pickle.dumps(df)) # 179M in memory, 918 ms
+pickle.loads(r.get('data')) # 649M in memory, 1.01 s
+            </pre>
+			<pre class = "prettyprint linenums">
+# IO with compressed picle serialization
+r.set('data', zlib.compress(pickle.dumps(df))) # 299M in memory, 4.76 s
+pickle.loads(zlib.decompress(r.get("data"))) # 649M in memory, 909 ms
+            </pre>
+        </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
             <li><a href = "https://www.kite.com/python/docs/redis">redis-py API</a></li>
