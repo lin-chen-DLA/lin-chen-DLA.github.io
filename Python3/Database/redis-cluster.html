@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Database</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Redis Cluster
+		</div>
+		<div class = "subtitle">redis-py-cluster</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# install redis-py-cluster
+pip install redis-py-cluster
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Cluster
+from rediscluster import RedisCluster
+
+# creat access nodes 
+startup_nodes = [{"host": "127.0.0.1", "port": "7000"}, {"host": "127.0.0.1", "port": "7002"}]
+
+# create connection
+rc = RedisCluster(startup_nodes=startup_nodes, decode_responses=True)
+
+# display the information of cluster nodes
+print(rc.connection_pool.nodes.nodes)
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Keys
+rc.keys() # display all keys
+rc.keys('k*') # search keys by a pattern
+rc.dbsize() # display the numbers of keys on each node
+
+rc.type('k1') # get the type of a key
+
+rc.randomkey() # get a random key
+
+rc.exists('k1') # check if a key exists
+rc.delete('k4') # remove a key
+
+rc.expire('k2', 5) # set up expiration time for a key
+rc.ttl('k1') # check expiration time
+rc.persist('k1') # remove the expiration from a key
+
+rc.flushall() # remove all keys
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# String
+rc.set("k4", "v4") # create a key
+rc.set('k5', 'v5', ex=20) # create a key-value pair with a 60 seconds of expiration time
+rc.mset({'k2':'v2', 'k3':'v3'}) # set multiple key/value pairs
+
+rc.get('k2') # get the value of a key
+rc.mget(['k1', 'k2', 'k3']) # a list of byte strings
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Int
+rc.set('key2', 2)
+int(rc.get('key2'))
+
+rc.set('num', 0)
+rc.incr('num') # increase the integer value of a key by 1
+rc.incrby('num', 2) # increase the number stored at the key by the specified value
+rc.decr('num') # decrease the integer value of a key by 1
+rc.decrby('num', 2) # decrease the number stored at the key by the specified value
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://redis-py-cluster.readthedocs.io/en/stable/">redis-py-cluster Documentation</a></li>
+            <li><a href = "https://github.com/Grokzen/redis-py-cluster">redis-py-cluster</a></li>
+            <li><a href = "https://redis.io/topics/cluster-tutorial">Redis cluster tutorial</a></li>
+        </div>
+    </body>
+</html>

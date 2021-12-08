@@ -16,13 +16,19 @@
 			Cache
 		</div>
 
+        <div class = "subtitle">Installation</div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+pip install Flask-Caching
+        </pre>
+        </div>
         <div class = "subtitle">FileSystemCache</div>
         <div class = "block">
 		<pre class = "prettyprint linenums">
 import time
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 from os import path
@@ -40,6 +46,209 @@ cache = Cache(app.server, config={
     'CACHE_DEFAULT_TIMEOUT': 60 # The default timeout, unit of time is seconds
 })
 
+cache.clear() # clean up cache files
+
+app.layout = html.Div([
+    dcc.Input(id = 'input'),
+    html.Hr(),
+    dcc.Loading(html.H1(id = 'content')),
+    html.Button('Click', id = 'button'),
+], className='container')
+
+# for the same parameter value, first call save results to cache
+# second and later calls will reuse the results
+# changing the parameter value, a new cache will be created
+@cache.memoize()
+def inside(value):
+    time.sleep(5)
+    return str(2*value)
+
+@app.callback(
+    Output('content', 'children'),
+    Input('button', 'n_clicks'),
+    State('input', 'value')
+)
+def update_output_1(n_clicks, value):
+    if not n_clicks:
+        raise PreventUpdate
+    return inside(value) # pause 5 seconds
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">NullCache</div>
+		<div class = "block">
+            <li>Not cache</li>
+		<pre class = "prettyprint linenums">
+import time
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+from flask_caching import Cache
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+cache = Cache(app.server, config={
+    'CACHE_TYPE': 'NullCache',
+})
+
+app.layout = html.Div([
+    dcc.Input(id = 'input'),
+    html.Hr(),
+    dcc.Loading(html.H1(id = 'content')),
+    html.Button('Click', id = 'button'),
+], className='container')
+
+@cache.memoize()
+def inside(value):
+    time.sleep(5)
+    return str(2*value)
+
+@app.callback(
+    Output('content', 'children'),
+    Input('button', 'n_clicks'),
+    State('input', 'value')
+)
+def update_output_1(n_clicks, value):
+    if not n_clicks:
+        raise PreventUpdate
+    return inside(value) # pause 5 seconds
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">SimpleCache</div>
+		<div class = "block">
+            <li>Uses a python dictionary for caching, is not really thread safe</li>
+		<pre class = "prettyprint linenums">
+import time
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+from flask_caching import Cache
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+cache = Cache(app.server, config={
+    'CACHE_TYPE': 'SimpleCache',
+    'CACHE_THRESHOLD': 200, # The maximum number of items the cache will store
+    'CACHE_DEFAULT_TIMEOUT': 30 # The default timeout, unit of time is seconds
+})
+
+app.layout = html.Div([
+    dcc.Input(id = 'input'),
+    html.Hr(),
+    dcc.Loading(html.H1(id = 'content')),
+    html.Button('Click', id = 'button'),
+], className='container')
+
+@cache.memoize()
+def inside(value):
+    time.sleep(5)
+    return str(2*value)
+
+@app.callback(
+    Output('content', 'children'),
+    Input('button', 'n_clicks'),
+    State('input', 'value')
+)
+def update_output_1(n_clicks, value):
+    if not n_clicks:
+        raise PreventUpdate
+    return inside(value) # pause 5 seconds
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">RedisCache</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import time
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+from flask_caching import Cache
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+cache = Cache(app.server, config={
+    'CACHE_TYPE': 'RedisCache',
+    'CACHE_DEFAULT_TIMEOUT': 60, # The default timeout, unit of time is seconds
+    'CACHE_REDIS_HOST': '127.0.0.1',
+    'CACHE_REDIS_PORT': 6379
+})
+
+app.layout = html.Div([
+    dcc.Input(id = 'input'),
+    html.Hr(),
+    dcc.Loading(html.H1(id = 'content')),
+    html.Button('Click', id = 'button'),
+], className='container')
+
+# for the same parameter value, first call save results to cache
+# second and later calls will reuse the results
+# changing the parameter value, a new cache will be created
+@cache.memoize()
+def inside(value):
+    time.sleep(5)
+    return str(2*value)
+
+@app.callback(
+    Output('content', 'children'),
+    Input('button', 'n_clicks'),
+    State('input', 'value')
+)
+def update_output_1(n_clicks, value):
+    if not n_clicks:
+        raise PreventUpdate
+    return inside(value) # pause 5 seconds
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+        <div class = "subtitle">Cashed Function Calls Cashed Function</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import time
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+from os import path
+from flask_caching import Cache
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+cache = Cache(app.server, config={
+    'CACHE_TYPE': 'RedisCache',
+    'CACHE_DEFAULT_TIMEOUT': 60, # The default timeout, unit of time is seconds
+    'CACHE_REDIS_HOST': '127.0.0.1',
+    'CACHE_REDIS_PORT': 6379
+})
+
 app.layout = html.Div([
     dcc.Input(id = 'input'),
     html.Hr(),
@@ -50,9 +259,6 @@ app.layout = html.Div([
     html.Button('Click 2', id = 'button2')
 ], className='container')
 
-# for the same parameter value, first call save results to cache
-# second and later calls will reuse the results
-# chaning the same parameter value, a new cache will be created
 @cache.memoize()
 def compute_expensive_data(value):
     time.sleep(5)
@@ -87,14 +293,15 @@ if __name__ == '__main__':
     app.run_server(debug=True)
         </pre>
         </div>
-		<div class = "block">
-            <li>Store cache data for each session on server side</li>
+		<div class = "subtitle">Store Cache Data for Each Session on Server Side</div>
+        <div class = "block">
+            <li>Each tab creates a new session</li>
 		<pre class = "prettyprint linenums">
 import time
 import uuid
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 from os import path
@@ -106,17 +313,17 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
 cache = Cache(app.server, config={
-    'CACHE_TYPE': 'FileSystemCache',
-    'CACHE_DIR': 'cache',
-    'CACHE_THRESHOLD': 200
+    'CACHE_TYPE': 'RedisCache',
+    'CACHE_DEFAULT_TIMEOUT': 60, # The default timeout, unit of time is seconds
+    'CACHE_REDIS_HOST': '127.0.0.1',
+    'CACHE_REDIS_PORT': 6379
 })
 
 def get_layout():
     uid = str(uuid.uuid4())
 
     return html.Div([
-        html.H1(id = 'content'),
-        html.H1(id = 'content_2'),
+        dcc.Loading(html.H1(id = 'content')),
         html.Button('Click', id = 'button'),
         dcc.Store(data = uid, id='session-id')
     ], className='container')
@@ -140,119 +347,58 @@ def compute_expensive_data(session_id):
 def update_output_1(n_clicks, data):
     if not n_clicks:
         raise PreventUpdate
-    return compute_expensive_data(data)
-
-@app.callback(
-    Output('content_2', 'children'),
-    Input('button', 'n_clicks'),
-    State('session-id', 'data')
-)
-def update_output_2(n_clicks, data):
-    if not n_clicks:
-        raise PreventUpdate
+    print(data) # display session id
     return compute_expensive_data(data)
 
 if __name__ == '__main__':
     app.run_server(debug=True)
         </pre>
         </div>
-		<div class = "subtitle">NullCache</div>
-		<div class = "block">
-            <li>Not cache</li>
+		<div class = "subtitle">API</div>
+        <div class = "block">
+            cached
+            <ul>
+                <li>by default, key is flask_cache_view//_dash-update-component"
+                    <ul>
+                        <li><span>all function</span> use view/request.path as the key, one function with <span>different parameters</span> values also use view/request.path as the key</li>
+                    </ul>
+                </li>
+                <li><span>timeout</span>, cache time in second</li>
+                <li><span>key_prefix = 'pre_'</span>, key is flask_cache_pre_
+                    <ul>
+                        <li><span>all function</span> use the same key, one function with <span>different parameters</span> values also use the same key</li>
+                    </ul>
+                </li>
+                <li><span>make_cache_key</span>, key is generated by function parameter values
+                    <ul>
+                        <li>one function with <span>different parameters</span> values generate different keys, two functions with the same parameter values use the <span>same</span> key</li>
+                    </ul>
+                </li>
 		<pre class = "prettyprint linenums">
-cache = Cache(app.server, config={
-    'CACHE_TYPE': 'NullCache',
-    'CACHE_DEFAULT_TIMEOUT': 60 # The default timeout, unit of time is seconds
-})
-        </pre>
-        </div>
-		<div class = "subtitle">SimpleCache</div>
-		<div class = "block">
-            <li>Uses a python dictionary for caching, is not really thread safe</li>
-		<pre class = "prettyprint linenums">
-cache = Cache(app.server, config={
-    'CACHE_TYPE': 'SimpleCache',
-    'CACHE_THRESHOLD': 200,
-    'CACHE_DEFAULT_TIMEOUT': 60 # The default timeout, unit of time is seconds
-})
-        </pre>
-        </div>
-		<div class = "subtitle">RedisCache</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-import time
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output, State
-from dash.exceptions import PreventUpdate
-from flask_caching import Cache
-import pandas as pd
+def zzz(*args, **kwargs):
+    return str(args)+'_'+str(kwargs)
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-server = app.server
-
-cache = Cache(app.server, config={
-    'CACHE_TYPE': 'RedisCache',
-    'CACHE_DEFAULT_TIMEOUT': 60, # The default timeout, unit of time is seconds
-    'CACHE_REDIS_HOST': '127.0.0.1',
-    'CACHE_REDIS_PORT': 6379
-})
-
-cache.clear() # clean up cache files
-
-app.layout = html.Div([
-    dcc.Input(id = 'input'),
-    html.Hr(),
-    dcc.Loading(html.H1(id = 'content')),
-    html.Button('Click', id = 'button'),
-    html.Hr(),
-    dcc.Loading(html.H1(id = 'content_2')),
-    html.Button('Click 2', id = 'button2')
-], className='container')
-
-# for the same parameter value, first call save results to cache
-# second and later calls will reuse the results
-# chaning the same parameter value, a new cache will be created
-@cache.memoize()
-def compute_expensive_data(value):
+@cache.cached(timeout=50, make_cache_key = zzz)
+def index(data, l):
     time.sleep(5)
-    data = {
-    'apples': [3, 2, 0, 1],
-    'oranges': [0, 3, 7, 2]
-    }
-
-    df = pd.DataFrame(data)
-    return df
-
-@app.callback(
-    Output('content', 'children'),
-    Input('button', 'n_clicks'),
-    State('input', 'value')
-)
-def update_output_1(n_clicks, value):
-    if not n_clicks:
-        raise PreventUpdate
-    return str(value)+', '+compute_expensive_data(value).to_string()
-
-@app.callback(
-    Output('content_2', 'children'),
-    Input('button2', 'n_clicks'),
-    State('input', 'value')
-)
-def update_output_2(n_clicks, value):
-    if not n_clicks:
-        raise PreventUpdate
-    return str(value)+', '+compute_expensive_data(value).to_string()
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
+    return data+'Cached for 50s'
+        </pre>
+            </ul>
+		<pre class = "prettyprint linenums">
+        </pre>
+        </div>
+        <div class = "block">
+        memoize
+        <ul>
+            <li>one function with <span>different parameter values</span> generates <span>different keys</span></li>
+            <li><span>two functions</span> with the same parameter values generate <span>different keys</span></li>
+        </ul>
+		<pre class = "prettyprint linenums">
         </pre>
         </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://github.com/pallets-eco/flask-caching">Github</a></li>
             <li><a href = "https://flask-caching.readthedocs.io/en/latest/">Flask-Caching</a></li>
         </div>
     </body>
