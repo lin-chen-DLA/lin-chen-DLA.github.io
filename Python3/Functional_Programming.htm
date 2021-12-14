@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Functional Programming
+		</div>
+
+		<div class = "subtitle">Function Object</div>
+		<div class = "block">
+            <li>Everything in a Python program is an object, a function is also an object</li>
+			<pre class = "prettyprint linenums">
+def func():
+    print('Hello World!')
+
+f = func
+
+print(id(f), id(func)) # 140232159555440 140232159555440
+print(type(f)) # &lt;class 'function'&gt;
+print(f) # &lt;function func at 0x7f81700e6f70&gt;
+f() # Hello World!
+
+			</pre>
+		</div>
+		<div class = "subtitle">Function Inspect Information</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import inspect
+
+# function comment
+def func():
+    """Function Doc
+    """
+    print('Hello World!')
+
+if __name__ == '__main__':
+    f = func
+
+    print(inspect.isfunction(f)) # check if an object is a function
+    print(inspect.getdoc(f)) # get the object doc string
+    print(inspect.getcomments(f)) # get comments before function
+
+    print(inspect.getfile(f)) # get the file name in which the function is defined
+    print(inspect.getsource(f)) # get the source code
+            </pre>
+        </div>
+		<div class = "subtitle">Function Composition</div>
+		<div class = "block">
+            <li>To take another function as an argument</li>
+            <li>The inner function is referred to as a <span>callback</span>, because a call back to the inner function can modify the outer function’s behavior</li>
+			<pre class = "prettyprint linenums">
+def inner():
+    print('Hello World!')
+
+def outer(f):
+    f()
+
+outer(inner) # Hello World!
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+def inner(a, b):
+    return a+b
+
+def outer(f, x, y):
+    return f(x, y)
+
+print(outer(inner, 1, 2)) # 3
+            </pre>
+        </div>
+		<div class = "subtitle">Return Function</div>
+		<div class = "block">
+            <li>To return another function to its caller</li>
+			<pre class = "prettyprint linenums">
+def outer():
+    def inner():
+        print('Hello World!')
+
+    return inner
+
+f = outer()
+f() # Hello World!
+            </pre>
+        </div>
+		<div class = "subtitle">Anonymous Function</div>
+		<div class = "block">
+            <li>lambda [parameter_list]: [expression], return one single expression</li>
+			<pre class = "prettyprint linenums">
+add = lambda a, b: a+b
+
+print(add(1, 2))
+
+print((lambda a, b: a+b)(1, 2))
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://realpython.com/python-functional-programming/#what-is-functional-programming">Functional Programming in Python: When and How to Use It</a></li>
+		</div>
+    </body>
+</html>
