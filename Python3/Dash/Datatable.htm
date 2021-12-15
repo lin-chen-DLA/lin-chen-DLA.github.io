@@ -32,13 +32,13 @@
 		<pre class = "prettyprint linenums">
 # Styles Priority
 1. style_data_conditional
-2. style_data
+2. style_data # excludes the header and filter cells.
 3. style_filter_conditional
 4. style_filter
 5. style_header_conditional
-6. style_header
+6. style_header # header cells
 7. style_cell_conditional
-8. style_cell
+8. style_cell # includes the header cells, the data cells, and the filter cells
         </pre>
 		<pre class = "prettyprint linenums">
 # style_cell
@@ -356,6 +356,7 @@ if __name__ == '__main__':
 		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://dash.plotly.com/datatable/reference">Datatable Reference</a></li>
 			<li><a href = "https://dash.plotly.com/datatable">Documentation</a></li>
 		</div>
 	</body>
