@@ -389,6 +389,35 @@ print(info(1, 2)) # 3
 print(info(1)) # 1
 			</pre>
 		</div>
+		<div class = "subtitle">Function Attribute</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+def func():
+    print('Hello World!')
+
+# create an attribute for the function
+func.record = 'initial record'
+
+#['__annotations__', ..., __str__', '__subclasshook__', 'record']
+print(dir(func))
+
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+def func():
+    func.call += 1
+    print('Hello World!')
+
+# count how many times the function is called
+func.call = 0
+
+func()
+func()
+
+print(func.call)
+            </pre>
+        </div>
 
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
