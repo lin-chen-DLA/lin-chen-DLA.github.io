@@ -81,8 +81,71 @@ if __name__ == '__main__':
         <pre>
         </div>
 		<div class = "block">
+        <li><span>data</span>, list of dict
+            <ul>
+                <li>content of the table</li>
+                <li>can be generated from Pandas</li>
+            </ul>
+        </li>
 		<pre class = "prettyprint linenums">
-# Styles Priority
+data = [ {'column-1': 4.5, 'column-2': 'montreal', 'column-3': 'canada'}, {'column-1': 8, 'column-2': 'boston', 'column-3': 'america'} ]
+        </pre>
+		<pre class = "prettyprint linenums">
+data=df.to_dict('records')
+        </pre>
+        <li><span>columns</span>, list of dict
+            <ul>
+                <li>name, string, name appears in the column header</li>
+                <li>id, string, the id of the column, not visible in the table</li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
+columns=[{'id': c, 'name': c} for c in df.columns]
+        </pre>
+        <li><span>page_size</span>, the number of rows that will be displayed</li>
+        <li><span>page_action</span>
+            <ul>
+                <li>native, default, paging with all data is passed to up-front</li>
+                <li>custome, one page data is passed at a time, used for back paging</li>
+                <li>none, disable paging</li>
+            </ul>
+        </li>
+        <li><span>fixed_columns</span>, dict
+            <ul>
+                <li>fix the set of columns</li>
+            </ul>
+        </li>
+        <li><span>fixed_rows</span>, dict
+            <ul>
+                <li>fix the set of rows</li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
+# fix headers and first data row
+fixed_rows = {'headers': True, 'data': 1}
+        </pre>
+        <li><span>tooltip_data</span>, list of dicts
+            <ul>
+                <li>the tooltip shown when the cursor hovers on a cell</li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
+tooltip_data=[
+        {
+            column: {'value': str(value), 'type': 'markdown'}
+            for column, value in row.items()
+        } for row in df.to_dict('records')]
+        </pre>
+        <li><span>tooltip_duration</span>, int
+            <ul>
+                <li>duration time of tooltip in milliseconds</li>
+                <li>None, tooltip lasts, not disappear</li>
+            </ul>
+        </li>
+        </div>
+		<div class = "block">
+            <li><span>Styles Priority</span></li>
+		<pre class = "prettyprint linenums">
 1. style_data_conditional
 2. style_data # excludes the header and filter cells.
 3. style_filter_conditional
@@ -92,15 +155,23 @@ if __name__ == '__main__':
 7. style_cell_conditional
 8. style_cell # includes the header cells, the data cells, and the filter cells
         </pre>
+        <li><span>style_cell</span>, dict</li>
 		<pre class = "prettyprint linenums">
-# style_cell
 style_cell = {'background-color': 'rgba(51, 51, 51, 1)', # background color
     'text-align':'center', # text alignment
     'minWidth': 95, 'maxWidth': 95, 'width': 95, # fixed cell width
     }
         </pre>
+        <li><span>style_cell_conditional</span>, list of dicts</li>
 		<pre class = "prettyprint linenums">
-# style_table
+    style_cell_conditional=[
+        {'if': {'column_id': 'country'},
+         'width': '30%', 'color': 'blue'},
+        {'if': {'column_id': 'year'},
+         'width': '30%'},]
+        </pre>
+        <li><span>style_table</span></span>, style of outer table container
+		<pre class = "prettyprint linenums">
 style_table = {'color': 'silver'} # font color
         </pre>
 		<pre class = "prettyprint linenums">
@@ -110,15 +181,6 @@ style_header = {'color': 'red'}
 		<pre class = "prettyprint linenums">
 # style_data
 style_data = {'font-size': '18px'} # excludes the header and filter cells
-        </pre>
-		<pre class = "prettyprint linenums">
-# widths of individual columns
-style_cell_conditional=[
-        {'if': {'column_id': 'Date'},
-         'width': '30%'},
-        {'if': {'column_id': 'Region'},
-         'width': '30%'},
-    ]
         </pre>
 		<pre class = "prettyprint linenums">
 # different styles for even/odd rows
@@ -132,7 +194,6 @@ style_data_conditional=[
         </pre>
 		<pre class = "prettyprint linenums">
 style_as_list_view=True, # not have borders between the columns
-fixed_columns = {'headers': True, 'data': 2} # fix columns
         </pre>
         </div>
 		<div class = "subtitle">Select a Single Row</div>
