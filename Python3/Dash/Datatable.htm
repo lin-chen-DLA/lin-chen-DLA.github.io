@@ -27,7 +27,59 @@
 			Datatable
 		</div>
 
-		<div class = "subtitle">Style</div>
+		<div class = "subtitle">Datatable Style</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import collections
+import dash
+import pandas as pd
+
+from dash.dependencies import Output, Input
+from dash.exceptions import PreventUpdate
+
+from dash import html
+from dash import dcc
+from dash import dash_table
+import plotly.graph_objects as go
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+
+app = dash.Dash(__name__)
+
+app.layout = dash_table.DataTable(
+    style_data={
+        'whiteSpace': 'normal',
+        'height': 'auto',
+    },
+    style_header = {'color': 'red'},
+    style_cell_conditional=[
+        {'if': {'column_id': 'country'},
+         'width': '30%'},
+        {'if': {'column_id': 'pop'},
+         'width': '30%'},
+    ],
+    style_cell = {'width': '180px'},
+    style_table = {'color': 'silver'},
+    data=df.to_dict('records'),
+    columns=[{'id': c, 'name': c} for c in df.columns],
+    fixed_rows = {'headers': True, 'data': 1},
+    page_size = 100,
+    page_action = 'native',
+    tooltip_data=[
+        {
+            column: {'value': str(value), 'type': 'markdown'}
+            for column, value in row.items()
+        } for row in df.to_dict('records')
+    ],
+    tooltip_duration=None,
+)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        <pre>
+        </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # Styles Priority
