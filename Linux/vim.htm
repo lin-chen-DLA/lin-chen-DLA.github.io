@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>C++</title>
-		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
-		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
-		<style>
-			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
-			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
-			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
-		</style>
-	</head>
-	<body>
+		<title>Vim</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold}
+		</style>
+	</head>
+	<body>
 		<div class = "title">
 			Vim
 		</div>
+        <div class = "subtitle">Configuration</div>
 		<div class = "block">
 			<ul>
                 <li><a href = "https://github.com/amix/vimrc">vimrc</a></li>
@@ -81,7 +83,7 @@
 			</li>
 			<li>Python
 				<ul>
-					<li><a href = "https://github.com/davidhalter/jedi-vim">Jedi-Vim</li>
+                    <li><a href = "https://github.com/davidhalter/jedi-vim">Jedi-Vim</a></li>
 					<li>let g:SuperTabDefaultCompletionType = "context"</li>
 					<li>let g:jedi#popup_on_dot = 0</li>
 					<li>let g:jedi#auto_initialization = 0</li>
@@ -100,8 +102,53 @@
 				</li>
 			</ul>
 		</div>
+        <div class = "subtitle">Folding</div>
+        <div class = "block">
+            <li><span>Manual Folding</span>
+                <ul>
+                    <li>select with 'v', 'zf'</li>
+                    <li>'zf3j', fold the current line and the 3 following lines</li>
+                    <li>'zfa}', fold a code block using curly braces ({...})</li>
+                    <li>select with 'va}', then 'zf', fold a code block</li>
+                </ul>
+            </li>
+            <li><span>Open and Close Folding</span>
+                <ul>
+                    <li>'zc', close folding</li>
+                    <li>'zo', open folding</li>
+                    <li>'za', toggle close/open folding</li>
+                </ul>
+            </li>
+            <li><span>Remove Folding</span>
+                <ul>
+                    <li>'zd', remove a folding</li>
+                </ul>
+            </li>
+            <li><span>Save Folding</span>
+                <ul>
+                    <li>Manual
+                        <ol>
+                            <li>Create a .vim folder under home directory (~)</li>
+                            <li>Create foldings in a file</li>
+                            <li>':mkview' and close the file, save foldings</li>
+                            <li>Open the file and ':loadview', load the foldings</li>
+                        </ol>
+                    </li>
+                    <li>Auto</li>
+                    <pre class = "prettyprint linenums">
+# add to .vimrc under home directory
+augroup remember_folds
+  autocmd!
+  au BufWinLeave ?* mkview 1
+  au BufWinEnter ?* silent! loadview 1
+augroup END
+                    </pre>
+                </ul>
+            </li>
+        </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://vim.fandom.com/wiki/Folding#Manual_folding">Folding</a></li>
 			<li><a href = "https://my.oschina.net/swuly302/blog/156784">Efficient Vim Plugins</a></li>
 		</div>
 	</body>
