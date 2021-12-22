@@ -81,8 +81,78 @@ if __name__ == '__main__':
         <pre>
         </div>
 		<div class = "block">
+        <li><span>columns</span>, list of dist
+        <ul>
+            <li>describes various aspects about each individual column</li>
+            <li><span>id</span>, string, the id of the column, not visible in the table</li>
+            <li><span>name</span>, string, the name of the column, appears in the column header</li>
+        </ul>
+        </li>
+        <li><span>data</span>, list of dicts
+        <ul>
+            <li>The contents of the table</li>
+            <li>Can be generated from pandas dataframe</li>
+        </ul>
+        </li>
 		<pre class = "prettyprint linenums">
-# Styles Priority
+data=df.to_dict('records')
+        </pre>
+        <li><span>page_size</span>, int
+            <ul>
+                <li>the number of rows that will be displayed on a page when page_action is 'custom' or 'native'</li>
+            </ul>
+        </li>
+        <li><span>page_action</span>, string
+            <ul>
+                <li>'native', all data is passed to the table up-fron</li>
+                <li>'custom', data is passed to the table one page at a time</li>
+                <li>'none', disables paging, render all of the data at once</li>
+            </ul>
+        </li>
+        <li><span>fixed_rows</span>, dict
+            <ul>
+                <li>headers, boolean, fix header and filter rows</li>
+                <li>data, int, the number of fixed content rows</li>
+                <li>automatically decide the table height</li>
+            </ul>
+        </li>
+        <li><span>fixed_columns</span>, dict
+            <ul>
+                <li>headers, bollean, fix all operation columns (see row_deletable and row_selectable)</li>
+                <li>data, int, the number of fixed content columns</li>
+            </ul>
+        </li>
+        <li><span>tooltip_data</span>, list of dicts
+            <ul>
+                <li>column id</li>
+                <li>tooltip configuration
+                    <ul>
+                        <li>delay, int, delay in milliseconds before the tooltip is shown</li>
+                        <li>duration, int, duration in milliseconds during which the tooltip</li>
+                        <li>type, string, text' (default) or 'markdown'</li>
+                        <li>value, string, content of the tooltip</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><span>tooltip_duration</span>, duration in milliseconds
+            <ul>
+                <li>duration in milliseconds</li>
+                <li>None, continue to display</li>
+            </ul>
+        </li>
+        </div>
+		<div class = "block">
+            <li><span>style_table</span>, dict
+                <ul>
+                    <li>used for setting properties like the width or the height of the table</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+style_table = {'height': '600px', 'overflowY': 'auto', 'width': '300px'}
+        </pre>
+        <li><span>Styles Priority</span></li>
+		<pre class = "prettyprint linenums">
 1. style_data_conditional
 2. style_data # excludes the header and filter cells.
 3. style_filter_conditional
@@ -92,25 +162,29 @@ if __name__ == '__main__':
 7. style_cell_conditional
 8. style_cell # includes the header cells, the data cells, and the filter cells
         </pre>
+        <li><span>style_cell</span>, dict
+            <ul>
+                <li>CSS styles to be applied to each individual cell of the table</li>
+                <li>includes the header cells, the data cells, and the filter cells</li>
+            </ul>
+        </li>
 		<pre class = "prettyprint linenums">
-# style_cell
 style_cell = {'background-color': 'rgba(51, 51, 51, 1)', # background color
     'text-align':'center', # text alignment
     'minWidth': 95, 'maxWidth': 95, 'width': 95, # fixed cell width
     }
         </pre>
-		<pre class = "prettyprint linenums">
-# style_table
-style_table = {'color': 'silver'} # font color
-        </pre>
-		<pre class = "prettyprint linenums">
-# style_header
-style_header = {'color': 'red'}
-        </pre>
-		<pre class = "prettyprint linenums">
-# style_data
-style_data = {'font-size': '18px'} # excludes the header and filter cells
-        </pre>
+        <li><span>style_cell_conditional</span>, list of dicts
+            <ul>
+                <li>Conditional CSS styles for the cells</li>
+                <li>if, dict
+                    <ul>
+                        <li>column_id, string</li>
+                        <li>column_type, 'any', 'numeric', 'text' or 'datetime'</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
 		<pre class = "prettyprint linenums">
 # widths of individual columns
 style_cell_conditional=[
@@ -120,20 +194,326 @@ style_cell_conditional=[
          'width': '30%'},
     ]
         </pre>
+        <li><span>style_header</span>
+            <ul>
+                <li>CSS styles to be applied to each individual header cell</li>
+                <li>excludes the data and filter cells</li>
+            </ul>
+        </li>
 		<pre class = "prettyprint linenums">
-# different styles for even/odd rows
+style_header = {'color': 'red', 'fontWeight': 'bold'}
+        </pre>
+        <li><span>style_header_conditional</span>, list of dicts
+            <ul>
+                <li>Conditional CSS styles for the header cells</li>
+                <li>if, dict
+                    <ul>
+                        <li>column_editable, boolean</li>
+                        <li>column_id, string, or list of strings</li>
+                        <li>column_type, 'any', 'numeric', 'text' or 'datetime'</li>
+                        <li>header_index, number, or list of numbers, 'odd', or 'even'</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
+ style_header_conditional = [
+        {'if': {'column_id': 'year'},
+         'width': '40%', 'color': 'blue'
+        }
+    ]
+        </pre>
+        <li><span>style_data</span>, dict
+            <ul>
+                <li>CSS styles to be applied to each individual data cell</li>
+                <li>excludes the header and filter cells</li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
+style_data = {'font-size': '18px'} # excludes the header and filter cells
+        </pre>
+        <li><span>style_data_conditional</span>, list of dicts
+            <ul>
+                <li>Conditional CSS styles for the data cells</li>
+                <li>if, dict
+                    <ul>
+                        <li>column_editable</li>
+                        <li>column_id, string, list of strings</li>
+                        <li>column_type, 'any' (default), 'numeric', 'text' or 'datetime'</li>
+                        <li>filter_query, string</li>
+                        <li>row_index, 'odd', 'even', or list of numbers</li>
+                        <li>state, 'active' or 'selected'</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
 style_data_conditional=[
            {
-               'if': {'row_index': 'odd'},
+               'if': {'row_index': 'odd', 'state': 'active'}, # and
                'backgroundColor': 'rgb(248, 248, 248)',
                'color': 'white',
-           }
+           },
+           # union
+        {
+            'if': {'state': 'active'},
+            'backgroundColor': 'black'
+        }
+       ],
+        </pre>
+        <li><span>style_as_list_view</span>
+            <ul>
+                <li>remove borders between the columns</li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
+style_as_list_view=True, # not have borders between the columns
+        </pre>
+        </div>
+        <div class = "block">
+            <li><span>filtery_query</span>, string
+                <ul>
+                    <li>=, &gt; &gt;=, &lt;, &lt;=, numeric, text, datetime, and any (default)</li>
+                    <li>contains</li>
+                    <li>datestartswith</li>
+                    <li>is nil</li>
+                    <li>is blank</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+style_data_conditional=[
+           {
+               'if': {
+                'filter_query': '{year} &gt; 2000 &amp;&map; {year} &lt; 2005',
+                'column_id': ['country', 'year'] # colored columns, by default, color the whole row
+               },
+            'backgroundColor': 'tomato',
+            'color': 'white'
+           },
        ],
         </pre>
 		<pre class = "prettyprint linenums">
-style_as_list_view=True, # not have borders between the columns
-fixed_columns = {'headers': True, 'data': 2} # fix columns
+style_data_conditional=[
+           {
+               'if': {
+                'filter_query': '{{year}} = {}'.format(df['year'].max()),
+               },
+            'backgroundColor': 'tomato', # color the whole row
+            'color': 'white'
+           },
+       ],
         </pre>
+		<pre class = "prettyprint linenums">
+style_data_conditional=[
+           {
+               'if': {
+                'filter_query': '{continent} contains "As"',
+                'column_id': 'year' # colored column
+            },
+               'backgroundColor': 'RebeccaPurple'
+           },
+       ],
+        </pre>
+        <li>display the top n values</li>
+		<pre class = "prettyprint linenums">
+style_data_conditional=[
+           {
+               'if': {
+                'filter_query': '{{year}} = {}'.format(i),
+            },
+               'backgroundColor': 'RebeccaPurple'
+           }
+         for i in df['year'].nlargest(3)
+       ],
+        </pre>
+        <li>highlight the values below average in each column</li>
+		<pre class = "prettyprint linenums">
+style_data_conditional=[
+            {
+                'if': {
+                    'filter_query': '{{{}}} &lt;= {}'.format(col, value),
+                    'column_id': col
+                },
+                'backgroundColor': '#FF4136',
+                'color': 'white'
+            } for (col, value) in df.quantile(0.5).iteritems()
+       ],
+        </pre>
+        </div>
+        <div class = "block">
+            <li><span>Number Formating</span></li>
+		<pre class = "prettyprint linenums">
+from dash.dash_table.Format import Format, Group, Scheme, Trim
+
+# the general form of a specifier in d3 rules
+[[fill]align][sign][symbol][0][width][,][.precision][type]
+        </pre>
+            <li>Delimiter</li>
+		<pre class = "prettyprint linenums">
+columns=[{'id': c, 'name': c}
+        if c != 'pop' else
+        {'id': c, 'name': c+'_', 'type':'numeric', 'format':Format(group=True,  groups=[2, 3, 2])} # 3,18,899,23
+        for c in df.columns],
+        </pre>
+            <li>Padding</li>
+		<pre class = "prettyprint linenums">
+columns=[{'id': c, 'name': c}
+             if c != 'pop' else
+             {'id': c, 'name': c+'_', 'type':'numeric', 'format':Format(padding=True, padding_width=18)}
+             for c in df.columns],
+        </pre>
+            <li>Precision</li>
+		<pre class = "prettyprint linenums">
+columns=[{'id': c, 'name': c}
+             if c != 'pop' else
+             {'id': c, 'name': c+'_', 'type':'numeric', 'format':Format(precision=4, scheme=Scheme.fixed)}
+             for c in df.columns],
+        </pre>
+        <li>Symbol</li>
+		<pre class = "prettyprint linenums">
+columns=[{'id': c, 'name': c}
+             if c != 'pop' else
+             {'id': c, 'name': c+'_', 'type':'numeric', 'format':Format(symbol=Symbol.yes, symbol_prefix='@')}
+             for c in df.columns],
+        </pre>
+        </div>
+		<div class = "subtitle">Interaction Operations</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+sort_action='native' # sorting by columns
+filter_action='native' # filtering by columns
+editable=True # editing the cells
+row_deletable=True # deleting rows
+columns[i].deletable=True # deleting columns
+row_selectable='single' | 'multi' # Selecting rows 
+page_action='native' | 'custom' # paging
+hidden_columns=[] # hiding columns
+        </pre>
+        </div>
+		<div class = "subtitle">Column/Columns Selection</div>
+		<div class = "block">
+            <li><span>column_selectable</span>, 'single', or 'multi'
+                <ul>
+                    <li>enable the table to be selectable</li>
+                </ul>
+            </li>
+            <li><span>columns[i].selectable</span>, boolean
+                <ul>
+                    <li>make a specific column selectable</li>
+                </ul>
+            </li>
+            <li><span>selected_columns</span>, list of strings
+                <ul>
+                    <li>the ids of columns that are selected</li>
+                </ul>
+            </li>
+            <li><span>derived_viewport_selected_columns</span>, list of strings
+                <ul>
+                    <li>the ids of the <span>selected_columns</span> that are not currently hidden</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+import dash
+import pandas as pd
+from dash import html
+from dash import dcc
+from dash import dash_table
+from dash.dependencies import Output, Input
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([dash_table.DataTable(
+    id = 'table',
+    data=df.to_dict('records'),
+    columns=[{'id': c, 'name': c, 'selectable': True} for c in df.columns],
+    column_selectable='multi',
+    selected_columns = ['year'],
+    hidden_columns = ['year'],
+    page_size = 20
+),
+              html.Div(id = 'output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('table', 'selected_columns'),
+    Input('table', 'derived_viewport_selected_columns'))
+def update_table(columns, view_columns):
+    print(type(columns), columns)
+    print(type(view_columns), view_columns)
+    return columns
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Column/Columns Hidding</div>
+		<div class = "block">
+            <li>automatically add a toggle button to switch columns shown/hidden</li>
+            <li><span>hidden_columns</span>, list of strings
+                <ul>
+                    <li>hidden columns</li>
+                </ul>
+            </li>
+            <li><span>columns[i].hideable</span>, boolean
+                <ul>
+                    <li>make a specific column hideable</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+import dash
+import pandas as pd
+from dash import html
+from dash import dcc
+from dash import dash_table
+from dash.dependencies import Output, Input
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([dash_table.DataTable(
+    id = 'table',
+    data=df.to_dict('records'),
+    columns=[{'id': c, 'name': c, 'hideable':True} for c in df.columns],
+    hidden_columns = ['year'],
+    page_size = 20
+),
+              html.Div(id = 'output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('table', 'hidden_columns'))
+def update_table(columns):
+    return str(columns)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Row IDs</div>
+		<div class = "block">
+            <li><span>derived_virtual_indices</span>, the indices of rows across all pages after filtering and sorting</li>
+            <li><span>derived_viewport_indices</span>, the indices of rows on the currently visible page</li>
+            <li><span>selected_rows and row_selectable</span>, indices of rows that are selected</li>
+            <li><span>derived_virtual_selected_rows</span>,  the set of selected rows after filtering and sorting, across all page</li>
+            <li><span>derived_viewport_selected_rows</span>, the set of selected rows on the currently visible page</li>
+        </div>
+		<div class = "subtitle">Cell</div>
+		<div class = "block">
+            <li><span>active_cell</span>, the data cell the user has put the cursor on, by clicking and/or arrow keys</li>
+            <li><span>start_cell</span>, the initial cell of the selected cells</li>
+            <li><span>end_cell</span>, the last cell of the selected cells</li>
+            <li><span>selected_cells</span>, the selected cells</li>
         </div>
 		<div class = "subtitle">Select a Single Row</div>
 		<div class = "block">
@@ -238,21 +618,6 @@ def display_output(index, rows, columns):
 if __name__ == '__main__':
     app.run_server(debug=True)
         </pre>
-        </div>
-		<div class = "subtitle">Row IDs</div>
-		<div class = "block">
-            <li><span>derived_virtual_indices</span>, the indices of rows across all pages after filtering and sorting</li>
-            <li><span>derived_viewport_indices</span>, the indices of rows on the currently visible page</li>
-            <li><span>selected_rows and row_selectable</span>, indices of rows that are selected</li>
-            <li><span>derived_virtual_selected_rows</span>,  the set of selected rows after filtering and sorting, across all page</li>
-            <li><span>derived_viewport_selected_rows</span>, the set of selected rows on the currently visible page</li>
-        </div>
-		<div class = "subtitle">Cell</div>
-		<div class = "block">
-            <li><span>active_cell</span>, the data cell the user has put the cursor on, by clicking and/or arrow keys</li>
-            <li><span>start_cell</span>, the initial cell of the selected cells</li>
-            <li><span>end_cell</span>, the last cell of the selected cells</li>
-            <li><span>selected_cells</span>, the selected cells</li>
         </div>
 		<div class = "subtitle">Backend Paging</div>
 		<div class = "block">
@@ -408,6 +773,7 @@ if __name__ == '__main__':
 		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/">D3 Rules</a></li>
             <li><a href = "https://dash.plotly.com/datatable/reference">Datatable Reference</a></li>
 			<li><a href = "https://dash.plotly.com/datatable">Documentation</a></li>
 		</div>
