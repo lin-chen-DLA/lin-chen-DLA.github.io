@@ -27,6 +27,45 @@
 			Datatable
 		</div>
 
+		<div class = "subtitle">Datatable Creation</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import pandas as pd
+from dash import html
+from dash import dcc
+from dash import dash_table
+from dash.dependencies import Output, Input
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([dash_table.DataTable(id = 'table'),
+    html.Button('Click', id = 'button'),
+    html.Div(id = 'output')
+    ])
+
+@app.callback(
+    Output('table', 'data'),
+    Output('table', 'columns'),
+    Output('table', 'page_size'),
+    Output('table', 'page_current'),
+    Input('button', 'n_clicks'))
+def update_table(n_clicks):
+    if not n_clicks:
+        raise PreventUpdate
+    data=df.to_dict('records')
+    columns=[{'id': c, 'name': c} for c in df.columns]
+    return data, columns, 20, 1
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
 		<div class = "subtitle">Datatable Style</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
@@ -384,10 +423,8 @@ sort_action='native' # sorting by columns
 filter_action='native' # filtering by columns
 editable=True # editing the cells
 row_deletable=True # deleting rows
-columns[i].deletable=True # deleting columns
 row_selectable='single' | 'multi' # Selecting rows 
 page_action='native' | 'custom' # paging
-hidden_columns=[] # hiding columns
         </pre>
         </div>
 		<div class = "subtitle">Column/Columns Selection</div>
@@ -500,13 +537,233 @@ if __name__ == '__main__':
     app.run_server(debug=True)
         </pre>
         </div>
-		<div class = "subtitle">Row IDs</div>
+		<div class = "subtitle">Column/Columns Deletion</div>
 		<div class = "block">
-            <li><span>derived_virtual_indices</span>, the indices of rows across all pages after filtering and sorting</li>
-            <li><span>derived_viewport_indices</span>, the indices of rows on the currently visible page</li>
-            <li><span>selected_rows and row_selectable</span>, indices of rows that are selected</li>
-            <li><span>derived_virtual_selected_rows</span>,  the set of selected rows after filtering and sorting, across all page</li>
-            <li><span>derived_viewport_selected_rows</span>, the set of selected rows on the currently visible page</li>
+            <li><span>deletable</span>, boolean
+                <ul>
+                    <li>enable column deletion</li>
+                    <li>the deleted columns are removed from data</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+import dash
+import pandas as pd
+from dash import html
+from dash import dcc
+from dash import dash_table
+from dash.dependencies import Output, Input
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([dash_table.DataTable(
+    id = 'table',
+    data=df.to_dict('records'),
+    columns=[{'id': c, 'name': c, 'deletable': True} for c in df.columns],
+    page_size = 20
+),
+              html.Div(id = 'output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('table', 'columns'),
+    Input('table', 'data'))
+def update_table(columns, data):
+    print(len(data[0]))
+    column_names = [column['name'] for column in columns]
+    return str(column_names)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Column/Columns Clearing</div>
+		<div class = "block">
+            <li><span>clearable</span>, boolean
+                <ul>
+                    <li>be able to remove the content of columns</li>
+                    <li>the cleared columns are removed from data</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+import dash
+import pandas as pd
+from dash import html
+from dash import dcc
+from dash import dash_table
+from dash.dependencies import Output, Input
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([dash_table.DataTable(
+    id = 'table',
+    data=df.to_dict('records'),
+    columns=[{'id': c, 'name': c, 'clearable': True} for c in df.columns],
+    page_size = 20
+),
+              html.Div(id = 'output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('table', 'columns'),
+    Input('table', 'data'))
+def update_table(columns, data):
+    print(data[0])
+    column_names = [column['name'] for column in columns]
+    return str(column_names)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Column/Columns Renaming</div>
+		<div class = "block">
+            <li><span>renamable</span>, boolean
+                <ul>
+                    <li>columns, the column names are changed</li>
+                    <li>data, the column names of data are not changed</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+import dash
+import pandas as pd
+from dash import html
+from dash import dcc
+from dash import dash_table
+from dash.dependencies import Output, Input
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([dash_table.DataTable(
+    id = 'table',
+    data=df.to_dict('records'),
+    columns=[{'id': c, 'name': c, 'renamable': True} for c in df.columns],
+    page_size = 20
+),
+              html.Div(id = 'output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('table', 'columns'),
+    Input('table', 'data'))
+def update_table(columns, data):
+    print(data[0])
+    column_names = [column['name'] for column in columns]
+    return str(column_names)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Row/Rows Selection</div>
+		<div class = "block">
+            <li><span>row_selectable</span>, 'single', 'multi', False, enable row selection</li>
+            <li><span>selected_rows</span>, list of integers
+                <ul>
+                    <li>the indices of selected rows</li>
+                </ul>
+            </li>
+            <li><span>derived_viewport_indices</span>, list of integers
+                <ul>
+                    <li>the indices in the current page</li>
+                </ul>
+            </li>
+            <li><span>derived_viewport_selected_rows</span>, list of integers
+                <ul>
+                    <li>the indices of the selected_row in the current page</li>
+                    <li>starts from zero for each page</li>
+                </ul>
+            </li>
+            <li><span>derived_virtual_indices</span>, list of integers
+                <ul>
+                    <li>the indices across all pages</li>
+                </ul>
+            </li>
+            <li><span>derived_virtual_selected_rows</span>, list of integers
+                <ul>
+                    <li>the indices of the selected_rows across all pages</li>
+                </ul>
+            </li>
+            <li><span>derived_viewport_data</span>, list of dicts
+                <ul>
+                    <li>the data on the current page</li>
+                </ul>
+            </li>
+            <li><span>derived_virtual_data</span>, list of dicts
+                <ul>
+                    <li>the visible data across all pages</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+import dash
+import pandas as pd
+from dash import html
+from dash import dcc
+from dash import dash_table
+from dash.dependencies import Output, Input
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([dash_table.DataTable(
+    id = 'table',
+    data=df.to_dict('records'),
+    columns=[{'id': c, 'name': c} for c in df.columns],
+    row_selectable = 'multi',
+    page_size = 20,
+    sort_action="native",
+    sort_mode="multi",
+),
+              html.Div(id = 'output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('table', 'selected_rows'),
+    Input('table', 'derived_viewport_indices'),
+    Input('table', 'derived_virtual_indices'),
+    Input('table', 'derived_viewport_selected_rows'),
+    Input('table', 'derived_virtual_selected_rows'),
+    Input('table', 'data'),
+    Input('table', 'derived_viewport_data'),
+    Input('table', 'derived_virtual_data'))
+def update_table(indices, viewport_indices, virtual_indices, selected_indices, virtual_selected_indices, data, viewport_data, virtual_data):
+    if not indices:
+        raise PreventUpdate
+    #print(indices)
+    #print(viewport_indices)
+    #print(virtual_indices)
+    #print(selected_indices)
+    #print(virtual_selected_indices)
+    print(len(data))
+    print(len(viewport_data))
+    print(len(virtual_data))
+    return str([data[index] for index in indices])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
         </div>
 		<div class = "subtitle">Cell</div>
 		<div class = "block">
@@ -514,110 +771,6 @@ if __name__ == '__main__':
             <li><span>start_cell</span>, the initial cell of the selected cells</li>
             <li><span>end_cell</span>, the last cell of the selected cells</li>
             <li><span>selected_cells</span>, the selected cells</li>
-        </div>
-		<div class = "subtitle">Select a Single Row</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-import dash
-from dash.dependencies import Input, Output, State
-import dash_table
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.exceptions import PreventUpdate
-import pandas as pd
-
-app = dash.Dash(__name__)
-
-params = [
-    'Weight', 'Torque', 'Width', 'Height',
-    'Efficiency', 'Power', 'Displacement'
-]
-
-app.layout = html.Div([
-    dash_table.DataTable(
-        id='table-editing-simple',
-        columns=[{'id': 'Model', 'name': 'Model', 'deletable':True, 'selectable':True}] +[{'id': p, 'name': p} for p in params],
-        data=[
-            dict(Model=i, **{param: 0 for param in params})
-            for i in range(1, 5)
-        ],
-        row_selectable='single',
-        cell_selectable=False
-    ),
-    html.Div(id='display')
-])
-
-
-@app.callback(
-    Output('display', 'children'),
-    Input('table-editing-simple', 'selected_rows'), # list of indices of selected rows
-    State('table-editing-simple', 'data'), # table data
-    State('table-editing-simple', 'columns') # describes various aspects about columns
-    )
-def display_output(index, rows, columns):
-    if not index:
-        raise PreventUpdate
-    if len(index) == 0:
-        raise PreventUpdate
-    return str(rows[index[0]])
-
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
-		</pre>
-		</div>
-		<div class = "subtitle">Select Columns</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-import dash
-from dash.dependencies import Input, Output, State
-import dash_table
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.exceptions import PreventUpdate
-import pandas as pd
-
-app = dash.Dash(__name__)
-
-params = [
-    'Weight', 'Torque', 'Width', 'Height',
-    'Efficiency', 'Power', 'Displacement'
-]
-
-app.layout = html.Div([
-    dash_table.DataTable(
-        id='table-editing-simple',
-        columns=
-            [{'id': 'Model', 'name': 'Model', 'selectable':True}] +
-        [{'id': p, 'name': p, 'selectable': True} for p in params],
-        data=[
-            dict(Model=i, **{param: 0 for param in params})
-            for i in range(1, 5)
-        ],
-        column_selectable='multi',
-        selected_columns = [],
-        cell_selectable=False
-    ),
-    html.Div(id='display')
-])
-
-
-@app.callback(
-    Output('display', 'children'),
-    Input('table-editing-simple', 'selected_columns'),
-    State('table-editing-simple', 'data'),
-    State('table-editing-simple', 'columns'))
-def display_output(index, rows, columns):
-    if not index:
-        raise PreventUpdate
-    if len(index) == 0:
-        raise PreventUpdate
-    return str(index)
-
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
-        </pre>
         </div>
 		<div class = "subtitle">Backend Paging</div>
 		<div class = "block">
