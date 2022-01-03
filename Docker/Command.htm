@@ -20,30 +20,58 @@
 			<li>contains the container's filesystem, it must contain everything needed to run an application - all dependencies, configuration, scripts, binaries, etc.</li>
             <li>Show Images</li>
 		<pre class = "prettyprint linenums">
-docker images # show a list of all images on the local system
+# show a list of all images on the local system
+docker images
+docker image ls
         </pre>
         <li>Remove Images</li>
 		<pre class = "prettyprint linenums">
-docker rmi # remove a image
-docker rmi $(docker images -a -q) # remove all images
+# remove an image
+docker image rm [imageName]
+docker rmi [imageName]
+
+# remove all images
+docker rmi $(docker images -a -q)
         </pre>
         <li>Pull Image</li>
 		<pre class = "prettyprint linenums">
-docker pull [imageName] # fetch an Docker image from Docker Registry
+# fetch an Docker image from Docker Registry
+docker pull [imageName]
+docker image pull [imageName]
+        </pre>
+        <li>Create Image</li>
+		<pre class = "prettyprint linenums">
+# docker build -t [imageName:tagName] [sourceCodeDir]
+docker build -t [imageName] .
+docker image build -t [imageName] .
         </pre>
         <li>Push Image</li>
 		<pre class = "prettyprint linenums">
 docker push [imageName:tagname] # push the image with the tag to Docker Hub, default is latest
+docker image push [imageName:tagName]
         </pre>
         <li>Save Image</li>
 		<pre class = "prettyprint linenums">
 # save an image as a tar file
-docker save -o name.tar [imageNam]
+docker save -o name.tar [imageName]
+docker image save -o name.tar [imageName]
         </pre>
         <li>Load Image</li>
 		<pre class = "prettyprint linenums">
 # load an image from a tar file
 docker load -i name.tar
+docker image load -i name.tar
+        </pre>
+        <li>Inspect Image</li>
+		<pre class = "prettyprint linenums">
+# display detailed image information
+docker inspect [imageName]
+docker image inspect [imageName]
+        </pre>
+        <li>Import Image</li>
+		<pre class = "prettyprint linenums">
+docker image import [name.tar] [imageName]
+docker import [name.tar] [imageName]
         </pre>
         </div>
         <div class = "subtitle">Container</div>
@@ -68,7 +96,14 @@ docker run -it busybox sh
 # -e, environment variables
 docker run -d -P --name [containerName] [imageName]
 docker run -p 80:8080 [imageName]
-        </pre>  
+
+docker container run [imageName]
+        </pre>   
+            <li>Inspect Container</li>
+		<pre class = "prettyprint linenums">
+docker inspect [containerName]
+docker container inspect [containerName]
+        </pre> 
             <li>Show Containers</li>
 		<pre class = "prettyprint linenums">
 # show containers running
@@ -85,13 +120,14 @@ docker cp [containerID/containerName]:src_path local_dest_path # copy a containe
 
 docker cp local_src_path [containerID/containerName]:container_dest_path # copy a local file to a container
         </pre>
-        <li>Remotely Access a Container</li>
+        <li>Access a Container</li>
 		<pre class = "prettyprint linenums">
 docker attach [containerName]
 
 or
 
 docker exec -it [containerName] sh
+docker container exec -it [containerName] sh
         </pre>
         <li>Convert Container to Image</li>
 		<pre class = "prettyprint linenums">
@@ -104,12 +140,32 @@ docker kill [contaierID] # kill a running container</li>
         </pre>
         <li>Start Container</li>
 		<pre class = "prettyprint linenums">
-docker start -ia [containerName] # start a stopped container
+docker start -ia [containerName]
+docker container start [containerName]
+        </pre>
+        <li>Restart Container</li>
+		<pre class = "prettyprint linenums">
+docker restart [containerName]
+docker container restart [containerName]
+        </pre>
+        <li>Stop Container</li>
+		<pre class = "prettyprint linenums">
+docker stop [containerName]
+docker container stop [containerName]
         </pre>
         <li>Remove Container</li>
 		<pre class = "prettyprint linenums">
 docker rm [containerID/containerName] # remove a container that is not running
+docker container rm [containerName]
 docker rm $(docker ps -a -f status=exited -q), remove all exited containers
+        </pre>
+        <li>Display Container Log</li>
+		<pre class = "prettyprint linenums">
+docker container logs [containerName]
+        </pre>
+        <li>Export Container</li>
+		<pre class = "prettyprint linenums">
+docker container export -o name.tar [contianerName]
         </pre>
 		<pre class = "prettyprint linenums">
 docker create --name [containerName ]-it [imageName] [command] # create a container
@@ -148,6 +204,17 @@ docker network rm [networkName], remove a network
 docker network prune, remove all networks
         </pre>
         </div>
+        <div class = "subtitle">Volume</div>
+        <div class = "block">
+            <li>List Volumes
+		<pre class = "prettyprint linenums">
+docker volume ls
+        </pre>
+            <li>Remove Volume
+		<pre class = "prettyprint linenums">
+docker volume rm [volumeName]
+        </pre>
+        </div>
         <div class = "subtitle">Docker Registry</div>
         <div class = "block">
             <li>Docker Hub</li>
@@ -158,12 +225,10 @@ docker login # log in Docker Hub
         <div class = "subtitle">Others</div>
         <div class = "block">
                 <li>docker [command] --help, get the help information of a command</li>
-                <li>docker inspect [containerID/containerName], get low-level information on Docker objects</li>
-                <li>docker logs [containerID/containerName], get logs present at the time of execution</li>
-		        <li>docker port [containerName], get port</li>
 		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://www.educba.com/software-development/software-development-tutorials/docker-tutorial/">Docker Tutorial</a></li>
             <li><a href = "https://docs.docker.com/engine/reference/run/">Docker CLI</a></li>
 		</div>
 	</body>

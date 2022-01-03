@@ -711,6 +711,13 @@ if __name__ == '__main__':
                     <li>the visible data across all pages</li>
                 </ul>
             </li>
+        </div>
+        <div class = "block">
+            <li><span>selected_rows</span>, original indices of selected rows</li>
+            <li><span>derived_viewport_selected_rows</span>, indices of selected rows in the current page</li>
+            <li><span>derived_virtual_selected_rows</span>, indices of selected rows after sorting, deletion, filtering</li>
+        </div>
+        <div class = "block">
 		<pre class = "prettyprint linenums">
 import dash
 import pandas as pd
@@ -731,6 +738,8 @@ app.layout = html.Div([dash_table.DataTable(
     data=df.to_dict('records'),
     columns=[{'id': c, 'name': c} for c in df.columns],
     row_selectable = 'multi',
+    row_deletable = True,
+    filter_action = 'native',
     page_size = 20,
     sort_action="native",
     sort_mode="multi",
@@ -771,6 +780,54 @@ if __name__ == '__main__':
             <li><span>start_cell</span>, the initial cell of the selected cells</li>
             <li><span>end_cell</span>, the last cell of the selected cells</li>
             <li><span>selected_cells</span>, the selected cells</li>
+        </div>
+		<div class = "subtitle">Filtering</div>
+        <div class = "block">
+            <li><span>filter_action</span>
+                <ul>
+                    <li>'native', the filtering logic is handled by the table</li>
+                    <li>'custom', program the filtering through a callback</li>
+                </ul>
+            </li>
+            <li>Operators
+                <ul>
+                    <li>=</li>
+                    <li>contains</li>
+                    <li>datestartswith</li>
+                    <li>&gt;, &lt;, &gt;=, &lt;=, !=</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# native
+import dash
+import pandas as pd
+from dash import html
+from dash import dcc
+from dash import dash_table
+from dash.dependencies import Output, Input
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([dash_table.DataTable(
+    id = 'table',
+    data=df.to_dict('records'),
+    columns=[{'id': c, 'name': c} for c in df.columns],
+    filter_action = 'native',
+    page_size = 20,
+),
+              html.Div(id = 'output')
+    ])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
         </div>
 		<div class = "subtitle">Backend Paging</div>
 		<div class = "block">
