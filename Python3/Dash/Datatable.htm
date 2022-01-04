@@ -143,7 +143,7 @@ data=df.to_dict('records')
         </li>
         <li><span>page_action</span>, string
             <ul>
-                <li>'native', all data is passed to the table up-fron</li>
+                <li>'native', all data is passed to the table up-front</li>
                 <li>'custom', data is passed to the table one page at a time</li>
                 <li>'none', disables paging, render all of the data at once</li>
             </ul>
@@ -672,50 +672,61 @@ if __name__ == '__main__':
     app.run_server(debug=True)
         </pre>
         </div>
-		<div class = "subtitle">Row/Rows Selection</div>
+		<div class = "subtitle">Native Row/Rows Selection</div>
 		<div class = "block">
             <li><span>row_selectable</span>, 'single', 'multi', False, enable row selection</li>
             <li><span>selected_rows</span>, list of integers
                 <ul>
-                    <li>the indices of selected rows</li>
+                    <li><span>select</span>, the indices of selected rows in table data</li>
+                    <li><span>sort</span>, sorting does not impact the indices of selected rows</li>
+                    <li><span>delete</span>, delete rows from table data, the indices of selected rows are the indices after deletion</li>
+                    <li><span>filter</span>, display only, not change table data and selected row</li>
                 </ul>
             </li>
-            <li><span>derived_viewport_indices</span>, list of integers
+            <li><span>derived_viewport_indices</span>, list of integers, the indices of rows in the current page
                 <ul>
-                    <li>the indices in the current page</li>
+                    <li><span>sort</span>, the indices of rows in the current page in original table data, not change indices of table data</li>
+                    <li><span>delete</span>, the indices of rows in the current page, which are the indices after deletion</li>
+                    <li><span>filter</span>, the indices of rows in the current pager after filtering, not change table data</li>
                 </ul>
             </li>
             <li><span>derived_viewport_selected_rows</span>, list of integers
                 <ul>
-                    <li>the indices of the selected_row in the current page</li>
-                    <li>starts from zero for each page</li>
+                    <li><span>select</span>, the indices of the selected rows in the current page, starts from zero for each page</li>
+                    <li><span>sort</span>, the indices of the selected rows in the current page after sorting, starts from zero for each page</li>
+                    <li><span>delete</span>, the indices of the selected rows in the current page after deletion, starts from zero for each page</li>
+                    <li><span>filter</span>, the indices of the selected rows in the current page after filtering, starts from zero for each page, not change table data</li>
                 </ul>
             </li>
-            <li><span>derived_virtual_indices</span>, list of integers
+            <li><span>derived_viewport_data</span>, list of dicts, the data on the current page
                 <ul>
-                    <li>the indices across all pages</li>
+                    <li><span>sort</span>, the data in the current page after sorting</li>
+                    <li><span>delete</span>, the data in the current page after deletion</li>
+                    <li><span>filter</span>, the data in the current page after filtering</li>
+                </ul>
+            </li>
+            <li><span>derived_virtual_indices</span>, list of integers, the indices across all pages
+                <ul>
+                    <li><span>sort</span>, the indices of the sorted rows across all pages</li>
+                    <li><span>delete</span>, the indices of the rows across all pages after deletion</li>
+                    <li><span>filter</span>, the indices of the filtered rows across all pages</li>
                 </ul>
             </li>
             <li><span>derived_virtual_selected_rows</span>, list of integers
                 <ul>
-                    <li>the indices of the selected_rows across all pages</li>
+                    <li><span>select</span>, the indices of the selected_rows across all pages</li>
+                    <li><span>sort</span>, the indices of the sorted rows across all pages</li>
+                    <li><span>delete</span>, the indices after deletion across all pages</li>
+                    <li><span>filter</span>, the indices of the filtered rows across all pages</li>
                 </ul>
             </li>
-            <li><span>derived_viewport_data</span>, list of dicts
+            <li><span>derived_virtual_data</span>, list of dicts, the visible data across all pages
                 <ul>
-                    <li>the data on the current page</li>
+                    <li><span>sort</span>, sorted rows across all pages</li>
+                    <li><span>delete</span>, rows after deletion across all pages</li>
+                    <li><span>filter</span>, rows after filtering across all pages</li>
                 </ul>
             </li>
-            <li><span>derived_virtual_data</span>, list of dicts
-                <ul>
-                    <li>the visible data across all pages</li>
-                </ul>
-            </li>
-        </div>
-        <div class = "block">
-            <li><span>selected_rows</span>, original indices of selected rows</li>
-            <li><span>derived_viewport_selected_rows</span>, indices of selected rows in the current page</li>
-            <li><span>derived_virtual_selected_rows</span>, indices of selected rows after sorting, deletion, filtering</li>
         </div>
         <div class = "block">
 		<pre class = "prettyprint linenums">
@@ -758,17 +769,21 @@ app.layout = html.Div([dash_table.DataTable(
     Input('table', 'derived_viewport_data'),
     Input('table', 'derived_virtual_data'))
 def update_table(indices, viewport_indices, virtual_indices, selected_indices, virtual_selected_indices, data, viewport_data, virtual_data):
-    if not indices:
-        raise PreventUpdate
+    #if not indices:
+        #raise PreventUpdate
     #print(indices)
     #print(viewport_indices)
     #print(virtual_indices)
     #print(selected_indices)
     #print(virtual_selected_indices)
-    print(len(data))
-    print(len(viewport_data))
-    print(len(virtual_data))
-    return str([data[index] for index in indices])
+    #if viewport_data:
+        #print(len(viewport_data))
+    #return str(viewport_data)
+    if virtual_data:
+        print(virtual_data[10])
+        print(len(virtual_data))
+    return len(data)
+    #return str([data[index] for index in indices])
 
 if __name__ == '__main__':
     app.run_server(debug=True)
