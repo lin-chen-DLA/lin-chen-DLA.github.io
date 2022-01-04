@@ -206,9 +206,17 @@ docker network prune, remove all networks
         </div>
         <div class = "subtitle">Volume</div>
         <div class = "block">
+            <li>Create Volume
+		<pre class = "prettyprint linenums">
+docker volume create [volumeName]
+        </pre>
             <li>List Volumes
 		<pre class = "prettyprint linenums">
 docker volume ls
+        </pre>
+            <li>Inspect Volume
+		<pre class = "prettyprint linenums">
+docker volume inspect [volumeName]
         </pre>
             <li>Remove Volume
 		<pre class = "prettyprint linenums">
