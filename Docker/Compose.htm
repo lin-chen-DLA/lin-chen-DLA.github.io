@@ -16,14 +16,138 @@
 			Compose
 		</div>
         <div class = "block">
+            <li>Deploy multiple containers on a <span>single</span> host</li>
             <li>A YAML file defining <span>version</span> (DEPRECATED), <span>services</span> (REQUIRED), <span>networks</span>, <span>volumes</span>, <span>configs</span> and <span>secrets</span></li>
             <li>Default path is <span>compose.yaml</span> (or compose.yml, docker-compose.yaml, docker-compose.yml) in working directory</li>
+        </div>
+        <div class = "subtitle">Build and Compose</div>
+        <div class = "block">
+            <li>1. Build an image from local</li>
+            <li>2. Compose containers</li>
+		<pre class = "prettyprint linenums">
+version: "3.9" # version of Docker Compose
+services:
+  webapp: # container
+    image: lchenlangley/count # image name [domain/image:tag]
+    build: . # search local, if image does not exist, build image from local
+    ports:
+      - 8000:5000 # host port : container port
+    environment:
+      - MYREDIS_HOST=redisserver # environment variable
+  redisserver: # container
+    image: redis:alpine # if image exist in local, use the local image
+# a bridge network is created by default
+        </pre>
+        </div>
+        <div class = "subtitle">Fetch and Compose</div>
+        <div class = "block">
+            <li>1. Fetch images from repositories</li>
+            <li>2. Compose containers</li>
+		<pre class = "prettyprint linenums">
+version: "3.9"
+services:
+  webapp:
+    image: lchenlangley/count # fetch image from Docker Hub
+    ports:
+      - 8000:5000
+    environment:
+      - MYREDIS_HOST=redisserver
+  redisserver:
+    image: "redis:alpine" # fetch image from Docker Hub
+        </pre>
         </div>
         <div class = "subtitle">Services</div>
         <div class = "block">
             <li>Abstract concept implementing <span>docker run</span></li>
-            <li><span>profiles</span>
+        <li><span>image</span>
+            <ul>
+                <li>Specifies the image to start the container from</li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
+image: redis # [domainName/imageName:tag]
+        </pre>
+        <li><span>build</span>
+            <ul>
+                <li>Build image from local source code, allow to miss the image attribute</li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
+services:
+  webapp:
+    image: awesome/webapp # image name
+    build: . # path for source code and Dockerfile
+        </pre>
+		<pre class = "prettyprint linenums">
+services:
+  webapp:
+    image: awesome/database # image name
+    build:
+        context: . # source code path
+        dockerfile: ../Dockerfile # Dockerfile path
+        </pre>
+		<pre class = "prettyprint linenums">
+services:
+  webapp:
+    build: . # source code path
+        </pre>
+        <li><span>environment</span>
+            <ul>
+                <li>Add environment variables</li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
+services:
+  webapp:
+    ...
+    environment:
+       MYREDIS_HOST: redisserver
+        </pre>
+		<pre class = "prettyprint linenums">
+services:
+  webapp:
+    ...
+    environment:
+       - MYREDIS_HOST=redisserver
+        </pre>
+        <li><span>env_file</span>
+            <ul>
+                <li>Add environment variables from a file, <span>not</span> really work in the test</li>
+            </ul>
+        </li>
+		<pre class = "prettyprint linenums">
+# .env, default environment file
+MYREDIS_HOST=redisserver
+
+# compose.yml
+services:
+  webapp:
+    ...
+    environment:
+       - MYREDIS_HOST=${MYREDIS_HOST}
+        </pre>
+		<pre class = "prettyprint linenums">
+# env/webapp.env
+MYREDIS_HOST=redisserver
+
+# compose.yml
+services:
+  webapp:
+    ...
+    environment:
+       - MYREDIS_HOST=${MYREDIS_HOST}
+
+# compose
+docker-compose --env-file env/webapp.env up
+
+# turn off compose
+docker-compose --env-file env/webapp.env down
+        </pre>
+		<pre class = "prettyprint linenums">
+        </pre>
+            <li><span>profiles and depends_on</span>
                 <ul>
+                    <li>Selectively enable services</li>
                     <li>If unassigned, the service is always started</li>
                     <li>If assigned, the service is only started if the profile is activated</li>
                 </ul>
@@ -68,39 +192,6 @@ docker-compose up baz
 # enable zot and test, bar is enabled by depends_on constraint
 docker-compose --profile test up zot
 		</pre>
-        <li><span>build</span>
-            <ul>
-                <li>Build image from local source code, allow to miss the image attribute</li>
-            </ul>
-        </li>
-		<pre class = "prettyprint linenums">
-services:
-  # build an image from source and give an image name
-  # need Dockerfile
-  frontend:
-    image: awesome/webapp # image name
-    build: ./webapp # source code path
-
-  # build an image from source and give an image name
-  # specify the dockerfile path
-  backend:
-    image: awesome/database # image name
-    build:
-        context: backend # source code path
-        dockerfile: ../backend.Dockerfile # Dockerfile path
-
-  # build an image from source code, need Dockerfile
-  custom:
-    build: ~/custom # source code path
-        </pre>
-        <li><span>image</span>
-            <ul>
-                <li>Specifies the image to start the container from</li>
-            </ul>
-        </li>
-		<pre class = "prettyprint linenums">
-image: redis
-        </pre>
         <li><span>expose</span>
             <ul>
                 <li>Specify the port number exposed from container</li>
@@ -317,6 +408,9 @@ networks:
         <div class = "subtitle">docker-compose</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# get command help
+docker-compose --help
+
 # start services
 # --build, build images from source code instead of loading built images before starting containers
 # -d, detached
@@ -326,8 +420,32 @@ docker-compose up # start all services
 docker-compose up webapp # start service webapp
 docker-compose -f [composeFileName] up # specify compose file
 
-# turn off services
+# turn off and remove services
 docker-compose down
+
+# build images in compose file
+docker-compose build
+
+# list images of the current compose
+docker-compose images
+
+# list service of the current compose
+docker-compose ps
+
+# stop services of the current compose
+docker-compose stop [serviceName] # stop a specific service
+docker-compose stop # stop services in the current compose
+
+# start services
+docker-compose start [serviceName] # start a specific service
+docker-compose start # start services in the current compose
+
+# one-off command
+# docker-compose run [serviceName] [command]
+docker-compose run webapp env
+
+# view the compose file
+docker-compose config
 		</pre>
 		</div>
         <div class = "subtitle">Reference</div>
