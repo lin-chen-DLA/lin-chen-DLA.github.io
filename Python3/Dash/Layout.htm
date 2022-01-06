@@ -518,30 +518,32 @@ if __name__ == '__main__':
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 import dash
-from dash.dependencies import Input, Output
-import dash_html_components as html
-import dash_core_components as dcc
+from dash import dash_table
+from dash.dependencies import Input, Output, State
+from dash import html
+from dash import dcc
 from dash.exceptions import PreventUpdate
 
 app = dash.Dash(__name__)
 
-def get_layout():
-    return html.Div([
-        html.Button('Submit', id='submit'),
-        html.Div(2, id='input')
-        ])
-
-app.layout = get_layout()
+app.layout = html.Div([
+    dcc.Input(placeholder = 'Enter', id = 'output'),
+    html.Button('Click', 'button')
+])
 
 
-@app.callback(Output('input', 'children'),
-              [Input('submit', 'n_clicks'),
-               Input('input', 'children'),
-               ])
-def display_confirm(n_clicks, value):
-    if not n_clicks:
+@app.callback(
+    Output('output', 'value'),
+    #Input('button', 'n_clicks'),
+    Input('output', 'n_submit_timestamp'),
+    State('output', 'value'))
+def update_columns(timestamp, content):
+    if not timestamp:
         raise PreventUpdate
-    return 2*value
+    if not content:
+        return '_'
+    else:
+        return content+'_'
 
 if __name__ == '__main__':
     app.run_server(debug=True)
@@ -550,8 +552,43 @@ if __name__ == '__main__':
 		<div class = "subtitle">Circular Dependencies</div>
 		<div class = "block">
 			<li>Circular Dependencies is <span>not</span> allowed</li>
+            <li>Use <span>State</span> to bypass the limitation</li>
 			<p style = "text-align:center;"><img src = "img/Dash_18.png" width = "30%"></p>
 		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+from dash import dash_table
+from dash.dependencies import Input, Output, State
+from dash import html
+from dash import dcc
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    dcc.Input(id = 'output'),
+    dcc.Input(id = 'output2'),
+])
+
+@app.callback(
+    Output('output2', 'value'),
+    Input('output', 'n_submit_timestamp'),
+    State('output', 'value'))
+def update_columns(timestamp, content):
+    return content
+
+@app.callback(
+    Output('output', 'value'),
+    Input('output2', 'n_submit_timestamp'),
+    State('output2', 'value'))
+def update_columns(timestamp, content):
+    return content
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
 		<div class = "subtitle">One Output with One Input from Multiple Components</div>
 		<div class = "block">
 			<p style = "text-align:center;"><img src = "img/Dash_15.png" width = "20%"></p>
