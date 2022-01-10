@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Output
+		</div>
+
+        <div class = "subtitle">Data and Model</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import plotly.express as px
+data = px.data.iris()
+
+from sklearn.decomposition import PCA
+pca = PCA(n_components=2)
+pca.fit(data.iloc[:, :4])
+data_pca = pca.transform(data.iloc[:, :4])
+		</pre>
+        </div>
+        <div class = "subtitle">Plot</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import plotly.graph_objects as go
+
+def get_plot(x, y):
+    fig = go.Figure()
+    trace = go.Scatter(x=data_pca[:, 0][data['species_id'] == 1], y=data_pca[:, 1][data['species_id'] == 1], mode='markers', name = 'setosa')
+    trace_2 = go.Scatter(x=data_pca[:, 0][data['species_id'] == 2], y=data_pca[:, 1][data['species_id'] == 2], mode='markers', name = 'versicolor')
+    trace_3 = go.Scatter(x=data_pca[:, 0][data['species_id'] == 3], y=data_pca[:, 1][data['species_id'] == 3], mode='markers', name = 'virginica')
+    trace_4 = go.Scatter(x=[x], y=[y], mode='markers', marker=dict(size=[20], color=['red']), name = 'selected')
+    fig.add_trace(trace)
+    fig.add_trace(trace_2)
+    fig.add_trace(trace_3)
+    fig.add_trace(trace_4)
+    return fig
+        </pre>
+        </div>
+        <div class = "subtitle">Components</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import ipywidgets as widgets
+def get_slider(label, start, end):
+    return widgets.FloatSlider(description=label, min=start, max=end, value = (start+end)/2)
+        </pre>
+        </div>
+        <div class = "subtitle">Layout (Option 1)</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import numpy as np
+
+# Create layout
+a = get_slider('Sepal Length', min(data.iloc[:, 0]), max(data.iloc[:, 0]))
+b = get_slider('Sepal Width', min(data.iloc[:, 1]), max(data.iloc[:, 1]))
+c = get_slider('Petal Length', min(data.iloc[:, 2]), max(data.iloc[:, 2]))
+d = get_slider('Petal Width', min(data.iloc[:, 3]), max(data.iloc[:, 3]))
+
+out = widgets.Output(layout={'border': '1px solid black'})
+
+display(widgets.HBox([widgets.VBox([a, b, c, d]), out]))
+
+def display_info(change):
+    out.clear_output()
+    pca_test = pca.transform(np.array([a.value, b.value, c.value, d.value]).reshape(-1, 4))
+    with out:
+        display(get_plot(pca_test[0][0], pca_test[0][1]))
+    
+a.observe(display_info, names=['value'], type='change')
+b.observe(display_info, names=['value'], type='change')
+c.observe(display_info, names=['value'], type='change')
+d.observe(display_info, names=['value'], type='change')
+        </pre>
+		</div>
+        <div class = "subtitle">Layout (Option 2)</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import numpy as np
+
+# Create layout
+a = get_slider('Sepal Length', min(data.iloc[:, 0]), max(data.iloc[:, 0]))
+b = get_slider('Sepal Width', min(data.iloc[:, 1]), max(data.iloc[:, 1]))
+c = get_slider('Petal Length', min(data.iloc[:, 2]), max(data.iloc[:, 2]))
+d = get_slider('Petal Width', min(data.iloc[:, 3]), max(data.iloc[:, 3]))
+button = widgets.Button(description='Click')
+
+out = widgets.Output(layout={'border': '1px solid black'})
+
+display(widgets.HBox([widgets.VBox([a, b, c, d, button]), out]))
+
+def display_info(button_click):
+    out.clear_output()
+    pca_test = pca.transform(np.array([a.value, b.value, c.value, d.value]).reshape(-1, 4))
+    with out:
+        display(get_plot(pca_test[0][0], pca_test[0][1]))
+    
+button.on_click(display_info)
+        </pre>
+		</div>
+    </body>
+</html>

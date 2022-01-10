@@ -13,33 +13,62 @@
 	</head>
 	<body>
 		<div class = "title">
-			Layout
+			CSS
 		</div>
 
-        <div class = "block">
-            <p style = "text-align:center;"><img src = "img/Voilia_1.png" width = "50%"></p>
-		</div>
+		<div class = "subtitle">CSS</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-import ipywidgets as widgets
-
-# layout
-int_range = widgets.IntSlider()
-output = widgets.HTML()
-
-display(int_range, output)
-
-# callback
-def on_value_change(change):
-    output.value = str(change['new'])
-
-# event
-int_range.observe(on_value_change, names=['value'], type='change')
+%%html
+&lt;style&gt;
+.button_style{
+    width:100%;
+    border : 2px solid silver;
+    height: 50px;
+    background-color:red;
+    color: blue;
+    font-size: 24px;
+    font-weight: bold;
+}
+&lt;/style&gt;
 		</pre>
 		</div>
-		<div class = "subtitle">Installation</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+button = widgets.Button(description='Click')
+button.add_class('button_style')
+display(button)
+        </pre>
+        </div>
+		<div class = "subtitle">Layout</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from ipywidgets import Layout
+button = widgets.Button(description='Click', layout={'width':'50%', 'height':'80px'})
+display(button)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from ipywidgets import Layout
+button_layout=Layout(width='50%', height='80px')
+button = widgets.Button(description='Click', layout=button_layout)
+display(button)
+        </pre>
+        </div>
+		<div class = "subtitle">Pre-defined Style</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+button = widgets.Button(description='Click', button_style = 'info')
+display(button)
+        </pre>
+        </div>
+		<div class = "subtitle">Style</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+button = widgets.Button(description='Click')
+button.style.button_color = 'silver'
+display(button)
         </pre>
         </div>
     </body>
