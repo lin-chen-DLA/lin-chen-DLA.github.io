@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Docker</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			MySQL
+		</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Podman_1.png" width = "30%"></p>
+		</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "../Docker/img/Docker_10.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# docker-compose.yml
+version: "3.9"  # optional since v1.27.0
+services:
+  mysqlserver:
+    image: mysql:8.0.12
+    volumes:
+      - type: volume
+        source: sandbox-home
+        target: /var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST=mysqlserver
+volumes:
+  sandbox-home:
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+podman-compose up
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+http://localhost:8080/ #root, root
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+podman-compose down
+		</pre>
+		</div>
+	</body>
+</html>
