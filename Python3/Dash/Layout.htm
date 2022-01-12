@@ -540,10 +540,7 @@ app.layout = html.Div([
 def update_columns(timestamp, content):
     if not timestamp:
         raise PreventUpdate
-    if not content:
-        return '_'
-    else:
-        return content+'_'
+    return content+'_update'
 
 if __name__ == '__main__':
     app.run_server(debug=True)

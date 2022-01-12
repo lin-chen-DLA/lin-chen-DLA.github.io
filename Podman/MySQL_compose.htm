@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Kubernetes</title>
+		<title>Docker</title>
 		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
 		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
 		<style>
@@ -13,30 +13,51 @@
 	</head>
 	<body>
 		<div class = "title">
-			Minikube
+			MySQL
 		</div>
-        <div class = "subtitle">Start Minikube</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Podman_1.png" width = "30%"></p>
+		</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "../Docker/img/Docker_10.png" width = "30%"></p>
+		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-minikube start
-        </pre>
-        </div>
-        <div class = "subtitle">Kubernetes Dashboard</div>
+# docker-compose.yml
+version: "3.9"  # optional since v1.27.0
+services:
+  mysqlserver:
+    image: mysql:8.0.12
+    volumes:
+      - type: volume
+        source: sandbox-home
+        target: /var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST=mysqlserver
+volumes:
+  sandbox-home:
+		</pre>
+		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-minikube dashboard
-        </pre>
-        </div>
-        <div class = "subtitle">Close Minkube</div>
+podman-compose up
+		</pre>
+		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-minikube delete --all
-        </pre>
-        </div>
-        <div class = "subtitle">Reference</div>
+http://localhost:8080/ #root, root
+		</pre>
+		</div>
 		<div class = "block">
-            <li><a href = "https://itnext.io/goodbye-docker-desktop-hello-minikube-3649f2a1c469">Goodbye Docker Desktop, Hello Minikube!</a></li>
-            <li><a href = "https://minikube.sigs.k8s.io/docs/start/">Documentation</a></li>
-        </div>
-    </body>
+		<pre class = "prettyprint linenums">
+podman-compose down
+		</pre>
+		</div>
+	</body>
 </html>
