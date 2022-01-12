@@ -13,64 +13,53 @@
 	</head>
 	<body>
 		<div class = "title">
-			Hello World
+			Count
 		</div>
-        <div class = "subtitle">Deployment Mode</div>
         <div class = "block">
-            <p style = "text-align:center;"><img src = "img/K8s_2.png" width = "80%"></p>
+            <p style = "text-align:center;"><img src = "img/K8s_6.png" width = "30%"></p>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# 1. Create image
+# app.py
+import os
+import time
+import redis
+from flask import Flask
 
-# Enter the project directory
-docker build -t lchenlangley/hello .
-        </pre>
-		<pre class = "prettyprint linenums">
-# 2. Deposite image
-docker login
-docker push lchenlangley/hello
-        </pre>
-		<pre class = "prettyprint linenums">
-# 3. Deploy app on K8s cluster or minikube
+def get_ip():
+    return os.getenv('MYREDIS_HOST', 'localhost')
 
-# kubectl get all, search service name
-kubectl create -f k8s # k8s is the directory of yaml files
-        </pre>
-		<pre class = "prettyprint linenums">
-# 4. Expore service port to user
-kubectl port-forward svc/webapp-service 8082:8081 # [external port]:[service port]
-        </pre>
-		<pre class = "prettyprint linenums">
-# 5. Access app
-http://localhost:8082/
-        </pre>
-		<pre class = "prettyprint linenums">
-# Cleaning Up
-kubectl delete svc webapp-service
-kubectl delete deploy webapp-deployment
+app = Flask(__name__)
+cache = redis.Redis(host=get_ip(), port=6379)
+
+def get_hit_count():
+    retries = 5
+    while True:
+        try:
+            return cache.incr('hits')
+        except redis.exceptions.ConnectionError as exc:
+            if retries == 0:
+                raise exc
+            retries -= 1
+            time.sleep(0.5)
+
+@app.route('/')
+def hello():
+    count = get_hit_count()
+    return 'Hello from Docker! I have been seen {} times.\n'.format(count)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
         </pre>
         </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# app.py
-import dash
-import dash_html_components as html
-
-app = dash.Dash(__name__)
-
-def main():
-    app.layout = html.H1(children="Hello World!",
-            style={"font-size": "18px", "color": "red", "font-weight": "bold", "border-style": "ridge"})
-
-if __name__ == "__main__":
-    main()
-    app.run_server(debug=True, host='0.0.0.0', port=8080) # turn on Dash tools
-        </pre>
-		<pre class = "prettyprint linenums">
 # requirements.txt
-dash
+flask
+redis
         </pre>
+        </div>
+		<div class = "block">
 		<pre class = "prettyprint linenums">
 # Dockerfile
 FROM python:3.7-alpine
@@ -78,57 +67,13 @@ WORKDIR /code
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 RUN apk add --no-cache gcc musl-dev linux-headers
-RUN apk add libc-dev
-RUN apk add --update alpine-sdk
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
-EXPOSE 8080
+EXPOSE 5000
 COPY . .
 CMD ["python", "app.py"]
         </pre>
-		<pre class = "prettyprint linenums">
-# app-development.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: webapp-deployment
-  labels:
-    app: webapp
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: webapp # let deployment know which pod for this deployment
-  template: # configuration for pods
-    metadata:
-      labels:
-        app: webapp # each pod has a unique name, but pods can share the same label
-    spec:
-      containers: # containers in a pod, usually add one container per pod
-      - name: webapp
-        image: lchenlangley/hello # pull image from Docker Hub
-        ports:
-        - containerPort: 8080
-        </pre>
-		<pre class = "prettyprint linenums">
-# app-service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: webapp-service # service name accessed by app
-spec:
-  selector:
-    app: webapp # match the pod labels
-  ports:
-    - protocol: TCP
-      port: 8081 # service port
-      targetPort: 8080 # pod port
-        </pre>
         </div>
-        <div class = "subtitle">Kubernetes on Docker Desktop</div>
-        <div class = "block">
-            <p style = "text-align:center;"><img src = "img/K8s_3.png" width = "80%"></p>
-		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # app-deployment.yaml
@@ -150,96 +95,137 @@ spec:
     spec:
       containers: # containers in a pod, usually add one container per pod
       - name: webapp
-        image: lchenlangley/hello # pull local image
+        image: lchenlangley/count # pull image from local
         imagePullPolicy: Never
         ports:
-        - containerPort: 8080
+        - containerPort: 5000
+        env:
+        - name: MYREDIS_HOST
+          value: redis-service
         </pre>
         </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# 1. Create image
-
-# Enter the project directory
-docker build -t lchenlangley/hello .
-        </pre>
-		<pre class = "prettyprint linenums">
-# 2. Deploy app on K8s cluster
-# kubectl get all, search service names and deployment names
-kubectl create -f k8s # k8s is the directory of yaml files
-        </pre>
-		<pre class = "prettyprint linenums">
-# 3. Expore service port to user
-kubectl port-forward svc/webapp-service 8082:8081 # [external port]:[service port]
-        </pre>
-		<pre class = "prettyprint linenums">
-# 4. Access app
-http://localhost:8082/
-        </pre>
-		<pre class = "prettyprint linenums">
-# Cleaning Up
-kubectl delete svc webapp-service
-kubectl delete deploy webapp-deployment
+# app-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service # service name accessed by app
+spec:
+  selector:
+    app: webapp # match the pod labels
+  ports:
+    - protocol: TCP
+      port: 5000 # service port
+      targetPort: 5000 # pod port
         </pre>
         </div>
-        <div class = "subtitle">Minikube on Docker Desktop</div>
-        <div class = "block">
-            <p style = "text-align:center;"><img src = "img/K8s_4.png" width = "80%"></p>
-		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# redis-deployment.yaml
+# mongo.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webapp-deployment
+  name: redis-deployment
   labels:
-    app: webapp
+    app: redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: webapp # let deployment know which pod for this deployment
+      app: redis # let deployment know which pod for this deployment
   template: # configuration for pods
     metadata:
       labels:
-        app: webapp # each pod has a unique name, but pods can share the same label
+        app: redis # each pod has a unique name, but pods can share the same label
     spec:
       containers: # containers in a pod, usually add one container per pod
-      - name: webapp
-        image: lchenlangley/hello # pull image from local
-        imagePullPolicy: Never
+      - name: redisdb
+        image: redis:alpine # pull image from Docker Hub
         ports:
-        - containerPort: 8080
+        - containerPort: 6379
         </pre>
         </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# 1. Start Minikube
+# redis-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service # service name accessed by app
+spec:
+  selector:
+    app: redis # match the pod labels
+  ports:
+    - protocol: TCP
+      port: 6379 # service port
+      targetPort: 6379 # pod port
+        </pre>
+        </div>
+        <div class = "subtitle">Kubernetes on Docker Desktop</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# select Kubernetes/docker-desktop on Docker Desktop
+
+# 1. Create image
+docker build -t lchenlangley/count .
+        </pre>
+		<pre class = "prettyprint linenums">
+# 2. Deploy on k8s
+# kubectl get all, search service name
+kubectl create -f k8s # k8s is the directory of yaml files
+        </pre>
+		<pre class = "prettyprint linenums">
+# 4. Expore service port to user
+kubectl port-forward svc/webapp-service 8000:5000 # [external port]:[service port]
+        </pre>
+		<pre class = "prettyprint linenums">
+# 5. Access app
+http://localhost:8000/
+        </pre>
+		<pre class = "prettyprint linenums">
+# Cleaning Up
+kubectl delete svc webapp-service
+kubectl delete svc redis-service
+kubectl delete deploy webapp-deployment
+kubectl delete deploy redis-deployment
+        </pre>
+        </div>
+        <div class = "subtitle">Minikube on Docker Desktop</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# select Kubernetes/minikube on Docker Desktop
+
+# 1. Start minikube
 minikube start
 eval $(minikube docker-env) # point to inside of Minikube container
         </pre>
 
 		<pre class = "prettyprint linenums">
 # 2. Create image in the registry of the Minikube container
-docker build -t lchenlangley/hello .
+docker build -t lchenlangley/count .
         </pre>
 		<pre class = "prettyprint linenums">
 # 3. Deploy app on K8s cluster or minikube
+
 # kubectl get all, search service name
 kubectl create -f k8s # k8s is the directory of yaml files
         </pre>
 		<pre class = "prettyprint linenums">
 # 4. Expore service port to user
-kubectl port-forward svc/webapp-service 8082:8081 # [external port]:[service port]
+kubectl port-forward svc/webapp-service 8000:5000 # [external port]:[service port]
         </pre>
 		<pre class = "prettyprint linenums">
 # 5. Access app
-http://localhost:8082/
+http://localhost:8000/
         </pre>
 		<pre class = "prettyprint linenums">
 # Cleaning Up
 kubectl delete svc webapp-service
+kubectl delete svc redis-service
 kubectl delete deploy webapp-deployment
+kubectl delete deploy redis-deployment
         </pre>
         </div>
         <div class = "subtitle">Reference</div>
