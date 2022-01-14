@@ -17,6 +17,21 @@
 		</div>
         <div class = "subtitle">Start Minikube</div>
 		<div class = "block">
+            <li>--kubernetes-version
+                <ul>
+                    <li>deploy a specific Kubernetes version, by default, deploy the latest version</li>
+                </ul>
+            </li>
+            <li>--driver
+                <ul>
+                    <li>use a specific driver</li>
+                </ul>
+            </li>
+            <li>--container-runtime=docker
+                <ul>
+                    <li>container runtime to be used, one of docker, cri-o, containerd</li>
+                </ul>
+            </li>
 		<pre class = "prettyprint linenums">
 minikube start
         </pre>
@@ -33,8 +48,63 @@ minikube dashboard
 minikube delete --all
         </pre>
         </div>
+        <div class = "subtitle">Option 1: Minikube Container on Docker Desktop</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/K8s_7.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Install Minikube
+https://minikube.sigs.k8s.io/docs/start/
+
+# Start Docker Desktop
+
+# Start Minikube
+minikube start
+
+# Point to inside of Minikube container
+eval $(minikube docker-env)
+
+# Close Minikube
+minikube delete --all
+        </pre>
+        </div>
+        <div class = "subtitle">Option 2: Hyperkit+Minikube+Kubernetes CLI+Docker CLI</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/K8s_8.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Install hyperkit
+# lightweight virtual machines and container deployment
+brew install hyperkit
+
+# Install Docker CLI
+brew install docker
+
+# Install Docker-compose
+brew install docker-compose
+
+# Install Kubernetes CLI
+brew install kubectl
+
+# Install Minikube and Docker Daemon
+brew install minikube
+
+# Start Kubernetes Cluster
+minikube start --kubernetes-version=v1.22.1 --driver=hyperkit --container-runtime=docker
+
+# Point to Minikube container
+eval $(minikube docker-env) # implment on each working terminal of using minikube
+
+# Close Minikube
+minikube delete --all
+        </pre>
+        </div>
         <div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://minikube.sigs.k8s.io/docs/drivers/">Drivers</a></li>
+            <li><a href = "https://kubernetes.io/releases/">Kubernetes Releases</a></li>
             <li><a href = "https://itnext.io/goodbye-docker-desktop-hello-minikube-3649f2a1c469">Goodbye Docker Desktop, Hello Minikube!</a></li>
             <li><a href = "https://minikube.sigs.k8s.io/docs/start/">Documentation</a></li>
         </div>

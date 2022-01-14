@@ -123,7 +123,6 @@ spec:
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # redis-deployment.yaml
-# mongo.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -163,36 +162,7 @@ spec:
       targetPort: 6379 # pod port
         </pre>
         </div>
-        <div class = "subtitle">Kubernetes on Docker Desktop</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-# select Kubernetes/docker-desktop on Docker Desktop
-
-# 1. Create image
-docker build -t lchenlangley/count .
-        </pre>
-		<pre class = "prettyprint linenums">
-# 2. Deploy on k8s
-# kubectl get all, search service name
-kubectl create -f k8s # k8s is the directory of yaml files
-        </pre>
-		<pre class = "prettyprint linenums">
-# 4. Expore service port to user
-kubectl port-forward svc/webapp-service 8000:5000 # [external port]:[service port]
-        </pre>
-		<pre class = "prettyprint linenums">
-# 5. Access app
-http://localhost:8000/
-        </pre>
-		<pre class = "prettyprint linenums">
-# Cleaning Up
-kubectl delete svc webapp-service
-kubectl delete svc redis-service
-kubectl delete deploy webapp-deployment
-kubectl delete deploy redis-deployment
-        </pre>
-        </div>
-        <div class = "subtitle">Minikube on Docker Desktop</div>
+        <div class = "subtitle">Minikube</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # select Kubernetes/minikube on Docker Desktop

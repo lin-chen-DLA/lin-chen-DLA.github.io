@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Layout
+		</div>
+
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Voilia_1.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import ipywidgets as widgets
+
+# layout
+int_range = widgets.IntSlider()
+output = widgets.HTML()
+
+display(int_range, output)
+
+# callback
+def on_value_change(change):
+    output.value = str(change['new'])
+
+# event
+int_range.observe(on_value_change, names=['value'], type='change')
+		</pre>
+		</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Voila_2.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import ipywidgets as widgets
+
+# layout
+int_range = widgets.IntSlider(layout={'border': '1px solid black', 'width': '600px'})
+output = widgets.Output(layout={'border': '1px solid red', 'width': '800px'})
+
+display(int_range, output)
+
+# callback
+def on_value_change(change):
+    output.clear_output() # remove previous content
+    with output:
+        display(change['new'])
+
+# event
+int_range.observe(on_value_change, names=['value'], type='change')
+        </pre>
+        </div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Voila_3.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import ipywidgets as widgets
+
+# layout
+int_range = widgets.IntSlider(layout={'border': '1px solid black', 'width': '600px'})
+output = widgets.Output(layout={'border': '1px solid red', 'width': '800px'})
+
+display(int_range, output)
+
+# callback
+def on_value_change(change):
+    output.clear_output()
+    with output:
+        label = widgets.Label(str(change['new']), layout = {'border': '1px solid blue'})
+        inside_output = widgets.Output(layout = {'border': '1px solid blue'})
+        display(label, inside_output)
+        with inside_output:
+            display(change['new'])
+
+# event
+int_range.observe(on_value_change, names=['value'], type='change')
+        </pre>
+        </div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Voila_4.png" width = "50%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import ipywidgets as widgets
+
+# layout
+drop = widgets.Dropdown(
+    options=['1', '2', '3'],
+    value='2',
+    description='Number:',
+    disabled=False,
+)
+
+output_html = widgets.HTML(layout={'border': '1px solid black', 'width': '600px'})
+output_text = widgets.Text(layout={'border': '1px solid blue', 'width': '600px'})
+output = widgets.Output(layout={'border': '1px solid red', 'width': '800px'})
+
+display(drop, output_html, output_text, output)
+
+# callback
+def on_value_change(change):
+    output_html.value = str(change)
+    output_text.value = str(change)
+    output.clear_output()
+    with output:
+        print(change)
+
+# event
+drop.observe(on_value_change, names=['value'], type='change')
+        </pre>
+        </div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Voila_5.png" width = "80%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import ipywidgets as widgets
+
+# layout
+drop = widgets.Dropdown(
+    options=['1', '2', '3'],
+    value='2',
+    description='Number:',
+    disabled=False,
+)
+
+int_range = widgets.IntSlider()
+
+output = widgets.Output(layout={'border': '1px solid red', 'width': '800px'})
+output_result = widgets.Output(layout={'border': '1px solid blue', 'width': '800px'})
+
+display(drop, output, output_result)
+
+# callback
+def on_value_change(change):
+    output.clear_output()
+    with output:        
+        display(int_range)
+        
+def on_value_result(change):
+    output_result.clear_output()
+    with output_result:        
+        display(int(drop.value)*int(int_range.value))
+
+# event
+drop.observe(on_value_change, names=['value'], type='change')
+int_range.observe(on_value_result, names=['value'], type='change')
+        </pre>
+        </div>
+    </body>
+</html>
