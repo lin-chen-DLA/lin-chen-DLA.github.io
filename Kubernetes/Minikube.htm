@@ -24,11 +24,13 @@
             </li>
             <li>--driver
                 <ul>
+                    <li>VM or container to host Minikube</li>
                     <li>use a specific driver</li>
                 </ul>
             </li>
-            <li>--container-runtime=docker
+            <li>--container-runtime
                 <ul>
+                    <li>Host containers</li>
                     <li>container runtime to be used, one of docker, cri-o, containerd</li>
                 </ul>
             </li>
@@ -99,6 +101,36 @@ eval $(minikube docker-env) # implment on each working terminal of using minikub
 
 # Close Minikube
 minikube delete --all
+        </pre>
+        </div>
+        <div class = "subtitle">Option 3: Hyperkit+Minikube+Kubernetes CLI+Podman CLI</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/K8s_8.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Install hyperkit
+# lightweight virtual machines and container deployment
+brew install hyperkit
+
+# Install podman
+brew install podman
+
+# Install podman-compose
+pip3 install podman-compose
+
+# Install Kubernetes CLI
+brew install kubectl
+
+# Install Minikube and Docker Daemon
+brew install minikube
+
+# Start podman
+podman machine init
+podman machine start
+
+# Start Minikube
+minikube start
         </pre>
         </div>
         <div class = "subtitle">Reference</div>
