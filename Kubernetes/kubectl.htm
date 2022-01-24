@@ -23,6 +23,7 @@ kubectl get nodes
 
 # get pods
 kubectl get pods
+kubectl get pod  --watch # continuously monitor pods
 
 # get services
 kubectl get services
@@ -31,12 +32,16 @@ kubectl get svc
 # get deployments
 kubectl get deployment
 kubectl get deploy
+kubectl get deployment [deploymentName] -o yaml # get configuration
 
 # get pods, services, deployments, statefulsets, replicasets
 kubectl get all
 
-# get configuration
-kubectl get deployment [deploymentName] -o yaml
+# get secret
+kubectl get secret
+
+# get configMap
+kubectl get configmap
         </pre>
         </div>
         <div class = "subtitle">create</div>
@@ -76,7 +81,7 @@ kubectl logs [podName]
 kubectl describe pod [podName]
 
 # describe service
-kubectl describe service [serviceName]
+kubectl describe service [serviceName] # get podIP:podPort connected to the service
         </pre>
         </div>
         <div class = "subtitle">delete</div>
@@ -101,7 +106,7 @@ kubectl delete -f k8s
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # access container
-kubectl exec -it [podName] sh
+kubectl exec -it [podName] -- sh
         </pre>
         </div>
         <div class = "subtitle">apply</div>
