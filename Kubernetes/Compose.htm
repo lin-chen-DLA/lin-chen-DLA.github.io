@@ -15,14 +15,77 @@
 		<div class = "title">
 			Compose
 		</div>
+		<div class = "block">
+            <li>1. <span>metadata</span></li>
+            <li>2. <span>spec</span>
+                <ul>
+                    <li>desired status</li>
+                </ul>
+            </li>
+            <li>3. <span>status</span>
+                <ul>
+                    <li>actual status</li>
+                    <li>automatically generated and added by kubernetes</li>
+                    <li>Etcd holds the current status of kubernetes components</li>
+                </ul>
+            </li>
+        </div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/k8s_10.png" width = "80%"></p>
+		</div>
         <div class = "subtitle">Deployment</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+apiVersion: apps/v1
+kind: Deployment # type
+metadata:
+  name: nginx-deployment # deployment name
+  labels:
+    app: nginx
+spec: # specification for deployment
+  replicas: 1 # number of replicas
+  selector:
+    matchLabels:
+      app: nginx
+  template: # specification for pods
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.16
+        ports:
+        - containerPort: 8080
         </pre>
         </div>
         <div class = "subtitle">Service</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80 # service port
+      targetPort: 8080 # container port
+        </pre>
+        </div>
+        <div class = "subtitle">Secret</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongo-secret
+type: Opaque
+data:
+  mongo-user: bW9uZ291c2Vy
+  mongo-password: bW9uZ29wYXNzd29yZA==
         </pre>
         </div>
         <div class = "subtitle">Reference</div>

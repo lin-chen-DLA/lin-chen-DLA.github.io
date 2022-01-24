@@ -15,10 +15,120 @@
 		<div class = "title">
 			kubectl
 		</div>
-        <div class = "subtitle">Access Pod</div>
+        <div class = "subtitle">get</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# get status of nodes
+kubectl get nodes
+
+# get pods
+kubectl get pods
+
+# get services
+kubectl get services
+kubectl get svc
+
+# get deployments
+kubectl get deployment
+kubectl get deploy
+
+# get pods, services, deployments, statefulsets, replicasets
+kubectl get all
+
+# get configuration
+kubectl get deployment [deploymentName] -o yaml
+        </pre>
+        </div>
+        <div class = "subtitle">create</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create pod and replicaset
+# kubectl create deployment [Name] --image=image
+# deployment -&gt; replicaset -&gt; pod -&gt; container
+kubectl create deployment redis-deploy --image=redis:alpine # by default, pull images from docker.io
+
+# create component from files
+# kubectl create -f [fileName]
+kubectl create -f k8s/redis-deployment.yaml
+# kubectl create -f [directoryName]
+kubectl create -f k8s
+        </pre>
+        </div>
+        <div class = "subtitle">edit</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# edit deployment
+# create an automatically generated compose file, edit, and save
+# termiante the old pod and create a new pod using the editted deployment
+kubectl edit deployment redis-deploy
+        </pre>
+        </div>
+        <div class = "subtitle">logs</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+kubectl logs [podName]
+        </pre>
+        </div>
+        <div class = "subtitle">describe</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# describe pod
+kubectl describe pod [podName]
+
+# describe service
+kubectl describe service [serviceName]
+        </pre>
+        </div>
+        <div class = "subtitle">delete</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# delete deployment
+kubectl delete deployment [deploymentName]
+kubectl delete deploy [deploymentName]
+
+# delete service
+kubectl delete service [serviceName]
+kubectl delete svc [serviceName]
+
+# delete from configuration files
+# kubectl delete -f [fileName]
+kubectl delete -f k8s/redis-deployment.yaml
+#kubectl delete -f [directoryName]
+kubectl delete -f k8s
+        </pre>
+        </div>
+        <div class = "subtitle">exec</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# access container
 kubectl exec -it [podName] sh
+        </pre>
+        </div>
+        <div class = "subtitle">apply</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create or update components
+# kubectl apply -f [fileName]
+kubectl apply -f k8s/redis-deployment.yaml
+
+# kubectl apply -f [directoryName]
+kubectl apply -f k8s
+        </pre>
+        </div>
+        <div class = "subtitle">version</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+kubectl version
+        </pre>
+        </div>
+        <div class = "subtitle">config</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# get clusters
+kubectl config get-clusters
+
+# get current cluster
+kubectl config current-context
         </pre>
         </div>
         <div class = "subtitle">Reference</div>

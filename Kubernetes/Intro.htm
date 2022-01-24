@@ -30,7 +30,7 @@
                                 <ul>
                                     <li>4 processes run on every master node
                                         <ul>
-                                            <li><span>API server</span>, entry point to K8s cluster</li>
+                                            <li><span>API server</span>, entry point to a k8s cluster, gatekeeper for authentication</li>
                                             <li><span>Controll manager</span>, detect cluster state changes</</li>
                                             <li><span>Scheduler</span>, decide which node will host a new pod</li>
                                             <li><span>etcd</span>, cluster brain, backing store</li>
@@ -47,11 +47,11 @@
                                     <li>3 processes must be installed on each worker node
                                         <ul>
                                             <li><span>kubelet</span>, interacts with both container and node, starts the pod with a container inside</li>
-                                            <li><span>kube proxy</span>, forwards the request</li>
+                                            <li><span>kube proxy</span>, forwards the request from service to pod</li>
                                             <li><span>Container runtime</span>, such as Docker</li>
                                         </ul>
                                     </li>
-                                    <li>Each node has multiple pods</li>
+                                    <li>Each node can have multiple pods</li>
                                     <li>Each pod can have multiple containers, though usually each pod has one container</li>
                                     <li>Higher workload</li>
                                     <li>Much bigger and more resources</li>
@@ -83,6 +83,13 @@
                             <li>Translate a URL to ip/port pair, the request goes to ingress, then is forwarded to service</li>
                         </ul>
                     </li>
+                    <li><span>Deployment and StatefulSet</span>
+                        <ul>
+                            <li>Blueprint for creating pods</li>
+                            <li>Deployment for stateless apps</li>
+                            <li>StatefullSet for stateful apps or database. Not easy on k8s, database is often hosted outside of k8s cluster</li>
+                        </ul>
+                    </li>
                     <li><span>ConfigMap</span>
                         <ul>
                             <li>External configuration of your application</li>
@@ -107,6 +114,7 @@
         </div>
         <div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://gitlab.com/nanuchi/youtube-tutorial-series/">Nana's Yourtube Tutorial</a></li>
             <li><a href = "https://kubernetes.io/docs/home/">Documentation</a></li>
             <li><a href = "https://www.youtube.com/watch?v=s_o8dwzRlu4">Kubernetes Crash Course for Absolute Beginners</a></li>
             <li><a href = "https://www.youtube.com/watch?v=umXEmn3cMWY&t=5s">Kubernetes Architecture explained</a></li>
