@@ -30,10 +30,18 @@
                 </ul>
             </li>
         </div>
+        <div class = "subtitle">Deployment</div>
+        <div class = "block">
+            <li>Pods from the same deployment have the same labels</li>
+            <li>Selector uses the labels to know which pods belong to the deployment</li>
+            <li>Pod label, selector label in deployment, deployment label, and service label should be same</li>
+            <li>Service uses the labels to create connection</li>
+            <li>Names are used as the reference, can be arbitrary names</li>
+            <p style = "text-align:center;"><img src = "img/k8s_12.png" width = 60%"></p>
+		</div>
         <div class = "block">
             <p style = "text-align:center;"><img src = "img/k8s_10.png" width = "80%"></p>
 		</div>
-        <div class = "subtitle">Deployment</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 apiVersion: apps/v1
@@ -56,7 +64,7 @@ spec: # specification for deployment
       - name: nginx
         image: nginx:1.16
         ports:
-        - containerPort: 8080
+        - containerPort: 8080 # container access port
         </pre>
         </div>
         <div class = "subtitle">Service</div>

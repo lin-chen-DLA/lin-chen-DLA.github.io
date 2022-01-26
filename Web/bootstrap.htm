@@ -24,8 +24,11 @@
   &lt;head&gt;
     &lt;meta charset="utf-8"&gt;
     &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
-    &lt;!-- Latest compiled and minified CSS --&gt;
+    &lt;!-- Include CSS Theme from CDN --&gt;
     &lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"&gt;
+
+    &lt;!-- Include CSS Theme from Local --&gt;
+    &lt;link rel="stylesheet" href="bootstrap.min.css"&gt;
 
     &lt;!-- jQuery library --&gt;
     &lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"&gt;&lt;/script&gt;
@@ -44,18 +47,18 @@
             <li><span>.container-sm|md|lg|xl</span>, default is .container-sm</li>
             <li><span>.container</span>, fixed width container
                 <ul>
-                    <li>Extra Small, 100%</li>
-                    <li>Small, 540px</li>
-                    <li>Medium, 768px</li>
-                    <li>Large, 960px</li>
-                    <li>Extra Large, 1140px</li>
+                    <li>Window &gt; 576px, Extra Small, 100%</li>
+                    <li>576px &lt;= Window &lt; 768 px, Small, 540px</li>
+                    <li>768px &lt;= Window &lt; 992px, Medium, 768px</li>
+                    <li>992px &lt;= Window &lt; 1200px, Large, 960px</li>
+                    <li>Window &gt; 1200px, Extra Large, 1140px</li>
                 </ul>
             </li>
             <li><span>.container-fluid</span>, full width container</li>
         </div>
 		<div class = "subtitle">Grid System</div>
 		<div class = "block">
-            <li>is built with flexbox and allows up to 12 column</li>
+            <li>Built with flexbox and allows up to <span>12</span> column</li>
             <li>Grid System Rules
                 <ul>
                     <li>Rows must be placed within a <span>.container</span> (fixed-width) or <span>.container-fluid</span> (full-width) for proper alignment and padding</li>
@@ -84,20 +87,44 @@
         </div>
 		<div class = "subtitle">Colors</div>
 		<div class = "block">
-            <li>Text colors, .text-muted, .text-primary, .text-success, .text-info, .text-warning, .text-danger, .text-secondary, .text-white, .text-dark, .text-body (default body color/often black) and .text-light</li>
-            <li>Background colors, .bg-primary, .bg-success, .bg-info, .bg-warning, .bg-danger, .bg-secondary, .bg-dark and .bg-light</li>
+            <li><span>Text colors</span>
+                <ul>
+                    <li>.text-muted, .text-primary, .text-success, .text-info, .text-warning, .text-danger, .text-secondary, .text-white, .text-dark, .text-body (default body color/often black) and .text-light</li>
+                </ul>
+            </li>
+            <li><span>Background colors</span>
+                <ul>
+                    <li>.bg-primary, .bg-success, .bg-info, .bg-warning, .bg-danger, .bg-secondary, .bg-dark and .bg-light</li>
+                </ul>
+            </li>
         </div>
 		<div class = "subtitle">Spacing</div>
 		<div class = "block">
-            <li>Margin and Padding
                 <ul>
-                    <li>Place, t (top), b (bottom), l (left), r (right), x (left and right), y (top and bottom)</li>
-                    <li>Size, 0 (0rem), 1 (0.25rem), 2 (0.5rem), 3 (1rem = 16px), 4 (1.5rem), 5 (3rem), auto</li>
+                    <li><span>Place</span>
+                        <ul>
+                            <li>t (top), b (bottom), l (left), r (right), x (left and right), y (top and bottom)</li>
+                        </ul>
+                    </li>
+                    <li><span>Size</span>
+                        <ul>
+                            <li>0 (0rem), 1 (0.25rem), 2 (0.5rem), 3 (1rem = 16px), 4 (1.5rem), 5 (3rem), auto</li>
+                        </ul>
+                    </li>
                 </ul>
 			<pre class = "prettyprint linenums">
-&lt;div class="pt-4 bg-warning"&gt;(1.5rem = 24px)&lt;/div&gt;
+&lt;div class="pt-4"&gt;(1.5rem = 24px)&lt;/div&gt; # top padding 24px
+
+&lt;div class="my-4"&gt;(1.5rem = 24px)&lt;/div&gt; # top and bottom margin 24px
             </pre>
-            </li>
+        </div>
+		<div class = "subtitle">Font</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+.font-weight-bold # bold
+.font-italic # italic
+.text-center # text center
+            </pre>
         </div>
 		<div class = "subtitle">Change Theme</div>
 		<div class = "block">
@@ -108,7 +135,7 @@
         </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
-            <li><a href = "https://github.com/facultyai/dash-bootstrap-components">Github</a></li>
+            <li><a href = "https://getbootstrap.com/">getbootstrap</a></li>
             <li><a href = "https://www.w3schools.com/bootstrap4/bootstrap_utilities.asp">Utilities</a></li>
             <li><a href = "https://www.w3schools.com/bootstrap4/default.asp">Bootstrap 4 Tutorial</a></li>
         </div>
