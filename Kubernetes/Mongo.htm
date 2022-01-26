@@ -20,11 +20,11 @@
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# mongo-development.yaml
+# mongo-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mogo-deployment
+  name: mongo-deployment
   labels:
     app: mongodb
 spec:
@@ -159,11 +159,15 @@ data:
         </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# start browser
+# minikube on Mac
 minikube service mongo-express-service
+http://192.168.64.4:30000
+
+kubectl port-forward svc/mongo-express-service 8080:8081
+http://127.0.0.1:8080
         </pre>
         </div>
-        <div class = "subltitle">Reference</div>
+        <div class = "subtitle">Reference</div>
 		<div class = "block">
             <li><a href = "https://www.youtube.com/watch?v=X48VuDVv0do&t=162s">TechWorld with Nana</a></li>
         </div>

@@ -42,6 +42,9 @@ kubectl get secret
 
 # get configMap
 kubectl get configmap
+
+# get namespace
+kubectl get namespaces
         </pre>
         </div>
         <div class = "subtitle">create</div>
@@ -120,6 +123,13 @@ kubectl apply -f k8s/redis-deployment.yaml
 kubectl apply -f k8s
         </pre>
         </div>
+        <div class = "subtitle">port-forward</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# kubectl port-forward svc/[serviceName] [accessPort]:[servicePort]
+kubectl port-forward svc/perceptor-service 8080:8082
+        </pre>
+        </div>
         <div class = "subtitle">version</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
@@ -134,6 +144,16 @@ kubectl config get-clusters
 
 # get current cluster
 kubectl config current-context
+        </pre>
+        </div>
+        <div class = "subtitle">cluster-info</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# display control plane and CoreDNS
+kubectl cluster-info
+
+# get debug and diagnose information
+kubectl cluster-info dump
         </pre>
         </div>
         <div class = "subtitle">Reference</div>
