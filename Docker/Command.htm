@@ -50,6 +50,10 @@ docker image build -t [imageName] .
 docker push [imageName:tagname] # push the image with the tag to Docker Hub, default is latest
 docker image push [imageName:tagName]
         </pre>
+        <li>Create a Virtual Image</li>
+		<pre class = "prettyprint linenums">
+docker tag [imageID] [imageName:tag]
+        </pre>
         <li>Save Image</li>
 		<pre class = "prettyprint linenums">
 # save an image as a tar file
