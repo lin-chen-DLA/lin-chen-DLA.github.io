@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Kubernetes</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Namespace
+		</div>
+		<div class = "block">
+            <li>Organize resources in a namespace</li>
+            <li>Virtual cluster inside a cluster</li>
+            <li>Default namespaces
+                <ul>
+                    <li>kube-system, system processes</li>
+                    <li>kube-public, publicely accessible data</li>
+                    <li>kube-node-lease, heartbeats of nodes</li>
+                    <li><span>default</span>, default namespace</li>
+                </ul>
+            </li>
+        </div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/k8s_13.png" width = "40%"></p>
+		</div>
+        <div class = "subtitle">Create Namespace</div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# create a namespace
+# kubectl create namespace [namespaceName]
+kubectl create namespace count-ns
+
+# create a resource in a namespace
+kubectl apply -f redis-deployment.yaml --namespace=count-ns
+        </pre>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: count-ns
+        </pre>
+        </div>
+        <div class = "subtitle">List Resource</div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# list namespace
+kubectl get namespaces
+
+# list resources in a namespace
+# kubectl -n [namespaceName] get [resource]
+kubectl -n count-ns get all
+kubectl -n count-ns get services
+        </pre>
+        </div>
+        <div class = "subtitle">kubens</div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# install kubens
+brew install kubectx
+        </pre>
+		<pre class = "prettyprint linenums">
+# list namespace and highlight the current namespace
+# by default, "default" is the current namespace
+kubens
+
+# switch namespace
+# kubens [namespaceName]
+kubens count-ns
+kubenctl get all # list resources in current namespace
+        </pre>
+        </div>
+        <div class = "subtitle">Deployment</div>
+        <div class = "block">
+            <li>Cannot access most resource from another namespace</li>
+            <li>Each namespace must define own ConfigMap, Secret</li>
+            <li>Service can be shared, access a service in a different namespace with <span>[serviceName].[namespaceName]</span></li>
+            <li>Some components <span>cannot</span> be created in namespace, such as volume, node</li>
+        </div>
+        <div class = "block">
+            1. Create a namespace for each team or project
+            <p style = "text-align:center;"><img src = "img/k8s_14.png" width = "60%"></p>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# app.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: count-ns
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  labels:
+    app: webapp
+  namespace: count-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp # let deployment know which pod for this deployment
+  template: # configuration for pods
+    metadata:
+      labels:
+        app: webapp # each pod has a unique name, but pods can share the same label
+    spec:
+      containers: # containers in a pod, usually add one container per pod
+      - name: webapp
+        image: lchenlangley/count # pull image from local
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MYREDIS_HOST
+          value: redis-service
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service # service name accessed by app
+  namespace: count-ns
+spec:
+  selector:
+    app: webapp # match the pod labels
+  ports:
+    - protocol: TCP
+      port: 5000 # service port
+      targetPort: 5000 # pod port
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  labels:
+    app: redis
+  namespace: count-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis # let deployment know which pod for this deployment
+  template: # configuration for pods
+    metadata:
+      labels:
+        app: redis # each pod has a unique name, but pods can share the same label
+    spec:
+      containers: # containers in a pod, usually add one container per pod
+      - name: redisdb
+        image: redis:alpine # pull image from Docker Hub
+        ports:
+        - containerPort: 6379
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service # service name accessed by app
+  namespace: count-ns
+spec:
+  selector:
+    app: redis # match the pod labels
+  ports:
+    - protocol: TCP
+      port: 6379 # service port
+      targetPort: 6379 # pod port
+        </pre>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# deploy resources
+kubectl apply -f app.yaml
+
+# access app
+kubectl -n count-ns port-forward svc/webapp-service 8000:5000
+http://localhost:8000/
+
+# remove resources
+kubectl delete -f app.yaml
+        </pre>
+		</div>
+        <div class = "block">
+                <li>2. Resources grouped in namespaces</li>
+            <p style = "text-align:center;"><img src = "img/k8s_15.png" width = "50%"></p>
+            <p style = "text-align:center;"><img src = "img/k8s_17.png" width = "30%"></p>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# monitor.yaml
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitor-ns
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  labels:
+    app: webapp
+  namespace: monitor-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp # let deployment know which pod for this deployment
+  template: # configuration for pods
+    metadata:
+      labels:
+        app: webapp # each pod has a unique name, but pods can share the same label
+    spec:
+      containers: # containers in a pod, usually add one container per pod
+      - name: webapp
+        image: lchenlangley/count # pull image from local
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MYREDIS_HOST
+          value: redis-service.db-ns
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service # service name accessed by app
+  namespace: monitor-ns
+spec:
+  selector:
+    app: webapp # match the pod labels
+  ports:
+    - protocol: TCP
+      port: 5000 # service port
+      targetPort: 5000 # pod port
+        </pre>
+		<pre class = "prettyprint linenums">
+# db.yaml
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: db-ns
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  labels:
+    app: redis
+  namespace: db-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis # let deployment know which pod for this deployment
+  template: # configuration for pods
+    metadata:
+      labels:
+        app: redis # each pod has a unique name, but pods can share the same label
+    spec:
+      containers: # containers in a pod, usually add one container per pod
+      - name: redisdb
+        image: redis:alpine # pull image from Docker Hub
+        ports:
+        - containerPort: 6379
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service # service name accessed by app
+  namespace: db-ns
+spec:
+  selector:
+    app: redis # match the pod labels
+  ports:
+    - protocol: TCP
+      port: 6379 # service port
+      targetPort: 6379 # pod port
+        </pre>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# deploy
+kubectl create -f k8s
+
+# access service
+kubectl -n monitor-ns port-forward svc/webapp-service 8000:5000
+http://localhost:8000/
+
+# delete
+kubectl delete -f k8s
+        </pre>
+        </div>
+        <div class = "block">
+                <li>3. Resources sharing</li>
+            <p style = "text-align:center;"><img src = "img/k8s_16.png" width = "40%"></p>
+        </div>
+        <div class = "subtitle">Delete Namespace</div>
+        <div class = "block">
+            <li>Deleting the namespace also deletes all the residing components</li>
+            <li>Removing all deployments within a namespace does not remove the namespace</li>
+		<pre class = "prettyprint linenums">
+# kubectl delete namespace [namespaceName]
+kubectl delete namespace count-ns
+        </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/">Documentation</a></li>
+            <li><a href = "Count.htm">Count Sample</a></li>
+            <li><a href = "https://developers.redhat.com/blog/2019/05/27/command-line-tools-for-kubernetes-kubectl-stern-kubectx-kubens#">Command-line tools for Kubernetes: kubectl, stern, kubectx, kubens</a></li>
+            <li><a href = "https://cloud.google.com/blog/products/containers-kubernetes/kubernetes-best-practices-organizing-with-namespaces">Kubernetes best practices: Organizing with Namespaces</a></li>
+        </div>
+    </body>
+</html>

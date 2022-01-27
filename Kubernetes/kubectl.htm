@@ -130,6 +130,13 @@ kubectl apply -f k8s
 kubectl port-forward svc/perceptor-service 8080:8082
         </pre>
         </div>
+        <div class = "subtitle"></div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+kubectl api-resources --namespaced=true # list namespaced resources
+kubectl api-resources --namespaced=false # list non-namespaced resources
+        </pre>
+        </div>
         <div class = "subtitle">version</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
@@ -158,6 +165,7 @@ kubectl cluster-info dump
         </div>
         <div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://kubernetes.io/docs/reference/kubectl/cheatsheet/">Cheat Sheet</a></li>
             <li><a href = "https://kubernetes.io/docs/reference/kubectl/">Documentation</a></li>
             <li><a href = "https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands">Reference</a></li>
         </div>
