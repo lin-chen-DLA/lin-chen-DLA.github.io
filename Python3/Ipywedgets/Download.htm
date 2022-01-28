@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Download
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create a csv file with a name from encoded string of three concatenated strings
+s1 = '100'
+s2 = '2012'
+s3 = 'Washington University'
+
+import base64
+encoded = base64.b64encode((s1+s2+s3).encode())
+
+name = encoded.decode()+'.csv'
+
+with open(name, 'wb') as f:
+    f.write(b'Hello World!')
+
+# create a download link
+import ipywidgets as widgets
+widgets.HTML(
+    value='&lt;a href = \"'+name+'\"&gt;Download&lt;/a&gt;',
+)
+		</pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# start voila server
+voila --port 8000 --Voila.base_url='/' --VoilaConfiguration.file_whitelist="['.*']" name.ipynb
+        </pre>
+        </div>
+    </body>
+</html>

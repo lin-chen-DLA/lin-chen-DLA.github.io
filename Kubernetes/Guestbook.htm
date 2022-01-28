@@ -37,12 +37,12 @@ http://localhost:8080
         <div class = "subtitle">Cleaning Up</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# kubectl get deployment
+# kubectl delete deployment
 kubectl delete deployment frontend
 kubectl delete deployment redis-follower
 kubectl delete deployment redis-leader
 
-# kubectl get service
+# kubectl delete service
 kubectl delete service frontend
 kubectl delete service redis-follower
 kubectl delete service redis-leader

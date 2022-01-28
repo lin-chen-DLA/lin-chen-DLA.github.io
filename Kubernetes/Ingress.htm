@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Kubernetes</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Ingress
+		</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/k8s_13.png" width = "40%"></p>
+		</div>
+        <div class = "subtitle">Create Ingress</div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx-example
+  rules:
+  - http:
+      paths:
+      - path: /testpath
+        pathType: Prefix
+        backend:
+          service:
+            name: test
+            port:
+              number: 80
+        </pre>
+        </div>
+        <div class = "subtitle">Ingress Controller in Minikube</div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# start the k8s Nginx implementation of Ingress Controller
+# create ingress-nginx-controller in ingress-nginx namespace
+minikube addons enable ingress
+        </pre>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# start k8s dashboard
+# create service "kubernetes-dashboard" in namespace "kubernetes-dashboard"
+minikube dashboard
+        </pre>
+		<pre class = "prettyprint linenums">
+# ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dashboard-ingress
+  namespace: kubernetes-dashboard
+spec:
+  rules:
+  - host: dashboard.com
+    http:
+      paths:
+      - path: /index
+        pathType: Prefix
+        backend:
+          service:
+            name: kubernetes-dashboard # service name
+            port:
+              number: 80 # service port
+        </pre>
+		<pre class = "prettyprint linenums">
+# create ingress
+kubectl apply -f ingress.yaml
+
+# get ip and port of ingress
+kubectl get ingress -n kubernetes-dashboard
+        </pre>
+        </div>
+    </body>
+</html>
