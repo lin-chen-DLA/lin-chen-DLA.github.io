@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Kubernetes</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Hello World
+		</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/K8s_19.png" width = "50%"></p>
+		</div>
+        <div class = "subtitle">Start Minikube</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# ingress on minikube on Docker Desktop does not work
+# may due to that it is a container running on Docker Desktop
+minikube start --kubernetes-version=v1.22.1 --driver=hyperkit --container-runtime=docker
+        </pre>
+        </div>
+        <div class = "subtitle">Enable Ingress</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+minikube addons enable ingress
+        </pre>
+        </div>
+        <div class = "subtitle">Deploy App</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create deployment
+kubectl create deployment web --image=gcr.io/google-samples/hello-app:1.0
+
+# create service
+kubectl expose deployment web --type=NodePort --port=8080
+
+# access app
+minikube service web
+
+kubectl port-forward svc/web 8080:8080
+http://127.0.0.1:8080/
+        </pre>
+        </div>
+        <div class = "subtitle">Create Ingress</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-ingress # ingress name
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+    - host: hello-world.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web # service name
+                port:
+                  number: 8080 # service port
+        </pre>
+		<pre class = "prettyprint linenums">
+kubectl apply -f ingress.yaml
+        </pre>
+        </div>
+        <div class = "subtitle">Connect Ingress IP and Domain</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# get ip of web-ingress
+kubectl get ingress
+
+# add ip and domain to /etc/hosts
+...
+127.0.0.1   localhost
+255.255.255.255 broadcasthost
+::1             localhost
+192.168.64.5    hello-world.info
+...
+        </pre>
+        </div>
+        <div class = "subtitle">Access App</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+http://hello-world.info/
+        </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li><a href = "https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/">Documentation</a></li>
+		</div>
+    </body>
+</html>
