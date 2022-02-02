@@ -13,40 +13,42 @@
 	</head>
 	<body>
 		<div class = "title">
-			Intro
+			Wordpress
 		</div>
+        <div class = "subtitle">Start Minikube</div>
 		<div class = "block">
-            <li>Package manager for kubernetes</li>
-            <li>Package and distribute Yaml files to public and private repository</li>
+            <pre class = "prettyprint linenums">
+# start minikube
+minikube start --kubernetes-version=v1.22.1 --driver=hyperkit --container-runtime=docker
+            </pre>
         </div>
         <div class = "subtitle">Installation</div>
 		<div class = "block">
             <pre class = "prettyprint linenums">
-brew install helm
+# add repository
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+# install app
+helm install happy-panda bitnami/wordpress
             </pre>
         </div>
-        <div class = "subtitle">Concepts</div>
+        <div class = "subtitle">Access App</div>
 		<div class = "block">
-            <li><span>Chart</span>
-                <ul>
-                    <li>contains all of the resource definitions necessary to run an application, tool, or service inside of a Kubernetes cluster</li>
-                </ul>
-            </li>
-            <li><span>Repository</span>
-                <ul>
-                    <li>the place where charts can be collected and shared</li>
-                </ul>
-            </li>
-            <li><span>Release</span>
-                <ul>
-                    <li>an instance of a chart running in a Kubernetes cluster</li>
-                </ul>
-            </li>
             <pre class = "prettyprint linenums">
+# get URL
+minikube service happy-panda-wordpress
+
+# login
+# http://[domain]/wp-admin/
+http://192.168.64.9:32644/wp-admin/
+
+echo Username: user
+echo Password: $(kubectl get secret --namespace default happy-panda-wordpress -o jsonpath="{.data.wordpress-password}" | base64 --decode)
             </pre>
         </div>
         <div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://helm.sh/docs/intro/using_helm/">Documentation</a></li>
         </div>
     </body>
 </html>
