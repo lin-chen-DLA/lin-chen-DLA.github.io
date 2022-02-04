@@ -13,45 +13,95 @@
 	</head>
 	<body>
 		<div class = "title">
-			Intro
+			Commands
 		</div>
-        <div class = "subtitle">Repository</div>
+        <div class = "subtitle">repo</div>
 		<div class = "block">
             <pre class = "prettyprint linenums">
-# search https://artifacthub.io/
-# helm search hub [chart]
-helm search hub wordpress
-
 # add repository
 # helm repo add [repository_name] [url]
 helm repo add bitnami https://charts.bitnami.com/bitnami
 
-# search a repository
-helm search repo [repository_name]
-helm search repo bitnami
+# list repository
+helm repo list
+
+# get the latest list of charts
+helm repo update
             </pre>
         </div>
-        <div class = "subtitle">Install</div>
+        <div class = "subtitle">install</div>
 		<div class = "block">
+            <li>Install from
+                <ul>
+                    <li>a chart repository</li>
+                    <li>a local chart archive</li>
+                </ul>
+            </li>
             <pre class = "prettyprint linenums">
-# install a package with a specific name
-# helm install [release_name] [chart_name]
-helm install happy-panda bitnami/wordpress
-
-# install a package and generate a name
+# create a release and generate a name
 # helm install [chart_name] --generate-name
 helm install bitnami/mysql --generate-name
 
-# list releases
-helm list
+# create a release with a specific name
+# helm install [release_name] [chart_name]
+helm install happy-panda bitnami/wordpress
 
 # uninstall a release
 # helm uninstall [release_name]
 helm uninstall mysql-1612624192
             </pre>
         </div>
+        <div class = "subtitle">list</div>
+		<div class = "block">
+            <pre class = "prettyprint linenums">
+# list releases
+helm list
+            </pre>
+        </div>
+        <div class = "subtitle">search</div>
+		<div class = "block">
+            <pre class = "prettyprint linenums">
+# list charts in a repository
+# helm search repo [repositoryName or chartName]
+helm search repo bitnami
+helm search repo wordpress
+
+# search a chart in the repositories on Artifact Hub
+# helm search hub [chartName]
+helm search hub wordpress
+            </pre>
+        </div>
+        <div class = "subtitle">show</div>
+		<div class = "block">
+            <pre class = "prettyprint linenums">
+# display chart information
+# helm show chart [chartName]
+helm show chart bitnami/mysql
+
+# get all information about the chart
+# helm show all [chartName]
+helm show all bitnami/mysql
+            </pre>
+        </div>
+        <div class = "subtitle">get</div>
+		<div class = "block">
+            <pre class = "prettyprint linenums">
+# get values from a release
+# helm get values [releaseName]
+helm get values mysql-1643660072
+            </pre>
+        </div>
+        <div class = "subtitle">status</div>
+		<div class = "block">
+            <pre class = "prettyprint linenums">
+# get the information of a release
+# helm status [releaseName]
+helm status mysql-1643660072
+            </pre>
+        </div>
         <div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://helm.sh/docs/helm/helm/">Documentation</a></li>
         </div>
     </body>
 </html>

@@ -517,6 +517,7 @@ if __name__ == '__main__':
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# trigger with timestamp, which is a unix timestamp when the data was last edited
 import dash
 from dash import dash_table
 from dash.dependencies import Input, Output, State
@@ -528,24 +529,59 @@ app = dash.Dash(__name__)
 
 app.layout = html.Div([
     dcc.Input(placeholder = 'Enter', id = 'output'),
+    dcc.Input(placeholder = 'Input Copy', id = 'output2'),
+])
+
+
+@app.callback(
+    Output('output', 'value'),
+    Output('output2', 'value'),
+    Input('output', 'n_submit_timestamp'),
+    State('output', 'value'))
+def update_columns(timestamp, content):
+    print(timestamp, content)
+    if not timestamp:
+        raise PreventUpdate
+    return str(content or '')+'_updated', str(content or '')+'_updated'
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# trigger with a component
+import dash
+from dash import dash_table
+from dash.dependencies import Input, Output, State
+from dash import html
+from dash import dcc
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    dcc.Input(placeholder = 'Enter', id = 'output'),
+    dcc.Input(placeholder = 'Input Copy', id = 'output2'),
     html.Button('Click', 'button')
 ])
 
 
 @app.callback(
     Output('output', 'value'),
-    #Input('button', 'n_clicks'),
-    Input('output', 'n_submit_timestamp'),
+    Output('output2', 'value'),
+    Input('button', 'n_clicks'),
     State('output', 'value'))
-def update_columns(timestamp, content):
-    if not timestamp:
+def update_columns(n_clicks, content):
+    print(n_clicks, content)
+    if not n_clicks:
         raise PreventUpdate
-    return content+'_update'
+    return str(content or '')+'_updated', str(content or '')+'_updated'
 
 if __name__ == '__main__':
     app.run_server(debug=True)
-		</pre>
-		</div>
+        </pre>
+        </div>
 		<div class = "subtitle">Circular Dependencies</div>
 		<div class = "block">
 			<li>Circular Dependencies is <span>not</span> allowed</li>
