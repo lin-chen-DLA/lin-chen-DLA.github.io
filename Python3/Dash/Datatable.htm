@@ -1030,10 +1030,71 @@ if __name__ == '__main__':
         </div>
 		<div class = "subtitle">Cell</div>
 		<div class = "block">
-            <li><span>active_cell</span>, the data cell the user has put the cursor on, by clicking and/or arrow keys</li>
-            <li><span>start_cell</span>, the initial cell of the selected cells</li>
-            <li><span>end_cell</span>, the last cell of the selected cells</li>
-            <li><span>selected_cells</span>, the selected cells</li>
+            <li><span>active_cell</span>
+                <ul>
+                    <li>the active data cell selected, contains row, column, and column id of the cell in the current page</li>
+                </ul>
+            </li>
+            <li><span>start_cell</span>
+                <ul>
+                    <li>the start cell of the selected area, usually is the active_cell</li>
+                </ul>
+            </li>
+            <li><span>end_cell</span>
+                <ul>
+                    <li>the end cell of the selected area</li>
+                </ul>
+            </li>
+            <li><span>selected_cells</span>, a list of dict
+                <ul>
+                    <li>the selected cells</li>
+                </ul>
+            </li>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+import pandas as pd
+from dash import html
+from dash import dcc
+from dash import dash_table
+from dash.dependencies import Output, Input
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([dash_table.DataTable(
+    id = 'table',
+    data=df.to_dict('records'),
+    columns=[{'id': c, 'name': c, 'selectable': True} for c in df.columns],
+    page_action='native',
+    page_size = 20
+),
+              html.Div(id = 'output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    Input('table', 'data'),
+    Input('table', 'active_cell'),
+    Input('table', 'selected_cells'),
+    Input('table', 'start_cell'),
+    Input('table', 'end_cell')
+)
+def update_table(columns, active_cell, selected_cells, start_cell, end_cell):
+    print('active_cell: ', active_cell)
+    #print(selected_cells)
+    print('start_cell: ', start_cell)
+    print('end_cell: ', end_cell)
+    return str(selected_cells)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
         </div>
         <div class = "subtitle">Editable</div>
         <div class = "block">
@@ -1261,6 +1322,20 @@ def update_table(data, n_clicks):
 
 if __name__ == '__main__':
     app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Persistence</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+persistence = True,
+
+# define persistent properties
+persisted_props = [ 'columns.name', 'filter_query', 'hidden_columns', 'selected_columns', 'selected_rows', 'sort_by'],
+
+# local, keep after browser quit
+# session, keep on page reset, clear after browser quit
+# memory, reset on page reset
+persistence_type = 'local',
         </pre>
         </div>
 		<div class = "subtitle">Reference</div>
