@@ -57,7 +57,7 @@ voila --VoilaConfiguration.file_whitelist="['.*']" name.ipynb
 jupyter notebook --generate-config
 
 # edit jupyter_notebook_config.py
-jupyter_notebook_config.py
+c.NotebookApp.allow_origin = '*' 
 c.NotebookApp.allow_remote_access = True
 
 # start jupyter notebook
