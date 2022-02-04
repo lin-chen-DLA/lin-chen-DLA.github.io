@@ -163,14 +163,6 @@ data=df.to_dict('records')
         </li>
         </div>
 		<div class = "block">
-            <li><span>style_table</span>, dict
-                <ul>
-                    <li>used for setting properties like the width or the height of the table</li>
-                </ul>
-            </li>
-		<pre class = "prettyprint linenums">
-style_table = {'height': '600px', 'overflowY': 'auto', 'width': '300px'}
-        </pre>
         <li><span>Styles Priority</span></li>
 		<pre class = "prettyprint linenums">
 1. style_data_conditional
@@ -181,6 +173,14 @@ style_table = {'height': '600px', 'overflowY': 'auto', 'width': '300px'}
 6. style_header # header cells
 7. style_cell_conditional
 8. style_cell # includes the header cells, the data cells, and the filter cells
+        </pre>
+            <li><span>style_table</span>, dict
+                <ul>
+                    <li>used for setting properties like the width or the height of the table</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+style_table = {'height': '600px', 'overflowY': 'auto', 'width': '300px'}
         </pre>
         <li><span>style_cell</span>, dict
             <ul>
@@ -200,7 +200,7 @@ style_cell = {'background-color': 'rgba(51, 51, 51, 1)', # background color
                 <li>if, dict
                     <ul>
                         <li>column_id, string</li>
-                        <li>column_type, 'any', 'numeric', 'text' or 'datetime'</li>
+                        <li>column_type, 'any' (default), 'numeric', 'text' or 'datetime'</li>
                     </ul>
                 </li>
             </ul>
@@ -230,7 +230,7 @@ style_header = {'color': 'red', 'fontWeight': 'bold'}
                     <ul>
                         <li>column_editable, boolean</li>
                         <li>column_id, string, or list of strings</li>
-                        <li>column_type, 'any', 'numeric', 'text' or 'datetime'</li>
+                        <li>column_type, 'any' (default), 'numeric', 'text' or 'datetime'</li>
                         <li>header_index, number, or list of numbers, 'odd', or 'even'</li>
                     </ul>
                 </li>
@@ -664,11 +664,11 @@ if __name__ == '__main__':
                     <li><span>filter</span>, display only, not change table data and selected row</li>
                 </ul>
             </li>
-            <li><span>derived_viewport_indices</span>, list of integers, the indices of rows in the current page
+            <li><span>derived_viewport_indices</span>, list of integers, the original indices of rows in the current page
                 <ul>
                     <li><span>sort</span>, the indices of rows in the current page in original table data, not change indices of table data</li>
                     <li><span>delete</span>, the indices of rows in the current page, which are the indices after deletion</li>
-                    <li><span>filter</span>, the indices of rows in the current pager after filtering, not change table data</li>
+                    <li><span>filter</span>, the indices of rows in the current page after filtering, which are the indices in the current table data, not change table data</li>
                 </ul>
             </li>
             <li><span>derived_viewport_selected_rows</span>, list of integers
@@ -710,6 +710,22 @@ if __name__ == '__main__':
             </li>
         </div>
         <div class = "block">
+            <li><span>filter_action</span>
+                <ul>
+                    <li>'native', the filtering logic is handled by the table</li>
+                    <li>'custom', program the filtering through a callback</li>
+                </ul>
+            </li>
+            <li>Operators
+                <ul>
+                    <li>=</li>
+                    <li>contains</li>
+                    <li>datestartswith</li>
+                    <li>&gt;, &lt;, &gt;=, &lt;=, !=</li>
+                </ul>
+            </li>
+        </div>
+        <div class = "block">
 		<pre class = "prettyprint linenums">
 import dash
 import pandas as pd
@@ -731,10 +747,11 @@ app.layout = html.Div([dash_table.DataTable(
     columns=[{'id': c, 'name': c} for c in df.columns],
     row_selectable = 'multi',
     row_deletable = True,
-    filter_action = 'native',
+    filter_action = 'native', # native filter
     page_size = 20,
-    sort_action="native",
+    sort_action="native", # native sort
     sort_mode="multi",
+    page_action='native', # native paging
 ),
               html.Div(id = 'output')
     ])
@@ -770,22 +787,246 @@ if __name__ == '__main__':
     app.run_server(debug=True)
         </pre>
         </div>
-		<div class = "subtitle">Filtering</div>
+        <div class = "subtitle">Custom Row/Rows Selection</div>
         <div class = "block">
-            <li><span>filter_action</span>
-                <ul>
-                    <li>'native', the filtering logic is handled by the table</li>
-                    <li>'custom', program the filtering through a callback</li>
-                </ul>
-            </li>
-            <li>Operators
-                <ul>
-                    <li>=</li>
-                    <li>contains</li>
-                    <li>datestartswith</li>
-                    <li>&gt;, &lt;, &gt;=, &lt;=, !=</li>
-                </ul>
-            </li>
+		<pre class = "prettyprint linenums">
+# backend paging
+import dash
+from dash.dependencies import Input, Output
+from dash import dash_table
+import pandas as pd
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
+
+df[' index'] = range(1, len(df) + 1)
+
+app = dash.Dash(__name__)
+
+PAGE_SIZE = 5
+
+app.layout = dash_table.DataTable(
+    id='datatable-paging',
+    columns=[
+        {"name": i, "id": i} for i in sorted(df.columns)
+    ],
+    page_current=0,
+    page_size=PAGE_SIZE,
+    page_action='custom'
+)
+
+@app.callback(
+    Output('datatable-paging', 'data'),
+    Output('datatable-paging', 'page_count'),
+    Input('datatable-paging', "page_current"),
+    Input('datatable-paging', "page_size"))
+def update_table(page_current,page_size):
+    num = int(df.shape[0]/PAGE_SIZE)
+    if df.shape[0]%PAGE_SIZE &gt; 0:
+        num += 1
+    return df.iloc[
+        page_current*page_size:(page_current+ 1)*page_size
+    ].to_dict('records'), num
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# backend paging with sorting
+import dash
+from dash import html
+from dash.dependencies import Input, Output, State
+from dash import dash_table
+from dash.exceptions import PreventUpdate
+import pandas as pd
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
+
+df[' index'] = range(1, len(df) + 1)
+
+app = dash.Dash(__name__)
+
+PAGE_SIZE = 5
+
+app.layout = html.Div([dash_table.DataTable(
+    id='datatable-paging',
+    columns=[
+        {"name": i, "id": i} for i in sorted(df.columns)
+    ],
+    row_selectable='single',
+    cell_selectable=False,
+    page_current=0,
+    page_size=PAGE_SIZE,
+    page_action='custom',
+    sort_action='custom',
+    sort_mode='multi',
+    sort_by=[]
+    ),
+    html.Div(id='display')])
+
+@app.callback(
+    Output('datatable-paging', 'data'),
+    Output('datatable-paging', 'page_count'),
+    Input('datatable-paging', "page_current"),
+    Input('datatable-paging', "page_size"),
+    Input('datatable-paging', "sort_by"))
+def update_table(page_current,page_size, sort_by):
+    num = int(df.shape[0]/PAGE_SIZE)
+    if df.shape[0]%PAGE_SIZE &gt; 0:
+        num += 1
+
+    print(sort_by)
+    if len(sort_by):
+        dff = df.sort_values(
+            [col['column_id'] for col in sort_by],
+            ascending=[
+                col['direction'] == 'asc'
+                for col in sort_by
+            ],
+            inplace=False
+        )
+        print('Sorted ...')
+    else:
+        # No sort is applied
+        dff = df
+
+    return dff.iloc[
+        page_current*page_size:(page_current+ 1)*page_size
+    ].to_dict('records'), num
+
+@app.callback(
+    Output('display', 'children'),
+    Input('datatable-paging', 'derived_viewport_selected_rows'),
+    State('datatable-paging', 'data'))
+def display_output(index, rows):
+    print(index)
+    if not index:
+        raise PreventUpdate
+    if len(index) == 0:
+        raise PreventUpdate
+    return str(rows[index[0]])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# backend paging with filtering and sorting
+import dash
+from dash.dependencies import Input, Output
+from dash import dash_table
+import pandas as pd
+
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
+
+PAGE_SIZE = 5
+
+app.layout = dash_table.DataTable(
+    id='table-filtering',
+    columns=[
+        {"name": i, "id": i} for i in sorted(df.columns)
+    ],
+
+    # backend paging parameters
+    page_current=0,
+    page_size=PAGE_SIZE,
+    page_action='custom',
+
+    # filtering parameters
+    filter_action='custom',
+    filter_query='',
+
+    # sorting parameters
+    sort_action='custom',
+    sort_mode='multi',
+    sort_by=[]
+)
+
+operators = [['ge ', '&gt;='],
+             ['le ', '&lt;='],
+             ['lt ', '&lt;'],
+             ['gt ', '&gt;'],
+             ['ne ', '!='],
+             ['eq ', '='],
+             ['contains '],
+             ['datestartswith ']]
+
+
+def split_filter_part(filter_part):
+    for operator_type in operators:
+        for operator in operator_type:
+            if operator in filter_part:
+                name_part, value_part = filter_part.split(operator, 1)
+                name = name_part[name_part.find('{') + 1: name_part.rfind('}')]
+
+                value_part = value_part.strip()
+                v0 = value_part[0]
+                if (v0 == value_part[-1] and v0 in ("'", '"', '`')):
+                    value = value_part[1: -1].replace('\\' + v0, v0)
+                else:
+                    try:
+                        value = float(value_part)
+                    except ValueError:
+                        value = value_part
+
+                # word operators need spaces after them in the filter string,
+                # but we don't want these later
+                return name, operator_type[0].strip(), value
+
+    return [None] * 3
+
+
+@app.callback(
+    Output('table-filtering', "data"),
+    Output('table-filtering', "page_count"),
+    Input('table-filtering', "page_current"),
+    Input('table-filtering', "page_size"),
+    Input('table-filtering', 'sort_by'),
+    Input('table-filtering', "filter_query"))
+def update_table(page_current,page_size, sort_by, filter):
+    # filtering
+    filtering_expressions = filter.split(' && ')
+    dff = df
+    for filter_part in filtering_expressions:
+        col_name, operator, filter_value = split_filter_part(filter_part)
+        if operator in ('eq', 'ne', 'lt', 'le', 'gt', 'ge'):
+            dff = dff.loc[getattr(dff[col_name], operator)(filter_value)]
+        elif operator == 'contains':
+            dff = dff.loc[dff[col_name].str.contains(filter_value)]
+        elif operator == 'datestartswith':
+            dff = dff.loc[dff[col_name].str.startswith(filter_value)]
+
+    # get number of pages
+    num = int(dff.shape[0]/PAGE_SIZE)
+    if dff.shape[0]%PAGE_SIZE &gt; 0:
+        num += 1
+
+    # sorting
+    print(sort_by)
+    if len(sort_by):
+        dff = dff.sort_values(
+            [col['column_id'] for col in sort_by],
+            ascending=[
+                col['direction'] == 'asc'
+                for col in sort_by
+            ],
+            inplace=False
+        )
+
+    # backend paging
+    return dff.iloc[
+        page_current*page_size:(page_current+ 1)*page_size].to_dict('records'), num
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
         </div>
 		<div class = "subtitle">Cell</div>
 		<div class = "block">
@@ -793,6 +1034,47 @@ if __name__ == '__main__':
             <li><span>start_cell</span>, the initial cell of the selected cells</li>
             <li><span>end_cell</span>, the last cell of the selected cells</li>
             <li><span>selected_cells</span>, the selected cells</li>
+        </div>
+        <div class = "subtitle">Editable</div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+from dash import html
+from dash import dash_table
+from dash.dependencies import Output, Input, State
+from dash.exceptions import PreventUpdate
+import pandas as pd
+import numpy as np
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/Emissions%20Data.csv').reset_index()
+df['Emission'] = df['Emission'].map(lambda x: '{0:.2f}'.format(x))
+
+app.layout = html.Div([dash_table.DataTable(
+        id='table',
+        data=df.to_dict('records'),
+        columns=[
+            {'name': i, 'id': i} if i != 'Emission' else {'name': i, 'id': i, 'editable': True} for i in df.columns  # create editable column/columns
+        ],
+        fixed_rows={ 'headers': True, 'data': 0 },
+        #editable=True, # make whole table editable
+        page_action='native'
+    ), html.Button('Click', id = 'button'), html.Div(id = 'output')
+    ])
+
+@app.callback(
+    Output('output', 'children'),
+    State('table', 'data'),
+    Input('button', 'n_clicks'))
+def update_table(data, n_clicks):
+    if not n_clicks:
+        raise PreventUpdate
+    return str(data)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
         </div>
 		<div class = "subtitle">Tooltips</div>
         <div class = "block">
@@ -981,132 +1263,6 @@ if __name__ == '__main__':
     app.run_server(debug=True)
         </pre>
         </div>
-		<div class = "subtitle">Backend Paging</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-import dash
-from dash.dependencies import Input, Output
-import dash_table
-import pandas as pd
-
-
-df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
-
-df[' index'] = range(1, len(df) + 1)
-
-app = dash.Dash(__name__)
-
-PAGE_SIZE = 5
-
-app.layout = dash_table.DataTable(
-    id='datatable-paging',
-    columns=[
-        {"name": i, "id": i} for i in sorted(df.columns)
-    ],
-    page_current=0,
-    page_size=PAGE_SIZE,
-    page_action='custom'
-)
-
-
-@app.callback(
-    Output('datatable-paging', 'data'),
-    Output('datatable-paging', 'page_count'),
-    Input('datatable-paging', "page_current"),
-    Input('datatable-paging', "page_size"))
-def update_table(page_current,page_size):
-    num = int(df.shape[0]/PAGE_SIZE)
-    if df.shape[0]%PAGE_SIZE &gt; 0:
-        num += 1
-    return df.iloc[
-        page_current*page_size:(page_current+ 1)*page_size
-    ].to_dict('records'), num
-
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
-		</pre>
-		</div>
-		<div class = "subtitle">Custom Sorting</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-import dash
-import dash_html_components as html
-from dash.dependencies import Input, Output, State
-import dash_table
-from dash.exceptions import PreventUpdate
-import pandas as pd
-
-
-df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
-
-df[' index'] = range(1, len(df) + 1)
-
-app = dash.Dash(__name__)
-
-PAGE_SIZE = 5
-num = int(df.shape[0]/PAGE_SIZE)
-if df.shape[0]%PAGE_SIZE > 0:
-    num += 1
-
-app.layout = html.Div([dash_table.DataTable(
-    id='datatable-paging',
-    columns=[
-        {"name": i, "id": i} for i in sorted(df.columns)
-    ],
-    row_selectable='single',
-    cell_selectable=False,
-    page_current=0,
-    page_count=num,
-    page_size=PAGE_SIZE,
-    page_action='custom',
-    sort_action='custom',
-    sort_mode='multi',
-    sort_by=[]
-    ),
-    html.Div(id='display')])
-
-
-@app.callback(
-    Output('datatable-paging', 'data'),
-    Input('datatable-paging', "page_current"),
-    Input('datatable-paging', "page_size"),
-    Input('datatable-paging', "sort_by"))
-def update_table(page_current,page_size, sort_by):
-    print(sort_by)
-    if len(sort_by):
-        dff = df.sort_values(
-            [col['column_id'] for col in sort_by],
-            ascending=[
-                col['direction'] == 'asc'
-                for col in sort_by
-            ],
-            inplace=False
-        )
-        print('Sorted ...')
-    else:
-        # No sort is applied
-        dff = df
-    return dff.iloc[
-        page_current*page_size:(page_current+ 1)*page_size
-    ].to_dict('records')
-
-@app.callback(
-    Output('display', 'children'),
-    Input('datatable-paging', 'derived_viewport_selected_rows'),
-    State('datatable-paging', 'data'))
-def display_output(index, rows):
-    print(index)
-    if not index:
-        raise PreventUpdate
-    if len(index) == 0:
-        raise PreventUpdate
-    return str(rows[index[0]])
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
-		</pre>
-		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
             <li><a href = "https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/">D3 Rules</a></li>
