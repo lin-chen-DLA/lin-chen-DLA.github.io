@@ -88,13 +88,11 @@ f4(1, 2, 3, 'end')
 		<div class = "block">
 			<li>expands list or tuple into separate elements</li>
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 def f(a, b):
     print(a, b)
 
-l = [10, 20]; # singularize list or tuple
-f(*l); # 10 20
+l = [10, 20] # singularize list or tuple
+f(*l) # 10 20
 			</pre>
 		</div>
 
@@ -102,14 +100,12 @@ f(*l); # 10 20
 		<div class = "block">
 			<li>pass parameters and their values as a dict to function</li>
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 def f(**args):
     print(args)
     for k in args.keys():
         print(k, args[k])
 
-f(inFile = 'input', outFile = 'output');
+f(inFile = 'input', outFile = 'output')
 			</pre>
 		</div>
 
@@ -117,17 +113,25 @@ f(inFile = 'input', outFile = 'output');
 		<div class = "block">
 			<li>pass keyworded variables as a dict to function</li>
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 def f(**args):
     print(args)
     for k in args.keys():
         print(k, args[k])
 
-d = {'inFile':'input', 'outFile':'output'}; # singularize dict
-f(**d);
+d = {'inFile':'input', 'outFile':'output'} # singularize dict
+f(**d)
 			</pre>
 		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+def f(inFile, outFile):
+    print(inFile, outFile)
+
+d = {'inFile':'input', 'outFile':'output'}
+
+f(**d)
+            </pre>
+        </div>
 
 		<div class = "subtitle" id = "lambda">Lambda</div>
 		<div class = "block">
