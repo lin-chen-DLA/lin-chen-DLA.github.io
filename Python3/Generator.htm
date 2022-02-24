@@ -8,6 +8,7 @@
 			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
 			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
 			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight:bold}
 		</style>
 	</head>
 	<body>
@@ -17,174 +18,189 @@
 
 		<div class = "subtitle">Iterable Objects</div>
 		<div class = "block">
+            <li><span>Iterable</span> is an object, which one can iterate over</li>
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
-#list
-l = range(10);
-for i in l:
-    print (i)
- 
-#tuple
-t = (1, 2, 3, 4);
-for i in t:
-    print (i)
- 
-#dict
-d = {'x':1, 'y':2};
-for k in d:
-    print (k, d[k])
- 
-#string
-s = 'Hello World!';
-for i in s:
-    print (i)
+from collections.abc import Iterator, Iterable
+
+# List
+l = [1, 2, 3, 4, 5, 6]
+isinstance(l, Iterable) # True
+
+# Range
+r = range(10)
+isinstance(r, Iterable) # True
+
+# Tuple
+t = (1, 2, 3, 4)
+isinstance(t, Iterable) # True
+
+# String
+s = 'Hello World!'
+isinstance(s, Iterable) # True
+
+# Dict
+d = {'x':1, 'y':2}
+isinstance(d, Iterable) # True
 		</pre>
 		</div>
 
 		<div class = "subtitle">Iterator</div>
 		<div class = "block">
+            <li><span>Iterator</span> is an object, which is used to iterate over an iterable object using __next__() method</li>
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
-l = iter(range(10)); #iterator
- 
+# List
+l = [1, 2, 3, 4, 5, 6]
+obj = iter(l) # list_iterator
+isinstance(obj, Iterator) # True
+
+# Range
+r = range(10)
+obj = iter(r) # range_iterator
+isinstance(obj, Iterator) # True
+
+# Tuple
+t = (1, 2, 3, 4)
+obj = iter(t) # tuple_iterator
+isinstance(obj, Iterator) # True
+
+# String
+s = 'Hello World!'
+obj = iter(s) # str_iterator
+isinstance(obj, Iterator) # True
+
+# Dict
+d = {'x':1, 'y':2}
+obj = iter(d) # dict_keyiterator
+isinstance(obj, Iterator) # True
+        </pre>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+l = [1, 2, 3, 4, 5, 6]
+obj = iter(l) # iterator
+
 try:
     while True:
-        print(next(l)) #if no more element, raise StopIteration
+        #if no more element, next raise StopIteration
+        item = next(obj) # int
 except StopIteration:
     pass
 		</pre>
 		</div>
 
-		<div class = "subtitle">Iterator or Iterable</div>
+		<div class = "subtitle">Implement Iterable and Iterator as Classes</div>
 		<div class = "block">
+            <li>Iterable and iterator are the <span>same</span> object</li>
 		<pre class = "prettyprint linenums">
-from collections.abc import Iterator, Iterable
-
-print(isinstance(range(10), Iterator)) # False
-
-print(isinstance(iter(range(10)), Iterator)) # True
-
-print(isinstance(range(10), Iterable)) # True
-		</pre>
-		</div>
-
-		<div class = "subtitle">Implement Iterator as Classes</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
 class yrange:
     def __init__(self, n):
         self.i = 0
         self.n = n
  
-    def __iter__(self): # make an object iterable
-        #print('Call __iter__ ...')
+    def __iter__(self): # make an object to be iterable
+        print('iter')
         self.i = 0
         return self # return an iterator
-
-    def __next__(self):
-        #print('Call __next__ ...')
+ 
+    def __next__(self): # make an object to be iterator
+        print('next')
         if self.i &lt; self.n:
             i = self.i
             self.i += 1
             return i
         else:
             raise StopIteration()
- 
-y = yrange(10);
- 
-l = list(y); # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-print(l)
-l = list(y); # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-print(l)
+        </pre>
+		<pre class = "prettyprint linenums">
+y = yrange(10)
+isinstance(y, Iterable) # True
+isinstance(y, Iterator) # True
+        </pre>
+		<pre class = "prettyprint linenums">
+# use as an iterable
+y = yrange(3)
+# call _iter_ to initialize, then call __next__ to iterate
+for i in y: # print 0, 1, 2
+    print(i)
+
+for i in y: # print 0, 1, 2
+    print(i)
+        </pre>
+		<pre class = "prettyprint linenums">
+# use as an iterator
+y = yrange(3)
+try:
+    # call _next__ to iterate
+    while True: # print 0, 1, 2
+        temp = next(y) # int
+        print(temp)
+except StopIteration:
+    pass
+
+try:
+    while True: # print nothing, iterator has been comsumed
+        temp = next(y) # int
+        print(temp)
+except StopIteration:
+    pass
 		</pre>
 		</div>
 		<div class = "block">
-			<ul>
-				<li>Iterable and iterator are same, it is consumed in a single iteration</li>
-			</ul>
-		</div>
-		<div class = "block">
+            <li>Iterable and iterator are <span>not</span> the same object</li>
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
- 
+# define iterable
 class zrange:
     def __init__(self, n):
         self.n = n
  
     def __iter__(self):
+        print('iter')
         return zrange_iter(self.n)
  
+# define iterator
 class zrange_iter:
     def __init__(self, n):
         self.i = 0
         self.n = n
-
-    def __iter__(self):
-	# Iterators are iterables too.
-	# Adding this functions to make them so.
-        return self
     
     def __next__(self):
+        print('next')
         if self.i &lt; self.n:
             i = self.i
             self.i += 1
             return i
         else:
             raise StopIteration()
- 
-l = zrange(10);
- 
-print(list(l)) # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-print(list(l)) # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+z = zrange(3)
+isinstance(z, Iterable) # True
+isinstance(z, Iterator) # False
+
+# used as an iterable
+z = zrange(3)
+for i in z: # call _iter_ to initialize, then call __next__ to iterate
+    print(i)
 		</pre>
-		</div>
-		<div class = "block">
-			<ul>
-				<li>Iterable and iterator are not same, every time a new iterator is created, is able to be re-used, same as xrange</li>
-			</ul>
 		</div>
 
 		<div class = "subtitle">Generator</div>
 		<div class = "block">
-		<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
-def yrange(n):
-    i = 0;
-    while i &lt; n:
-        yield i;
-        i += 1
-
-l = yrange(10);
-for i in l:
-	print(i)
- 
-for i in l: # do not print anything, l has been consumed
-	print(i)
-		</pre>
-		</div>
-		<div class = "block">
-			<ul>
-				<li>Generator is iterator, can be consumed in a single iteration</li>
-			</ul>
-		</div>
-
-		<div class = "subtitle">Generator Expression</div>
+            <li>Generator is iterator, can be consumed in a <span>single</span> iteration</li>
+        </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
+import types
+
 # list
 l = [x*x for x in range(4)]; # [0, 1, 4, 9]
 print(l)
  
 # generator
 g = (x*x for x in range(4));
+isinstance(g, Iterable) # True
+isinstance(g, Iterator) # True
+isinstance(g, types.GeneratorType) # True
+
 for i in g:
 	print(i)
 
@@ -192,7 +208,64 @@ for i in g: # do nothing, g has been consumed in the above for loop
 	print(i)
 		</pre>
 		</div>
+		<div class = "subtitle">Implement Generator as Class</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+def grange(n):
+    i = 0;
+    while i &lt; n:
+        yield i;
+        i += 1
+        </pre>
+		<pre class = "prettyprint linenums">
+g = grange(10);
 
+isinstance(g, Iterable) # True
+isinstance(g, Iterator) # True
+isinstance(g, types.GeneratorType) # True
+
+for i in l:
+	print(i)
+ 
+for i in l: # do not print anything, l has been consumed
+	print(i)
+		</pre>
+		</div>
+
+		<div class = "subtitle">Memory</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import sys
+
+# list, iterable
+l = [x*x for x in range(100)]
+sys. getsizeof(l) # 920
+
+# list ierator
+obj = iter(l)
+sys. getsizeof(obj) # 48
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# generator, iterable, iterator
+g = (x*x for x in range(100))
+sys. getsizeof(g) # 112
+
+obj = iter(g)
+sys. getsizeof(obj) # 112
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# range, iterable
+r = range(100)
+sys. getsizeof(r) # 48
+
+obj = iter(r)
+sys. getsizeof(obj) # 48
+        </pre>
+        </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
 			<ul>
