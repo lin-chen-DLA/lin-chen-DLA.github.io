@@ -94,6 +94,10 @@ str = "Number: {:010d} {:010.2f}".format(10, 3.14) #0000000010 0000003.14
 d = {'name':'Lin', 'age':37};
 str = "{name} {age}".format(**d);
 
+# format string
+s = 'Lin'
+str = f'Name: {s}'
+
 # accessing arguments by name
 str = 'Name: {fname}, {lname}'.format(fname='Lin', lname='Chen')
 print(str)
