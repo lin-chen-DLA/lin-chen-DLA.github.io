@@ -1,16 +1,27 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Python</title>
-		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
-		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
-		<style>
-			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
-			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
 			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
 			span {color: red; font-weight: bold;}
-		</style>
-	</head>
+		</style>
+
+	</head>
+
 	<body>
 		<div class = "title">
 			Layout
@@ -24,12 +35,10 @@ import dash_html_components as html
 
 app = dash.Dash(__name__)
 
-def main():
-    app.layout = html.H1(children="Avocado Analytics",
+app.layout = html.H1(children="Avocado Analytics",
             style={"font-size": "18px", "color": "red", "font-weight": "bold", "border-style": "ridge"})
 
 if __name__ == "__main__":
-    main()
     app.run_server(debug=True) # turn on Dash tools
 		</pre>
 		</div>

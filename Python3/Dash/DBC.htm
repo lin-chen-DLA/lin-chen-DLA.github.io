@@ -67,6 +67,108 @@ app.layout = html.Div([
         </div>
 		<div class = "subtitle">DBC Component</div>
 		<div class = "block">
+            <li>Accordion
+                <ul>
+                    <li>AccordionItems have item_id values as item-0, item-1, ... consecutively by default</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import dash_bootstrap_components as dbc
+
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+accordion = dbc.Accordion(
+        [
+            dbc.AccordionItem(
+                [
+                    html.P("This is the content of the first section"),
+                    dbc.Button("Click here"),
+                ],
+                title="Item 1",
+            ),
+            dbc.AccordionItem(
+                [
+                    html.P("This is the content of the second section"),
+                    dbc.Button("Don't click me!", color="danger"),
+                ],
+                title="Item 2",
+            ),
+        ],
+        id="accordion",
+        active_item="item-1",
+)
+
+app.layout = html.Div([
+    accordion,
+    html.Div('Output', id = 'output')
+    ])
+
+@app.callback(
+    Output("output", "children"),
+    Input("accordion", "active_item"),
+)
+def change_item(item):
+    return f"Item selected: {item}"
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Breadcrumb
+                <ul>
+                    <li>external_link
+                        <ul>
+                            <li>True, treat as an external link, forcing a page refresh at the new location</li>
+                            <li>False, treat as a local link, not trigger a page refresh, the link is passed to dcc.Location</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import dash_bootstrap_components as dbc
+
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+breadcrumb = dbc.Breadcrumb(
+    items=[
+        {"label": "Docs", "href": "/localpage", "external_link": False},
+        {
+            "label": "Components",
+            "href": "https://www.google.com/",
+            "external_link": True,
+        },
+        {"label": "Breadcrumb", "active": True},
+    ],
+)
+
+app.layout = html.Div([
+    breadcrumb,
+    dcc.Location(id='url', refresh=False),
+    html.Div('Output', id = 'output')
+    ])
+
+@app.callback(Output('output', 'children'),
+              Input('url', 'pathname'))
+def display_page(pathname):
+    if pathname == '/localpage':
+        return 'Local page'
+    else:
+        return 'Place holder'
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
             <li>Button</li>
 		<pre class = "prettyprint linenums">
 /* assets/style.css */
@@ -102,11 +204,43 @@ if __name__ == "__main__":
 		</pre>
 		</div>
 		<div class = "block">
+            <li>Carousel</li>
+		<pre class = "prettyprint linenums">
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import dash_bootstrap_components as dbc
+
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+carousel = dbc.Carousel(
+    items=[
+        {"key": "1", "src": "url_1", 'caption': 'Picture 1'},
+        {"key": "2", "src": "url_2", 'caption': 'Picture 2'},
+        {"key": "3", "src": "url_3", 'caption': 'Picture 3'},
+    ],
+    controls=True,
+    indicators=True,
+    interval=2000,
+    ride="carousel",
+)
+
+app.layout = html.Div([
+    carousel,
+    html.Div('Output', id = 'output')
+    ])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
             <li>Collapse</li>
 		<pre class = "prettyprint linenums">
 import dash
 import dash_bootstrap_components as dbc
-import dash_html_components as html
+from dash import html
 from dash.dependencies import Input, Output, State
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -138,13 +272,19 @@ if __name__ == "__main__":
             <li>Menu
                 <ul>
                     <li>Each DropdownMenuItem can be used like <span>dash_core_components.Link</span> or a <span>Button</span></li>
+                    <li>external_link
+                        <ul>
+                            <li>True, treat as an external link, forcing a page refresh at the new location</li>
+                            <li>False, treat as a local link, not trigger a page refresh, the link is passed to dcc.Location</li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
 		<pre class = "prettyprint linenums">
 import dash
 import dash_bootstrap_components as dbc
-import dash_html_components as html
-import dash_core_components as dcc
+from dash import html
+from dash import dcc
 from dash.dependencies import Input, Output, State
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -152,14 +292,14 @@ app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     dbc.DropdownMenu([
-        dbc.DropdownMenuItem('Item 1', href = "https://www.google.com/"),
-        dbc.DropdownMenuItem('Item 2', href = '/content'),
+        dbc.DropdownMenuItem('Item 1', href = "https://www.google.com/", external_link=True),
+        dbc.DropdownMenuItem('Item 2', href = '/content', external_link=False),
     ], label = 'Menu'),
     html.Div(id = 'content')
 ])
 
-@app.callback(dash.dependencies.Output('content', 'children'),
-              [dash.dependencies.Input('url', 'pathname')])
+@app.callback(Output('content', 'children'),
+              Input('url', 'pathname'))
 def display_page(pathname):
     if pathname == '/content':
         return 'Content ...'
@@ -213,93 +353,103 @@ if __name__ == "__main__":
         </pre>
         </div>
 		<div class = "block">
-            <li>Form</li>
+            <li>FormFloating</li>
 		<pre class = "prettyprint linenums">
-import requests
 import dash
 import dash_bootstrap_components as dbc
-import dash_html_components as html
-import dash_core_components as dcc
+from dash import html
+from dash import dcc
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 from googlesearch import search
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+#app.config['suppress_callback_exceptions'] = True
 
-form = dbc.Form(
+form = dbc.FormFloating(
     [
-        dbc.FormGroup(
-            [
-                dbc.Label("Search", className="mr-2"),
-                dbc.Input(type="text", placeholder="Enter keyword", id = 'key'),
-            ],
-            className="mr-3",
-        ),
-        dbc.Button("Submit", color="primary"),
+        dbc.Input(type="text", placeholder="Enter keyword", id = 'key'),
+        dbc.Label("Search", className="mr-2"),
     ],
-    inline=True,
-    id = 'form',
 )
 
 app.layout = html.Div([
     form,
+    dbc.Button("Submit", color="primary", id = 'button'),
     html.Div(id = 'content')
 ])
 
-app.config['suppress_callback_exceptions'] = True
-
 @app.callback(
     Output("content", "children"),
-    Input("form", "n_submit"),
+    Input("button", "n_clicks"),
     State('key', 'value'),
 )
 def update_categories(ns, value):
     if ns is None:
         raise PreventUpdate
-    r = next(search(value, num=10))
-    return r
+    s = search(value, num_results=10)
+    output = []
+    for i in s:
+        output.append(html.Div(i))
+    return output
 
 if __name__ == "__main__":
     app.run_server(debug=True)
         </pre>
         </div>
 		<div class = "block">
-            <li>FormFeedback</li>
+            <li>FormFeedback
+                <ul>
+                    <li>FormFeedback component should be added to a <span>html.Div</span> containing the Input it is associated with</li>
+                    <li>Input
+                        <ul>
+                            <li><span>valid</span> = True, green; otherwise, default color</li>
+                            <li><span>invalid</span> = True, red; otherwise, default color</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
 		<pre class = "prettyprint linenums">
-import requests
 import dash
 import dash_bootstrap_components as dbc
-import dash_html_components as html
-import dash_core_components as dcc
+from dash import html
+from dash import dcc
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
-from googlesearch import search
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 email_input = html.Div(
     [
-        dbc.FormGroup(
-            [
-                dbc.Label("Email"),
-                dbc.Input(id="email-input", type="text", value=""),
-                dbc.FormFeedback(
-                    "That looks like a gmail address :-)", valid=True
-                ),
-                dbc.FormFeedback(
-                    "Sorry, we only accept gmail for some reason...",
-                    valid=False,
-                ),
-            ]
-        )
-    ]
-)
+        dbc.Label("Email"),
+        dbc.Input(id="email-input", type="text", value=""),
+        dbc.FormFeedback("Valid email :-)", type='valid'),
+        dbc.FormFeedback("Sorry, invalid email ...", type='invalid'),
+    ])
 
-app.layout = email_input
+text_input = html.Div(
+    [
+        dbc.Label("Name"),
+        dbc.Input(id="text-input", type="text", value=""),
+        dbc.FormFeedback("Valid name :-)", type='valid'),
+        dbc.FormFeedback("Sorry, invalid input ...", type='invalid'),
+    ])
+
+app.layout = html.Div([email_input, text_input])
 
 @app.callback(
     [Output("email-input", "valid"), Output("email-input", "invalid")],
     [Input("email-input", "value")],
+)
+def check_validity(text):
+    if text:
+        contain_space = ' ' in text
+        return not contain_space, contain_space # spce, False, True; otherwise, True, False
+    return False, False
+
+@app.callback(
+    [Output("text-input", "valid"), Output("text-input", "invalid")],
+    [Input("text-input", "value")],
 )
 def check_validity(text):
     if text:
@@ -316,7 +466,8 @@ if __name__ == "__main__":
 		<pre class = "prettyprint linenums">
 import dash
 import dash_bootstrap_components as dbc
-import dash_html_components as html
+from dash import html
+from dash import dcc
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 
@@ -325,23 +476,30 @@ app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.layout = html.Div(
     [
         dbc.Button("Open modal", id="open"),
+        html.Div('Placeholder ...'),
         dbc.Modal(
             [
-                dbc.ModalHeader("Header"),
-                dbc.ModalBody("This is the content of the modal"),
+                dbc.ModalHeader("Header", close_button=True),
+                dbc.ModalBody(html.Div('Hello'), style= {'background-color':'black', 'opacity': 0.9}),
                 dbc.ModalFooter(
                     dbc.Button("Close", id="close", className="ml-auto")
                 ),
             ],
             id="modal",
+            fade = True,
+            fullscreen=True,
+            is_open = False, # control visible/invisible, not remove content
+            backdrop=False,
+            keyboard=False,
         ),
     ]
 )
 
 @app.callback(
     Output("modal", "is_open"),
-    [Input("open", "n_clicks"), Input("close", "n_clicks")],
-    [State("modal", "is_open")],
+    Input("open", "n_clicks"),
+    Input("close", "n_clicks"),
+    State("modal", "is_open"),
 )
 def toggle_fade(n1, n2, is_open):
     if n1 or n2:

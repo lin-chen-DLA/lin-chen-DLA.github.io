@@ -1,16 +1,27 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Python</title>
-		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
-		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
-		<style>
-			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
-			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
 			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
 			span {color: red; font-weight: bold;}
-		</style>
-	</head>
+		</style>
+
+	</head>
+
 	<body>
 		<div class = "title">
 			Structure
@@ -153,5 +164,69 @@ def display_page(pathname):
         return index_page
 		</pre>
 		</div>
+        <div class = "subtitle">Model-View-Controller</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Dash_34.png" width = "30%"></p>
+        </div>
+        <div class = "block">
+        <pre class = "prettyprint linenums">
+# app.py
+from model import *
+from control import *
+from view import *
+
+app.layout = get_content()
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        <pre class = "prettyprint linenums">
+# model.py
+import pandas as pd
+
+def get_data():
+    temp = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+
+    return temp
+        </pre>
+        <pre class = "prettyprint linenums">
+# view.app
+import dash
+from dash import html
+from dash import dcc
+import plotly.express as px
+from model import *
+
+def get_content():
+    return html.Div([
+        html.Button('Click', id = 'button'),
+        html.Div(id='output')
+    ])
+
+def get_graph():
+    fig = px.bar(get_data(), x='year', y='pop')
+    return dcc.Graph(figure=fig)
+        </pre>
+        <pre class = "prettyprint linenums">
+# control.py
+import dash
+from dash.dependencies import Output, Input, State
+from dash.exceptions import PreventUpdate
+from model import *
+from view import *
+
+app = dash.Dash(__name__)
+
+@app.callback(
+    Output('output', 'children'),
+    Input('button', 'n_clicks')
+)
+def update_table(n_clicks):
+    if not n_clicks:
+        raise PreventUpdate
+
+    return get_graph()
+        </pre>
+        </div>
 	</body>
 </html>
