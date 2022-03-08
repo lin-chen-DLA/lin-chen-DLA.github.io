@@ -311,48 +311,6 @@ if __name__ == "__main__":
         </pre>
         </div>
 		<div class = "block">
-            <li>Input
-                <ul>
-                    <li><span>valid</span>, apply valid style to the input</li>
-                    <li><span>invalid</span>, apply invalid style to the input</li>
-                </ul>
-            </li>
-		<pre class = "prettyprint linenums">
-import dash
-import dash_bootstrap_components as dbc
-import dash_html_components as html
-from dash.dependencies import Input, Output, State
-from dash.exceptions import PreventUpdate
-
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
-
-app.layout = html.Div(
-    [
-        dbc.Input(placeholder = 'input number', id = 'input'),
-        dbc.Button('Click', id = 'button')
-    ]
-)
-
-
-@app.callback(
-    [Output("input", "valid"),
-     Output('input', 'invalid')],
-    Input("button", "n_clicks"),
-    State('input', 'value')
-)
-def toggle_fade(n, value):
-    if not n:
-        raise PreventUpdate
-    if value.isnumeric():
-        return True, False
-    else:
-        return False, True
-
-if __name__ == "__main__":
-    app.run_server(debug=True)
-        </pre>
-        </div>
-		<div class = "block">
             <li>FormFloating</li>
 		<pre class = "prettyprint linenums">
 import dash
@@ -456,6 +414,48 @@ def check_validity(text):
         contain_space = ' ' in text
         return not contain_space, contain_space # spce, False, True; otherwise, True, False
     return False, False
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Input</li>
+		<pre class = "prettyprint linenums">
+# Text
+dbc.Input(id="input", placeholder="Type something...", type="text")
+
+# Number
+# automatically check value, invalid input does not trigger input
+dbc.Input(id="input", placeholder="Type something...", type="number", min=0, max=10, step = 1)
+        </pre>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_bootstrap_components as dbc
+from dash import html
+from dash import dcc
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+text_input = html.Div(
+    [
+        dbc.Input(placeholder="Input goes here...", type="text", id = 'input', size='sm'),
+        html.P(id="output"),
+    ]
+)
+
+app.layout = text_input
+
+@app.callback(Output("output", "children"),
+              Output('input', 'valid'),
+              Output('input', 'invalid'),
+              Input("input", "value"))
+def output_text(value):
+    if value and ' ' in value:
+        return value, False, True
+    return value, True, False
 
 if __name__ == "__main__":
     app.run_server(debug=True)
