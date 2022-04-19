@@ -571,7 +571,15 @@ if __name__ == "__main__":
         </pre>
         </div>
 		<div class = "block">
-            <li>Checklist</li>
+            <li>Checklist
+                <ul>
+                    <li><span>style</span>, container style</li>
+                    <li><span>input_style</span>, checkbox style</li>
+                    <li><span>input_checked_style</span>, checked checkbox style</li>
+                    <li><span>label_style</span>, label style</li>
+                    <li><span>label_checked_style</span>, checked checkbox style</li>
+                </ul>
+            </li>
 		<pre class = "prettyprint linenums">
 import dash
 import dash_bootstrap_components as dbc
@@ -589,10 +597,19 @@ checklist_input = html.Div(
                 {"label": "Option 1", "value": 1},
                 {"label": "Option 2", "value": 2},
                 {"label": "Option 3", "value": 3},
+                {"label": "Option 4", "value": 4},
+                {"label": "Option 5", "value": 5},
+                {"label": "Option 6", "value": 6},
+                {"label": "Option 7", "value": 7},
             ], value=[1], inline=True, switch=True, id="input",
+            style = {'border': '1px blue solid', 'padding-left': '10px'}, # check list style
+            input_style = {'height': '20px', 'margin-right':'4px', 'width': '50px', 'margin-top':'20px'}, # box style
+            input_checked_style = {'border': '1px silver solid'}, # checked box style
+            label_style = {'height': '30px', 'color': 'gray', 'font-weight': 'bold', 'width': '300px', 'margin-top':'20px'}, # label style
+            label_checked_style = {'color': 'silver'} # checked label style
         ),
         html.P(id="output"),
-    ]
+    ], style = {'overflow':'hidden'}
 )
 
 app.layout = checklist_input

@@ -159,22 +159,62 @@ f();
 #print(math.pi) # not import math error
 			</pre>
 		</div>
-		<div class = "subtitle">module level variable</div>
+		<div class = "subtitle">global variable among modules</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Scope.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+            <li>global_list is imported once</li>
+            <li>global_list is shared by both module a and module b</li>
+			<pre class = "prettyprint linenums">
+# g.py
+global_list = [1, 2]
+print('g', id(global_list), global_list)
+			</pre>
+			<pre class = "prettyprint linenums">
+# a.py
+print('a ...')
+
+#import g
+from g import global_list
+
+def change():
+    global_list.append(100)
+
+change()
+print('a', id(global_list), global_list)
+			</pre>
+			<pre class = "prettyprint linenums">
+# b.py
+print('b ...')
+
+#import g
+from g import global_list
+from a import *
+
+def display():
+    print('display', id(global_list), global_list)
+
+print('b', id(global_list), global_list)
+
+change()
+display()
+            </pre>
+        </div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-# m1.py
-a = 10
-			</pre>
-			<pre class = "prettyprint linenums">
-# m2.py
-import m1
-
-print(m1.a)
-			</pre>
-		</div>
+# python b.py
+b ... # start module b
+g 140597500568384 [1, 2] # import module g
+a ... # import module a
+a 140597500568384 [1, 2, 100] # global_list in a
+b 140597500568384 [1, 2, 100, 100] # global_list in b
+            </pre>
+        </div>
 
 		<div class = "subtitle">Resource</div>
 		<div class = "block">
+            <li><a href = "https://stackoverflow.com/questions/15959534/visibility-of-global-variables-in-imported-modules">Visibility of global variables in imported modules</a></li>
 			<li><a href = "http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html">Beginner's Guide</a></li>
 			<li><a href = "https://www.python-course.eu/python3_namespaces.php">Namespace</a> at Python Course</li>
 		</div>
