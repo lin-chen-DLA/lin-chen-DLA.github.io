@@ -211,6 +211,32 @@ a 140597500568384 [1, 2, 100] # global_list in a
 b 140597500568384 [1, 2, 100, 100] # global_list in b
             </pre>
         </div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Scope_2.png" width = "25%"></p>
+		</div>
+		<div class = "block">
+            <li>global_list is imported once, no need to import in b again</li>
+			<pre class = "prettyprint linenums">
+# g.py
+global_list = [1, 2]
+            </pre>
+			<pre class = "prettyprint linenums">
+# a.py
+print('a ...')
+
+from g import global_list
+
+print('a', id(global_list), global_list)
+            </pre>
+			<pre class = "prettyprint linenums">
+# b.py
+print('b ...')
+
+from a import *
+
+print('b', id(global_list), global_list) # global_list is available in b.py
+            </pre>
+        </div>
 
 		<div class = "subtitle">Resource</div>
 		<div class = "block">
