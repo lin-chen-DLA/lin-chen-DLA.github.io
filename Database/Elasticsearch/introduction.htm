@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Elasticsearch</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Introduction
+		</div>
+
+		<div class = "subtitle">Stack</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Elastic_2.png" width = "20%"></p>
+		</div>
+		<div class = "block">
+            <li><span>Elasticsearch</span>
+                <ul>
+                    <li>A distributed search engine</li>
+                    <li>Implemented RESTful APIs over HTTP using JSON</li>
+                </ul>
+            </li>
+            <li><span>Logstash</span>
+                <ul>
+                    <li>Collect, transform, and send logs to a range of target systems, such as Elasticsearch</li>
+                </ul>
+            </li>
+            <li><span>Kibana</span>
+                <ul>
+                    <li>A user interface to search for and visualize data using the REST APIs on Elasticsearch</li>
+                </ul>
+            </li>
+            <li><span>Beats</span>
+                <ul>
+                    <li>Collect and ship network packet data to Elasticsearch with a collection of lightweight agents</li>
+                </ul>
+            </li>
+            <li><span>Application Performance Monitoring (APM)</span>
+                <ul>
+                    <li>APM, Logs, Metrics, and Uptime apps forms the Observability solution</li>
+                </ul>
+            </li>
+            <li><span>Security Information and Event Management (SIEM)</span>
+                <ul>
+                    <li>Security analytics functionality</li>
+                </ul>
+            </li>
+            <li><span>Endpoint Detection and Response (EDR)</span>
+                <ul>
+                    <li>EDR and SIEM capabilities formed the Security solution</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "subtitle">Cluster, Node, and Shard</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Elastic_3.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+            <li><span>shard size</span>
+                <ul>
+                    <li>a few GB and a few tens of GB</li>
+                    <li>the more shards, the more overhead</li>
+                </ul>
+            </li>
+            <li><span>number of primary shards of an index</span>
+                <ul>
+                    <li>fixed at the time that an index is created</li>
+                    <li>the larger the shard size, the longer it takes to move shards around when Elasticsearch needs to rebalance a cluster</li>
+                </ul>
+            </li>
+            <li><span>the number of replica shards of a primary shard</span>
+                <ul>
+                    <li>can be changed at any time</li>
+                    <li>not placed on the same node as its primary shards</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "subtitle">Terms</div>
+		<div class = "block">
+            <li><span>field</span>, column</li>
+            <li><span>document</span>, row, base unit of storage
+                <ul>
+                    <li>_index, the index where the document resides</li>
+                    <li>_type, the type that the document represents</li>
+                    <li>_id, the unique identifier for the document</li>
+                    <li>_score, a way of determining how relevant a match is to the query</li>
+                </ul>
+            </li>
+            <li><span>Mapping</span>, defines how a document, its fields, and its metadata are stored in Elasticsearch</li>
+            <li><span>Index</span>, table, the largest unit of data in Elasticsearch, are logical partitions of documents
+                <ul>
+                    <li>lowercase names</li>
+                    <li>no limit to how many documents that can be stored on each index</li>
+                </ul>
+            </li>
+            <li><span>Shard</span>
+                <ul>
+                    <li>a single Lucene index</li>
+                    <li>primary and replica</li>
+                </ul>
+            </li>
+            <li><span>Bucket</span>
+                <ul>
+                    <li>A set of documents in Kibana that have certain characteristics in common, such as color, distance, or date range</li>
+                </ul>
+            </li>
+            <li><span>Bucket aggregation</span>, an aggregation that creates buckets of documents</li>
+            <li><span>Metrics aggregations</span>, calculate metrics based on the values of fields in documents. Metrics can be computed for buckets/groups of data</li>
+            <li><span>Analyzer</span>
+                <ul>
+                    <li>used to tell elasticsearch how the text should be indexed and searched</li>
+                    <li>Character filter, used to strip off some unused characters or change some characters</li>
+                    <li>Tokenizer, breaks a text into individual tokens(or words) and it does that based on certain factors</li>
+                    <li>Token filter: it receives the tokens and then apply some filters</li>
+                </ul>
+            </li>
+            <li>Space</li>
+            <li>Namespace</li>
+            <li>Deployment</li>
+            <li>Integration</li>
+            <li><span>Node</span>, Elasticsearch instance
+                <ul>
+                    <li>Data node, stores data and executes data-related operations, such as search and aggregation</li>
+                    <li>Master node, in charge of cluster-wide management and configuration actions, such as adding and removing nodes</li>
+                    <li>Client node, forwards cluster requests to the master node and data-related requests to data nodes</li>
+                    <li>Ingestion node, pre-process documents before indexing</li>
+                    <li>Machine Learning node, enable machine learning tasks</li>
+                </ul>
+            </li>
+            <li><span>Cluster</span>, database, the set of indices available are grouped in a cluster
+                <ul>
+                    <li>A group of one or more connected Elasticsearch nodes</li>
+                    <li>Each cluster has a unique identifier. By default, its name is “elasticsearch”</li>
+                    <li>cluster APIs, such as /_cluster/health</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://stackoverflow.com/questions/51807333/what-is-analyzer-in-elasticsearch-for">What is Analyzer in Elasticsearch for?</a></li>
+            <li><a href = "https://logz.io/blog/10-elasticsearch-concepts/">10 Elasticsearch Concepts You Need to Learn</a></li>
+            <li><a href = "https://www.elastic.co/guide/en/elasticsearch/reference/master/scalability.html">Scalability and resilience: clusters, nodes, and shardsedit</a></li>
+            <li><a href = "https://www.elastic.co/guide/en/elastic-stack-get-started/current/get-started-elastic-stack.html">Getting started with the Elastic Stack</a></li>
+            <li><a href = "https://cloud.elastic.co/home">Elastic.co</a></li>
+            <li><a href = "https://www.elastic.co/guide/en/elasticsearch/reference/current/_mapping_concepts_across_sql_and_elasticsearch.html">Mapping concepts across SQL and Elasticsearchedit</a></li>
+            <li><a href = "https://www.elastic.co/guide/en/elastic-stack-glossary/current/terms.html">Terminology</a></li>
+        </div>
+    </body>
+</html>

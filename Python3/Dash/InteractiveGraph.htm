@@ -259,6 +259,73 @@ if __name__ == '__main__':
             <li><span>selectedData</span>, data selected with box select or lasso select</li>
             <li><span>relayoutData</span>, click and drag on the graph to zoom or click on the zoom buttons in the graph's menu bar, or click on legend items</li>
         </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import json
+import dash
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
+import plotly.graph_objects as go
+import pandas as pd
+
+app = dash.Dash(__name__)
+
+df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
+temp = df[df['Country Name'] == 'Canada']
+df = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+
+def get_fig(data):
+    fig = go.Figure(go.Scatter(x=data['Year'], y=data['Value']))
+    return fig
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='basic-interactions',
+        figure=get_fig(df)
+    ),
+
+    html.Pre(id='output'),
+    html.Pre(id='output2'),
+    ])
+
+@app.callback(
+    Output('output2', 'children'),
+    Input('basic-interactions', 'hoverData'),
+    Input('basic-interactions', 'clickData'),
+    Input('basic-interactions', 'selectedData'))
+def display_selected_data(hoverData, clickData, selectedData):
+    return str(hoverData)+'\n'+str(clickData)+'\n'+str(selectedData)
+
+@app.callback(
+    Output('output', 'children'),
+    Output('basic-interactions', 'figure'),
+    Input('basic-interactions', 'relayoutData'),
+    State('basic-interactions', 'figure'))
+def display_relayout_data(relayoutData, fig):
+    if not relayoutData:
+        raise PreventUpdate
+    if 'autosize' in relayoutData.keys():
+        print('autosize')
+    if 'xaxis.autorange' in relayoutData.keys():
+        return json.dumps(relayoutData, indent=2), get_fig(df)
+        print('reset')
+    if 'xaxis.range[0]' in relayoutData.keys():
+        xl = relayoutData['xaxis.range[0]']
+        xr = relayoutData['xaxis.range[1]']
+        yl = relayoutData['yaxis.range[0]']
+        yr = relayoutData['yaxis.range[1]']
+        df_selected = df.loc[(df.Year &gt; xl) & (df.Year &lt; xr) & (df.Value &gt; yl) &amp; (df.Value &lt; yr)]
+        return json.dumps(relayoutData, indent=2), get_fig(df_selected)
+
+    return json.dumps(relayoutData, indent=2), get_fig(df)
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+        </pre>
+        </div>
 		<div class = "subtitle">Scatter</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">

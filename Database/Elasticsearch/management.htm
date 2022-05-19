@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Elasticsearch</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Management
+		</div>
+
+		<div class = "subtitle">Docker</div>
+		<div class = "block">
+            <li>Pros
+                <ul>
+                    <li>Easy to load</li>
+                    <li>Be able to start elasticsearch server and kibana</li>
+                </ul>
+            </li>
+            <li>Cons
+                <ul>
+                    <li>Not persistent</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+docker network create elastic
+docker pull docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+docker run --name es01-test --net elastic -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+docker pull docker.elastic.co/kibana/kibana:7.12.1
+docker run --name kib01-test --net elastic -p 5601:5601 -e "ELASTICSEARCH_HOSTS=http://es01-test:9200" docker.elastic.co/kibana/kibana:7.12.1
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# access Elasticsearch
+http://localhost:9200/
+
+# access Kibana
+http://localhost:5601
+            </pre>
+        </div>
+		<div class = "subtitle">Elastic Cloud</div>
+		<div class = "block">
+            <li>Pros
+                <ul>
+                    <li>Easy to set up</li>
+                    <li>All features are available</li>
+                    <li>Some configuration has automatically been done, e.g. security settings</li>
+                </ul>
+            </li>
+            <li>Cons
+                <ul>
+                    <li>Not free</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "block">
+            <li>Log into <a href = "https://cloud.elastic.co/home">Elastic Cloud</a></li>
+            <li>Create deployment</li>
+            <li>Try our sample data</li>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://cloud.elastic.co/home">Elastic.co</a></li>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Julia</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Introduction
+		</div>
+
+		<div class = "subtitle">Features</div>
+		<div class = "block">
+            <li><span>Multiple dispatch</span>, polymorphic, extensible, and composable</li>
+            <li><span>Compiled</span>, not interpreted, just-in-time (JIT) compiled using the LLVM compiler framework</li>
+            <li><span>Interactive</span>, REPL (read-eval-print loop)</li>
+            <li><span>Straightforward syntax</span></li>
+            <li><span>dynamic typing and static typing</span></li>
+            <li><span>foreign function interfaces</span>, can interface directly with C/Fortran, C++, Python, R, Java</li>
+            <li><span>metaprogramming</span>, generate other Julia programs</li>
+		</div>
+		<div class = "subtitle">Installation</div>
+		<div class = "block">
+            <pre class = "prettyprint linenums">
+Download, https://julialang.org/downloads/
+            </pre>
+		</div>
+		<div class = "subtitle">Enable Terminal Access</div>
+		<div class = "block">
+            <pre class = "prettyprint linenums">
+# .bash_profile
+export PATH="${PATH}:/Applications/Julia-1.7.app/Contents/Resources/julia/bin"
+            </pre>
+        </div>
+		<div class = "subtitle">REPL (read-eval-print loop)</div>
+		<div class = "block">
+            <pre class = "prettyprint linenums">
+1. Start the Julia app from Applications
+            </pre>
+            <pre class = "prettyprint linenums">
+2. Type "julia" from a terminal
+            </pre>
+        </div>
+		<div class = "subtitle">julia.vim</div>
+		<div class = "block">
+            <pre class = "prettyprint linenums">
+# install
+git clone https://github.com/AtsushiSakai/julia.vim.git ~/.vim/pack/plugins/start/julia.vim
+            </pre>
+            <pre class = "prettyprint linenums">
+# auto docstring
+:JuliaDocstring
+            </pre>
+            <pre class = "prettyprint linenums">
+# auto format
+:JuliaFmt
+            </pre>
+        </div>
+        <div class = "subtitle">Sublime</div>
+		<div class = "block">
+            <pre class = "prettyprint linenums">
+# highlight Julia code in Sublime
+cd /Users/linchen/Library/Application Support/Sublime Text 3/Packages
+git clone git@github.com:JuliaEditorSupport/Julia-sublime.git Julia
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://github.com/JuliaEditorSupport/Julia-sublime">Julia-sublime</a></li>
+            <li><a href = "https://github.com/AtsushiSakai/julia.vim">julia.vim</a></li>
+            <li><a href = "https://docs.julialang.org/en/v1/">Documentation</a></li>
+        </div>
+    </body>
+</html>

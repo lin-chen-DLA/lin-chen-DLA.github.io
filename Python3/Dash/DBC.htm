@@ -673,6 +673,34 @@ if __name__ == "__main__":
         </pre>
         </div>
 		<div class = "block">
+            <li>Pagination</li>
+		<pre class = "prettyprint linenums">
+import dash
+import dash_bootstrap_components as dbc
+from dash import html
+from dash.dependencies import Input, Output
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app.layout = html.Div(
+    [
+        dbc.Pagination(id = 'paging', active_page = 1, max_value=10, fully_expanded=False, first_last=True, previous_next=True, class_name = 'col-md-2'),
+        html.Div(id = 'output')
+    ]
+)
+
+@app.callback(
+    Output("output", "children"),
+    Input("paging", "active_page"),
+)
+def pagination(page):
+    return page
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+        </pre>
+        </div>
+		<div class = "block">
             <li>Popover</li>
 		<pre class = "prettyprint linenums">
 import dash

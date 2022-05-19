@@ -100,7 +100,10 @@ str = f'Name: {s}'
 
 # accessing arguments by name
 str = 'Name: {fname}, {lname}'.format(fname='Lin', lname='Chen')
-print(str)
+print(str) # Name: Lin, Chen
+
+str = 'Name: {{Hello}} {fname}, {lname}'.format(fname='Lin', lname='Chen')
+print(str) # Name: {Hello} Lin, Chen
 
 # converting the value to different bases
 str = "int: {0:d};  hex: {0:x};  oct: {0:o};  bin: {0:b}".format(42)
