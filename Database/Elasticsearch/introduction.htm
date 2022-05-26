@@ -58,7 +58,14 @@
                 </ul>
             </li>
         </div>
+		<div class = "subtitle">Elasticsearch Architecture</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Elastic_4.png" width = "40%"></p>
+		</div>
 		<div class = "subtitle">Cluster, Node, and Shard</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Elastic_5.png" width = "40%"></p>
+		</div>
         <div class = "block">
 			<p style = "text-align:center;"><img src = "img/Elastic_3.png" width = "40%"></p>
 		</div>
@@ -82,6 +89,16 @@
                 </ul>
             </li>
         </div>
+		<div class = "subtitle">Score</div>
+		<div class = "block">
+            <li>a value that represents how relevant a document is to a specific query</li>
+            <li>Term Frequency (TF)
+                <ul>
+                    <li>how many each searched term appear in a document</li>
+                </ul>
+            </li>
+            <li>Inverse Document Frequency (ITF)</li>
+        </div>
 		<div class = "subtitle">Terms</div>
 		<div class = "block">
             <li><span>field</span>, column</li>
@@ -96,14 +113,18 @@
             <li><span>Mapping</span>, defines how a document, its fields, and its metadata are stored in Elasticsearch</li>
             <li><span>Index</span>, table, the largest unit of data in Elasticsearch, are logical partitions of documents
                 <ul>
+                    <li>documents group into an index in a logic manner</li>
                     <li>lowercase names</li>
                     <li>no limit to how many documents that can be stored on each index</li>
+                    <li>not actually store documents, a virtual thing that tracks where the documents are store</li>
                 </ul>
             </li>
             <li><span>Shard</span>
                 <ul>
+                    <li>is where documents are stored</li>
                     <li>a single Lucene index</li>
                     <li>primary and replica</li>
+                    <li>adding replica to increase searching speed</li>
                 </ul>
             </li>
             <li><span>Bucket</span>
@@ -148,6 +169,8 @@
         </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://github.com/LisaHJung/Beginners-Crash-Course-to-Elastic-Stack-Series-Table-of-Contents">Beginner's Crash Course to Elastic Stack Series</a></li>
+            <li><a href = "https://www.youtube.com/watch?v=gS_nHTWZEJ8&list=PL_mJOmq4zsHZYAyK606y7wjQtC0aoE6Es">Youtube</a></li>
             <li><a href = "https://stackoverflow.com/questions/51807333/what-is-analyzer-in-elasticsearch-for">What is Analyzer in Elasticsearch for?</a></li>
             <li><a href = "https://logz.io/blog/10-elasticsearch-concepts/">10 Elasticsearch Concepts You Need to Learn</a></li>
             <li><a href = "https://www.elastic.co/guide/en/elasticsearch/reference/master/scalability.html">Scalability and resilience: clusters, nodes, and shardsedit</a></li>

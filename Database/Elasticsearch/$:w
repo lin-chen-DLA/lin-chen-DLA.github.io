@@ -22,40 +22,6 @@
 # Create index
 # PUT index_name
 PUT c_house_price
-
-# Create index with mapping
-PUT ecommerce_data
-{
-  "mappings": {
-    "properties": {
-      "Country": {
-        "type": "keyword"
-      },
-      "CustomerID": {
-        "type": "long"
-      },
-      "Description": {
-        "type": "text"
-      },
-      "InvoiceDate": {
-        "type": "date",
-        "format": "M/d/yyyy H:m"
-      },
-      "InvoiceNo": {
-        "type": "keyword"
-      },
-      "Quantity": {
-        "type": "long"
-      },
-      "StockCode": {
-        "type": "keyword"
-      },
-      "UnitPrice": {
-        "type": "double"
-      }
-    }
-  }
-}
             </pre>
         </div>
 		<div class = "block">
@@ -83,20 +49,6 @@ PUT c_house_price/_create/3
   "first_name": "Lin",
   "candy": "Jolly Ranchers"
 }
-
-# reindex to create an index from an original index
-# run the task asynchronously to avoid timeout
-POST _reindex?wait_for_completion=false
-{
-  "source": {
-    "index": "e_commerce"
-  },
-  "dest": {
-    "index": "ecommerce_data"
-  }
-}
-# use task id to check the progress
-GET _tasks/task_id
             </pre>
         </div>
 		<div class = "block">
@@ -127,18 +79,6 @@ DELETE c_house_price/_doc/1
 # Delete an index
 # DELETE index_name
 DELETE c_house_price
-
-# Delete by query
-POST ecommerce_data/_delete_by_query
-{
-  "query": {
-    "range": {
-      "UnitPrice": {
-        "lte": 0
-      }
-    }
-  }
-}
             </pre>
         </div>
 		<div class = "subtitle">Discover</div>
@@ -439,200 +379,7 @@ GET Enter_the_name_of_the_index_here/_search
             </pre>
         </div>
 		<div class = "block">
-            <li>Combined Queries</li>
-			<pre class = "prettyprint linenums">
-GET name_of_index/_search
-{
-  "query": {
-    "bool": {
-      "must": [
-        {"One or more queries can be specified here. A document MUST match all of these queries to be considered as a hit."}
-      ],
-      "must_not": [
-        {"A document must NOT match any of the queries specified here. It it does, it is excluded from the search results."}
-      ],
-      "should": [
-        {"A document does not have to match any queries specified here. However, it if it does match, this document is given a higher score."}
-      ],
-      "filter": [
-        {"These filters(queries) place documents in either yes or no category. Ones that fall into the yes category are included in the hits."}
-      ]
-    }
-  }
-}
-            </pre>
-			<pre class = "prettyprint linenums">
-GET Enter_name_of_the_index_here/_search
-{
-  "query": {
-    "bool": {
-      "must": [
-        {
-        "match | match_phrase": {
-          "Enter the name of the field": "Enter the value you are looking for" 
-         }
-        },
-        {
-          "match | match_phrase": {
-            "Enter the name of the field": "Enter the value you are looking for" 
-          }
-        }
-      ]
-    }
-  }
-}
-            </pre>
-			<pre class = "prettyprint linenums">
-GET Enter_name_of_the_index_here/_search
-{
-  "query": {
-    "bool": {
-      "must": [
-        {
-        "Enter match or match_phrase here": {
-          "Enter the name of the field": "Enter the value you are looking for" 
-         }
-        }
-        ],
-       "filter":{
-          "range":{
-             "date": {
-               "gte": "Enter lowest value of the range here",
-               "lte": "Enter highest value of the range here"
-          }
-        }
-      }
-    }
-  }
-}
-            </pre>
-        </div>
-		<div class = "block">
-            <li>Combination of query and aggregation</li>
-			<pre class = "prettyprint linenums">
-GET Enter_name_of_the_index_here/_search
-{
-  "query": {
-    "Enter match or match_phrase here": { "Enter the name of the field": "Enter the value you are looking for" }
-  },
-  "aggregations": {
-    "Name your aggregation here": {
-      "Specify aggregation type here": {
-        "field": "Name the field you want to aggregate here",
-        "size": "State how many buckets you want returned here"
-      }
-    }
-  }
-}
-            </pre>
-        </div>
-		<div class = "subtitle">Aggregations</div>
-		<div class = "block">
-			<pre class = "prettyprint linenums">
-GET Enter_name_of_the_index_here/_search
-{
-  "aggs": {
-    "Name your aggregations here": {
-      "Specify the aggregation type here": {
-        "field": "Name the field you want to aggregate on here"
-      }
-    }
-  }
-}
-            </pre>
-        </div>
-		<div class = "block">
-            <li>Metric Aggregations
-                <ul>
-                    <li>sum, min, max, avg, cardinality and etc.</li>
-                </ul>
-            </li>
-			<pre class = "prettyprint linenums">
-GET Enter_name_of_the_index_here/_search
-{
-  "aggs": {
-    "Name your aggregations here": {
-      "sum": {
-        "field": "Name the field you want to aggregate on here"
-      }
-    }
-  }
-}
-            </pre>
-			<pre class = "prettyprint linenums">
-GET ecommerce_data/_search
-{
-  "aggs": {
-    "sum_unit_price": {
-      "sum": {
-        "field": "UnitPrice"
-      }
-    }
-  }
-}
-            </pre>
-			<pre class = "prettyprint linenums">
-# Stats Aggregation
-GET ecommerce_data/_search
-{
-  "size": 0,
-  "aggs": {
-    "all_stats_unit_price": {
-      "stats": {
-        "field": "UnitPrice"
-      }
-    }
-  }
-}
-            </pre>
-			<pre class = "prettyprint linenums">
-# Cardinality Aggregation
-GET ecommerce_data/_search
-{
-  "size":0,
-  "aggs": {
-    "sum_unit_price": {
-      "cardinality": {
-        "field": "CustomerID"
-      }
-    }
-  }
-}
-            </pre>
-			<pre class = "prettyprint linenums">
-# Limiting the scope of an aggregation
-GET ecommerce_data/_search
-{
-  "size": 0,
-  "query": {
-    "match": {
-      "Country": "Germany"
-    }
-  },
-  "aggs": {
-    "germany_average_unit_price": {
-      "avg": {
-        "field": "UnitPrice"
-      }
-    }
-  }
-}
-            </pre>
-        </div>
-		<div class = "block">
-            <li>Bucket Aggregations
-                <ul>
-                    <li>aggregate on several subsets of documents</li>
-                    <li>group documents into several sets of documents called bucket</li>
-                    <li>all documents in a bucket share a common criteria</li>
-                </ul>
-            </li>
-            <li>Date Histogram Aggregation
-                <ul>
-                    <li>Fixed_interval</li>
-                    <li>Calendar_interval</li>
-                </ul>
-            </li>
+            <li>Query Multiple Fields</li>
 			<pre class = "prettyprint linenums">
             </pre>
         </div>
@@ -649,7 +396,6 @@ GET ecommerce_data/_search
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
             <li><a href = "https://elasticsearch-cheatsheet.jolicode.com/">Cheatsheet</a></li>
-            <li><a href = "https://github.com/LisaHJung/Beginners-Crash-Course-to-Elastic-Stack-Series-Table-of-Contents">Beginner's Crash Course to Elastic Stack Series at Github</a></li>
             <li><a href = "https://www.youtube.com/watch?v=DVgKDPf7hOU">Getting Started with Kibana (tutorial) at Youtube</a></li>
         </div>
     </body>
