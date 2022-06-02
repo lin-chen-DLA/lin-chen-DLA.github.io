@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Microsoft Azure</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Azure Blob
+		</div>
+
+		<div class = "subtitle">Intro</div>
+		<div class = "block">
+            <li>accounts -&gt; containers -&gt; blobs</li>
+            <li>blob, the objects are stored in the key-value pair, key is the name of the stored object, value is the object’s data</li>
+		</div>
+		<div class = "subtitle">Azure Storage Explorer</div>
+		<div class = "block">
+            <li><a href = "https://azure.microsoft.com/en-us/features/storage-explorer/#overview">Download Azure Storage Explorer</a></li>
+            <li>Create connection with name and Connection string, which are located in "Access Keys"</li>
+		</div>
+		<div class = "subtitle">CLI</div>
+		<div class = "block">
+            <li>Installation
+                <ul>
+                    <li><a href = "https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">Azure CLI</a></li>
+                    <li>brew update &amp;&amp; brew install azure-cli</li>
+                </ul>
+            </li>
+            <li>Login
+                <pre class = "prettyprint linenums">
+az login -u username -p passwd
+                </pre>
+            </li>
+		</div>
+		<div class = "subtitle">Python</div>
+		<div class = "block">
+        <li>Installation
+            <pre class = "prettyprint linenums">
+pip install azure-storage-blob
+            </pre>
+        </li>
+        <li>Import
+            <pre class = "prettyprint linenums">
+from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, __version__
+            </pre>
+        </li>
+        <li>Authentication
+            <pre class = "prettyprint linenums">
+# obtain connection string from Access Keys of a storage account
+connect_str = &lt;connection string&gt;
+            </pre>
+        </li>
+        <li>Container
+            <pre class = "prettyprint linenums">
+# create a container
+container_name = 'tempc2'
+blob_service_client = BlobServiceClient.from_connection_string(connect_str) # BlobServiceClient
+
+container_client = blob_service_client.create_container(container_name) # ContainerClient
+            </pre>
+            <pre class = "prettyprint linenums">
+# list blobs in a container
+container_client = blob_service_client.get_container_client("tempc2") # ContainerClient
+blob_list = container_client.list_blobs()
+for blob in blob_list:
+    print("\t" + blob.name)
+            </pre>
+            <pre class = "prettyprint linenums">
+# delete a container
+container_client = blob_service_client.get_container_client("tempc2")
+container_client.delete_container()
+            </pre>
+        </li>
+        <li>Blob
+            <pre class = "prettyprint linenums">
+# upload a blob to container
+# Create a blob client using the local file name as the name for the blob
+blob_client = blob_service_client.get_blob_client(container='tempc2', blob='temp.csv') # BlobClient
+
+with open('temp.csv', "rb") as data:
+    blob_client.upload_blob(data)
+            </pre>
+            <pre class = "prettyprint linenums">
+# download a blobs
+# Create a blob client using the blob name in the container
+blob_client = blob_service_client.get_blob_client(container='tempc2', blob='temp.csv') # BlobClient
+
+with open('temp2.csv', "wb") as download_file:
+    download_file.write(blob_client.download_blob().readall())
+            </pre>
+            <pre class = "prettyprint linenums">
+# delete a blob
+container_client = blob_service_client.get_container_client(container_name)
+container_client.delete_blobs('temp.csv')
+            </pre>
+        </li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://azuresdkdocs.blob.core.windows.net/$web/python/azure-storage-blob/12.0.0/azure.storage.blob.html#azure.storage.blob.BlobClient">Documentation</a></li>
+            <li><a href = "https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob">azure-sdk-for-python</li>
+            <li><a href = "https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-python?tabs=environment-variable-windows">Quickstart: Manage blobs with Python v12 SDK</a></li>
+            <li><a href = "https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-cli">Quickstart: Create, download, and list blobs with Azure CLI</a></li>
+		</div>
+	</body>
+</html>
