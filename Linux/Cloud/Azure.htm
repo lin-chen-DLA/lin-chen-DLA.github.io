@@ -9,6 +9,10 @@
 			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
 			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
 			span {color: red}
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
 		</style>
 	</head>
 	<body>
@@ -16,83 +20,278 @@
 			Azure
 		</div>
 
-		<div class="subtitle">Create account</div>
-		<div class="block">
-			<li>lichen@valdosta.edu</li>
-			<li>lchen, Eagletiger***!</li>
-			<li>VSUCSServer-vnet</li>
-			<li>Setup auto-shutdownRecommended</li>
-			<li>Monitor VM health, performance and network dependencies Recommended</li>
-			<li>Run a script inside the virtual machine Recommended</li>
-			<li><a href="https://azure.microsoft.com/en-us/free/free-account-faq/">What is the Azure free account</a></li>
-		</div>
 		<div class="subtitle">Azure portal</div>
 		<div class="block">
 			<li>http://portal.azure.com</li>
-			<li>DNS: vsucs.eastus.cloudapp.azure.com</li>
-			<li><a href="https://docs.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal">Tutorial</a></li>
 		</div>
-		<div class="subtitle">Log</div>
+		<div class="subtitle">AZ-900</div>
 		<div class="block">
-			<li>Updated the account to Pay-As-You-Go subscription</li>
-			<li>install anaconda3 in /opt/anaconda, 01.22.2020</li>
-			<li>install git, 01.22.2020</li>
+            <li><span>1. Cloud Computing and Vocabulary</span>
+                <ul>
+                    <li>Cloud Computing
+                        <ul>
+                            <li>Storage, Computer Power, Networking, Analytics, etc. over internet</li>
+                        </ul>
+                    </li>
+                    <li>Key Characteristics
+                        <ul>
+                            <li>Scalability, size, amount</li>
+                            <li>Elasticity (automatically scaling), users, time</li>
+                            <li>Agility, the ability to react qucikly, the ability to allocate and deallocate resources quickly</li>
+                            <li>Fault Tolerance, the ability to remain up and runing during component and service failures</li>
+                            <li>Disaster Recovery, replication, the ability to recover from an event that has taken down the service</li>
+                            <li>High Availability, the ability to keep services running for extended periods of time with very little downtime</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><span>2. Principle of economies of scale</span></li>
+            <li><span>3. CapEx vs OpEx and their differences</span>
+                <ul>
+                    <li>Capital Expenditure (CapEx)
+                        <ul>
+                            <li>Own infrastructure</li>
+                            <li>Big initial investment</li>
+                            <li>Maintenance, support staff, power &amp; networking, hardware failures</li>
+                        </ul>
+                    </li>
+                    <li>Operational Expenditure (OpEx)
+                        <ul>
+                            <li>Rent infrastructure</li>
+                            <li>No initial investment</li>
+                            <li>Maintenance, operations team</li>
+                        </ul>
+                    </li>
+                    <table border>
+                        <tr><th></th><th><span>CapEx</span></th><th><span>OpEx</span></th></tr>
+                        <tr><td>Up front cost</td><td>Significant</td><td>None</td></tr>
+                        <tr><td>Ongoing cost</td><td>Low</td><td>Based on usage</td></tr>
+                        <tr><td>Tax duction</td><td>Over time</td><td>Same year</td></tr>
+                        <tr><td>Early termination</td><td>No</td><td>Anytime</td></tr>
+                        <tr><td>Maintenance</td><td>Significant</td><td>Low</td></tr>
+                        <tr><td>Value over time</td><td>Lowers</td><td>No change</td></tr>
+                    </table>
+                </ul>
+            </li>
+            <li><span>4. Consumption-based Mode</span>
+                <ul>
+                    <li>No upfront cost</li>
+                    <li>No wasted resources</li>
+                    <li>Pay for additional resources when needed</li>
+                    <li>Stop paying at any time</li>
+                    <li>Multiple pricing components per service</li>
+                    <li>Very granular usage measurement</li>
+                </ul>
+            </li>
+            <li><span>5. IaaS vs PaaS vs SaaS cloud service models</span>
+                <ul>
+                    <li>On-Premises
+                        <ul>
+                            <li>Cloud provider manages nothing</li>
+                            <li>You manage infrastructure, platform, software</li>
+                        </ul>
+                    </li>
+                    <li>Infrastructure-as-a-Service
+                        <ul>
+                            <li>Storage, networking, servers, virtualization</li>
+                            <li>Cloud provider manages infrastructure</li>
+                            <li>You manage platform &amp; software</li>
+                            <li>Use cases
+                                <ul>
+                                    <li>Migration of workloads</li>
+                                    <li>Test &amp; development</li>
+                                    <li>Storage, backups and recovery</li>
+                                    <li>Virtual machines</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Platform-as-a-Service
+                        <ul>
+                            <li>Operating system, middleware, runtime</li>
+                            <li>Cloud provider manages infrastructure &amp; platform</li>
+                            <li>You manage software</li>
+                            <li>Use cases
+                                <ul>
+                                    <li>Development framework</li>
+                                    <li>Analytics &amp; business intelligence</li>
+                                    <li>SQL, App Service, Logic Apps, Function Apps</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Software-as-a-Service
+                        <ul>
+                            <li>Applications, data</li>
+                            <li>Cloud provider manages infrastructure, platform &amp; software</li>
+                            <li>You manage nothing</li>
+                            <li>Use cases
+                                <ul>
+                                    <li>Buying of-the-shell applications</li>
+                                    <li>One Drive, Outlook, Skype</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><span>6. Public, Private &amp; Hybrid cloud deployment models</span>
+                <ul>
+                    <li>Public cloud
+                        <ul>
+                            <li>Everything runs on cloud provider hardware</li>
+                            <li>No local hardware</li>
+                            <li>Some services share hardware with other customers</li>
+                            <li><span>Pros</span>, no CapEx, high availability &amp; agility, pay as you go pricing, no hardware maintenance, no deep technical skills required</li>
+                            <li><span>Cons</span>, security &amp; compliance, ownership, specific scenarios</li>
+                        </ul>
+                    </li>
+                    <li>Private cloud
+                        <ul>
+                            <li>Everything runs on your own datacenter</li>
+                            <li>Self-service should be provided</li>
+                            <li><span>Pros</span>, can support any scenarios, control over security, can meet any security &amp; compliance requirements</li>
+                            <li><span>Cons</span>, inital CapEx, limited agility, IT skills &amps; expertise are mandatory</li>
+                        </ul>
+                    </li>
+                    <li>Hibrid cloud
+                        <ul>
+                            <li>Combine public &amp; private clouds</li>
+                            <li>Great flexibility</li>
+                            <li><span>Pros</span>, great flexibility, run legacy apps in private cloud, utilize existing infrastructure, meet any security requirements</li>
+                            <li><span>Cons</span>, can be more expensive, complicated to manage, IT skills &amp; expertise are mandatory</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><span>7. Geographies, Regions & Availability Zones</span>
+                <ul>
+                    <li>Data center
+                        <ul>
+                            <li>Physical facility</li>
+                            <li>Hosting for group of networked servers</li>
+                            <li>Own power, cooling &amp; networking infrastructure</li>
+                        </ul>
+                    </li>
+                    <li>Regions and region pairs
+                        <ul>
+                            <li>East US, West US</li>
+                            <li>Geographic area</li>
+                            <li>Datacenters connected with low-latency network</li>
+                            <li>Locations for services</li>
+                            <li>Some services are only available only in certain regions</li>
+                            <li>Some services are global services</li>
+                            <li>Government regions, US DoD Central, US Gov Virginia, etc.</li>
+                            <li>Partnered regions, China East, China North</li>
+                            <li><a href = "https://azurespeedtest.azurewebsites.net/">Azure Speed Test 2.0</a></li>
+                            <li><a href = "https://azure.microsoft.com/en-us/global-infrastructure/services/">Products available by region</a></li>
+                            <li>Region pair, &gt; 300 miles
+                                <ul>
+                                    <li>Each region pairs with another region</li>
+                                    <li>Region pairs are static and cannot be chosen</li>
+                                    <li>Some services have platform-provided replication</li>
+                                    <li>Planned updates across the pairs</li>
+                                    <li>Data residency maintained for disaster recovery</li>
+                                    <li>East US - West US, UK West - UK South, North Europe - West Europe, East Asia - Southeast Asia</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Geographies
+                        <ul>
+                            <li>Contain two or more regions</li>
+                            <li>Data residency, sovereignty, resiliency, and compliance requirements are met</li>
+                            <li>Fault tolerant</li>
+                        </ul>
+                    </li>
+                    <li>Availibity zones
+                        <ul>
+                            <p style = "text-align:center;"><img src = "img/Azure_1.png" width = "60%"></p>
+                            <li>Groups of physically separate facilities</li>
+                            <li>Designed to protect from data center failures</li>
+                            <li>Two service categories
+                                <ul>
+                                    <li>Zone services, virtual machines, disks, etc.</li>
+                                    <li>Zone-redundant services, SQL, storage, etc.</li>
+                                </ul>
+                            </li>
+                            <li>Supported region has three or more zones, each zone has one or more data centers</li>
+                        </ul>
+                    </li>
+                    <li>Core architectural components</li>
+                </ul>
+            </li>
+            <li><span>8. Resources, Resource Groups &amp; Resource Manager</span>
+                <ul>
+                    <li>Resources
+                        <ul>
+                            <li>Objects used to manage services in Azure</li>
+                            <li>Represent service lifecycle</li>
+                            <li>Saved as JSON definition</li>
+                        </ul>
+                    </li>
+                    <li>Resource Groups
+                        <ul>
+                            <li>Grouping of resources</li>
+                            <li>Hold logically related resources</li>
+                            <li>Organized by type, lifecycle, department, billing, location, or combination of these</li>
+                            <li>Resource groups are <span>free</span></li>
+                            <li>An Azure resource must live in one and only one Resource Group</li>
+                            <li>Resource groups have their own location assigned</li>
+                            <li>Resources in the resource groups can reside in a different location</li>
+                            <li>Resources can be moved between resource groups</li>
+                            <li>az group create --name groupName --location eastus, create a resource group</li>
+                            <li>az storage account create --name storageAccountName --resource-group resourceGroupName --location eastus, create a resource in a resource group</li>
+                        </ul>
+                    </li>
+                    <li>Resource Manager
+                        <ul>
+                            <p style = "text-align:center;"><img src = "https://docs.microsoft.com/en-us/azure/includes/role-based-access-control/media/scope-levels.png" width = "30%"></p>
+                            <li>1. Identify scope, management group, subscription, resource group, resource</li>
+                            <li>2. Add a role from Access Control (IAM)</li>
+                            <li>3. Select a role</li>
+                            <li>4. Select who needs access, user, group, or service principal (applications)</li>
+                            <p style = "text-align:center;"><img src = "img/Azure_2.png" width = "40%"></p>
+                            <li>Management layer for all resources and resource groups</li>
+                            <li>Contrl access and resources</li>
+                        </ul>
+                    </li>
+                    <li>Resource Explorer</li>
+                </ul>
+            </li>
+            <li><span>9. Compute Services | VMs, VM Scale Set, App Service, Functions, ACI, AKS</span>
+                <ul>
+                    <li>Virtual Machines
+                        <ul>
+                            <li>Ubuntu, Windows, Oracle, Image</li>
+                            <li>Infrastructure as a Service (IaaS)</li>
+                            <li>Supports marketplace and custom images</li>
+                        </ul>
+                    </li>
+                    <li>Virtual Machine Scale Sets</li>
+                    <li>Container Registry (ACR), host images</li>
+                    <li>Container Instances (ACI), run containers
+                        <ul>
+                            <li>a solution for any scenario that can operate in isolated containers, without orchestration</li>
+                            <li>doesn't yet support port mapping, need expose the app access port directly</li>
+                        </ul>
+                    </li>
+                    <li>Kubernetes Service (AKS), run K8s server</li>
+                    <li>App Services</li>
+                    <li>Functions</li>
+                </ul>
+            </li>
 		</div>
-		<div class="subtitle">Azure CLI 2.0</div>
-		<div class="block">
-			<li>Install, brew update &amp;&amp; brew install azure-cli</li>
-			<li>az login, login Azure system</li>
-			<li>Create a group
-				<ul>
-					<li>az group create --name groupName --location eastus</li>
-					<li>az group show --name groupName, show group information</li>
-				</ul>
-			</li>
-			<li>Create a virtual machine
-				<ul>
-					<li>az vm create --resource-group groupName --name virtualMachineName --image UbuntuLTS --admin-username adminName</li>
-					<li>az vm show --resource-group groupName --name virtualMachineName, show the informaiton of a virtual machine</li>
-				</ul>
-			</li>
-			<li>Cleanup
-				<ul>
-					<li>az group delete --name groupName --no-wait, remove all resources in a resource group</li>
-				</ul>
-			</li>
-			<li>az logout, logout Azure system</li>
-			<li><a href="https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest">Documentation</a></li>
-		</div>
-		<div class="subtitle">Tutorial</div>
-		<div class="block">
-			<li>Disk
-				<ul>
-					<li>Operating system disk, hosts the VM operating system, /dev/sda, /</li>
-					<li>Temporary disk, a solid-state drive that is located on the same Azure host as the VM, /dev/sdb, /mnt</li>
-				</ul>
-			</li>
-			<li>Network
-				<ul>
-					<li>Dynamic IP addresses are released when a VM is deallocated</li>
-				</ul>
-			</li>
-			<li>Backup and restore
-				<ul>
-					<li>Enabled backup, every day at 11:30 P.M.</li>
-				</ul>
-			</li>
-		</div>
-		<div class="subtitle"><a href="https://docs.microsoft.com/en-us/azure/billing/">Billing and cost management</a></div>
-		<div class="block">
-			<li>Where to check invoice: Azure portal, Azure account</li>
-			<li>Set a $20 alert on 09.15.2018</li>
-		</div>
-
-		<div class="subtitle"><a href="https://azure.microsoft.com/en-us/pricing/calculator/">Price calculator</a></div>
-		<div class="block">
-		</div>
+        <div class = "subtitle">Microsoft Certified: Azure Fundamentals</div>
+        <div class = "block">
+            <li><a href = "https://docs.microsoft.com/en-us/learn/certifications/azure-fundamentals/">Exam Details</a></li>
+            <li><a href = "https://www.youtube.com/c/Azure4Everyone/playlists">Adam Marczak - Azure for Everyone</a></li>
+            <li><a href = "https://marczak.io/az-900/">AZ-900 Microsoft Azure Fundamentals Free Full Course and Study Guide</a></li>
+        </div>
 		<div class="subtitle">Reference</div>
 		<div class="block">
 			<ul>
+                <li><a href="https://azure.microsoft.com/en-us/pricing/calculator/">Price calculator</a></li>
 				<li><a href="https://docs.microsoft.com/en-us/azure/">Azure Documents</a></li>
 				<li><a href="https://docs.microsoft.com/en-us/azure/virtual-machines/linux/">Linux Virtual Machines</a></li>
 			</ul>

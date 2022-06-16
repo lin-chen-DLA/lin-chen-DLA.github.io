@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Microsoft Azure</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Azure VM
+		</div>
+
+		<div class = "subtitle">Access</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "img/Azure_3.png" width = "25%"></p>
+            <li>SSH with password access</li>
+            <pre class = "prettyprint linenums">
+# access with username/password
+# create a user on virtual machine
+sudo useradd -m &lt;username&gt; -s /bin/bash
+
+# add password on virtual machine
+passwd &lt;username&gt;
+
+# login virtual machine with username/password
+ssh username@ip
+            </pre>
+            <pre class = "prettyprint linenums">
+# access with keys
+# generate a public key and a private key under ~/.ssh on local
+# algorithm, rsa, dsa, ecdsa, ed25519
+ssh-keygen -f [filename] -t [algorithm]
+
+# copy the public key to authorized_keys under ~/.ssh on virtual machine
+
+# login virtual machine with private key from local
+ssh -i &lt;private key&gt; username@ip
+            </pre>
+            <li>SSH with public key access</li>
+            <pre class = "prettyprint linenums">
+# change mode to read only
+chmod 400 &lt;private key&gt;
+
+# access with private key
+ssh -i &lt;private key path&gt; username@ip
+            </pre>
+
+            <pre class = "prettyprint linenums">
+# create a user on virtual machine
+sudo useradd -m &lt;username&gt; -s /bin/bash
+
+# create authorized_keys under ~/.ssh on virtual machine 
+cd /home/&lt;username&gt;
+sudo mkdir .ssh
+cd .ssh
+sudo touch authorized_keys
+
+# generate a public key and a private key under ~/.ssh on local
+# algorithm, rsa, dsa, ecdsa, ed25519
+ssh-keygen -f [filename] -t [algorithm]
+
+# copy the public key to authorized_keys under ~/.ssh on virtual machine
+
+# login virtual machine with private key from local
+ssh -i &lt;private key&gt; username@ip
+            </pre>
+            <li>Remote Desktop Protcol (RDP)</li>
+            <pre class = "prettyprint linenums">
+# Add Inbound port rules in Setting -&gt; Networking
+Priority: 300
+Name: Port_3389
+Port(Destination): 3389
+Protocol: TCP
+Source: Any
+Destinations: Any
+Action: Allow
+
+# test RDP connection in Connect
+            </pre>
+            <pre class = "prettyprint linenums">
+# Enable rdp on VM
+sudo apt-get -y install xrdp
+sudo systemctl enable xrdp
+            </pre>
+            <pre class = "prettyprint linenums">
+# Download RDP file to launch Microsoft Remote Desktop
+            </pre>
+            <li>Bastion</li>
+            <p style = "text-align:center;"><img src = "img/Azure_4.png" width = "40%"></p>
+            <pre class = "prettyprint linenums">
+# 1. Create a Bastion and create a Virtual Network
+# 2. Create a Virtual Machine
+            </pre>
+		</div>
+		<div class = "subtitle">Copy</div>
+		<div class = "block">
+        <pre class = "prettyprint linenums">
+# copy from local to VM
+scp -i &lt;private key path&gt; localFile username@ip:./
+
+# copy from VM to local
+scp -i &lt;private key path&gt; username@ip:./path localPath
+        </pre>
+        </div>
+		<div class = "subtitle">Running after disconnection</div>
+		<div class = "block">
+            <pre class = "prettyprint linenums">
+# keep processes running after SSH session disconnects
+nohup long-running-process &amp;
+
+# view nohup.out
+tail -f nohup.out
+            </pre>
+        </div>
+		<div class = "subtitle">VM Scale Set</div>
+		<div class = "block">
+            <li>Set of identical virtual machines</li>
+            <li>Automatically scale the amount of virtual machines</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.microsoft.com/en-us/azure/virtual-machines/linux/use-remote-desktop?tabs=azure-cli">Install and configure xrdp to use Remote Desktop with Ubuntu</a></li>
+            <li><a href = "https://docs.microsoft.com/en-us/troubleshoot/azure/virtual-machines/troubleshoot-rdp-nsg-problem">Cannot connect remotely to a VM because RDP port is not enabled in NSG</a></li>
+            <li><a href = "https://docs.microsoft.com/en-us/azure/lab-services/connect-virtual-machine-mac-remote-desktop">Connect to a VM using Remote Desktop Protocol on a Mac</a></li>
+		</div>
+	</body>
+</html>

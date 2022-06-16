@@ -20,6 +20,38 @@
 		<div class = "block">
             <li>accounts -&gt; containers -&gt; blobs</li>
             <li>blob, the objects are stored in the key-value pair, key is the name of the stored object, value is the object’s data</li>
+            <li>storage tiers
+                <ul>
+                    <li>Hot, frequently accessed data</li>
+                    <li>Cool, infrequently accessed data</li>
+                    <li>Archive, rarely accessed data</li>
+                </ul>
+            </li>
+            <li>Azure storage account
+                <ul>
+                    <li>Blob storage, file
+                        <ul>
+                            <li>general purpose file storge, fit any scenario</li>
+                        </ul>
+                    </li>
+                    <li>Table storage, message
+                        <ul>
+                            <li>scalable NoSQL storage service for semi-structured data</li>
+                        </ul>
+                    </li>
+                    <li>Queue storage, semi-structured data
+                        <ul>
+                            <li>service for storing small message for asynchronous processing</li>
+                        </ul>
+                    </li>
+                    <li>File storage, file
+                        <ul>
+                            <li>file share service in the cloud, lift-and-shift scenarios</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>Cheapest per GB storage</li>
 		</div>
 		<div class = "subtitle">Azure Storage Explorer</div>
 		<div class = "block">
@@ -105,6 +137,7 @@ container_client.delete_blobs('temp.csv')
 		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://www.youtube.com/c/Azure4Everyone/playlists">Adam Marczak - Azure for Everyone</a></li>
             <li><a href = "https://azuresdkdocs.blob.core.windows.net/$web/python/azure-storage-blob/12.0.0/azure.storage.blob.html#azure.storage.blob.BlobClient">Documentation</a></li>
             <li><a href = "https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob">azure-sdk-for-python</li>
             <li><a href = "https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-python?tabs=environment-variable-windows">Quickstart: Manage blobs with Python v12 SDK</a></li>
