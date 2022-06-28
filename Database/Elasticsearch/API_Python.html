@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Elasticsearch</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+            Elasticsearch API by Python
+		</div>
+
+		<div class = "subtitle">Basics</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import requests
+
+# Cluster health
+# GET _cluster/health
+response = requests.get('http://localhost:9200/_cluster/health')
+response.json() # dict
+
+# Node info
+# GET _nodes/stats
+response = requests.get('http://localhost:9200/_nodes/stats')
+response.json()
+            </pre>
+        </div>
+		<div class = "subtitle">Create, Read, Update, and Delete (CRUD)</div>
+		<div class = "block">
+            <li><span>Create</span></li>
+			<pre class = "prettyprint linenums">
+# create index
+response = requests.put('http://localhost:9200/tutorial_curl')
+response.json()
+
+# create index with a mapping
+headers = {
+    # Already added when you pass json=
+    # 'Content-Type': 'application/json',
+}
+
+json_data = {
+    'mappings': {
+        'properties': {
+            'Firstname': {
+                'type': 'keyword',
+            },
+            'Lastname': {
+                'type': 'long',
+            },
+        },
+    },
+}
+
+response = requests.put('http://localhost:9200/tutorial_curl', headers=headers, json=json_data)
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Insert</span></li>
+			<pre class = "prettyprint linenums">
+# insert document
+headers = {
+    # Already added when you pass json=
+    # 'Content-Type': 'application/json',
+}
+
+json_data = {
+    'Firstname': 'Lin',
+    'Lastname': 'Chen',
+}
+
+response = requests.post('http://localhost:9200/tutorial_curl/_doc', headers=headers, json=json_data)
+
+# insert a document with an id
+headers = {
+    # Already added when you pass json=
+    # 'Content-Type': 'application/json',
+}
+
+json_data = {
+    'Firstname': 'Lin',
+    'Lastname': 'Chen',
+}
+
+response = requests.post('http://localhost:9200/tutorial_curl/_doc/1', headers=headers, json=json_data)
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Read</span></li>
+			<pre class = "prettyprint linenums">
+# read document
+response = requests.get('http://localhost:9200/tutorial_curl/_doc/1')
+response.json()
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Update</span></li>
+			<pre class = "prettyprint linenums">
+# update document
+headers = {
+    # Already added when you pass json=
+    # 'Content-Type': 'application/json',
+}
+
+json_data = {
+    'doc': {
+        'Firstname': 'Unknown',
+        'Lastname': 'Unknown',
+    },
+}
+
+response = requests.post('http://localhost:9200/tutorial_curl/_update/1', headers=headers, json=json_data)
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Delete</span></li>
+			<pre class = "prettyprint linenums">
+# delete index
+response = requests.delete('http://localhost:9200/tutorial_curl')
+response.json()
+
+# delete document
+response = requests.delete('http://localhost:9200/tutorial_curl/_doc/1')
+
+# delete by query
+headers = {
+    # Already added when you pass json=
+    # 'Content-Type': 'application/json',
+}
+
+json_data = {
+    'query': {
+        'match': {
+            'Firstname': {
+                'query': 'Lin',
+            },
+        },
+    },
+}
+
+response = requests.post('http://localhost:9200/tutorial_curl/_delete_by_query', headers=headers, json=json_data)
+            </pre>
+        </div>
+		<div class = "subtitle">Query</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# by default, elasticsearch search the first 10,000 hits and return 10 of them
+headers = {
+    # Already added when you pass json=
+    # 'Content-Type': 'application/json',
+}
+
+json_data = {
+    'query': {
+        'range': {
+            'date': {
+                'gte': '2017-05-28T00:00:00.000-04:00',
+                'lt': '2017-12-26T00:00:00.000-05:00',
+            },
+        },
+    },
+}
+
+response = requests.get('http://localhost:9200/news_headlines2/_search', headers=headers, json=json_data)
+response.json()['hits']['hits']
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# search all the matched documents and return a specific number of them
+headers = {
+    # Already added when you pass json=
+    # 'Content-Type': 'application/json',
+}
+
+json_data = {
+    'query': {
+        'range': {
+            'date': {
+                'gte': '2017-05-28T00:00:00.000-04:00',
+                'lt': '2017-12-26T00:00:00.000-05:00',
+            },
+        },
+    },
+    "track_total_hits": True,
+    "size": 5
+}
+
+response = requests.get('http://localhost:9200/news_headlines2/_search', headers=headers, json=json_data)
+response.json()['hits']['hits']
+            </pre>
+        </div>
+		<div class = "subtitle">Aggregation</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+headers = {
+    # Already added when you pass json=
+    # 'Content-Type': 'application/json',
+}
+
+json_data = {
+    'aggs': {
+        'by_category': {
+            'terms': {
+                'field': 'category',
+                'size': 100,
+            },
+        },
+    },
+}
+
+response = requests.get('http://localhost:9200/news_headlines/_search', headers=headers, json=json_data)
+response.json()['aggregations']['by_category']['buckets']
+            </pre>
+        </div>
+		<div class = "subtitle">Paging</div>
+		<div class = "block">
+            <li><span>paging less than 10,000 hits</span></li>
+			<pre class = "prettyprint linenums">
+headers = {
+    # Already added when you pass json=
+    # 'Content-Type': 'application/json',
+}
+
+json_data = {
+    'query': {
+        'range': {
+            'date': {
+                'gte': '2017-05-28T00:00:00.000-04:00',
+                'lt': '2017-12-26T00:00:00.000-05:00',
+            },
+        },
+    },
+    "track_total_hits": True,
+    "from": 9000,
+    "size": 2
+}
+
+response = requests.get('http://localhost:9200/news_headlines2/_search', headers=headers, json=json_data)
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Paging more than 10,000 hits</span></li>
+			<pre class = "prettyprint linenums">
+# step 1, create a pit id
+# Point in Time (pit) is a lightweight view of the request results
+params = {
+    'keep_alive': '1m',
+}
+
+response = requests.post('http://localhost:9200/news_headlines2/_pit', params=params)
+pit_id = response.json()['id']
+            </pre>
+			<pre class = "prettyprint linenums">
+# step 2, get the first page
+import requests
+
+headers = {
+    # Already added when you pass json= but not when you pass data=
+    # 'Content-Type': 'application/json',
+}
+
+json_data = {
+    'size': 10,
+    'query': {
+        'range': {
+            'date': {
+                'gte': '2017-05-28T00:00:00.000-04:00',
+                'lt': '2017-12-26T00:00:00.000-05:00',
+            },
+        },
+    },
+    'pit': {
+        'id': pit_id,
+        'keep_alive': '1m',
+    },
+    'sort': [
+        {
+            'date': 'asc',
+        },
+    ],
+}
+
+response = requests.get('http://localhost:9200/_search', headers=headers, json=json_data)
+response.json()['hits']['hits']
+            </pre>
+			<pre class = "prettyprint linenums">
+# step 3, get the next page using the last hit’s sort values in the previous page
+import requests
+
+headers = {
+    # Already added when you pass json= but not when you pass data=
+    # 'Content-Type': 'application/json',
+}
+
+json_data = {
+    'size': 1000,
+    'query': {
+        'range': {
+            'date': {
+                'gte': '2017-05-28T00:00:00.000-04:00',
+                'lt': '2017-12-26T00:00:00.000-05:00',
+            },
+        },
+    },
+    'pit': {
+        'id': pit_id,
+        'keep_alive': '1m',
+    },
+    'sort': [
+        {
+            'date': 'asc',
+        },
+    ],
+    'search_after': [
+        1496016000000, 67206
+    ],
+}
+
+response = requests.get('http://localhost:9200/_search', headers=headers, json=json_data)
+response.json()['hits']['hits']
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://www.elastic.co/guide/en/elasticsearch/reference/7.12/point-in-time-api.html">Point in time API</a></li>
+            <li><a href = "https://www.elastic.co/guide/en/elasticsearch/reference/7.12/paginate-search-results.html#search-after">Paginate search results</a></li>
+            <li><a href = "https://curlconverter.com/">Convert curl commands to Python, JavaScript, PHP, R, Go, Rust, Elixir, Java, MATLAB, Dart, CFML, Ansible URI, Strest or JSON</a></li>
+        </div>
+    </body>
+</html>

@@ -13,22 +13,40 @@
 	</head>
 	<body>
 		<div class = "title">
-            Kibana
+            Elasticsearch
 		</div>
 
-		<div class = "subtitle">Docker</div>
+		<div class = "subtitle">Install</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
+pip install elasticsearch # install latest version
+pip install elasticsearch7 # install 7.0
             </pre>
         </div>
-		<div class = "subtitle">Export</div>
+		<div class = "subtitle">Basics</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
+from elasticsearch7 import Elasticsearch
+es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+
+data = {"balance": "$2,410.62", "age": 40, "name": "Bettie Buckner", "gender": "female", "company": "RODEOMAD",
+         "email": "bettiebuckner@rodeomad.com", "phone": "+1 (857) 491-2461"}
+res = es.index(index='my-index', body=data)
+            </pre>
+        </div>
+		<div class = "subtitle">Query</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+body = {'query': {'bool': {'must': [{'match': {'gender': 'male'}},
+                                 {'range': {'age': {'gte': 25}}}]}}}
+res = es.search(index='my-index', body=body)
+res['hits']['hits']
             </pre>
         </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
-            <li><a href = "https://www.youtube.com/watch?v=DVgKDPf7hOU">Youtube</a></li>
+            <li><a href = "https://elasticsearch-py.readthedocs.io/en/v7.12.0/">Documentation v7.12.0</a></li>
+            <li><a href = "https://elasticsearch-py.readthedocs.io/en/v8.2.3/">Documentation v8.2.3</a></li>
         </div>
     </body>
 </html>

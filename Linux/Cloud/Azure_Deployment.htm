@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Microsoft Azure</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Azure Deployment
+		</div>
+
+		<div class = "subtitle">Container Registries (ACR)</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "img/Azure_5.png" width = "20%"></p>
+            <pre class = "prettyprint linenums">
+# 1. create a container registry
+
+# 2. docker login the registry
+# get the access informaiton from Access Key
+docker login login_server_name.azurecr.us -u registry_name -p passwd
+
+# 3. build an image
+docker build -t login_server_name.azurecr.us/image_name .
+# or rename an exist image
+docker image tag old_image_name login_server_name.azurecr.us/image_name
+
+# 4. push image to the registry
+docker push login_server_name.azurecr.us/image_name
+
+# 5. pull image from the registry
+docker pull login_server_name.azurecr.us/image_name
+            </pre>
+		</div>
+		<div class = "subtitle">Container Instance (ACI)</div>
+		<div class = "block">
+            <li>a solution for any scenario that can operate in isolated containers, without orchestration</li>
+            <li>doesn't yet support port mapping, need expose the app access port directly</li>
+            <li>not scalable</li>
+            <p style = "text-align:center;"><img src = "img/Azure_6.png" width = "20%"></p>
+            <pre class = "prettyprint linenums">
+# 1. create a container instance
+# set up the exposed port to be the port of app
+# set up DNS name label
+
+# 2. access with IP and port
+ip:port
+# or access with domain and port
+FQDN:port
+            </pre>
+        </div>
+		<div class = "subtitle">Kubernetes Service (AKS)</div>
+		<div class = "block">
+            <li>open-source container orchestration platform</li>
+            <li>highly scalable and customizable</li>
+        </div>
+		<div class = "subtitle">App Services</div>
+		<div class = "block">
+            <li>host enterprise grade web application service</li>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://www.dragonspears.com/blog/azure-container-orchestration-101-azure-web-apps-vs-aci-vs-aks">Azure Container Orchestration 101: Azure Web Apps vs ACI vs AKS</a></li>
+        </div>
+    </body>
+</html>

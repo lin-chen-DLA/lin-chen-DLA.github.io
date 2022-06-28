@@ -13,20 +13,1206 @@
 	</head>
 	<body>
 		<div class = "title">
-            API
+            Elasticsearch API
 		</div>
 
-		<div class = "subtitle">Read</div>
+		<div class = "subtitle">Basics</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-# Get index info
-# ip/index_name
-http://localhost:9200/c_house_price/
+# Syntax
+# GET _API/parameter
 
-# Get a document
-# ip/index_name/_doc/id
-http://localhost:9200/c_house_price/_doc/1
+# Cluster health
+GET _cluster/health
+
+# Node info
+GET _nodes/stats
+
+# Get index info
+# GET index_name
+GET c_house_price
+
+# List indices
+GET /_cat/indices
             </pre>
+        </div>
+		<div class = "subtitle">Create, Read, Update, and Delete (CRUD)</div>
+		<div class = "block">
+            <li><span>Create index</span></li>
+			<pre class = "prettyprint linenums">
+# PUT index_name
+PUT c_house_price
+
+# Create index with mapping
+PUT ecommerce_data
+{
+  "mappings": {
+    "properties": {
+      "Country": {
+        "type": "keyword"
+      },
+      "CustomerID": {
+        "type": "long"
+      },
+      "Description": {
+        "type": "text"
+      },
+      "InvoiceDate": {
+        "type": "date",
+        "format": "M/d/yyyy H:m"
+      },
+      "InvoiceNo": {
+        "type": "keyword"
+      },
+      "Quantity": {
+        "type": "long"
+      },
+      "StockCode": {
+        "type": "keyword"
+      },
+      "UnitPrice": {
+        "type": "double"
+      }
+    }
+  }
+}
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Insert document</span></li>
+			<pre class = "prettyprint linenums">
+# POST index_name/_doc
+# PUT does not work
+POST c_house_price/_doc
+{
+  "first_name": "Lin",
+  "last_name": "Chen"
+}
+
+# Insert a document with a specific id
+# PUT index_name/_doc/id
+# POST index_name/_doc/id
+# if id already exists, the existing document is overwritten by the new document
+PUT c_house_price/_doc/1
+{
+  "first_name": "John",
+  "last_name": "Starburst"
+}
+
+# if id already exist, return 409 error
+# PUT index_name/_create/id
+# POST index_name/_create/id
+PUT c_house_price/_create/3
+{
+  "first_name": "Lin",
+  "candy": "Jolly Ranchers"
+}
+
+# reindex to create an index from an original index
+# run the task asynchronously to avoid timeout
+POST _reindex?wait_for_completion=false
+{
+  "source": {
+    "index": "e_commerce"
+  },
+  "dest": {
+    "index": "ecommerce_data"
+  }
+}
+
+# use task id to check the progress
+GET _tasks/task_id
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Read a document</span></li>
+			<pre class = "prettyprint linenums">
+# GET index_name/_doc/id
+GET c_house_price/_doc/1
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Update a document</span></li>
+			<pre class = "prettyprint linenums">
+# POST index_name/_update/id
+POST c_house_price/_update/1
+{
+  "doc":{
+    "last_name": "Chen"
+  }
+}
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Delete a document</span></li>
+			<pre class = "prettyprint linenums">
+# DELETE index_name/_doc/id
+DELETE c_house_price/_doc/1
+
+# Delete an index
+# DELETE index_name
+DELETE c_house_price
+
+# Delete by query
+POST ecommerce_data/_delete_by_query
+{
+  "query": {
+    "range": {
+      "UnitPrice": {
+        "lte": 0
+      }
+    }
+  }
+}
+            </pre>
+        </div>
+        <div class = "subtitle">Query</div>
+        <div class = "block">
+            <li><span>Query Types</span>
+                <ul>
+                    <li>match_all, match all query</li>
+                    <li>match, matches a text or phrase</li>
+                    <li>match_phrase, matches phrase</li>
+                    <li>multi_match, matches a text or phrase with more than one field</li>
+                    <li>query_string, query a string</li>
+                    <li>term, deal with structured data like numbers, dates and enums</li>
+                    <li>range, find the objects having values between the ranges of values given
+                        <ul>
+                            <li>gte, gt, lte, lt</li>
+                        </ul>
+                    </li>
+                    <li>bool, compound query</li>
+                    <li>exists query</li>
+                    <li>missing query</li>
+                    <li>wildcard or regexp query</li>
+                    <li>geo query</li>
+                </ul>
+            </li>
+        </div>
+        <div class = "block">
+			<pre class = "prettyprint linenums">
+# Search
+# GET index_name/_search
+GET news_headlines/_search # return 10,000 hits
+# GET index_pattern/_search
+GET c*/_search
+
+# return exact total number of hits
+GET news_headlines/_search
+{
+  "track_total_hits": true 
+}
+            </pre>
+        </div>
+        <div class = "block">
+            <li><span>match all query</span></li>
+			<pre class = "prettyprint linenums">
+POST news_headlines/_search
+{
+   "query":{
+      "match_all":{}
+   }
+}
+            </pre>
+        </div>
+        <div class = "block">
+            <li><span>Search between two date</span></li>
+			<pre class = "prettyprint linenums">
+GET enter_name_of_the_index_here/_search
+{
+  "query": {
+    "Specify the type of query here": {
+      "Enter name of the field here": {
+        "gte": "Enter lowest value of the range here",
+        "lte": "Enter highest value of the range here"
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+GET news_headlines/_search
+{
+  "query":{
+      "range": {
+        "date": {
+          "gte": "2017-05-28T00:00:00.000-04:00",
+          "lt": "2017-12-26T00:00:00.000-05:00"
+        }
+      }
+    }
+}
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Match Query</span>
+                <ul>
+                    <li>Order and proximity of terms are not important</li>
+                </ul>
+            </li>
+			<pre class = "prettyprint linenums">
+GET Enter_name_of_index_here/_search
+{
+  "query": {
+    "match": {
+      "Specify the field you want to search": {
+        "query": "Enter search terms"
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+# all, if any one of the term match, return as a hit
+GET news_headlines/_search
+{
+  "query": {
+    "match": {
+      "headline": {
+        "query": "Khloe Kardashian Kendall Jenner" # search keywords in headline
+      }
+    }
+  }
+}
+
+# and, all terms need to match
+GET news_headlines/_search
+{
+  "query": {
+    "match": {
+      "headline": {
+        "query": "Khloe Kardashian Kendall Jenner",
+        "operator": "and"
+      }
+    
+  }
+}
+
+# specify the minimum number of terms a document should have to be included
+GET news_headlines/_search
+{
+  "query": {
+    "match": {
+      "headline": {
+        "query": "Khloe Kardashian Kendall Jenner",
+        "minimum_should_match": 3
+      }
+    }
+  }
+}
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Match_phase Query</span>
+                <ul>
+                    <li>Order and proximity of terms are important</li>
+                </ul>
+            </li>
+			<pre class = "prettyprint linenums">
+GET Enter_name_of_index_here/_search
+{
+  "query": {
+    "match_phrase": {
+      "Specify the field you want to search": {
+        "query": "Enter search terms"
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+GET news_headlines/_search
+{
+  "query": {
+    "match_phrase": {
+      "headline": {
+        "query": "Shape of You"
+      }
+    }
+  }
+}
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Query Multiple Fields</span></li>
+			<pre class = "prettyprint linenums">
+GET Enter_the_name_of_the_index_here/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Enter search terms here",
+      "fields": [
+        "List the field you want to search over",
+        "List the field you want to search over",
+        "List the field you want to search over"
+      ]
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+GET news_headlines/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Michelle Obama",
+      "fields": [
+        "headline",
+        "short_description",
+        "authors"
+      ]
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+# designate one field to carry more weight than the others
+# by ^number
+GET Enter_the_name_of_the_index_here/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Enter search terms",
+      "fields": [
+        "List field you want to boost^2",
+        "List field you want to search over",
+        "List field you want to search over^3"
+      ]
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+GET news_headlines/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Michelle Obama",
+      "fields": [
+        "headline^2",
+        "short_description",
+        "authors"
+      ]
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+# improve precision with phrase type match
+GET Enter_the_name_of_the_index_here/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Enter search phrase",
+      "fields": [
+        "List field you want to boost^2",
+        "List field you want to search over",
+        "List field you want to search over"
+      ],
+      "type": "phrase"
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+GET news_headlines/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "party planning",
+      "fields": [
+        "headline^2",
+        "short_description"
+      ],
+      "type": "phrase"
+    }
+  }
+}
+            </pre>
+        </div>
+        <div class = "block">
+            <li><span>Combine multiple queries</span></li>
+			<pre class = "prettyprint linenums">
+GET index_name/_search
+{
+    "query":{
+        "bool":{
+            "must":[{}], # items must appear in matching documents, AND
+            "must_not":[{}], # NOT
+            "should":[{}], # at least one of items appear in matching documents, OR
+            "filter":[{}] # query filter
+        }
+    }
+}
+
+# must
+GET news_headlines/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+        "match_phrase": {
+          "headline": "Michelle Obama"
+         }
+        },
+        {
+          "match": {
+            "category": "POLITICS"
+          }
+        }
+      ]
+    }
+  }
+}
+
+# must_not
+GET news_headlines/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_phrase": {
+          "headline": "Michelle Obama"
+         }
+        },
+       "must_not":[
+         {
+          "match": {
+            "category": "WEDDINGS"
+          }
+        }
+      ]
+    }
+  }
+}
+
+# should
+GET news_headlines/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+        "match_phrase": {
+          "headline": "Michelle Obama"
+          }
+         }
+        ],
+       "should":[
+         {
+          "match_phrase": {
+            "category": "BLACK VOICES"
+          }
+        }
+      ]
+    }
+  }
+}
+
+# filter
+GET news_headlines/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+        "match_phrase": {
+          "headline": "Michelle Obama"
+          }
+         }
+        ],
+       "filter":{
+          "range":{
+             "date": {
+               "gte": "2014-03-25",
+               "lte": "2016-03-25"
+          }
+        }
+      }
+    }
+  }
+}
+
+GET news_headlines/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match_phrase": {
+            "category": "ENTERTAINMENT"
+          }
+        }
+      ],
+      "filter": [
+      {
+        "exists": {
+          "field": "headline"
+        }
+      }
+      ]
+    }
+  }
+}
+            </pre>
+        </div>
+        <div class = "block">
+            <li><span>Geo queries</span></li>
+			<pre class = "prettyprint linenums">
+POST /geo_example/_doc?refresh
+{
+    "name": "Chapter One, London, UK",
+    "location": {
+        "type": "point",
+        "coordinates": [11.660544, 57.800286]
+    }
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Aggregation</div>
+		<div class = "block">
+            <li>Metric Aggregations
+                <ul>
+                    <li>compute numeric values</li>
+                    <li>sum, min, max, avg, cardinality and etc.</li>
+                </ul>
+            </li>
+            <li>Bucket Aggregations
+                <ul>
+                    <li>aggregate on several subsets of documents</li>
+                    <li>group documents into several sets of documents called bucket</li>
+                    <li>all documents in a bucket share a common criteria</li>
+                    <li>types
+                        <ul>
+                            <li>Date Histogram Aggregation
+                                <ul>
+                                    <li>Fixed_interval</li>
+                                    <li>Calendar_interval</li>
+                                </ul>
+                            </li>
+                            <li>Histogram Aggregation
+                                <ul>
+                                    <li>creates buckets based on any numerical interval</li>
+                                </ul>
+                            </li>
+                            <li>Range Aggregation
+                                <ul>
+                                    <li>allows to define intervals of varying sizes</li>
+                                </ul>
+                            </li>
+                            <li>Terms Aggregation
+                                <ul>
+                                    <li>creates a new bucket for every unique term it encounters for the specified field</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+GET Enter_name_of_the_index_here/_search
+{
+  "aggs": {
+    "Name your aggregation here": {
+      "Specify aggregation type here": { # terms, stats, geodistance
+        "field": "Name the field you want to aggregate here",
+        "size": "State how many buckets you want returned here"
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+GET news_headlines/_search
+{
+  "aggs": {
+    "by_category": { # aggregation name
+      "terms": { # aggregation type
+        "field": "category", # filed name
+        "size": 100 # number of buckets returns
+      }
+    }
+  }
+}
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Metric Aggregations</span></li>
+			<pre class = "prettyprint linenums">
+GET Enter_name_of_the_index_here/_search
+{
+  "aggs": {
+    "Name your aggregations here": {
+      "sum": {
+        "field": "Name the field you want to aggregate on here"
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+# sum
+GET ecommerce_data/_search
+{
+  "size": 0, # prevents Elasticsearch from fetching the top 10 hits
+  "aggs": {
+    "sum_unit_price": {
+      "sum": {
+        "field": "UnitPrice"
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+# stats, list count, min, max, avg, sum
+GET ecommerce_data/_search
+{
+  "size": 0,
+  "aggs": {
+    "all_stats_unit_price": {
+      "stats": {
+        "field": "UnitPrice"
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+# Cardinality Aggregation
+GET ecommerce_data/_search
+{
+  "size":0,
+  "aggs": {
+    "sum_unit_price": {
+      "cardinality": {
+        "field": "CustomerID"
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+# Limiting the scope of an aggregation
+GET ecommerce_data/_search
+{
+  "size": 0,
+  "query": {
+    "match": {
+      "Country": "Germany"
+    }
+  },
+  "aggs": {
+    "germany_average_unit_price": {
+      "avg": {
+        "field": "UnitPrice"
+      }
+    }
+  }
+}
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Bucket Aggregations</span></li>
+			<pre class = "prettyprint linenums">
+# Date Histogram Aggregation
+GET ecommerce_data/_search
+{
+  "size": 0,
+  "aggs": {
+    "Name your aggregations here": {
+      "date_histogram": {
+        "field":"Name the field you want to aggregate on here",
+        "fixed_interval": "Specify the interval here"
+      }
+    }
+  }
+}
+
+GET ecommerce_data/_search
+{
+  "size": 0,
+  "aggs": {
+    "transactions_by_8_hrs": {
+      "date_histogram": {
+        "field": "InvoiceDate",
+        "fixed_interval": "8h"
+      }
+    }
+  }
+}
+
+GET ecommerce_data/_search
+{
+  "size": 0,
+  "aggs": {
+    "Name your aggregations here": {
+      "date_histogram": {
+        "field":"Name the field you want to aggregate on here",
+        "calendar_interval": "Specify the interval here"
+      }
+    }
+  }
+}
+
+GET ecommerce_data/_search
+{
+  "size": 0,
+  "aggs": {
+    "transactions_by_month": {
+      "date_histogram": {
+        "field": "InvoiceDate",
+        "calendar_interval": "1M"
+        "order": {
+          "_key": "desc"
+        }
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+# Histogram Aggregation
+GET ecommerce_data/_search
+{
+  "size": 0,
+  "aggs": {
+    "Name your aggregations here": {
+      "histogram": {
+        "field":"Name the field you want to aggregate on here",
+        "interval": Specify the interval here
+      }
+    }
+  }
+}
+
+GET ecommerce_data/_search
+{
+  "size": 0,
+  "aggs": {
+    "transactions_per_price_interval": {
+      "histogram": {
+        "field": "UnitPrice",
+        "interval": 10
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+# Range Aggregation
+GET Enter_name_of_the_index_here/_search
+{
+  "size": 0,
+  "aggs": {
+   "Name your aggregations here": {
+      "range": {
+        "field": "Name the field you want to aggregate on here",
+        "ranges": [
+          {
+            "to": x
+          },
+          {
+            "from": x,
+            "to": y
+          },
+          {
+            "from": z
+          }
+        ]
+      }
+    }
+  }
+}
+
+GET ecommerce_data/_search
+{
+  "size": 0,
+  "aggs": {
+    "transactions_per_custom_price_ranges": {
+      "range": {
+        "field": "UnitPrice",
+        "ranges": [
+          {
+            "to": 50
+          },
+          {
+            "from": 50,
+            "to": 200
+          },
+          {
+            "from": 200
+          }
+        ]
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+# Terms Aggregation
+GET Enter_name_of_the_index_here/_search
+{
+  "aggs": {
+    "Name your aggregations here": {
+      "terms": {
+        "field": "Name the field you want to aggregate on here",
+        "size": State how many top results you want returned here
+      }
+    }
+  }
+}
+
+GET ecommerce_data/_search
+{
+  "size": 0,
+  "aggs": {
+    "top_5_customers": {
+      "terms": {
+        "field": "CustomerID",
+        "size": 5
+      }
+    }
+  }
+}
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Combined Aggregations</span></li>
+			<pre class = "prettyprint linenums">
+GET ecommerce_data/_search
+{
+  "size": 0,
+  "aggs": {
+    "transactions_per_day": {
+      "date_histogram": {
+        "field": "InvoiceDate",
+        "calendar_interval": "day"
+      },
+      "aggs": {
+        "daily_revenue": {
+          "sum": {
+            "script": {
+              "source": "doc['UnitPrice'].value * doc['Quantity'].value"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+GET ecommerce_data/_search
+{
+  "size": 0,
+  "aggs": {
+    "transactions_per_day": {
+      "date_histogram": {
+        "field": "InvoiceDate",
+        "calendar_interval": "day"
+      },
+      "aggs": {
+        "daily_revenue": {
+          "sum": {
+            "script": {
+              "source": "doc['UnitPrice'].value * doc['Quantity'].value"
+            }
+          }
+        },
+        "number_of_unique_customers_per_day": {
+          "cardinality": {
+            "field": "CustomerID"
+          }
+        }
+      }
+    }
+  }
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Query and Aggregation</div>
+		<div class = "block">
+            <li>Pull documents with query, then analyze the query data and create summary with aggregations</li>
+			<pre class = "prettyprint linenums">
+GET Enter_name_of_the_index_here/_search
+{
+  "query": {
+    "Enter match or match_phrase here": { "Enter the name of the field": "Enter the value you are looking for" }
+  },
+  "aggs": {
+    "Name your aggregation here": {
+      "Specify aggregation type here": {
+        "field": "Name the field you want to aggregate here",
+        "size": "State how many buckets you want returned here"
+      }
+    }
+  }
+}
+            </pre>
+        </div>
+        <div class = "block">
+			<pre class = "prettyprint linenums">
+GET news_headlines/_search
+{
+  "query": {
+    "match": {
+      "category": "ENTERTAINMENT"
+    }
+  },
+  "aggs": {
+    "popular_in_entertainment": { # aggregation name
+      "significant_text": { # aggregation type
+        "field": "headline"
+      }
+    }
+  }
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Mapping</div>
+		<div class = "block">
+            <li>defines how a document and its fields are indexed and stored</li>
+            <li>help optimize the performance of Elasticsearch and save disk space</li>
+        </div>
+		<div class = "block">
+            <li><span>Rules</span>
+                <ul>
+                    <li>If you do not define a mapping ahead of time, Elasticsearch dynamically creates the mapping for you</li>
+                    <li>If you do decide to define your own mapping, you can do so at index creation</li>
+                    <li>ONE mapping is defined per index. Once the index has been created, we can only add new fields to a mapping. We CANNOT change the mapping of an existing field</li>
+                    <li>If you must change the type of an existing field, you must create a new index with the desired mapping, then reindex all documents into the new index</li>
+                </ul>
+            </li>
+        </div>
+        <div class = "block">
+            <li><span>String types</span>
+                <ul>
+                    <li>Text
+                        <ul>
+                            <li>designed for full-text searches</li>
+                            <li>Text Analysis
+                                <ul>
+                                    <li>analyze the Text before it's stored into the Inverted Index, in which each record contains a term and its doc ids</li>
+                                    <li>use tokens in a query in a none-case sensitive manner</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Keyword
+                        <ul>
+                            <li>designed for exact searches, aggregations, and sorting</li>
+                            <li>store data using doc values, in which each record contains a doc id and original field values</li>
+                            <li>use the whole value in a search query</li>
+                        </ul>
+                    </li>
+                    <li>Default
+                        <ul>
+                            <li>if no mappings, Elasticsearch dynamically creates mapping and maps all strings to both Text and Keyword</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </div>
+        <div class = "block">
+            <li><span>View Mapping</span></li>
+			<pre class = "prettyprint linenums">
+GET Enter_name_of_the_index_here/_mapping
+
+GET temp_index/_mapping
+            </pre>
+        </div>
+        <div class = "block">
+            <li><span>Create an index with Mapping</span></li>
+			<pre class = "prettyprint linenums">
+PUT produce_index
+{
+  "mappings": {
+    "properties": {
+      "botanical_name": {
+        "enabled": false # disabled to save disk space
+      },
+      "country_of_origin": { # text and keyword
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "date_purchased": { # date
+        "type": "date"
+      },
+      "description": { # text
+        "type": "text"
+      },
+      "name": { # text
+        "type": "text"
+      },
+      "produce_type": { # keyword
+        "type": "keyword"
+      },
+      "quantity": {
+        "type": "long"
+      },
+      "unit_price": {
+        "type": "float"
+      },
+      "vendor_details": {
+        "enabled": false
+      }
+    }
+  }
+}
+            </pre>
+        </div>
+        <div class = "block">
+            <li><span>Update Mapping</span></li>
+			<pre class = "prettyprint linenums">
+# step 1, create a new index
+PUT produce_v2
+{
+  "mappings": {
+    "properties": {
+      "botanical_name": {
+        "type": "text"
+      },
+      "country_of_origin": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "date_purchased": {
+        "type": "date"
+      },
+      "description": {
+        "type": "text"
+      },
+      "name": {
+        "type": "text"
+      },
+      "organic": {
+        "type": "boolean"
+      },
+      "produce_type": {
+        "type": "keyword"
+      },
+      "quantity": {
+        "type": "long"
+      },
+      "unit_price": {
+        "type": "float"
+      },
+      "vendor_details": {
+        "type": "object",
+        "enabled": false
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+# step 2: Reindex the data from the original index(produce_index) to the one you just created(produce_v2)
+# reindex copys existing data from a source index to a destination index
+POST _reindex
+{
+  "source": {
+    "index": "produce_index"
+  },
+  "dest": {
+    "index": "produce_v2"
+  }
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Runtime Field</div>
+        <div class = "block">
+            <li>Enable to create and query fields that are evaluated only at query time</li>
+            <li>Runtime fields are not physically saved in the index</li>
+			<pre class = "prettyprint linenums">
+# step 1. create a runtime field and add it to the mapping of the existing index
+PUT Enter-name-of-index/_mapping
+{
+  "runtime": {
+    "Name-your-runtime-field-here": {
+      "type": "Specify-field-type-here",
+      "script": {
+        "source": "Specify the formula you want executed"
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+PUT produce_v2/_mapping
+{
+  "runtime": {
+    "total": {
+      "type": "double",
+      "script": {
+        "source": "emit(doc['unit_price'].value* doc['quantity'].value)"
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+# step 2. use runtime fields
+GET Enter_name_of_the_index_here/_search
+{
+  "size": 0,
+  "aggs": {
+    "Name your aggregations here": {
+      "Specify the aggregation type here": {
+        "field": "Name the field you want to aggregate on here"
+      }
+    }
+  }
+}
+            </pre>
+			<pre class = "prettyprint linenums">
+GET produce_v2/_search
+{
+  "size": 0,
+  "aggs": {
+    "total_expense": {
+      "sum": {
+        "field": "total"
+      }
+    }
+  }
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Troubleshooting</div>
+        <div class = "block">
+            <li><span>5XX errors</span>
+                <ul>
+                    <li>internal server error in Elasticsearch</li>
+                    <li>look at the Elasticsearch log and identify the problem</li>
+                </ul>
+            </li>
+            <li><span>4XX errors</span>
+                <ul>
+                    <li>correct the request</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html">Field data types</a></li>
+            <li><a href = "https://www.tutorialspoint.com/elasticsearch/index.htm">Tutorialspoint</a></li>
+            <li><a href = "https://www.elastic.co/guide/en/elasticsearch/reference/current/rest-apis.html">REST APIs</a></li>
+            <li><a hreaf = "https://www.youtube.com/watch?v=gS_nHTWZEJ8&list=PL_mJOmq4zsHZYAyK606y7wjQtC0aoE6Es">Beginner's Crash Course to Elastic Stack at Yourtube</a></li>
+            <li><a href = "https://elasticsearch-cheatsheet.jolicode.com/">Cheatsheet</a></li>
+            <li><a href = "https://github.com/LisaHJung/Beginners-Crash-Course-to-Elastic-Stack-Series-Table-of-Contents">Beginner's Crash Course to Elastic Stack Series at Github</a></li>
+            <li><a href = "https://www.youtube.com/watch?v=DVgKDPf7hOU">Getting Started with Kibana (tutorial) at Youtube</a></li>
         </div>
     </body>
 </html>

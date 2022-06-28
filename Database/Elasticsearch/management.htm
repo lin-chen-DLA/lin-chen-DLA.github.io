@@ -45,7 +45,37 @@ docker run --name kib01-test --net elastic -p 5601:5601 -e "ELASTICSEARCH_HOSTS=
 http://localhost:9200/
 
 # access Kibana
-http://localhost:5601
+http://localhost:5601/
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# create a network
+docker network create elastic
+
+# start elasticsearch server
+docker pull docker.elastic.co/elasticsearch/elasticsearch:8.2.3
+docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.2.3 # generate token
+
+# reset password for user elastic
+docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+# copy the http_ca.crt security certificate to local
+docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt .
+
+# test elasticsearch server
+curl --cacert http_ca.crt -u elastic https://localhost:9200
+
+docker pull docker.elastic.co/kibana/kibana:8.2.3
+docker run --name kibana --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:8.2.3
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# access Elasticsearch
+https://localhost:9200/
+
+# access Kibana
+http://0.0.0.0:5601/?code=657870 # obtain from the terminal, copy token to conduct configuration
             </pre>
         </div>
 		<div class = "subtitle">Elastic Cloud</div>
@@ -70,6 +100,7 @@ http://localhost:5601
         </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://www.elastic.co/guide/en/elastic-stack-get-started/current/get-started-stack-docker.html#run-docker-secure">Running the Elastic Stack ("ELK") on Dockeredit</a></li>
             <li><a href = "https://cloud.elastic.co/home">Elastic.co</a></li>
         </div>
     </body>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Elasticsearch</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+            Elasticsearch API with Curl
+		</div>
+
+		<div class = "subtitle">Curl Command</div>
+		<div class = "block">
+            <li>a command-line tool to transfer data to or from a server</li>
+            <li>can transfer multiple files at once</li>
+			<pre class = "prettyprint linenums">
+curl [options] [URL...]
+curl --help
+
+# -o, saves the downloaded content on the local
+curl -o [file_name] [URL...]
+
+# -u, download from user authenticated servers
+curl -u {username}:{password} [FTP_URL]
+
+# -T, upload a file to the FTP server
+curl -u {username}:{password} -T {filename} {FTP_Location}
+
+# -x, set a proxy to access a URL
+curl -x "http://user:pwd@127.0.0.1:1234" "http://httpbin.org/ip"
+curl "http://httpbin.org/ip"
+
+# -X or --request, HTTP method to be used, GET, POST, PUT, DELETE
+curl -XGET "localhost:9200/_cluster/health"
+
+# -i or --include, include the response headers
+# -d or --data, the data to be sent to the API
+# -H or --header, any additional headers to be sent
+curl -XGET "localhost:9200/produce_v2/_search" -H 'Content-Type: application/json' -d'{"query":{"match_all":{}}}'
+            </pre>
+        </div>
+        <div class = "subtitle">Basics</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Cluster health
+# GET _cluster/health
+curl -XGET "localhost:9200/_cluster/health"
+
+# Node info
+# GET _nodes/stats
+curl -XGET "localhost:9200/_nodes/stats"
+
+# Get index info
+# GET index_name
+curl -XGET "localhost:9200/ecommerce_data"
+
+# List indices
+# GET /_cat/indices
+curl -XGET "localhost:9200/_cat/indices"
+            </pre>
+        </div>
+        <div class = "subtitle">Create, Read, Update, and Delete (CRUD)</div>
+		<div class = "block">
+            <li><span>Create</span></li>
+			<pre class = "prettyprint linenums">
+
+# PUT index_name
+curl -XPUT "localhost:9200/tutorial_curl"
+
+# create index with a mapping
+curl -XPUT "localhost:9200/tutorial_curl" -H 'Content-Type: application/json' -d'{"mappings":{"properties":{"Firstname":{"type":"keyword"},"Lastname":{"type":"long"}}}}'
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Insert</span></li>
+			<pre class = "prettyprint linenums">
+curl -XPOST "localhost:9200/tutorial_curl/_doc" -H 'Content-Type: application/json' -d'{"Firstname":"Lin","Lastname":"Chen"}'
+
+# insert a document with the id
+curl -XPOST "localhost:9200/tutorial_curl/_doc/1" -H 'Content-Type: application/json' -d'{"Firstname":"Lin","Lastname":"Chen"}'
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Read</span></li>
+			<pre class = "prettyprint linenums">
+# GET index_name/_doc/id
+curl -XGET "localhost:9200/tutorial_curl/_doc/1"
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Update</span></li>
+			<pre class = "prettyprint linenums">
+# POST index_name/_update/id
+curl -XPOST "localhost:9200/tutorial_curl/_update/1" -H 'Content-Type: application/json' -d'{"doc":{"Firstname":"Unknown","Lastname":"Unknown"}}'
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Delete</span></li>
+			<pre class = "prettyprint linenums">
+# DELETE index_name
+curl -XDELETE "localhost:9200/tutorial_curl"
+
+# DELETE index_name/_doc/id
+curl -XDELETE "localhost:9200/tutorial_curl/_doc/1"
+
+# Delete by query
+curl -XPOST "localhost:9200/tutorial_curl/_delete_by_query" -H 'Content-Type: application/json' -d'{"query":{"match":{"Firstname":{"query":"Lin"}}}}'
+            </pre>
+        </div>
+		<div class = "subtitle">Query</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# query all
+curl -XGET "localhost:9200/ecommerce_data/_search"
+            </pre>
+			<pre class = "prettyprint linenums">
+# Search between two date
+curl -XGET "localhost:9200/news_headlines/_search" -H 'Content-Type: application/json' -d'{"query":{"range":{"date":{"gte":"2017-05-28T00:00:00.000-04:00","lt":"2017-12-26T00:00:00.000-05:00"}}}}'
+            </pre>
+			<pre class = "prettyprint linenums">
+# term match
+curl -XGET "localhost:9200/news_headlines/_search" -H 'Content-Type: application/json' -d'{"query":{"match":{"headline":{"query":"Khloe Kardashian Kendall Jenner"}}}}'
+            </pre>
+			<pre class = "prettyprint linenums">
+# query multiple fields
+curl -XGET "localhost:9200/news_headlines/_search" -H 'Content-Type: application/json' -d'{"query":{"multi_match":{"query":"Michelle Obama","fields":["headline","short_description","authors"]}}}'
+            </pre>
+        </div>
+		<div class = "subtitle">Aggregation</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+curl -XGET "localhost:9200/news_headlines/_search" -H 'Content-Type: application/json' -d'{"aggs":{"by_category":{"terms":{"field":"category","size":100}}}}'
+            </pre>
+        </div>
+    </body>
+</html>
