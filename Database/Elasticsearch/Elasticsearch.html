@@ -16,6 +16,9 @@
             Elasticsearch
 		</div>
 
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Elastic_6.png" width = "30%"></p>
+		</div>
 		<div class = "subtitle">Install</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
@@ -29,22 +32,207 @@ pip install elasticsearch7 # install 7.0
 from elasticsearch7 import Elasticsearch
 es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
-data = {"balance": "$2,410.62", "age": 40, "name": "Bettie Buckner", "gender": "female", "company": "RODEOMAD",
-         "email": "bettiebuckner@rodeomad.com", "phone": "+1 (857) 491-2461"}
-res = es.index(index='my-index', body=data)
+# Cluster health
+# GET _cluster/health
+es.cluster.health(wait_for_status='yellow', request_timeout=1)
+
+# Node info
+# GET _nodes/stats
+es.nodes.stats()
+
+# List indices
+# GET /_cat/indices
+print(es.cat.indices())
+es.indices.get_alias("*")
+            </pre>
+        </div>
+		<div class = "subtitle">Create, Read, Update, and Delete (CRUD)</div>
+		<div class = "block">
+            <li><span>Create</span></li>
+			<pre class = "prettyprint linenums">
+# create an index
+# instead of raising an exception, return an 400 error message in json format
+es.indices.create(index='test-index', ignore=400)
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Insert</span></li>
+			<pre class = "prettyprint linenums">
+# insert a document
+es.index(index ='test-index', document = {"Firstname":"Lin","Lastname":"Chen"})
+
+# insert a document with the id
+es.index(index ='test-index', id = 1, document = {"Firstname":"Lin","Lastname":"Chen"})
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Read</span></li>
+			<pre class = "prettyprint linenums">
+# get a document
+es.get(index="my-index", id="1")
+
+# get the information of an index
+es.indices.stats(index='test-index')
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Update</span></li>
+			<pre class = "prettyprint linenums">
+# update a document
+es.update(index="test-index", id="1", body = {"doc":{"Firstname":"Unknown","Lastname":"Unknown"}})
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Delete</span></li>
+			<pre class = "prettyprint linenums">
+# delete index
+es.indices.delete(index='test-index')
+
+# delete a document
+es.delete(index="test-index", id=1)
             </pre>
         </div>
 		<div class = "subtitle">Query</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-body = {'query': {'bool': {'must': [{'match': {'gender': 'male'}},
-                                 {'range': {'age': {'gte': 25}}}]}}}
+# query all
+es.search(index='my-index')
+
+# Search between two date
+es.search(index='news_headline', body = {"query":{"range":{"date":{"gte":"2017-05-28T00:00:00.000-04:00","lt":"2017-12-26T00:00:00.000-05:00"}}}})
+
+# query multiple fields
+es.search(index='news_headline', body = {"query":{"multi_match":{"query":"Michelle Obama","fields":["headline","short_description","authors"]}}})
+
+# combine multiple queries
+body = {'query': {'bool': {'must': [{'match': {'gender': 'male'}}, {'range': {'age': {'gte': 25}}}]}}}
 res = es.search(index='my-index', body=body)
-res['hits']['hits']
+            </pre>
+        </div>
+		<div class = "subtitle">Aggregation</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+es.search(index='news_headline', body = {"aggs":{"by_category":{"terms":{"field":"category","size":100}}}})
+            </pre>
+        </div>
+		<div class = "subtitle">Query and Aggregation</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+es.search(index='news_headline', body = {
+  "query": {
+    "match": {
+      "category": "ENTERTAINMENT"
+    }
+  },
+  "aggs": {
+    "popular_in_entertainment": { # aggregation name
+      "significant_text": { # aggregation type
+        "field": "headline"
+      }
+    }
+  }
+})
+            </pre>
+        </div>
+		<div class = "subtitle">Mapping</div>
+		<div class = "block">
+            <li><span>View Mapping</span></li>
+			<pre class = "prettyprint linenums">
+es.indices.get_mapping(index = 'news_headline')
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Create an index with Mapping</span></li>
+			<pre class = "prettyprint linenums">
+mapping = {
+  "mappings": {
+    "properties": {
+      "botanical_name": {
+        "enabled": False # disabled to save disk space
+      },
+      "country_of_origin": { # text and keyword
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "date_purchased": { # date
+        "type": "date"
+      },
+      "description": { # text
+        "type": "text"
+      },
+      "name": { # text
+        "type": "text"
+      },
+      "produce_type": { # keyword
+        "type": "keyword"
+      },
+      "quantity": {
+        "type": "long"
+      },
+      "unit_price": {
+        "type": "float"
+      },
+      "vendor_details": {
+        "enabled": False
+      }
+    }
+  }
+}
+
+es.indices.create(index="index_with_mapping", body=mapping)
+            </pre>
+        </div>
+		<div class = "subtitle">Paging</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# step 1, fetch the first page, get a scroll id
+scroll = '2m' # set up alive time
+body = {"query": {"match_all": {}}} # query
+page = es.search(index='my-index', body=body, scroll=scroll, size=2)
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# step 2, fetch the next page with scroll id
+scroll_id = page['_scroll_id']
+page = es.scroll(scroll_id=scroll_id, scroll=scroll)
+            </pre>
+        </div>
+		<div class = "subtitle">Generator</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# define a generator
+def scroll_page(es, index, body, scroll, size, **kw):
+    page = es.search(index=index, body=body, scroll=scroll, size=size, **kw)
+    scroll_id = page['_scroll_id']
+    hits = page['hits']['hits']
+    while len(hits):
+        yield hits
+        page = es.scroll(scroll_id=scroll_id, scroll=scroll)
+        scroll_id = page['_scroll_id']
+        hits = page['hits']['hits']
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+scroll = '2m'
+body = {"query": {"match_all": {}}}
+index = 'my-index'
+size = 2
+
+pages = scroll_page(es, index, body, scroll, size) # generator
+
+for index, page in enumerate(pages):
+    print('Page '+str(index), [record['_id'] for record in page])
             </pre>
         </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://simplernerd.com/elasticsearch-scroll-python/">How to Paginate/Scroll Elasticsearch Data using Python</a></li>
             <li><a href = "https://elasticsearch-py.readthedocs.io/en/v7.12.0/">Documentation v7.12.0</a></li>
             <li><a href = "https://elasticsearch-py.readthedocs.io/en/v8.2.3/">Documentation v8.2.3</a></li>
         </div>

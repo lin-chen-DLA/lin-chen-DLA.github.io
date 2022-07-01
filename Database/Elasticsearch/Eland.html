@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Elasticsearch</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+            Eland
+		</div>
+
+		<div class = "subtitle">Install</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+pip install eland # install latest version
+pip install eland==7.14.0b1 # install 7.14.0b1
+            </pre>
+        </div>
+		<div class = "subtitle">Basics</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Pandas DataFrame, Eland DataFrame
+DataFrame, Index
+Row, Document
+Column, Field
+df.dtypes, Mapping Types
+df.index, _id/@timestamp
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import eland as ed
+
+# define a pointer, do not load data to local
+df = ed.DataFrame('http://localhost:9200', 'housing')
+
+# fetch and process data on server, then return outcomes
+df['ocean_proximity'].value_counts()
+            </pre>
+        </div>
+		<div class = "subtitle">Create, Read, Update, and Delete (CRUD)</div>
+		<div class = "block">
+            <li><span>Create</span></li>
+			<pre class = "prettyprint linenums">
+# create index from Pandas DataFrame
+import pandas as pd
+data = {
+    'apples': [3, 2, 0, 1], 
+    'oranges': [0, 3, 7, 2]
+}
+
+purchases = pd.DataFrame(data) # Pandas DataFrame
+
+df = ed.pandas_to_eland(purchases, "localhost:9200", "fruit", es_if_exists="replace",
+                        es_refresh=True, # waiting data to be indexed before returning
+                       ) # create an index and return Eland DataFrame
+
+# create index from csv
+df = ed.csv_to_eland('housing.csv', es_client='localhost', es_dest_index='housing', es_if_exists="replace", es_refresh=True)
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Insert</span></li>
+			<pre class = "prettyprint linenums">
+# use Elasticsearch
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Read</span></li>
+			<pre class = "prettyprint linenums">
+import eland as ed
+
+# read Eland DataFrame
+df = ed.DataFrame('http://localhost:9200', 'my-index') # eland.dataframe.DataFrame
+
+# get size
+df.size
+
+# data info
+df.info()
+
+# data describe
+df.describe()
+
+# get columns
+df[['median_house_value', 'ocean_proximity']]
+
+# convert Eland DataFrame to Pandas DataFrame
+pd_df = ed.eland_to_pandas(df)
+pd_df = df.to_pandas()
+
+# get a Eland Series
+s = df['age'] # eland.series.Series
+pd_s = s.to_pandas() # pandas.core.series.Series
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Update</span></li>
+			<pre class = "prettyprint linenums">
+# use Elasticsearch
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Delete</span></li>
+			<pre class = "prettyprint linenums">
+# use Elasticsearch
+            </pre>
+        </div>
+		<div class = "subtitle">Query</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+df = ed.DataFrame('http://localhost:9200', 'news_headline')
+df_query = df.es_query({"query":{"range":{"date":{"gte":"2017-05-28T00:00:00.000-04:00","lt":"2017-12-26T00:00:00.000-05:00"}}}})
+            </pre>
+        </div>
+		<div class = "subtitle">Aggregation</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# aggregation
+df = ed.DataFrame('http://localhost:9200', 'housing')
+df.aggregate(['max', 'min']) # aggregation of data table
+df['households'].min() # aggregation of a series
+
+# group by
+df = ed.DataFrame('http://localhost:9200', 'housing')
+df.groupby(['ocean_proximity']).min(['median_house_value'])
+
+# count
+df['ocean_proximity'].value_counts()
+            </pre>
+        </div>
+		<div class = "subtitle">Mapping</div>
+		<div class = "block">
+            <li><span>View Mapping</span></li>
+			<pre class = "prettyprint linenums">
+# use Elasticsearch
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Create an index with Mapping</span></li>
+			<pre class = "prettyprint linenums">
+# by default, Eland uses the data types of Pandas DataFrame as the data types
+pd_df = pd.read_csv('housing.csv') # pandas.core.frame.DataFrame
+df = ed.pandas_to_eland(pd_df, "localhost:9200", "housing2", es_if_exists="replace", es_refresh=True)
+
+# override data types
+df = ed.pandas_to_eland(pd_df, "localhost:9200", "housing3", es_if_exists="replace", es_refresh=True, es_type_overrides={'ocean_proximity':'text'})
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://eland.readthedocs.io/en/v8.2.0/">Eland Documentation</a></li>
+            <li><a href = "https://pypi.org/project/eland/#history">PyPI</a></li>
+        </div>
+    </body>
+</html>
