@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Keycloak</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Keycloak
+		</div>
+
+		<div class = "block">
+            <li>Open source identity and access management (IAM) tool for securing modern applications services</li>
+        </div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Keycloak_1.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle">Terms</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Keycloak_2.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+            <li><span>Realm</span>
+                <ul>
+                    <li>a space where managing objects, including users, roles, and groups</li>
+                    <li>isolated from one another and can only manage and authenticate the users that they control</li>
+                </ul>
+            </li>
+            <li><span>Client</span>
+                <ul>
+                    <li>applications and services that request Keycloak to authenticate a user</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "subtitle">Installation</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:18.0.2 start-dev
+        </pre>
+        </div>
+		<div class = "subtitle">Admin Console</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+http://localhost:8080/admin, admin, admin
+        </pre>
+        </div>
+		<div class = "subtitle">Users</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# admin console
+1. create a realm "myRealm"
+2. create a user under myRealm
+
+# http://localhost:8080/realms/myRealm/account/#/
+3. login "myRealm" with created user, http://localhost:8080/realms/myRealm/account/#/
+        </pre>
+        </div>
+		<div class = "subtitle">App</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create a client, myclient
+# use Root URL to https://www.keycloak.org/app/
+https://www.keycloak.org/app/
+        </pre>
+        </div>
+		<div class = "subtitle">Flask App</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create a client, myclient2
+# use Root URL to http://localhost:5000/
+# change Access Type to confidential and save
+# obtain Secret under the Credientials tab
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# install Flask-OIDC
+pip install Flask-OIDC
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.py
+import json
+import logging
+
+from flask import Flask, g
+from flask_oidc import OpenIDConnect
+import requests
+
+logging.basicConfig(level=logging.DEBUG)
+
+app = Flask(__name__)
+app.config.update({
+    'SECRET_KEY': 'SomethingNotEntirelySecret',
+    'TESTING': True,
+    'DEBUG': True,
+    'OIDC_CLIENT_SECRETS': 'client_secrets.json',
+    'OIDC_ID_TOKEN_COOKIE_SECURE': False,
+    'OIDC_REQUIRE_VERIFIED_EMAIL': False,
+    'OIDC_USER_INFO_ENABLED': True,
+    'OIDC_OPENID_REALM': 'flask-demo',
+    'OIDC_SCOPES': ['openid', 'email', 'profile'],
+    'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
+})
+
+oidc = OpenIDConnect(app)
+
+
+@app.route('/')
+def hello_world():
+    if oidc.user_loggedin:
+        return ('Hello, %s, &lt;a href="/private"&gt;See private&lt;/a&gt; '
+                '&lt;a href="/logout"&gt;Log out&lt;/a&gt;') % \
+            oidc.user_getfield('preferred_username')
+    else:
+        return 'Welcome anonymous, &lt;a href="/private"&gt;Log in&lt;/a&gt;'
+
+
+@app.route('/private')
+@oidc.require_login
+def hello_me():
+    """Example for protected endpoint that extracts private information from the OpenID Connect id_token.
+       Uses the accompanied access_token to access a backend service.
+    """
+
+    info = oidc.user_getinfo(['preferred_username', 'email', 'sub'])
+
+    username = info.get('preferred_username')
+    email = info.get('email')
+    user_id = info.get('sub')
+
+    if user_id in oidc.credentials_store:
+        try:
+            from oauth2client.client import OAuth2Credentials
+            access_token = OAuth2Credentials.from_json(oidc.credentials_store[user_id]).access_token
+            print 'access_token=&lt;%s&gt;' % access_token
+            headers = {'Authorization': 'Bearer %s' % (access_token)}
+            # YOLO
+            greeting = requests.get('http://localhost:8080/greeting', headers=headers).text
+        except:
+            print "Could not access greeting-service"
+            greeting = "Hello %s" % username
+    
+
+    return ("""%s your email is %s and your user_id is %s!
+               &lt;ul&gt;
+                 &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+                 &lt;li&gt;&lt;a href="//localhost:8080/realms/myRealm/account?referrer=flask-app&referrer_uri=http://localhost:5000/private&"&gt;Account&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;""" %
+            (greeting, email, user_id))
+
+
+@app.route('/api', methods=['POST'])
+@oidc.accept_token(require_token=True, scopes_required=['openid'])
+def hello_api():
+    """OAuth 2.0 protected API endpoint accessible via AccessToken"""
+
+    return json.dumps({'hello': 'Welcome %s' % g.oidc_token_info['sub']})
+
+
+@app.route('/logout')
+def logout():
+    """Performs local logout by removing the session cookie."""
+
+    oidc.logout()
+    return 'Hi, you have been logged out! &lt;a href="/"&gt;Return&lt;/a&gt;'
+
+
+if __name__ == '__main__':
+    app.run()
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# client_secrets.json
+{
+    "web": {
+        "issuer": "http://localhost:8080/realms/myRealm",
+        "auth_uri": "http://localhost:8080/realms/myRealm/protocol/openid-connect/auth?client_id=myclient2",
+        "client_id": "myclient2",
+        "client_secret": "s7TSi1RW5JKIiFr9SpYNyFjD9GzIUdbv",
+        "redirect_uris": [
+            "http://localhost:5000/*"
+        ],
+        "userinfo_uri": "http://localhost:8080/realms/myRealm/protocol/openid-connect/userinfo", 
+        "token_uri": "http://localhost:8080/realms/myRealm/protocol/openid-connect/token",
+        "token_introspection_uri": "http://localhost:8080/realms/myRealm/protocol/openid-connect/token/introspect"
+    }
+}
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+http://localhost:5000/
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://www.keycloak.org/guides">Documentation</a></li>
+            <li><a href = "https://gist.github.com/thomasdarimont/145dc9aa857b831ff2eff221b79d179a">Simple python example using flask, flask_oidc and keycloak</a></li>
+            <li><a href = "https://github.com/openstack/python-mistralclient/blob/master/mistralclient/auth/keycloak.py">python-mistralclient</a></li>
+        </div>
+    </body>
+</html>
