@@ -209,7 +209,54 @@ if __name__ == "__main__":
 			</pre>
 		</div>
 
-				<div class = "subtitle">Package is a directory containing modules and sub directories</div>
+			<div class = "subtitle">Packages in Project</div>
+				<div class = "block">
+				<p style = "text-align:center;"><img src = "img/Package_5.png" width = "60%"></p>
+		</div>
+		<div class = "block">
+        <pre class = "prettyprint linenums">
+# main.py
+from components import layout
+
+def main():
+    layout()
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "block">
+        <pre class = "prettyprint linenums">
+# components/__init__.py
+from components.layout import layout
+        </pre>
+        <pre class = "prettyprint linenums">
+# components/layout.py
+from util import *
+from components.component import get_component
+
+def layout():
+    get_util()
+    get_component()
+    print('Layout ...')
+        </pre>
+        <pre class = "prettyprint linenums">
+# components/component.py
+def get_component():
+    print('Component ...')
+        </pre>
+        </div>
+		<div class = "block">
+        <pre class = "prettyprint linenums">
+# util/__init__.py
+from util.util import get_util
+        </pre>
+        <pre class = "prettyprint linenums">
+# util/util.py
+def get_util():
+    print('Util ...')
+        </pre>
+        </div>
 		<div class = "block">
 			<li><a href = "https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/index.html">The Hitchhiker’s Guide to Packaging</a></li>
 			<li><a href = "https://docs.python.org/3/tutorial/modules.html#packages">Python Tutorial</a></li>

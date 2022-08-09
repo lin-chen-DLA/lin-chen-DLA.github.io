@@ -587,8 +587,26 @@ POST /geo_example/_doc?refresh
                         <ul>
                             <li>Date Histogram Aggregation
                                 <ul>
-                                    <li>Fixed_interval</li>
-                                    <li>Calendar_interval</li>
+                                    <li>Fixed_interval
+                                        <ul>
+                                            <li>milliseconds (ms)</li>
+                                            <li>seconds (s)</li>
+                                            <li>minutes (m)</li>
+                                            <li>hours (h)</li>
+                                            <li>days (d)</li>
+                                        </ul>
+                                    </li>
+                                    <li>Calendar_interval
+                                        <ul>
+                                            <li>minute, 1m</li>
+                                            <li>hour, 1h</li>
+                                            <li>day, 1d</li>
+                                            <li>week, 1w</li>
+                                            <li>month, 1M</li>
+                                            <li>quarter, 1q</li>
+                                            <li>year, 1y</li>
+                                        </ul>
+                                    </li>
                                 </ul>
                             </li>
                             <li>Histogram Aggregation

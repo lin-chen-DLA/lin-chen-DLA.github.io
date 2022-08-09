@@ -163,6 +163,115 @@ if __name__ == "__main__":
     app.run_server(debug=True)
 		</pre>
 		</div>
+		<div class = "subtitle">Code Layout</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Dash_35.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.py
+from config import *
+from components import get_layout
+
+app.layout = get_layout()
+
+app.config['suppress_callback_exceptions'] = True
+
+if __name__ == '__main__':
+    app.run_server(debug = True)
+        </pre>
+		<pre class = "prettyprint linenums">
+# config.py
+import dash
+
+app = dash.Dash(__name__)
+server = app.server
+
+configuration = {'name':'Lin'}
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# assets/style.css
+.header-title {
+    color: red;
+}
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# components/__init__.py
+from components.c1 import get_layout
+        </pre>
+		<pre class = "prettyprint linenums">
+# components/c1/__init__.py
+from components.c1.c import *
+        </pre>
+		<pre class = "prettyprint linenums">
+# components/c1/c.py
+from dash import html
+from util import *
+from components.c2 import get_content
+
+def get_layout():
+    return html.Div([
+        get_title('Util'),
+        get_content()
+    ], className='header-title')
+        </pre>
+		<pre class = "prettyprint linenums">
+# components/c2/__init__.py
+from components.c2.c import get_content
+from components.c2.callbacks import *
+        </pre>
+		<pre class = "prettyprint linenums">
+# components/c2/c.py
+from dash import html
+
+def get_content():
+    return html.Div([
+        get_button(),
+        get_output()
+    ])
+
+def get_button():
+    return html.Button('Submit', id = 'submit')
+
+def get_output():
+    return html.Div(id = 'output')
+        </pre>
+		<pre class = "prettyprint linenums">
+# components/c2/callbacks.py
+from config import *
+from util import *
+from dash import html
+from dash.dependencies import Output, Input, State
+from dash.exceptions import PreventUpdate
+
+@app.callback(
+    Output('output', 'children'),
+    Input('submit', 'n_clicks'),
+)
+def update_container(n_clicks):
+    print('Load callback ...')
+
+    if not n_clicks:
+        raise PreventUpdate
+
+    return html.Div(get_title('Content'))
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# util/__init__.py
+from util.util import *
+        </pre>
+		<pre class = "prettyprint linenums">
+# util/util.py
+def get_title(t):
+    return 'Title: '+t
+        </pre>
+        </div>
 		<div class = "subtitle">Layout Summary</div>
 		<div class = "block">
 			<p style = "text-align:center;"><img src = "img/Dash_22.png" width = "60%"></p>
