@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Elasticsearch</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+            Graph
+		</div>
+
+		<div class = "subtitle">Aggregation Based</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+            </pre>
+        </div>
+		<div class = "subtitle">Lens</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+            </pre>
+        </div>
+		<div class = "subtitle">Timelion</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+            </pre>
+        </div>
+		<div class = "subtitle">TSVB</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+            </pre>
+        </div>
+		<div class = "subtitle">Vega</div>
+		<div class = "block">
+            <li>Mark
+                <ul>
+                    <li>area, bar, circle, line, point, rect, rule, square, text, and tick</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Line chart
+{
+  $schema: https://vega.github.io/schema/vega-lite/v4.json
+  title: Event Counts // graph title
+
+  // Define the data source
+  data: {
+    url: {
+      %context%: true // apply dashboard context filters
+      %timefield%: @timestamp // use the time filter of Kibana
+
+      index: hackathon // data source
+
+      body: { // define query body
+        aggs: {
+          time_buckets: {
+            date_histogram: {
+              field: @timestamp
+              interval: {%autointerval%: true}
+              extended_bounds: {
+                min: {%timefilter%: "min"}
+                max: {%timefilter%: "max"}
+              }
+              min_doc_count: 0
+            }
+          }
+        }
+        size: 0
+      }
+    }
+
+    format: {property: "aggregations.time_buckets.buckets"} // define the data used in the graph, time_buckets is the query name, buckets is a key of the return
+  }
+
+  mark: line
+
+  encoding: {
+    x: {
+      field: key
+      type: temporal
+      axis: {title: false} // no X axis title
+    }
+    y: {
+      field: doc_count
+      type: quantitative
+      axis: {title: "Document count"} // define Y axis title
+    }
+  }
+}
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Scatter plot
+{
+  $schema: "https://vega.github.io/schema/vega-lite/v4.json"
+  
+  mark: point
+  
+  data: {
+    url: {
+      %context%: true
+      %timefield%: @timestamp
+      index: elicsarhackathon
+      body: {
+        size: 100,
+        _source: ["@timestamp", "domains_length"]
+      }
+    }
+    format: { property: "hits.hits" }
+  }
+  
+  transform: [
+    {
+      calculate: "toDate(datum._source['@timestamp'])"
+      as: "time"
+    }
+  ]
+  
+  encoding: {
+    x: {
+      field: time
+      type: temporal
+      axis: { title: false }
+    }
+    y: {
+      field: _source.domains_length
+      type: quantitative
+      axis: { title: "Domain Length" }
+    }
+  }
+}
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Multiple subplots
+{
+  $schema: "https://vega.github.io/schema/vega-lite/v4.json"
+  
+  mark: point
+  
+  data: {
+    url: {
+      %context%: true
+      %timefield%: @timestamp
+      index: elicsarhackathon
+      body: {
+        size: 100,
+        _source: ["@timestamp", "domains_length", "domains_num","status"]
+      }
+    }
+    format: { property: "hits.hits" }
+  }
+  
+  transform: [
+    {
+      calculate: "toDate(datum._source['@timestamp'])"
+      as: "time"
+    }
+  ]
+  
+  encoding: {
+    "row": {"field": "_source.status"}, // create a subplot for each category
+    x: {
+      field: time
+      type: temporal
+      axis: { title: false }
+    },
+    y: {
+      field: _source.domains_length
+      type: quantitative
+      axis: { title: "Domain Length" }
+    }
+  }
+}
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Multiple plots with one index
+{
+  $schema: "https://vega.github.io/schema/vega-lite/v4.json"
+  
+  mark: point
+  
+  data: {
+    url: {
+      %context%: true
+      %timefield%: @timestamp
+      index: elicsarhackathon
+      body: {
+        size: 100,
+        _source: ["@timestamp", "domains_length", "domains_num"]
+      }
+    }
+    format: { property: "hits.hits" }
+  }
+  
+  transform: [
+    {
+      calculate: "toDate(datum._source['@timestamp'])"
+      as: "time"
+    }
+  ]
+  
+  encoding: {
+    x: {
+      field: time
+      type: temporal
+      axis: { title: false }
+    }
+    y: {
+      field: _source.domains_length
+      type: quantitative
+      axis: { title: "Domain Length" }
+    }
+  }
+  
+  "layer": [
+    { // layer one, same as the layer in the above encoding
+      "mark": {"type": "point", "size": 100, "opacity": 0.8},
+      "encoding": {
+        "y": {"field": "_source.domains_length"}
+      }
+    },
+    { // layer two
+      "mark": {"type": "line", "color": "red", "size": 1, "opacity": 0.5},
+      "encoding": {
+        "y": {"field": "_source.domains_num"}
+      }
+    }
+  ]
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Text</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+            </pre>
+        </div>
+		<div class = "subtitle">Control</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://www.bookstack.cn/read/kibana-7.9-en/8e3310ba43e66737.md">Kibana Tutorial</a></li>
+            <li><a href = "https://vega.github.io/vega-lite/examples/">Vega Example Gallery</a></li>
+            <li><a href = "https://vega.github.io/vega-lite/docs/mark.html">Vega Mark</a></li>
+            <li><a href = "https://www.timroes.de/kibana-vega-scatterplot">Scatterplot in Kibana using Vega</a></li>
+        </div>
+    </body>
+</html>
