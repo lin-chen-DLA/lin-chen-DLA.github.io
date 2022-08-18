@@ -28,12 +28,162 @@
         </div>
 		<div class = "subtitle">Timelion</div>
 		<div class = "block">
+            <li>Pros
+                <ul>
+                    <li>plot a combination of data sources</li>
+                </ul>
+            </li>
+            <li>Cons</li>
+        </div>
+		<div class = "block">
 			<pre class = "prettyprint linenums">
+# pull data from data source
+es, elasticsearch
+    index # string, index name
+    timefield # string, time field name
+    metric
+        count # default
+        avg # avg:field
+        sum # sum:field
+        min # min:field
+        max # max:field
+        percentiles # percentiles:field
+        cardinality # cardinality:field
+    fit # fills null values using a defined fit function, one of average, carry, nearest, none, scale
+    interval # aggregation interval, for instance, interval='12h'
+    kibana # true, enable filter on Kibana; false, otherwise
+    offset # time offset, s:second, m:minute, h:hour, d:day, w:week, M:month, y:year, for instance, offset='-6h', or offset='timerange:-0.5'
+    q # KQL query
+    split # field:num_of_top_categories
+graphite
+quandl
+wbi, worldbank_indicators # pull world bank data
+    country # ISO code
+    indicator # pull indicator from URL at https://data.worldbank.org/indicator
+
+wb, worldbank # pull world bank data
+    code # string, Worldbank API path
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# mathematics
+abs
+add, plus, sum # numeric, add a value to the values on y axis
+subtract # numeric, subtract a value from the values on y axis
+derivative # null, calculate derivate
+mvstd, movingstd # moving standard deviation over a given window
+    window # int
+    position # left, right, center
+divide # numeric, divide a value by the values on y axis
+cusum # null, cumulative sum
+multiply # numeric, multiply a value by the values on y axis
+log # null, log values
+max # give a threshold value if a value is less than a threshold, for instance, .max(.es(), 37)
+min # give a threshold value if a value is greater than a threshold, for instance, .min(.es(), 25)
+fit # fills null values using a defined fit function, one of average, carry, nearest, none, scale
+trend # regression plot
+holt # conduct forecast
+    alpha # 0-1
+    beta # 0-1
+    gamma # 0-1
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# horizontal line
+aggregate
+    avg # create line represent the average
+    cardinality
+    min
+    max
+    last
+    first
+    sum
+static, value # create constant horizontal line, for instance, .static(3, label='average')
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# plots
+lines # line plot
+    fill # 0-10, fill area under the lines
+    width # line thickness
+    show # boolean, true/false, display the lines or not
+    steps # boolean or int, true, do not interpolate between points; false, otherwise
+bars # bar plot
+points # scatter plot
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# style
+color # color code, plot color
+label # string, create a label for the current plot
+legend
+    position # nw, ne, se, sw, set up legend position
+    columns # int, number of columns to divide the legend into
+    showTime # boolean, true/false, display time or not
+    timeFormat # HH:mm:ss.SSS, set up time format
+title, # string, create a title
+range # set up max and min of the y axis
+mvavg, movingaverage # smooth plots
+    window # smooth window size
+    position # center, left, right
+precision # int, set value precision
+trim # set N buckets at the start or end of a series to null to fit the "partial bucket issue"
+scale_interval # string, changes interval, s, m, h, d, w, M, y
+hide # hide plot
+yaxis
+    yaxis # int, numbered y axis
+    min # numeric, minimum value on y axis
+    max # numeric, maximum value on y axis
+    position # left or right
+    label # string, label on axis
+    color # string, label color
+    units # bits, bits/s, bytes, bytes/s, currency, percent, custom:prefix:suffix
+    tickDecimals # int, digital numbers after decimal point
+props # set value for arbitary properties, for instance, props(label=Regression)
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# decision
+condition, if # logical operation, lt, lte, eq, gt, gte, for instance, if(lt, 500, 0, 1), if a value is less than 500, set the value to 0, else set the value to 1
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# multiple plots with multiple indices
+.es(index=elicsarhackathon,metric=avg:domains_length,).yaxis(label=Length, min=37.9, max=40, color=red, tickDecimals=1).label(max),
+.es(index=elicsarhackathon,metric=avg:domains_length,).if(gt, 38.2, 38.2).lines(fill=5)
             </pre>
         </div>
 		<div class = "subtitle">TSVB</div>
 		<div class = "block">
+            <li>Pros
+                <ul>
+                    <li>Provide Time Series, Metric, Top N, Gauge, Markdown, Table</li>
+                    <li>Support multiple plots with one data source</li>
+                </ul>
+            </li>
+            <li>Cons
+                <ul>
+                    <li>Only support single data source</li>
+                    <li>Only on time series</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "block">
 			<pre class = "prettyprint linenums">
+# plot
+1. Time Series -&gt; Panel options, set index patern, filter
+
+2. Time Series -&gt; Panel options -&gt; Metrics, set aggregation, group by
+
+3. Time Series -&gt; Panel options -&gt; Options, set data formater, filter, chart type, axis, legend
+
+4. Time Series -&gt; Annotations, set annotations with other data sources
             </pre>
         </div>
 		<div class = "subtitle">Vega</div>
@@ -254,6 +404,12 @@
         </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://www.elastic.co/blog/timeseries-if-then-else-with-timelion">I have but one .condition(). Timeseries if-then-else with Timelion</a></li>
+            <li><a href = "https://www.elastic.co/guide/en/kibana/current/dashboard.html">Dashboard and visualizations</a></li>
+            <li><a href = "https://www.elastic.co/blog/timelion-tutorial-from-zero-to-hero">Timelion Tutorial – From Zero to Hero</a></li>
+            <li><a href = "https://github.com/elastic/timelion/blob/master/FUNCTIONS.md">Timelion function reference</a></li>
+            <li><a href = "https://coralogix.com/blog/advanced-guide-to-kibana-timelion-functions/">Advanced Guide to Kibana Timelion</a></li>
+            <li><a href = "https://handlebarsjs.com/guide/expressions.html#basic-usage">Handlebars</a></li>
             <li><a href = "https://www.bookstack.cn/read/kibana-7.9-en/8e3310ba43e66737.md">Kibana Tutorial</a></li>
             <li><a href = "https://vega.github.io/vega-lite/examples/">Vega Example Gallery</a></li>
             <li><a href = "https://vega.github.io/vega-lite/docs/mark.html">Vega Mark</a></li>
