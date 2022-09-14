@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Pickle
+		</div>
+
+		<div class = "subtitle">Pickle Process</div>
+		<div class = "block">
+            <li>Pickle, convert an object to a byte stream</li>
+            <li>Unpickle, construct the object from the byte stream</li>
+            <li>Unpickle process is not safe. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling</li>
+            <li>non-Python programs may not be able to reconstruct pickled Python objects</li>
+			<li>cPickle has been removed in Python 3</li>
+        </div>
+		<div class = "subtitle">Picklable Types</div>
+		<div class = "block">
+			<ul>
+				<li>None, True, and False</li>
+				<li>integers, long integers, floating point numbers, complex numbers</li>
+				<li>normal and Unicode strings</li>
+				<li>tuples, lists, sets, and dictionaries containing only picklable objects</li>
+				<li>functions defined at the top level of a module</li>
+				<li>built-in functions defined at the top level of a module</li>
+				<li>classes that are defined at the top level of a module</li>
+				<li>instances of such classes whose __dict__ or the result of calling __getstate__() is picklable (see section The pickle protocol for details).</li>
+			</ul>
+		</div>
+		<div class = "subtitle">Protocal</div>
+		<div class = "block">
+            <li>0, ASCII protocol</li>
+            <li>1, old binary format</li>
+            <li>2, python 2.3</li>
+            <li>3, python 3.0</li>
+            <li>4, python 3.4</li>
+            <li>5, python 3.8</li>
+            <li>-1, highest available protocol
+            <li>The higher the protocol used, the more recent the version of Python needed to read the pickle produced</li>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+print(pickle.HIGHEST_PROTOCOL) # highest protocol
+print(pickle.DEFAULT_PROTOCOL) # default protocol
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# write pickled object to file
+import pickle
+ 
+f = open('temp.pkl', 'wb')
+ 
+l = list(range(10))
+ 
+pickle.dump(l, f) # default protocol
+# pickle.dump(l, f, 5)
+ 
+f.close();
+        </pre>
+		<pre class = "prettyprint linenums">
+# read pickled object from file and unpickle
+f = open('temp.pkl', 'rb')
+
+l = pickle.load(f)
+print(l)
+
+f.close()
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+l = list(range(10))
+ 
+# write pickled object to bytes
+s = pickle.dumps(l, 2)
+print(s)
+ 
+# read pickled object from bytes and unpickle
+t = pickle.loads(s)
+print(t)
+		</pre>
+		</div>
+		<div class = "subtitle">Pickle Classes</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+f = open('temp.pkl', 'wb')
+l = list(range(10))
+
+# pickle
+p_write = pickle.Pickler(f)
+p_write.dump(l)
+
+f.close()
+        </pre>
+		<pre class = "prettyprint linenums">
+f = open('temp.pkl', 'rb')
+p_read = pickle.Unpickler(f)
+
+# unpickle
+print(p_read.load())
+
+f.close()
+        </pre>
+        </div>
+		<div class = "subtitle">Define Picklable Class</div>
+		<div class = "block">
+			<li>__getstate__
+                <ul>
+                    <li>if the class defines the method __getstate__(), it is called and then return state is pickled as the contents for the instance</li>
+                    <li>if there is no __getstate__() method, the instance's __dict__ is pickled</li>
+                </ul>
+            </li>
+			<li>__setstate__
+                <ul>
+                    <li>if the class also defines the method __setstate__(), it is called with the unpickled state</li>
+                    <li>if there is no __setstate__() method, the pickled state must be a dictionary and its items are assigned to the new instance's dictionary</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+ 
+    def __init__(self, brand):
+        self.__brand = brand
+        
+    def __str__(self):
+        return "Info: %s" % self.__dict__
+ 
+    def __getstate__(self):
+        print('Call __getstate__ for pickling ...')
+        state = self.__dict__.copy()
+        return state
+ 
+    def __setstate__(self, state):
+        print('Call __setstate__ for unpickling ...')
+        self.__dict__.update(state)
+        </pre>
+		<pre class = "prettyprint linenums">
+# pickle object
+f = open('temp.pkl', 'wb')
+pickle.dump(v, f) # call __getstate__()
+f.close()
+        </pre>
+		<pre class = "prettyprint linenums">
+# unpickle object
+f = open('temp.pkl', 'rb')
+l = pickle.load(f) # call __setstate__()
+print(l) # call __str__()
+f.close()
+        </pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+				<li><a href = "https://docs.python.org/3/library/pickle.html">pickle — Python object serialization</a></li>
+			</ul>
+		</div>
+	</body>
+</html>
