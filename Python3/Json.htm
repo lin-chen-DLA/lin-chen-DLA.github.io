@@ -12,71 +12,62 @@
 	</head>
 	<body>
 		<div class = "title">
-			YAML
+			JSON
 		</div>
 
-		<div class = "subtitle">Installation</div>
 		<div class = "block">
-		<pre class = "prettyprint linenums">
-pip install pyyaml
-        </pre>
+            <li>a text serialization format</li>
+            <li>JSON, by default, can only represent a subset of the Python built-in types, and no custom classes</li>
+            <li>Unlike pickle, deserializing untrusted JSON does not in itself create an arbitrary code execution vulnerability</li>
         </div>
-		<div class = "subtitle">YAML File</div>
+		<div class = "subtitle">Serialize to File</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+import json
+
+l = list(range(10))
+
+# serialize to file
+f = open('temp.json', 'w')
+json.dump(l, f)
+f.close()
+		</pre>
+		<pre class = "prettyprint linenums">
+# deserialize from file
+f = open('temp.json', 'r')
+print(json.load(f))
+f.close()
         </pre>
-        </div>
-		<div class = "subtitle">YAML File</div>
+		</div>
+		<div class = "subtitle">Serialize to String</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# foo.yaml
-foo: bar
-pleh: help
-stuff:
-  foo: bar
-  bar: foo
+# serialize to string
+s = json.dumps(l)
+
+s = json.dumps([1, 2, 3, {'4': 5, '6': 7}], separators=(',', ':')) # compact
+
+s = json.dumps({'4': 5, '6': 7}, sort_keys=True, indent=4) # pretty
+
+# deserialize from string
+json.loads(s)
 		</pre>
 		</div>
-		<div class = "subtitle">Read YAML File</div>
+		<div class = "subtitle">JSON Class</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-import yaml
+# encode
+encoder = json.JSONEncoder()
+s = encoder.encode(l)
 
-with open('foo.yaml') as file:
-    content = yaml.load(file, Loader=yaml.FullLoader)
-
-print(content)
+# decode
+decoder = json.JSONDecoder()
+decoder.decode(s)
 		</pre>
 		</div>
-		<div class = "subtitle">Write YAML File</div>
+		<div class = "subtitle">Reference</div>
 		<div class = "block">
-		<pre class = "prettyprint linenums">
-import yaml
-
-dictionary = {'Name': 'Lin', 'Age': 41, 'Children': ['Hannah', 'Hadley'], 'Lobbies': {'Swim':'Normal', 'Running':'Professional'}}
-
-with open('temp.yaml', 'w') as file:
-    yaml.dump(dictionary, file)
-		</pre>
-		</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-# temp.yaml
-Age: 41
-Children:
-- Hannah
-- Hadley
-Lobbies:
-  Running: Professional
-  Swim: Normal
-Name: Lin
-		</pre>
-		</div>
-		<div class = "subtitle">Write YAML File</div>
-		<div class = "block">
-			<li><a href = "https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started/">YAML Tutorial: Everything You Need to Get Started in Minutes</a></li>
-			<li><a href = "https://stackabuse.com/reading-and-writing-yaml-to-a-file-in-python/">Tutorial</a></li>
-			<li><a href = "https://pyyaml.org/wiki/PyYAMLDocumentation">PyYAML</a></li>
+            <li><a href = "https://docs.python.org/3/library/json.html">Document</a></li>
 		</div>
 	</body>
 </html>
