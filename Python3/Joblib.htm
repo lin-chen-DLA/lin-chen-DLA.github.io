@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			joblib
+		</div>
+
+		<div class = "block">
+            <li>provide a replacement for pickle to work efficiently on arbitrary Python objects containing large data, in particular large numpy arrays</li>
+            <li>As of Python 3.8 and numpy 1.16, pickle protocol 5 introduced in PEP 574 supports efficient serialization and de-serialization for large data buffers</li>
+            <li>joblib.load() should therefore never be used to load objects from an untrusted source</li>
+        </div>
+		<div class = "subtitle">Serialize with File Stream</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import joblib
+
+l = list(range(10))
+
+f = open('temp.joblib', 'wb')
+
+# serialization
+joblib.dump(l, f)
+
+f.close()
+		</pre>
+		<pre class = "prettyprint linenums">
+f = open('temp.joblib', 'rb')
+
+# deserialization
+print(joblib.load(f))
+
+f.close()
+        </pre>
+		</div>
+		<div class = "subtitle">Serialize with File Name</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+l = list(range(10))
+
+# serialization
+joblib.dump(l, 'temp.pkl')
+
+# deserialization
+joblib.load('temp.pkl')
+		</pre>
+		</div>
+		<div class = "subtitle">Compress</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# support 'z', ‘gzip’, ‘bz2’, ‘lzma’ and ‘xz’:
+
+l = list(range(10))
+
+# serialization
+joblib.dump(l, 'temp.z')
+
+# deserialization
+joblib.load('temp.z')
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://joblib.readthedocs.io/en/latest/">Document</a></li>
+		</div>
+	</body>
+</html>
