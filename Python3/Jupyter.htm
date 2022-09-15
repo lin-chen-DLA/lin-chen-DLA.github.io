@@ -171,9 +171,58 @@ import ipynb.fs.full.p1 as p
 p.hello()
             </pre>
         </div>
+		<div class = "subtitle">Jupyter Notebook Package</div>
+        <div class = "block">
+				<p style = "text-align:center;"><img src = "img/Jupyter_1.png" width = "20%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# p1.ipynb
+def hello():
+    print('Hello World!')
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# .ipynb or .py
+import import_ipynb
+import mypackage.p1 as p1
+
+p1.hello()
+            </pre>
+        </div>
+        <div class = "block">
+				<p style = "text-align:center;"><img src = "img/Jupyter_2.png" width = "20%"></p>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# p1.ipynb
+import import_ipynb
+from mypackage.p2 import *
+def hello():
+    print('Hello World, '+get_name())
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# p2.ipynb
+def get_name():
+    return 'Lin'
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# .ipynb or .py
+import import_ipynb
+import mypackage.p1 as p1
+
+p1.hello()
+            </pre>
+        </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
 			<ul>
+                <li><a href = "https://stackoverflow.com/questions/20186344/importing-an-ipynb-file-from-another-ipynb-file">Importing an ipynb file from another ipynb file?</a></li>
 				<li><a href = "Markdown/Pieces.htm">Markdown</a></li>
 				<li><a href = "http://nbviewer.jupyter.org/github/ipython/ipython/blob/2.x/examples/Notebook/Display%20System.ipynb#LaTeX">LaTex</a></li>
 				<li><a href = "http://jupyter-notebook.readthedocs.io/en/stable/examples/Notebook/Typesetting%20Equations.html">LaTex Examples</a></li>
