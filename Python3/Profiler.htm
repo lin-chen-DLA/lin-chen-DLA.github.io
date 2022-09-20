@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Profiler
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import time
+
+def get_name():
+    time.sleep(5)
+    
+def main():
+    get_name()
+        </pre>
+		</div>
+
+		<div class = "subtitle">time</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import time
+
+start = time.time()
+main()
+end = time.time()
+
+end - start # seconds
+		</pre>
+		</div>
+
+		<div class = "subtitle">datetime</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import datetime
+
+start = datetime.datetime.now()
+main()
+end = datetime.datetime.now()
+
+end - start # datetime.timedelta
+		</pre>
+		</div>
+
+		<div class = "subtitle">cProfile</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import cProfile
+
+cProfile.run('main()')
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import pstats
+from pstats import SortKey
+
+# save the results to a file
+cProfile.run('main()', 'restats')
+
+# printing the results
+p = pstats.Stats('restats') # read the result file
+
+# call, call count
+# cumulative, cumulative time
+# cumtime, cumulative time
+# file, file name
+# filename, file name
+# module, file name
+# ncalls, call count
+# pcalls, primitive call count
+# line, line number
+# name, function name
+# nfl, name/file/line
+# stdname, standard name
+# time, internal time
+# tottime, internal time
+p.sort_stats(SortKey.NAME) # sort by function name
+
+p.print_stats() # print results
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# -o, output file name
+# -s, sort value
+# python -m cProfile [-o output_file] [-s sort_order] myscript.py
+python -m cProfile -o output script.py
+        </pre>
+        </div>
+
+		<div class = "subtitle">Profile Viewer</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# gprof2dot
+pip install gprof2dot
+brew install graphviz # install dot
+
+gprof2dot -f pstats output | dot -Tpng -o output.png
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# SnakeViz, web-based profiler
+pip install snakeviz
+
+snakeviz output
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# tuna, web-based profiler
+pip install tuna
+
+tuna output
+        </pre>
+        </div>
+
+		<div class = "subtitle">Jupyter Profiler</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+%time # time the execution of a single statement
+%time main()
+
+%timeit # time repeated execution of a single statement and return average
+%timeit main()
+
+%prun # run code with the profiler
+%prun main()
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+pip install line_profiler
+%load_ext line_profiler
+
+%lprun # run code with the line-by-line profiler
+%lprun main()
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+pip install memory_profiler
+%load_ext memory_profiler
+
+%memit # measure the memory use of a single statemen
+%memit main()
+
+%mprun # run code with the line-by-line memory profiler
+# works only for functions defined in separate modules
+from p1 import main
+%mprun -f main main()
+        </pre>
+        </div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<ul>
+                <li><a href = "https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html">Profiling and Timing Code</a></li>
+                <li><a href = "https://www.codementor.io/@skynettechltd/profiling-visualization-tools-in-python-part-1-1gju9rc9vm">Profiling & Visualization Tools in Python</a></li>
+                <li><a href = "https://docs.python.org/3/library/profile.html">Profile Document</a></li>
+			</ul>
+		</div>
+	</body>
+</html>
