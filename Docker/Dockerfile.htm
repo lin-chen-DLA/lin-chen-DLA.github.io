@@ -62,6 +62,7 @@ EXPOSE [portNumber]
 ENV MY_NAME="Lin"
 
 # Copy new files, directories or remote file URLs from &lt;src&gt; and adds them to the filesystem of the image at the path &lt;dest&gt;
+# Copy and auto-extract tar files
 ADD [src] [dest]
 
 # Copy local files and directories from src to dest

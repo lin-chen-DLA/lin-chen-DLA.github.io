@@ -52,7 +52,7 @@ docker image push [imageName:tagName]
         </pre>
         <li>Create a Virtual Image</li>
 		<pre class = "prettyprint linenums">
-docker tag [imageID] [imageName:tag]
+docker tag [imageName:tag] [imageName:tag] # create a refernce to the same image
         </pre>
         <li>Save Image</li>
 		<pre class = "prettyprint linenums">
@@ -137,11 +137,6 @@ docker container exec -it [containerName] sh
 		<pre class = "prettyprint linenums">
 docker commit [containerID/containerName] [imageName] # create a image from a container
         </pre>
-        <li>Show Containers</li>
-		<pre class = "prettyprint linenums">
-docker stop [containerName] # stop a container running
-docker kill [contaierID] # kill a running container</li>
-        </pre>
         <li>Start Container</li>
 		<pre class = "prettyprint linenums">
 docker start -ia [containerName]
@@ -154,8 +149,10 @@ docker container restart [containerName]
         </pre>
         <li>Stop Container</li>
 		<pre class = "prettyprint linenums">
-docker stop [containerName]
+docker stop [containerName] # stop a container running
 docker container stop [containerName]
+
+docker kill [contaierID] # kill a running container
         </pre>
         <li>Remove Container</li>
 		<pre class = "prettyprint linenums">

@@ -87,7 +87,7 @@ services:
     image: lchenlangley/count
     build: .
     ports:
-      - 8000:5000
+      - 5000:5000
     volumes:
       - .:/code # enable hot reloading
     environment:
@@ -111,7 +111,7 @@ services:
 docker-compose up
 
 # 6. Access the app
-http://localhost:8000/
+http://localhost:5000/
 
 # 7. Continue to edit app.py with hot reloading
         </pre>
