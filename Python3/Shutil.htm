@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			shutil
+		</div>
+
+		<div class = "block">
+            <li>The shutil module includes high-level file operations such as copying and archiving</li>
+        </div>
+		<div class = "subtitle">Copy Files</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# copyfile
+# copy the content of the source file to the destination file
+# the metadata of the file is not copied
+shutil.copyfile('shutil_copyfile.py', 'shutil_copyfile.py.copy')
+
+# copy
+# copy the content of source file to destination file or directory
+shutil.copy('p1.py', 'p2')
+
+# copy2
+# copy the content of source file to destination file or directory
+# preserves the file’s metadata
+shutil.copy2('p1.py', 'p2/p3.py')
+		</pre>
+		</div>
+		<div class = "subtitle">Copy File Metadata</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# copymode
+# copy the permissions from one file to another
+shutil.copyfile('p1.py', 'p1_copy.py')
+shutil.copymode('p1.py', 'p1_copy.py')
+
+# copystat
+# copy the permissions and dates associated with the file
+shutil.copyfile('p1.py', 'p2_copy.py')
+shutil.copystat('p1.py', 'p2_copy.py')
+        </pre>
+        </div>
+		<div class = "subtitle">Directory</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# copytree
+# copy a directory from one place to another
+shutil.copytree('p2', 'p3')
+
+# rmtree
+shutil.rmtree('p2')
+
+# move
+shutil.move('p3', 'p2')
+        </pre>
+        </div>
+		<div class = "subtitle">Finding Files</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# which
+# tells the path to an executable applicatio
+shutil.which('ls')
+        </pre>
+        </div>
+		<div class = "subtitle">Archives</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# get_archive_formats
+# returns archive formats supported on the current system
+shutil.get_archive_formats()
+
+# get_unpack_formats
+# returns unpack formats supported on the current system
+shutil.get_unpack_formats()
+
+# make_archive
+# compress the content in the current directory
+shutil.make_archive('compress', 'tar')
+
+# unpack_archive
+shutil.unpack_archive('compress.tar')
+        </pre>
+        </div>
+		<div class = "subtitle">File System Space</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# disk_usage
+# returns a tuple with the total space, the amount currently being used, and the amount remaining free
+total_b, used_b, free_b = shutil.disk_usage('.')
+print(total_b/(2**30), used_b/(2**30), free_b/(2**30))
+        </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li><a href = "https://pymotw.com/3/shutil/index.html">PyMOTW 3</a></li>
+        </div>
+    </body>
+</html>
