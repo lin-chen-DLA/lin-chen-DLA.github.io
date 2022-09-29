@@ -78,6 +78,34 @@ print(a == b) # True
 print(a is b) # False
 		</pre>
 	</div>
+		<div class = "subtitle">Compare Objects</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class MyAge:
+    def __init__(self, n):
+        self.n = n
+
+a1 = MyAge(42)
+a2 = MyAge(42)
+
+a1 == a2 # False
+        </pre>
+		<pre class = "prettyprint linenums">
+class MyAge:
+    def __init__(self, n):
+        self.n = n
+        
+    def __eq__(self, other):
+        if not isinstance(other, MyAge):
+            return NotImplemented
+        return self.n == other.n
+
+a1 = MyAge(42)
+a2 = MyAge(42)
+
+a1 == a2 # True
+        </pre>
+        </div>
 		<div class = "subtitle">cmp, deprecated in Python 3</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">

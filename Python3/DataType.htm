@@ -18,139 +18,128 @@
 		<div class = "subtitle">Types</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
-import sys;
+import sys
 import decimal
-import fractions;
+import fractions
  
 # int, python 3 has no long integer
-n1 = 10;
-print(type(n1));
+n1 = 10
+print(type(n1))
  
 # float
-n2 = 3.14;
-print(type(n2));
-# print(sys.float_info); # float information in Python 3
+n2 = 3.14
+print(type(n2))
+# print(sys.float_info) # float information in Python 3
  
 # complex
-n4 = complex(5, 10);
-print(type(n4));
-print(n4, n4.real, n4.imag);
+n4 = complex(5, 10)
+print(type(n4))
+print(n4, n4.real, n4.imag)
  
 # fraction
-n5 = fractions.Fraction(1, 2);
-print(type(n5), n5, n5.numerator, n5.denominator);
+n5 = fractions.Fraction(1, 2)
+print(type(n5), n5, n5.numerator, n5.denominator)
  
 # decimal
 print(decimal.getcontext())
-n8 = decimal.Decimal('3.1415926');
-print(type(n8), n8);
+n8 = decimal.Decimal('3.1415926')
+print(type(n8), n8)
 decimal.getcontext().prec = 3 # set precision
 n9 = decimal.Decimal('3.104') + decimal.Decimal('2.104')
 print(n9) # 5.21
 
 # binary
-n10 = 0b1001
+n10 = 0b1001 # int
 print(bin(n10), n10) # 0b1001 9
 
 # octal
-n11 = 0o11
+n11 = 0o11 # int
 print(oct(n11), n11) # 0o11 9
 
 # hexadecimal
-n12 = 0x11
+n12 = 0x11 # int
 print(hex(n12), n12) # 0x11 17
 		</pre>
 	</div>
 	<div class = "subtitle">Arithmetic</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
 # int
-n1 = 10;
-n2 = 3;
-print(n1+n2);# 13
-print(n1-n2);# 7
-print(n1*n2);# 30
-print(n1/n2);# 3.33, it is 3 in Python 2
-print(n1//n2);# 3
-print(n1%n2);# 1
-print(divmod(n1, n2));# (3, 1)
-print(pow(n1, n2));# 1000
-print(n1**n2);# 1000
+n1 = 10
+n2 = 3
+print(n1+n2) # 13
+print(n1-n2) # 7
+print(n1*n2) # 30
+print(n1/n2) # 3.33, it is 3 in Python 2
+print(n1//n2) # 3
+print(n1%n2) # 1
+print(divmod(n1, n2)) # (3, 1)
+print(pow(n1, n2)) # 1000
+print(n1**n2) # 1000
 			</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
 from __future__ import division; # include both / and //
  
 # float
-n1 = 3.14;
-n2 = 2.0;
-print(n1+n2);# 5.14
-print(n1-n2);# 1.14
-print(n1*n2);# 6.28
-print(n1/n2);# 1.57, true division
-print(n1//n2);# 1.0, floor division
-print(n1%n2);# 1.14
-print(divmod(n1, n2));# (1.0, 1.14)
-print(pow(n1, n2));# 9.8596
-print(n1**n2);# 9.8596
+n1 = 3.14
+n2 = 2.0
+print(n1+n2) # 5.14
+print(n1-n2) # 1.14
+print(n1*n2) # 6.28
+print(n1/n2) # 1.57, true division
+print(n1//n2) # 1.0, floor division
+print(n1%n2) # 1.14
+print(divmod(n1, n2)) # (1.0, 1.14)
+print(pow(n1, n2)) # 9.8596
+print(n1**n2) # 9.8596
 		</pre>
 	</div>
 	<div class = "subtitle">True and False</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
+x = (1 &lt; 2) # True
+y = (1 == 1) # True
 
-x = (1 &lt; 2);# True
-y = (1 == 1);# True
-
-print (x or y);# True
-print (x and y);# True
-print (not x);# False
+print (x or y) # True
+print (x and y) # True
+print (not x) # False
 			</pre>
 		</div>
 		<div class = "subtitle">Bit Operations</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
+x = 5
+y = 10
  
-x = 5;
-y = 10;
- 
-print(bin(x));# 0b101
-print(bin(y));# 0b1010
-print('or: ', x|y, bin(x|y));#15, 0b1111
-print('and: ', x&y, bin(x&y));#0, 0b0
-print('exclusive: ', x^y, bin(x^y));#15, 0b1111
-print('shifted left: ', x&lt;&lt;2, bin(x&lt;&lt;2), x);#20, 0b10100, 5
-print('shifted right: ', x&gt;&gt;2, bin(x&gt;&gt;2), x);#1, 0b1, 5
-print('bit length: ', x.bit_length(), y.bit_length());#3 4
-print('not: ', ~x, bin(~x));#-6, -0b110
+print(bin(x)) # 0b101
+print(bin(y)) # 0b1010
+print('or: ', x|y, bin(x|y)) #15, 0b1111
+print('and: ', x&y, bin(x&y)) #0, 0b0
+print('exclusive: ', x^y, bin(x^y)) #15, 0b1111
+print('shifted left: ', x&lt;&lt;2, bin(x&lt;&lt;2), x) #20, 0b10100, 5
+print('shifted right: ', x&gt;&gt;2, bin(x&gt;&gt;2), x) #1, 0b1, 5
+print('bit length: ', x.bit_length(), y.bit_length()) #3 4
+print('not: ', ~x, bin(~x)) #-6, -0b110
 			</pre>
 		</div>
 		<div class = "subtitle">Override Functions</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
 # int
-n1 = 10;
-print(type(n1));
+n1 = 10
+print(type(n1))
  
-print(dir(n1));
-print (n1.__str__());
-print (n1.__sizeof__()); #28
-print (n1.__pow__(2)); # 100
-print (n1.__add__(10)); # 20
+print(dir(n1))
+print (n1.__str__())
+print (n1.__sizeof__()) #28
+print (n1.__pow__(2)) # 100
+print (n1.__add__(10)) # 20
 print (n1.__rand__)
-print (n1.__hash__()); # 10
-print (n1.__index__()); # 10
-print (type(n1.__repr__())); # str
+print (n1.__hash__()) # 10
+print (n1.__index__()) # 10
+print (type(n1.__repr__())) # str
 			</pre>
 		</div>
 	<div class = "subtitle">Reference</div>

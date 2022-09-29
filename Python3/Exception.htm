@@ -193,6 +193,80 @@ if __name__ == '__main__':
         print(err.args, err);
 		</pre>
 		</div>
+		<div class = "subtitle">NotImplemented</div>
+		<div class = "block">
+            <li>If NotImplemented is returned, a reflection will be called</li>
+            <li>Should be returned by the binary special methods, e.g. __eq__(), __lt__(), __add__()</li>
+            <li>__radd__ is the reflection function of __add__, it will be used when left object has no __add__ or return NoImplemented</li>
+		<pre class = "prettyprint linenums">
+class MyAge(object):
+    def __init__(self, n):
+        self.n = n
+        
+    def __add__(self, other):
+        if not isinstance(other, MyAge):
+            print('Return NotImplemented')
+            return NotImplemented
+        self.n =self.n + other.n
+        
+    def __str__(self):
+        return 'Age: %d' % self.n
+
+class MyCar(object):
+    def __init__(self, year):
+        self.year = year
+        
+    def __radd__(self, other):
+        print('Call reflection ...')
+        self.year = self.year + other.n
+        
+    def __str__(self):
+        return 'Year: %d' % self.year
+
+a1 = MyAge(42)
+a2 = MyAge(41)
+
+a1+a2 # use __add__ of a1
+print(a1) # 83
+
+c1 = MyCar(10)
+a1 + c1 # use __radd__ of c1 since a1 return NoImplemented
+print(a1, c1) # 83, 93
+        </pre>
+        </div>
+		<div class = "block">
+            <li>__eq__ is the reflection function of another __eq__, no __req__</li>
+            <li>== call __eq__ of left object, then call __eq__ of right object if NoImplemented is returned</li>
+		<pre class = "prettyprint linenums">
+class MyAge:
+    def __init__(self, n):
+        self.n = n
+        
+    def __eq__(self, other):
+        if not isinstance(other, MyAge):
+            return NotImplemented
+        return self.n == other.n
+
+class MyCar(object):
+    def __init__(self, year):
+        self.year = year
+        
+    def __eq__(self, other):
+        print('Call reflection ...')
+        return False
+        
+    def __str__(self):
+        return 'Year: %d' % self.year
+
+a1 = MyAge(42)
+a2 = MyAge(42)
+
+a1 == a2 # __eq__ in MyAge, True
+
+c1 = MyCar(10)
+a1 == c1 # __eq__ in MyCar, False
+        </pre>
+        </div>
 
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
