@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			glob
+		</div>
+
+		<div class = "block">
+            <li>Look for a list of files on the file system with names matching a pattern</li>
+            <li>Pattern rules follow standard Unix path expansion rules</li>
+        </div>
+		<div class = "subtitle">Wildcards</div>
+		<div class = "block">
+            <li>*, matches zero or more characters</li>
+            <li>?, matches any single character</li>
+            <li>[a-z] or [0-9], character range to match one of several characters
+		<pre class = "prettyprint linenums">
+import glob
+
+glob.glob('*') # get files under current directory
+glob.glob('*.py') # get py files under current directory
+glob.glob('p2/*') # get files under a subdirectory
+
+glob.glob('p?.py') # wildcard character representing a single character
+
+glob.glob('p[0-9].py') # character range
+
+glob.glob(glob.escape('[')+'.py') # escape special characters
+		</pre>
+		</div>
+		<div class = "subtitle">Recursive Search</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import glob
+
+glob.glob('**/*.py', recursive=True) # support for recursive globs using **
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from pathlib import Path
+
+[str(path) for path in Path('.').rglob('*.py')]
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import os
+
+files = []
+for root, dirnames, filenames in os.walk('.'):
+    for filename in filenames:
+        if filename.endswith('.py'):
+            files.append(os.path.join(root, filename))
+        </pre>
+        </div>
+		<div class = "subtitle">Relative Path Search</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+glob.glob('../*.py')
+glob.glob('./*.py')
+        </pre>
+        </div>
+		<div class = "subtitle">Absolute Path Search</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+glob.glob('/Users/lin/Documents/Skills/Python/*.py')
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.python.org/3/library/glob.html">Python Document</a></li>
+            <li><a href = "https://pymotw.com/3/glob/">PyMOTW</a></li>
+        </div>
+    </body>
+</html>

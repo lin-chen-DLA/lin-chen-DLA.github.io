@@ -36,7 +36,7 @@ pip install pygrib
         </div>
         <div class = "subtitle">NOAA Forecast Repository</div>
         <div class = "block">
-			<p style = "text-align:center;"><img src = "img/NOAA_1.png" width = "50%"></p>
+			<p style = "text-align:center;"><img src = "img/NOAA_1.png" width = "60%"></p>
 		</div>
 		<div class = "block">
             <li>Multiple records for a name in a grib2 file, have different level values</li>
@@ -69,12 +69,15 @@ msg = grbs.readline() # pygrib._pygrib.gribmessage
 grbs.message(10)
 
 # select
-grbs.select() # get all messages
+grbs.select() # get all messages in a grib2 file
 grbs.select()[0].keys() # get keys
 grbs.select()[index] # get a message, row
-[m.key_name for m in grbs.select()] # get values of a key, column
+# [m.key_name for m in grbs.select()] # get values of a key, column
 selected_grbs = grbs.select(year = 2022, name = 'Temperature') # select messages by key values
 selected_grbs = grbs(year = 2022, name = 'Temperature')
+
+# get features
+set([m.name for m in grbs.select()])
 
 # close the pointer
 grbs.close()
@@ -99,9 +102,9 @@ grbindx.close()
 # get the value of a key of a message
 grb = grbs.select()[0]
 kyes = grb.keys()
-grb.key_name
-grb['key_name']
-
+# grb.key_name
+# grb['key_name']
+grb.name # feature name
 grb.data() # values, latitudes, longitudes
 grb.latlons() # latitudes (-90, 90), longitudes (0, 360)
         </pre>
@@ -129,14 +132,33 @@ plt.colorbar()
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 import pandas as pd
+ 
+# define weather features in need
+features = ['Temperature', 'Pressure', 'Relative humidity']
+
+# fetch values, latitudes, longitudes for each feature
+feature_container = {}
+for grb in grbs:
+    for feature in features:
+        if grb.name == feature:
+            feature_container[grb.name] = grb.data()
+            features.remove(feature) # use the first message for each feature
+
+# convert dict of feature:(values, latitudes, longitudes) to a Pandas DataFrame
+data = feature_container[list(feature_container.keys())[0]]
+lat_size = data[0].shape[0]
+lon_size = data[0].shape[1]
+feature_names = feature_container.keys()
 
 records = []
-for grb in grbs:
-    record = {}
-    for key in grb.keys(): 
-        s = 'record[key] = grb.{key}'.format(key=key)
-        exec(s)
-    records.append(record)
+for lat_index in range(lat_size):
+    for lon_index in range(lon_size):
+        record = {}
+        for feature_name in feature_names:
+            record[feature_name] = feature_container[feature_name][0][lat_index][lon_index]
+            record['latitude'] = feature_container[feature_name][1][lat_index][lon_index]
+            record['longitude'] = feature_container[feature_name][2][lat_index][lon_index]
+        records.append(record)
 
 df = pd.DataFrame.from_records(records)
         </pre>
