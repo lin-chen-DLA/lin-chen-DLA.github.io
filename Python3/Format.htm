@@ -19,43 +19,39 @@
 		<div class = "block">
 			<li>Convert a value to a formatted string</li>
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 d = format(123456, '10,d') # use seperator
-print(d)
+print(d) # 123,456
 
 n = format(3.1415925, '3.2f') # set precision
-print(type(n), n)
+print(type(n), n) # 3.14
 
 s = format('Hello', '&gt;10s') # right align
-print(s, '|')
+print(s, '|') #     Hello |
 		</pre>
 		</div>
 
 		<div class = "subtitle">Old Style</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 # string
-str = "String: %s %s" % ('One', 'Two');
+str = "String: %s %s" % ('One', 'Two')
 
-str = "String: %10s %10s" % ('One', 'Two'); #       One       Two
+str = "String: %10s %10s" % ('One', 'Two') #       One       Two
 
-str = "String: %-10s %-10s" % ('One', 'Two'); #One       Two       
+str = "String: %-10s %-10s" % ('One', 'Two') #One       Two       
 
-str = "String: %10.2s %10.2s" % ('One', 'Two'); #        On        Tw
+str = "String: %10.2s %10.2s" % ('One', 'Two') #        On        Tw
 
 # number
-str = "Number: %d %f" % (10, 3.14); # 10 3.140000
+str = "Number: %d %f" % (10, 3.14) # 10 3.140000
 
-str = "Number: %10d %10.2f" % (10, 3.14); #      10      3.14
+str = "Number: %10d %10.2f" % (10, 3.14) #      10      3.14
 
 str = "Number: %010d %010.2f" % (10, 3.14) #0000000010 0000003.14
 
 # named placeholder
-d = {'name':'Lin', 'age':37};
-str = "%(name)s %(age)d" % d;
+d = {'name':'Lin', 'age':37}
+str = "%(name)s %(age)d" % d
 		</pre>
 		</div>
 
@@ -63,51 +59,45 @@ str = "%(name)s %(age)d" % d;
 		<div class = "block">
 			<li>[[fill]align][sign][#][0][width][grouping_option][.precision][type]</li>
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
 # string
-str = "String: {} {}".format('One', 'Two'); #One Two
+str = "String: {} {}".format('One', 'Two')  # One Two
  
-str = "String: {1} {0}".format('One', 'Two'); #Two One
+str = "String: {1} {0}".format('One', 'Two') # Two One
  
-str = "String: {:&gt;10} {:&gt;10}".format('One', 'Two'); #       One       Two
+str = "String: {:&gt;10} {:&gt;10}".format('One', 'Two') #       One       Two
  
 str = "String: {:^10} {:^10}".format('One', 'Two'); #    One       Two
  
-str = "String: {:&lt;10} {:&lt;10}".format('One', 'Two'); #One       Two
+str = "String: {:&lt;10} {:&lt;10}".format('One', 'Two') # One       Two
  
-str = "String: {:_&lt;10} {:_&lt;10}".format('One', 'Two'); #One_______ Two_______
+str = "String: {:_&lt;10} {:_&lt;10}".format('One', 'Two') # One_______ Two_______
 
-str = "Integer: {:_=+10} {:_=+10}".format(10, 100); #One_______ Two_______
-print(str)
+str = "Integer: {:_=+10} {:_=+10}".format(10, 100) # +_______10 +______100
  
-str = "String: {:&gt;10.2} {:&gt;10.2}".format('One', 'Two'); #        On        Tw
+str = "String: {:&gt;10.2} {:&gt;10.2}".format('One', 'Two') #        On        Tw
  
 # number
-str = "Number: {:d} {:f}".format(10, 3.14); # 10 3.140000
+str = "Number: {:d} {:f}".format(10, 3.14) # 10 3.140000
  
-str = "Number: {:10d} {:10.2f}".format(10, 3.14); #      10      3.14
+str = "Number: {:10d} {:10.2f}".format(10, 3.14) #      10      3.14
  
 str = "Number: {:010d} {:010.2f}".format(10, 3.14) #0000000010 0000003.14
  
 # named placeholder
-d = {'name':'Lin', 'age':37};
-str = "{name} {age}".format(**d);
+d = {'name':'Lin', 'age':37}
+str = "{name} {age}".format(**d)
 
 # format string
-s = 'Lin'
-str = f'Name: {s}'
+name = 'Lin'
+str = f'Name: {name}' # Name: Lin
 
 # accessing arguments by name
-str = 'Name: {fname}, {lname}'.format(fname='Lin', lname='Chen')
-print(str) # Name: Lin, Chen
+str = 'Name: {fname}, {lname}'.format(fname='Lin', lname='Chen') # Name: Lin, Chen
 
-str = 'Name: {{Hello}} {fname}, {lname}'.format(fname='Lin', lname='Chen')
-print(str) # Name: {Hello} Lin, Chen
+str = 'Name: {{Hello}} {fname}, {lname}'.format(fname='Lin', lname='Chen') # Name: {Hello} Lin, Chen
 
 # converting the value to different bases
-str = "int: {0:d};  hex: {0:x};  oct: {0:o};  bin: {0:b}".format(42)
-print(str)
+str = "int: {0:d};  hex: {0:x};  oct: {0:o};  bin: {0:b}".format(42) # int: 42;  hex: 2a;  oct: 52;  bin: 101010
 		</pre>
 		</div>
 

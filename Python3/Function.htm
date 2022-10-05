@@ -18,65 +18,62 @@
 
 		<div class = "subtitle">Pass by reference</div>
 		<div class = "block">
-			<pre class = "prettyprint linenums">
-# pass by reference
-def f2(m, im):
-    print('----------------Inside function-------------')
-    print(id(m), m) # 13977378998840, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    print(id(im), im) # 38097024, 10
-    m.append(100);
-    im = 100;
-    print(id(m), m) # 13977378998840, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100]
-    print(id(im), im) # 38098848, 100
-    print('---------------Leave function--------------')
- 
-a = 10; # 38097024 10
-b = list(range(10)) # 13977378998840, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,]
-print(id(a), a)
-print(id(b), b)
-
-f2(b, a);
-print(id(a), a) # 38097024, 10
-print(id(b), b) # 13977378998840, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100]
-			</pre>
-		</div>
-		<div class = "block">
 			<ul>
 				<li>All parameters (arguments) in the Python language are passed by reference</li>
 				<li>Mutable parameters, can be modified by function</li>
 				<li>Immutable parameters, cannot be modified by function</li>
 			</ul>
 		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+            # pass by reference
+def f2(m, im):
+    print('----------------Inside function-------------')
+    print(id(m), m) # 140426914615040 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    print(id(im), im) # 140426908592720 10
+    m.append(100);
+    im = 100;
+    print(id(m), m) # 140426914615040 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100]
+    print(id(im), im) # 140426908784080 100
+    print('---------------Leave function--------------')
+
+a = 10; # 38097024 10
+b = list(range(10)) # 13977378998840, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,]
+print(id(a), a) # 140426908592720 10
+print(id(b), b) # 140426914615040 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+f2(b, a);
+print(id(a), a) # 140426908592720 10
+print(id(b), b) # 140426914615040 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100]
+			</pre>
+		</div>
 
 		<div class = "subtitle">Default arguments</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-# default arguments
 def f1(p1, p2 = 10):
     print(p1, p2)
 
-f1(1)
+f1(1) # 1 10
 			</pre>
 		</div>
 
 		<div class = "subtitle">Keyword arguments</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-# keyword arguments
 def f3(p1 = 1, p2 = 2):
     print(p1, p2)
-
-f3(p2 = 10)
+ 
+f3(p2 = 10, p1 = 100) # 100 10
 			</pre>
 		</div>
 
 		<div class = "subtitle">Variable-length arguments</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-# variabel-length arguments
 def f4(*vartuple):
-    print('Lenght: ', len(vartuple))
-    print(type(vartuple), vartuple) # vartuple is a tuple
+    print('Lenght: ', len(vartuple)) # 4
+    print(type(vartuple), vartuple) # (1, 2, 3, 'end'), vartuple is a tuple
     for i in vartuple:
         print(i)
  
@@ -139,28 +136,25 @@ f(**d)
 #!/usr/bin/python
  
 #lambda
-sum = lambda arg1, arg2: arg1+arg2;
+sum = lambda arg1, arg2: arg1+arg2
  
 print(sum(10, 20)) #30
  
 #map
 def t(arg):
-    return arg*10;
+    return arg*10
  
-l = [1, 2, 3, 4];
-r = map(t, l) #[10, 20, 30, 40], use function
-print(list(r))
+l = [1, 2, 3, 4]
+r = map(t, l) # [10, 20, 30, 40], use function
+
 r = map(lambda x: x*10, l) #[10, 20, 30, 40], using lambda
-print(list(r))
  
 #filter
-r = filter(lambda x: x%2 == 0, l) #[2, 4]
-print(list(r))
+r = filter(lambda x: x%2 == 0, l) # [2, 4]
  
-from functools import reduce
 #reduce
-r = reduce(lambda x, y: x+y, l) #10
-print(r)
+from functools import reduce
+r = reduce(lambda x, y: x+y, l) # 10
 			</pre>
 		</div>
 
@@ -168,8 +162,6 @@ print(r)
 		<div class = "block">
 			<li>return multiple values, which are saved in a tuple</li>
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
 def getNums():
     return 1, 2
  
@@ -185,8 +177,6 @@ print(t) # (1, 2), t is a tuple
 		</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 def getNum_1():
     return 1 # return an integer
 
@@ -217,16 +207,14 @@ if __name__ == '__main__':
 		<div class = "subtitle">Recursive</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
 # recursive
 def fib(n):
-    ''' Doc String
+    """Doc String
     Args:
         n (int), integer number
     Return:
         int, fib number
-    '''
+    """
     if n &lt;= 1:
         return 1
     else:
@@ -240,8 +228,6 @@ print(fib(10))
 		<div class = "block">
 			<li>functools.partial, is used for partial function application which “freezes” some portion of a function’s arguments and/or keywords resulting in a new object with a simplified signature</li>
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 from functools import partial
 
 def f(a, b):
@@ -254,8 +240,6 @@ p(1) # 1 10, pass 1 to a, p() only need one argument
 		<div class = "block">
 			<li>functools.update_wrapper, to allow access to the original function for introspection and other purposes</li>
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 from functools import partial, update_wrapper
 
 def f(a, b):
@@ -273,8 +257,6 @@ print(p.__doc__, p.__name__)
 		<div class = "block">
 			<li>functools.partialmethod, returns a callable ready to be used as an unbound method of an object</li>
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 from functools import partialmethod
 
 def getInfo(self, a, b):
@@ -299,8 +281,6 @@ c.method(1)
 		<div class = "block">
 			<li>functools.wraps, updating the properties of a wrapped callable when used in a decorator</i>
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 # use decorator
 
 def d(f):
@@ -320,8 +300,6 @@ print(dwrapper.__doc__, dwrapper.__name__) # None decorated
 f(b = 1) # 10 1
 			</pre>
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 # use wraps() to define a decorator
 
 from functools import wraps
@@ -344,8 +322,6 @@ print(dwrapper.__doc__, dwrapper.__name__) # Docstring for f ... f
 		<div class = "block">
 			<li>functools.lru_cache, wraps a function in a least-recently-used cache, subsequent calls with the same arguments will fetch the value from the cache instead of calling the function</li>
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 from functools import lru_cache
 
 @lru_cache()
@@ -364,8 +340,6 @@ f.cache_clear() # clear cache
 		<div class = "block">
 			<li>Python does not have real function overload, either use overloading module or isinstance to check and handle different type of inputs</li>
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 def info(m):
     if isinstance(m, str):
         return 'Str: '+m
@@ -381,8 +355,6 @@ print(info(3.14)) # raise error
 		</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 # use default value to work as overloaded function
 def info(a, b = None):
     if b is None:
@@ -419,7 +391,7 @@ func.call = 0
 func()
 func()
 
-print(func.call)
+print(func.call) # 2
             </pre>
         </div>
 

@@ -63,6 +63,8 @@ print(id(s)) # 4422194416
 		<div class = "subtitle">Assignment</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
+#!/usr/bin/python
+ 
 # create an object and assign the reference to l
 l = list(range(10))
  
@@ -89,7 +91,11 @@ print(id(i), id(i2), id(i3)) # i and i2 are same, and i3 have a different id
 		</div>
 		<div class = "subtitle">User defined class</div>
 		<div class = "block">
+			<li>user defined class can be used as both mutable and immutable</li>
+		</div>
+		<div class = "block">
 			<pre class = "prettyprint linenums">
+# mutable
 class Vehicle(object):
     """Document String: Define a Vehicle class"""
  
@@ -106,14 +112,15 @@ class Vehicle(object):
         if isinstance(other, self.__class__):
             return self._brand == other._brand
         return NotImplemented
-			</pre>
-			<pre class = "prettyprint linenums">
-# mutable object
+
 def change(v):
     print('Inside function ...')
     print(id(v)) # 4350403216
     v._brand = 'Lincoln'
-
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
 def main():
     v = Vehicle("Buick")
     print(id(v)) # 4350403216
@@ -130,8 +137,8 @@ if __name__ == '__main__':
 		</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-# can be used as immutable object if __hash__ and __eq__ are defined
-# use as dictionary key
+# immutable, need define __hash__ and __eq__
+# dictionary use immutable data type as key
 
 def main():
     v = Vehicle("Buick")

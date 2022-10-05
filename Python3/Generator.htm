@@ -201,14 +201,14 @@ isinstance(g, Iterable) # True
 isinstance(g, Iterator) # True
 isinstance(g, types.GeneratorType) # True
 
-for i in g:
+for i in g: # 0 1 4 9
 	print(i)
 
 for i in g: # do nothing, g has been consumed in the above for loop
 	print(i)
 		</pre>
 		</div>
-		<div class = "subtitle">Implement Generator as Class</div>
+		<div class = "subtitle">Implement Generator</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 def grange(n):
@@ -224,15 +224,31 @@ isinstance(g, Iterable) # True
 isinstance(g, Iterator) # True
 isinstance(g, types.GeneratorType) # True
 
-for i in l:
+# use as an iterable
+for i in g:
 	print(i)
  
-for i in l: # do not print anything, l has been consumed
+for i in g: # do not print anything, g has been consumed
 	print(i)
+
+# use as an iterator
+try:
+    while True: 
+        temp = next(g) # int
+        print(temp)
+except StopIteration:
+    pass
+
+try:
+    while True: # print nothing, iterator has been comsumed
+        temp = next(g) # int
+        print(temp)
+except StopIteration:
+    pass
 		</pre>
 		</div>
 
-		<div class = "subtitle">Memory</div>
+		<div class = "subtitle">Memory Size</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 import sys
@@ -241,7 +257,7 @@ import sys
 l = [x*x for x in range(100)]
 sys. getsizeof(l) # 920
 
-# list ierator
+# list iterator
 obj = iter(l)
 sys. getsizeof(obj) # 48
         </pre>

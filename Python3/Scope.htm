@@ -30,8 +30,6 @@
 			<li>globals() will give you a dictionary of global variables</li>
 			<li>locals() will give you a dictionary of local variables</li>
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 n = 10; #global variables
 
 def f():
@@ -46,8 +44,6 @@ f();
 		</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
 n = 10 # global variable
 print(id(n), n) # 4405450128 10
  
@@ -149,8 +145,6 @@ print(id(t), t) # 140249594380832, 100
 		<div class = "subtitle">import module</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-#!/usr/bin/pyhton
- 
 def f():
     import math; # import math in local namespace
     print(math.pi)
