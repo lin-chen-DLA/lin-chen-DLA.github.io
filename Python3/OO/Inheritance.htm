@@ -22,8 +22,8 @@ class Vehicle(object):
     """Document String: Define a Vehicle class"""
  
     def __init__(self, brand, year):
-        self._brand = brand;
-        self._year = year;
+        self._brand = brand
+        self._year = year
  
     @property
     def brand(self):
@@ -31,7 +31,7 @@ class Vehicle(object):
  
     @brand.setter
     def brand(self, b):
-        self._brand = b;
+        self._brand = b
  
     @brand.deleter
     def brand(self):
@@ -58,16 +58,17 @@ class Vehicle(object):
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums" id = "isclass">
-from Vehicle import Vehicle;
+from Vehicle import Vehicle
  
 class Car(Vehicle):
     """Define class Car, which is inherit from class Vehicle"""
     def __init__(self, brand, year, model):
         """Construct"""
         print("Create Car Object ...")
-        super(Car, self).__init__(brand, year);
-        #Vehicle.__init__(self, brand, year);
-        self.__model = model;
+        super().__init__(brand, year)
+        #super(Car, self).__init__(brand, year)
+        #Vehicle.__init__(self, brand, year)
+        self.__model = model
 
     @property
     def model(self):
@@ -188,8 +189,63 @@ if __name__ == '__main__':
     main();
 		</pre>
 		</div>
+		<div class = "subtitle">Multiple inheritance</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/OO_1.png" width = "20%"></p>
+		</div>
+        <div class = "block">
+            <li>A given attribute is first searched in the current class. If it’s not found then it’s searched in the parent classes</li>
+            <li>The parent classes are searched in a left-right fashion and each class is searched once</li>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+class A(object):
+    def __init__(self, v):
+        self.value = v
+    
+    def getA(self):
+        return 'A'
+    
+    def __str__(self):
+        return 'A: '+str(self.value)
+        
+class B(object):
+    def __init__(self, n):
+        self.name = n
+    
+    def getB(self):
+        return 'B'
+    
+    def __str__(self):
+        return 'B: '+str(self.name)
+        
+class C(A, B):
+    def __init__(self, v, n):
+        A.__init__(self, v)
+        B.__init__(self, n)
+    
+    def getC(self):
+        return 'C'
+    
+    def __str__(self):
+        return 'C: '+A.__str__(self)+' '+B.__str__(self)
+        
+c = C(43, 'Lin')
+
+print(c.getA()) # A, C inherits getA() from A
+print(c.getB()) # B, C inherits getB() from B
+print(c.getC()) # C, call getC() in C
+
+print(c) # C: A: 43 B: Lin, call __str__() in C, override parent __str__()
+print(C.__str__(c)) # C: A: 43 B: Lin
+
+print(A.__str__(c)) # A: 43, call __str__() in A
+print(B.__str__(c)) # B: Lin, call __str__() in B
+        </pre>
+        </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://www.geeksforgeeks.org/multiple-inheritance-in-python/">Multiple Inheritance in Python</a></li>
 			<li>Python How to Program, Chapter 9</li>
 		</div>
 	</body>

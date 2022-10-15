@@ -17,84 +17,286 @@
 		</div>
 
 		<div class = "block">
-			<li><span>Instance Methods:</span> The most common method type. Able to access data and properties unique to each instance.</li>
-			<li><span>Static Methods:</span> Cannot access anything else in the class. Totally self-contained code.</li>
-			<li><span>Class Methods:</span> Can access limited methods in the class. Can modify class specific details.</li>
+			<li><span>Instance Methods</span>
+                <ul>
+                    <li>Can access instance methods, instance attributes, static methods, static attributes, class methds</li>
+                </ul>
+            </li>
+			<li><span>Static Methods</span>
+                <ul>
+                    <li>Is bound to the class and not the object of the class, can’t access or modify the class state</li>
+                    <li>Can access other static methods, static attributes</li>
+                    <li>Cannot access instance methods, instance attributes, class methods</li>
+                </ul>
+            </li>
+			<li><span>Class Methods</span>
+                <ul>
+                    <li>Is bound to the class and not the object of the class, can modify a class state that would apply across all the instances of the class</li>
+                    <li>Can access other class methods, static methods, static attributes</li>
+                    <li>Can access instance attributes when changing class state by calling __init__</li>
+                    <li>Cannot access instance methods</li>
+                </ul>
+            </li>
 		</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/OO_3.png" width = "50%"></p>
+		</div>
+        <div class = "subtitle">Instance Method</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-class Vehicle(object):
-    """Document String: Define a Vehicle class"""
- 
-    count = 0; # static variable
+class A(object):
+    def __init__(self, v):
+        self.value = v
+        
+    def instance(self):
+        return self.value
+    
+    def instance2(self):
+        self.instance()
+        
+a = A(10)
 
-    def info():
-        return Vehicle.count;
-
-    info = staticmethod(info) # static function
-
-    def __init__(self, brand, year):
-        self._brand = brand;
-	self._year = year;
-        Vehicle.count += 1;
- 
-    def __str__(self):
-        return self._brand+' '+str(self._year)
-
-    def __del__(self):
-        Vehicle.count -= 1;
-
-def main():
-    vehicles = [Vehicle("Buick", 1998), Vehicle("Lincoln", 1999)]
-
-    print(Vehicle.info())
-    print(vehicles[1].info())
-
-if __name__ == '__main__':
-    main()
-		</pre>
-		</div>
+a.instance2()
+        </pre>
+        </div>
+        <div class = "subtitle">Static Method</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-class Vehicle(object):
-    """Document String: Define a Vehicle class"""
- 
-    count = 0;
+# define static method by staticmethod()
+class A(object):
+    def __init__(self, v):
+        self.value = v
+        
+    def static():
+        return 'S ...'
+    
+    static = staticmethod(static)
+        
+# call by class
+A.static()
+
+# call by instance
+#a = A(10)
+#a.static()
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# define static method by decorator
+class A(object):
+    def __init__(self, v):
+        self.value = v
+        
+    @staticmethod
+    def static():
+        return 'S ...'
+        
+# call by class
+A.static()
+
+# call by instance
+#a = A(10)
+#a.static()
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# static method calls static method
+class A(object):
+    def __init__(self, v):
+        self.value = v
+        
+    @staticmethod
+    def static():
+        return 'S ...'
+    
+    @staticmethod
+    def static2():
+        return A.static()
+        
+# call by class
+A.static2()
+
+# call by instance
+a = A(10)
+a.static2()
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# instance method call static method
+class A(object):
+    def __init__(self, v):
+        self.value = v
+        
+    @staticmethod
+    def static():
+        return 'S ...'
+    
+    def instance(self):
+        return A.static()
+
+# call by instance
+a = A(10)
+a.instance()
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# static variable can be accessed by static method and instance method
+class A(object):
+    count = 0 # static variable
+    
+    def __init__(self, v):
+        self.value = v
+        
+    @staticmethod
+    def static():
+        return A.count
+    
+    def instance(self):
+        return A.count
+
+a = A(10)
+a.static()
+a.instance()
+        </pre>
+        </div>
+        <div class = "subtitle">Class Method</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# define class method
+class A(object):
+    def __init__(self, v):
+        self.value = v
+    
+    @classmethod
+    def classmeth(cls):
+        return 'C ...'
+
+# call by class
+A.classmeth()
+
+# call by instance
+#a = A(10)
+#a.classmeth()
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# class method can call static variable and static method
+class A(object):
+    count = 0
+
+    def __init__(self, v):
+        self.value = v
 
     @staticmethod
-    def info():
-        return Vehicle.count;
+    def static():
+        return A.count
 
     @classmethod
-    def cla(cls):
-        print('Call class method ...')
-        print(Vehicle.info()) # class methods can call static methods
+    def classmeth(cls):
+        return A.static()
 
-    def __init__(self, brand, year):
-        self._brand = brand;
-	self._year = year;
-        Vehicle.count += 1;
- 
-    def __str__(self):
-        return self._brand+' '+str(self._year)
+    @classmethod
+    def classmeth2(cls):
+        return A.count
 
-    def __del__(self):
-        Vehicle.count -= 1;
+A.classmeth()
+A.classmeth2()
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# class method call class method
+class A(object):
+    count = 0
+    
+    def __init__(self, v):
+        self.value = v
+        
+    @staticmethod
+    def static():
+        return A.count
+    
+    @classmethod
+    def classmeth(cls):
+        return A.static()
+    
+    @classmethod
+    def classmeth2(cls):
+        return cls.classmeth()
+    
+A.classmeth2()
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# static method call class method
+class A(object):
+    count = 0
+    
+    def __init__(self, v):
+        self.value = v
+        
+    @staticmethod
+    def static():
+        return A.classmeth()
+    
+    @classmethod
+    def classmeth(cls):
+        return A.count
+    
+A.static()
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# instance method call class method
+class A(object):
+    count = 0
+    
+    def __init__(self, v):
+        self.value = v
+    
+    @classmethod
+    def classmeth(cls):
+        return A.count
+    
+    def instance(self):
+        return A.classmeth()
+    
+a = A(10)
+a.instance()
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create new instance with class method
+class A(object):
+    def __init__(self, v):
+        print('Call init ...')
+        self.value = v
+    
+    @classmethod
+    def classmeth(cls, value): # call __init__
+        return cls(value)
+    
+    def instance(self):
+        return self.value
+    
+a = A(10) # call __init__
+a = A.classmeth(100) # call __init__, create a new instance
+a.instance() # 100
 
-def main():
-    vehicles = [Vehicle("Buick", 1998), Vehicle("Lincoln", 1999)]
-
-    print(Vehicle.info()) # call static method
-    print(vehicles[1].info())
-
-    Vehicle.cla() # call class method
-
-if __name__ == '__main__':
-    main()
-		</pre>
-		</div>
+a.classmeth(200) # call __init__, return an instance, not change original instance
+a.instance() # 100
+        </pre>
+        </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://www.geeksforgeeks.org/class-method-vs-static-method-python/">Class method vs Static method in Python</a></li>
 			<li><a href = "https://www.makeuseof.com/tag/python-instance-static-class-methods/">Instance vs. Static vs. Class Methods in Python: The Important Differences</a></li>
 		</div>
 	</body>

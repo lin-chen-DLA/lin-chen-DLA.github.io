@@ -80,13 +80,16 @@ print(c.join(['a', 'b', 'c']))
 print(s.lower())
 
 #replace
-print(s.replace('l', '-', 2))
+print(s.replace('l', '-')) # replace all occurrences
+print(s.replace('l', '-', 2)) # replace at most max occurrences
 
 #split
 str = "Line1-abcdef, \nLine2-abc, \nLine4-abcd"
 print(str.split())
+
 import re
-print(re.split('\n|, ',str)) # use multiple delimiter
+# use multiple delimiter
+print(re.split('\n|, ',str)) # ['Line1-abcdef', '', 'Line2-abc', '', 'Line4-abcd']
 
 #strip
 print('  Hello ... '.strip())
@@ -103,7 +106,7 @@ s = Template('$fname, $lname, $fname')
 
 sub = s.substitute(fname='Lin', lname='Chen')
 
-print(sub)
+print(sub) # Lin, Chen, Lin
         </pre>
         </div>
 		<div class = "subtitle">Regular Expression</div>
@@ -136,21 +139,23 @@ print(sub)
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
 import re
  
 phone = "2004-959-559 # This is Phone Number"
  
-#match
-m = re.match(r'(\d+)-(\d+)-\d+.*', phone)
+# match
+# match RE pattern to string
+# checks for a match only at the beginning of the string
+m = re.match(r'(\d+)-(\d+)-\d+.*', phone) # use () to group matches
 if m:
     print(type(m))
     print(m.group()) #2004-959-559 # This is Phone Number
     print(m.group(1)) # 2004
     print(m.groups()) # ('2004', '959')
  
-#search
+# search
+# searches for first occurrence of RE pattern
+# checks for a match anywhere in the string
 s = re.search(r'\d+', phone)
 if s:
     print(type(s))
@@ -177,8 +182,6 @@ print(r) # ****-***-***, This is Phone Number
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 # unicode and str
 # same in Python 3
 s = 'Café' # str
@@ -252,6 +255,7 @@ f.close()
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
             <li><a href = "https://betterprogramming.pub/strings-unicode-and-bytes-in-python-3-everything-you-always-wanted-to-know-27dc02ff2686">Strings, Unicode, and Bytes in Python 3: Everything You Always Wanted to Know</a></li>
+            <li><a href = "https://docs.python.org/3/library/re.html">Python 3 Standard Library</a></li>
 			<li><a href = "https://www.tutorialspoint.com/python3/python_strings.htm">Tutorialspoint String</a></li>
 			<li><a href = "https://www.tutorialspoint.com/python3/python_reg_expressions.htm">Regular Expression</a></li>
 			<li><a href = "https://www.pythonsheets.com/notes/python-unicode.html#encode-unicode-code-point-to-bytes">Unicode cheat sheet</a></li>

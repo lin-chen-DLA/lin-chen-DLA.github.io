@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Dice
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import random
+
+class MSDie:
+    """
+    Multi-sided die
+
+    Instance Variables:
+        current_value
+        num_sides
+
+    """
+
+    def __init__(self, num_sides: int) -&gt; None:
+        """Create an instance and genearte a random value
+        
+        Arg:
+            num_sides (int): number of sides on dice
+            
+        Return:
+            None
+        """
+        self.__num_sides = num_sides
+        self.__current_value = self.roll()
+        
+    @property
+    def side(self) -&gt; int:
+        return self.__num_sides
+    
+    @side.setter
+    def side(self, s: int) -&gt; None:
+        self.__num_sides = s
+        
+    @side.deleter
+    def side(self) -&gt; None:
+        del self.__num_sides
+        
+    @property
+    def num(self) -&gt; int:
+        return self.__current_value
+    
+    @num.setter
+    def num(self, n: int) -&gt; None:
+        self.__current_value = n
+        
+    @num.deleter
+    def num(self) -&gt; None:
+        del self.__current_value
+
+    def roll(self) -&gt; int:
+        """Create a random number
+        
+        Return:
+            int: current dice value
+        """
+        self.__current_value = random.randrange(1,self.__num_sides+1)
+        return self.__current_value
+    
+    def __str__(self) -&gt; str:
+        return 'Dice: '+str(self.__current_value)
+
+    def __repr__(self) -&gt; str:
+        return "MSDie({}) : {}".format(self.__num_sides, self.__current_value)
+    
+    def __eq__(self, other: 'MSDie') -&gt; bool:
+        if self.__current_value == other.__current_value:
+            return True
+        else:
+            return False
+        
+    def __lt__(self, other: 'MSDie') -&gt; bool:
+        if self.__current_value &lt; other.__current_value:
+            return True
+        else:
+            return False
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+my_die = MSDie(6)
+print(my_die.side, my_die.num)
+
+d1 = MSDie(6)
+d2 = MSDie(6)
+
+print(d1, d2)
+print(d1 == d2)
+print(d1 &lt; d2)
+print(d1 &gt; d2)
+        </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://runestone.academy/ns/books/published/pythonds/ProperClasses/a_proper_python_class.html#a-basic-implementation-of-the-msdie-class">Problem Solving with Algorithms and Data Structures using Python</a></li>
+        </div>
+    </body>
+</html>

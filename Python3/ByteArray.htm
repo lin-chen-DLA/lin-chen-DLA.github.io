@@ -21,14 +21,10 @@
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 s = b'Hello World!'
-print(s, type(s))
+print(s, type(s)) # b'Hello World!' bytes
 		</pre>
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
-
 s = 'Hello'
 
 b = bytes(s, encoding = 'utf-8')
@@ -46,67 +42,65 @@ print(b[0], b[1]) # 72 101
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
 # convert list to bytearray
-arr = bytearray([97, 98, 99, 99]);
+arr = bytearray([97, 98, 99, 99])
+print(arr) # bytearray(b'abcc')
+
+# convert string to bytearray
+string = 'abcc'
+arr = bytearray(string, 'utf-8') # string with encoding 'utf-8'
 print(arr) # bytearray(b'abcc')
  
 # convert bytearray to bytes
 print(bytes(arr)); # b'abcc'
  
 # modify elements
-arr[0] = 10;
+arr[0] = 10
  
 # access element
 print(arr) # bytearray(b'\nbcc')
  
 # slicing
-print(arr[:2]); # bytearray(b'\nb')
+print(arr[:2]) # bytearray(b'\nb')
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
- 
-arr = bytearray("Café", "utf-8");
+arr = bytearray("Café", "utf-8")
 print(type(arr))
  
 # convert to string
-s = str(arr) # unicode
-print(type(s), s); # unicode, bytearray(b'Caf\xc3\xa9')
-
 u = arr.decode('utf-8')
 print(type(u), u) # unicode, Café
  
 #count
-print(arr.count(b'a'));
+print(arr.count(b'a'))
 
 # in
 if 97 in arr:
     print('a in arr ...')
 
 # concatenation
-print(arr+bytearray(b'dddddddd'));
+print(arr+bytearray(b'dddddddd'))
 
 #conver to list
-print(list(arr)); #[67, 97, 102, 195, 169]
+print(list(arr)) # [67, 97, 102, 195, 169]
 
 #append
-arr.append(97);
+arr.append(97)
 print(arr)
 
 #delete
-del arr[:2];
+del arr[:2]
 print(arr)
 
 #insert
-arr.insert(0, 98);
-print(arr);
+arr.insert(0, 98)
+print(arr)
 
 #replace
-arr = arr.replace(b'b', b'c');
-print(arr);
+arr = arr.replace(b'b', b'c')
+print(arr)
 		</pre>
 		</div>
 		<div class="subtitle">Reference</div>
