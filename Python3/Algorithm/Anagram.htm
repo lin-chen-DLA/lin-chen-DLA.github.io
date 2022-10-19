@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Anagram</div>
+		<div class = "block">
+            <li>One string is an anagram of another if the second is simply a rearrangement of the first</li>
+            <li>For example, 'heart' and 'earth' are anagrams, 'python' and 'typhon' are anagrams</li>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+def anagram(s1,s2):
+    """Check if s1 is a anagram of s2
+    
+    Args:
+        s1 (str), a string consisted of 26 letters
+        s2 (str), a string consisted of 26 letters
+        
+    Return:
+        boolean
+    """
+    if len(s1) != len(s2): # O(1)
+        return False
+    
+    s1 = s1.lower() # O(n)
+    s2 = s2.lower() # O(n)
+    
+    array_1 = [0]*26 # O(n), save 26 letters in s1
+    array_2 = [0]*26 # O(n), save 26 letters in s2
+    
+    for letter in s1: # O(n)
+        index = ord(letter) - ord('a')
+        array_1[index] += 1
+        
+    for letter in s2: # O(n)
+        index = ord(letter) - ord('a')
+        array_2[index] += 1
+        
+    for i in range(26): # O(1)
+        if array_1[i] != array_2[i]:
+            return False
+        
+    return True
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+s1 = 'heart'
+s2 = 'earth'
+anagram(s1, s2) # True
+
+s1 = 'python'
+s2 = 'typhon'
+anagram(s1, s2) # True
+            </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://runestone.academy/ns/books/published/pythonds/AlgorithmAnalysis/AnAnagramDetectionExample.html">Problem Solving with Algorithms and Data Structures using Python</a></li>
+        </div>
+    </body>
+</html>

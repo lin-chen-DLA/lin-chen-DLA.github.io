@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Hashlib
+		</div>
+		<div class = "subtitle">Hash Algorithms</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import hashlib
+
+# guaranteed algorithms
+# 'blake2b,blake2s,md5,sha1,sha224,sha256,sha384,sha3_224,sha3_256,sha3_384,sha3_512,sha512,shake_128,shake_256'
+hashlib.algorithms_guaranteed
+
+# available algorithms
+# 'blake2b,blake2s,md4,md5,md5-sha1,mdc2,ripemd160,sha1,sha224,sha256,sha384,sha3_224,sha3_256,sha3_384,sha3_512,sha512,sha512_224,sha512_256,shake_128,shake_256,sm3,whirlpool'
+hashlib.algorithms_available
+            </pre>
+        </div>
+		<div class = "subtitle">Hash</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# MD5
+h = hashlib.md5() # create a hash object
+h.update(manifesto.encode('utf-8')) # add data
+h.hexdigest() # hash code in hex
+
+h = hashlib.new('md5')
+h.update(b"Nobody inspects the spammish repetition")
+h.hexdigest()
+            </pre>
+			<pre class = "prettyprint linenums">
+# SHA1
+h = hashlib.sha1() # create a hash object
+h.update(manifesto.encode('utf-8')) # add data
+h.hexdigest() # hash code in hex
+            </pre>
+			<pre class = "prettyprint linenums">
+# SHA3-512
+h = hashlib.sha3_512() # create a hash object
+h.update(manifesto.encode('utf-8')) # add data
+h.hexdigest() # hash code in hex
+            </pre>
+        </div>
+		<div class = "subtitle">Incremental Updates</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+h = hashlib.md5()
+h.update('Hello'.encode('utf-8'))
+h.hexdigest() # '8b1a9953c4611296a827abf8c47804d7'
+
+h.update('World'.encode('utf-8'))
+h.hexdigest() # '68e109f0f40ca72a15e05cc22786f8e6'
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.python.org/3/library/hashlib.html">Python 3 Standard Library</a></li>
+            <li><a href = "https://pymotw.com/3/hashlib/">PyMOTW</a></li>
+        </div>
+    </body>
+</html>

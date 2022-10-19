@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Universally Unique Identifiers (UUID)
+		</div>
+		<div class = "block">
+            <li>UUID values are 128 bits long, guarantee uniqueness across space and time</li>
+            <li>Used to generate identifiers for documents, hosts, application clients, and other situations where a unique value is necessary</li>
+        </div>
+		<div class = "subtitle">Algorithms</div>
+		<div class = "block">
+            <li>Using IEEE 802 MAC addresses as a source of uniqueness</li>
+            <li>Using pseudo-random numbers</li>
+            <li>Using well-known strings combined with cryptographic hashing</li>
+        </div>
+		<div class = "subtitle">UUID 1</div>
+		<div class = "block">
+            <li>generate a UUID for a host, identified by its MAC address</li>
+            <li>each call to uuid1() returns a new value</li>
+			<pre class = "prettyprint linenums">
+u = uuid.uuid1()
+u.version # version
+u.hex # hex
+u.int # int
+            </pre>
+        </div>
+		<div class = "subtitle">UUID 3 and 5</div>
+		<div class = "block">
+            <li>Create UUID values from names instead of random or time-based values use cryptographic hash values</li>
+            <li>The UUID value for a given name in a namespace is always the <span>same</span>, no matter when or where it is calculated</li>
+			<pre class = "prettyprint linenums">
+# 'NAMESPACE_DNS','NAMESPACE_OID','NAMESPACE_URL','NAMESPACE_X500',
+hostname = 'www.doughellmann.com'
+
+uuid.uuid3(uuid.NAMESPACE_DNS, hostname) # MD5
+
+uuid.uuid5(uuid.NAMESPACE_DNS, hostname) # SHA-1
+            </pre>
+        </div>
+		<div class = "subtitle">UUID 4</div>
+		<div class = "block">
+            <li>used as a hash key, a more random sequence of values with more differentiation</li>
+			<pre class = "prettyprint linenums">
+uuid.uuid4()
+            </pre>
+        </div>
+    </body>
+</html>

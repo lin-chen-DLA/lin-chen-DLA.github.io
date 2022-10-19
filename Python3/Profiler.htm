@@ -53,6 +53,40 @@ end - start # datetime.timedelta
 		</pre>
 		</div>
 
+		<div class = "subtitle">timeit</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import timeit
+
+def linear_search(mylist, find):
+    for x in mylist:
+        if x == find:
+            return True
+    return False
+
+SETUP_CODE = '''
+from __main__ import linear_search
+from random import randint'''
+ 
+TEST_CODE = '''
+mylist = [x for x in range(10000)]
+find = randint(0, len(mylist))
+linear_search(mylist, find)'''
+     
+
+timer = timeit.Timer(setup = SETUP_CODE, stmt = TEST_CODE)
+
+# execute main statement 1000 times
+timer.timeit(number = 1000) # 0.40 second
+
+# automatically determine how many times to call timeit()
+timer.autorange() # (1000, 0.397 second)
+
+# repeat 5 times, each time executes statement 1000 times
+timer.repeat(repeat=5, number=1000)
+        </pre>
+        </div>
+
 		<div class = "subtitle">cProfile</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
@@ -167,6 +201,8 @@ from p1 import main
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
 			<ul>
+                <li><a href = "https://docs.python.org/3/library/timeit.html">Timeit Document</a></li>
+                <li><a href = "https://www.geeksforgeeks.org/timeit-python-examples/">Timeit</a></li>
                 <li><a href = "https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html">Profiling and Timing Code</a></li>
                 <li><a href = "https://www.codementor.io/@skynettechltd/profiling-visualization-tools-in-python-part-1-1gju9rc9vm">Profiling & Visualization Tools in Python</a></li>
                 <li><a href = "https://docs.python.org/3/library/profile.html">Profile Document</a></li>
