@@ -92,6 +92,52 @@ es.indices.delete(index='test-index')
 es.delete(index="test-index", id=1)
             </pre>
         </div>
+		<div class = "subtitle">Bulk Helpers</div>
+		<div class = "block">
+            <li><span>Create and Insert</span></li>
+			<pre class = "prettyprint linenums">
+actions = [
+  {
+    "_index": "tickets-index", # index name
+    "_type": "_doc",
+    "_id": j, # if no _id, a random id is created
+    "_source": { # features are contained inside _source
+        "any":"data" + str(j),
+        "timestamp": datetime.datetime.now()}
+  }
+  for j in range(0, 10)
+]
+
+helpers.bulk(es, actions)
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Read</span></li>
+			<pre class = "prettyprint linenums">
+records = helpers.scan(es, 
+    query={"query": {"match": {"proto": "udp"}}},
+    index=index_name,
+) # return a generator
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Update</span></li>
+			<pre class = "prettyprint linenums">
+actions = [
+  {
+    "_index": "tickets-index",
+    "_type": "tickets",
+    "_id": j,
+    "_source": {
+        "any":"data_update" + str(j),
+        "timestamp": datetime.datetime.now()}
+  }
+  for j in range(0, 10)
+]
+
+helpers.bulk(es, actions) # overwrite the old records
+            </pre>
+        </div>
 		<div class = "subtitle">Query</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
@@ -232,6 +278,7 @@ for index, page in enumerate(pages):
         </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://elasticsearch-py.readthedocs.io/en/7.x/helpers.html">Elasticsearch Helpers</a></li>
             <li><a href = "https://simplernerd.com/elasticsearch-scroll-python/">How to Paginate/Scroll Elasticsearch Data using Python</a></li>
             <li><a href = "https://elasticsearch-py.readthedocs.io/en/v7.12.0/">Documentation v7.12.0</a></li>
             <li><a href = "https://elasticsearch-py.readthedocs.io/en/v8.2.3/">Documentation v8.2.3</a></li>
