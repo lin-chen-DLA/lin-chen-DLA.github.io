@@ -166,6 +166,35 @@ POST ecommerce_data/_delete_by_query
 }
             </pre>
         </div>
+		<div class = "subtitle">Bulk</div>
+		<div class = "block">
+            <li><span>Insert</span></li>
+			<pre class = "prettyprint linenums">
+POST _bulk
+{"index": {"_index": "baseline_1", "_id":1}}
+{"Absolute vorticity": 0.0001307,"Apparent temperature": 232.5}
+{"index": {"_index": "baseline_1", "_id":2}}
+{"Absolute vorticity": 0.0001307,"Apparent temperature": 233.6} 
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Update</span></li>
+			<pre class = "prettyprint linenums">
+POST _bulk
+{"update": {"_index": "baseline_1", "_id": 1}}
+{"doc": {"Apparent temperature": 242.5}}
+{"update": {"_index": "baseline_1", "_id":2}}
+{"doc": {"Apparent temperature": 243.6}}
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Delete</span></li>
+			<pre class = "prettyprint linenums">
+POST _bulk
+{"delete": {"_index": "baseline_1", "_id": 1}}
+{"delete": {"_index": "baseline_1", "_id":2}}
+            </pre>
+        </div>
         <div class = "subtitle">Query</div>
         <div class = "block">
             <li><span>Query Types</span>

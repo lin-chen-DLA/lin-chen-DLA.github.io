@@ -148,6 +148,45 @@ json_data = {
 response = requests.post('http://localhost:9200/tutorial_curl/_delete_by_query', headers=headers, json=json_data)
             </pre>
         </div>
+		<div class = "subtitle">Bulk</div>
+		<div class = "block">
+            <li><span>Insert</span></li>
+			<pre class = "prettyprint linenums">
+import requests
+
+headers = {
+    'Content-Type': 'application/json',
+}
+
+# \n is mandatory at the end of each line
+data = '{"index": {"_index": "baseline_1", "_id":3}}\n{"Absolute vorticity": 0.0001307,"Apparent temperature": 232.5}\n{"index": {"_index": "baseline_1", "_id":4}}\n{"Absolute vorticity": 0.0001307,"Apparent temperature": 233.6}\n'
+
+response = requests.post('http://localhost:9200/_bulk', headers=headers, data=data)
+            </pre>
+        </div>
+		<div class = "block">
+            <li><span>Delete</span></li>
+			<pre class = "prettyprint linenums">
+import requests
+
+headers = {
+    # Already added when you pass json= but not when you pass data=
+    # 'Content-Type': 'application/json',
+}
+
+params = {
+    'conflicts': 'proceed',
+}
+
+json_data = {
+    'query': {
+        'match_all': {},
+    },
+}
+
+response = requests.post('http://localhost/index_name/_delete_by_query', params=params, headers=headers, json=json_data)
+            </pre>
+        </div>
 		<div class = "subtitle">Query</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">

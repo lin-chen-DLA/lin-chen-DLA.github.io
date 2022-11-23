@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Elasticsearch</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+            Mapping
+		</div>
+
+		<div class = "subtitle">Format</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+y, year
+d, day of month
+M, month
+
+H, hour-of-day (0-23)
+h, clock-hour-of-am-pm (1-12)
+m, minute-of-hour
+s, second-of-minute
+
+Z, zone-offset
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Single Format
+mapping = {
+    'mappings': {
+        'properties': {
+            'timestamp': {'type': 'date', "format" : "yyyy-MM-dd HH:mm:ss"},
+            'latitude': {'type': 'float',},
+            'longitude': {'type': 'float',},
+        },
+    },
+}
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Multiple Formats
+mapping = {
+    'mappings': {
+        'properties': {
+            'timestamp': {'type': 'date', "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"},
+            'latitude': {'type': 'float',},
+            'longitude': {'type': 'float',},
+        },
+    },
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Date Visualization</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Elastic_8.png" width = "40%"></p>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html">DateTimeFormatter</a></li>
+            <li><a href = "https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-date-format.html">Date Format</a></li>
+        </div>
+    </body>
+</html>
