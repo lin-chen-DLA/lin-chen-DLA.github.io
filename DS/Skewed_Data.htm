@@ -13,14 +13,56 @@
 	</head>
 	<body>
 		<div class = "title">
-			Skewed Data
+			Imbalanced Data
 		</div>
 
-		<div class = "subtitle">Correlated Features</div>
+		<div class = "subtitle">Collect More Data</div>
 		<div class = "block">
+            <li>1. A larger dataset might be more balanced on the classes</li>
+            <li>2. More examples of minor classes may be useful in <span>resampling</span></li>
+		</div>
+		<div class = "subtitle">Change Performance Metric</div>
+		<div class = "block">
+            <li>Accuracy may mislead in an imbalanced dataset</li>
+            <li><span>Metrics</span>: confusion matrix, precision, recall, F-1, Kappa, ROC curves, etc.</li>
+		</div>
+		<div class = "subtitle">Resampling Datasets</div>
+		<div class = "block">
+            <li>1. <span>Over-sampling</span>: boostrap resample with replacement instances of under-represented class</li>
+            <li>2. <span>Under-sampling</span>: delete instances from the over-represented class</li>
+		</div>
+		<div class = "subtitle">Generate Synthetic Samples</div>
+		<div class = "block">
+            <li>Randomly sample the attributes from instances in the minority class</li>
+            <li>1. <span>Generative Models</span>, Naive Bayes, KDE</li>
+            <li>2. <span>Synthetic Minority Over-sampling Technique (SMOTE)</span>
+                <ul>
+                    <li>Selects two or more similar instances, and perturb an instance attribute at a time by a random amount within the difference to the neighboring instances</li>
+                </ul>
+            </li>
+		</div>
+		<div class = "subtitle">Try Different Algorithms</div>
+		<div class = "block">
+            <li>Tree models often perform well on imbalanced dataset</li>
+		</div>
+		<div class = "subtitle">Try Penalized Models</div>
+		<div class = "block">
+            <li>Imposes a penal cost on the model for making classification mistakes on the minority class during training</li>
+		</div>
+		<div class = "subtitle">Try a Different Perspective</div>
+		<div class = "block">
+            <li>1. Anomaly detection, take the instances in the minor class as the outliers</li>
+            <li>2. Change detection, detecting anomalous sequences/states in a time series</li>
+		</div>
+		<div class = "subtitle">Try Getting Creative</div>
+		<div class = "block">
+            <li>Decompose your larger class into smaller number of other classes</li>
 		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://www.reddit.com/r/MachineLearning/comments/12evgi/classification_when_80_of_my_training_set_is_of/">Classification when 80% of my training set is of one class at Reddit</a></li>
+            <li><a href = "https://techrando.com/2019/08/14/a-brief-introduction-to-change-point-detection-using-python/">A Brief Introduction to Change Point Detection using Python</a></li>
+            <li><a href = "https://en.wikipedia.org/wiki/Cohen%27s_kappa">Cohen's kappa</a></li>
 			<li><a href = "https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/">8 Tactics to Combat Imbalanced Classes in Your Machine Learning Dataset</a></li>
 		</div>
 	</body>
