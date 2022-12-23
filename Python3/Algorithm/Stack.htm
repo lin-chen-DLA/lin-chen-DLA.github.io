@@ -26,11 +26,86 @@
 			<p style = "text-align:center;"><img src = "img/Stack_3.png" width = "46%"></p>
 			<li style = "font-size: 20px"><span class = "red">top()</span>, returns top element of stack</li>
 		</div>
+		<div class = "subtitle">Implementation with list</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# StackModule.py
+#!/usr/bin/python3
+import copy
+
+class Stack(object):
+    def __init__(self):
+        self.items = []
+
+    def isEmpty(self):
+        return len(self.items) == 0
+
+    def push(self, element):
+        try:
+            self.items.append(element)
+            return True
+        except Exception as e:
+            return False
+
+    def pop(self):
+        try:
+            return self.items.pop()
+        except Exception as e:
+            return None
+
+    def peek(self):
+        try:
+            return self.items[len(self.items)-1]
+        except Exception as e:
+            return None
+
+    def size(self):
+        return len(self.items)
+
+    def __str__(self):
+        output = []
+
+        items = copy.copy(self.items)
+        items.reverse()
+
+        for item in items:
+            output.append(str(item))
+
+        return " -&gt; ".join(output)
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python3
+from StackModule import Stack
+
+def main():
+    s = Stack()
+
+    s.push(1)
+    s.push(2)
+    s.push(3)
+    s.push(4)
+    print('Hello')
+    print(s) # 4 -> 3 -> 2 -> 1
+
+    p = s.pop()
+    print(p) # 4
+    print(s) # 3 -> 2 -> 1
+
+    print(s.isEmpty()) # False
+    print(s.peek()) # 3
+    print(s.size()) # 3
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
 		<div class = "subtitle">Implementation with linked list</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
 # NodeModule.py
-#!/usr/bin/python
+#!/usr/bin/python3
 """ A model containing Node class """
 import copy
 
@@ -84,7 +159,7 @@ class Node:
 		<div class = "block">
 			<pre class = "prettyprint linenums">
 # ListModule.py
-#!/usr/bin/python
+#!/usr/bin/python3
 """ A modeule containing Sorted List class
 
 The data structure is a linked list of nodes, in which the elements
@@ -199,7 +274,7 @@ class List(object):
 		<div class = "block">
 			<pre class = "prettyprint linenums">
 # StackModule.py
-#!/usr/bin/python
+#!/usr/bin/python3
 """ A module containing Stack class which is implmented by linked list"""
 
 from ListModule import List
@@ -219,12 +294,12 @@ class Stack(List):
 		</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
+#!/usr/bin/python3
 
 from StackModule import Stack
 
 def main():
-    s = Stack();
+    s = Stack()
 
     s.push(1)
     s.push(2)

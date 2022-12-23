@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+			th, td { border-bottom: 1px solid #ddd;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Balanced Parentheses</div>
+		<div class = "block">
+            <li>Parentheses need to be in a balanced fashion</li>
+            <li>Balanced parentheses means that each opening symbol has a corresponding closing symbol and the pairs of parentheses are properly nested</li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# StackModule.py
+#!/usr/bin/python3
+import copy
+
+class Stack(object):
+    def __init__(self):
+        self.items = []
+
+    def isEmpty(self):
+        return len(self.items) == 0
+
+    def push(self, element):
+        try:
+            self.items.append(element)
+            return True
+        except Exception as e:
+            return False
+
+    def pop(self):
+        try:
+            return self.items.pop()
+        except Exception as e:
+            return None
+
+    def peek(self):
+        try:
+            return self.items[len(self.items)-1]
+        except Exception as e:
+            return None
+
+    def size(self):
+        return len(self.items)
+
+    def __str__(self):
+        output = []
+
+        items = copy.copy(self.items)
+        items.reverse()
+
+        for item in items:
+            output.append(str(item))
+
+        return " -&gt; ".join(output)
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python3
+from StackModule import Stack
+
+def balance(string):
+    s = Stack()
+    balanced = True
+
+    for c in string:
+        if c in '([{':
+            s.push(c)
+        elif c in ')]}':
+            peek = s.pop()
+            if not matches(peek, c):
+                return False
+
+    return s.size() == 0
+
+def matches(o,c):
+    if o is None:
+        return False
+    opens = "([{"
+    closers = ")]}"
+    match = opens.index(o) == closers.index(c)
+    return match
+
+if __name__ == '__main__':
+    print(balance('(5+6)*(7+8)/(4+3)')) # True
+    print(balance('((()))')) # True
+    print(balance('(()')) # False
+    print(balance('{({([][])}())}')) # True
+    print(balance('[{()]')) # False
+    print(balance('[{])')) # False
+    print(balance('[{]}')) # False
+            </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://runestone.academy/ns/books/published/pythonds/BasicDS/SimpleBalancedParentheses.html">Problem Solving with Algorithms and Data Structures using Python</a></li>
+		</div>
+	</body>
+</html>

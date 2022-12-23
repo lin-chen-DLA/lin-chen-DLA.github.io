@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+			th, td { border-bottom: 1px solid #ddd;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Palindrome</div>
+		<div class = "block">
+            <li>A palindrome is a string that reads the same forward and backward, for example, radar, toot, and madam</li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# DequeModule.py
+#!/usr/bin/python3
+class Deque(object):
+    def __init__(self):
+        self.items = []
+
+    def isEmpty(self):
+        return len(self.items) == 0
+
+    def addFront(self, v):
+        try:
+            self.items.append(v)
+            return True
+        except Exception as err:
+            return False
+
+    def addRear(self, v):
+        try:
+            self.items.insert(0, v)
+            return True
+        except Exception as err:
+            return False
+
+    def removeFront(self):
+        try:
+            return self.items.pop()
+        except Exception as err:
+            return None
+
+    def removeRear(self):
+        try:
+            return self.items.pop(0)
+        except Exception as err:
+            return None
+
+    def size(self):
+        return len(self.items)
+
+    def __str__(self):
+        s = 'rear ->'
+
+        output = []
+
+        for item in self.items:
+            output.append(str(item))
+
+        s += '->'.join(output)
+
+        s += '-> front'
+
+        return s
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python3
+from DequeModule import Deque
+
+def isPalindrome(s):
+    d = Deque()
+    for c in s:
+        d.addFront(c)
+
+    if d.size() &lt;= 1:
+        return True
+
+    while d.size() &gt; 1:
+        front = d.removeFront()
+        end = d.removeRear()
+
+        if front != end:
+            return False
+
+    return True
+
+if __name__ == '__main__':
+    print(isPalindrome("lsdkjfskf")) # False
+    print(isPalindrome("radar")) # True
+            </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://runestone.academy/ns/books/published/pythonds/BasicDS/PalindromeChecker.html">Problem Solving with Algorithms and Data Structures using Python</a></li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Complexity Notaion</div>
+		<div class = "block">
+            <li>Big O
+                <ul>
+                    <li>f(n) = O(g(n))</li>
+                    <li>0 &le; f(n) &le; cg(n) for any positive constance c, n &ge; n<sub>0</sub></li>
+                </ul>
+            </li>
+            <li>Small o
+                <ul>
+                    <li>f(n) = O(g(n))</li>
+                    <li>0 &le; f(n) &lt; cg(n) for any positive constance c, n &ge; n<sub>0</sub></li>
+                </ul>
+            </li>
+            <li>Big &#937;
+                <ul>
+                    <li>f(n) = &#937;(g(n))</li>
+                    <li>0 &le; cg(n) &le; f(n) for any positive constance c, n &ge; n<sub>0</sub></li>
+                </ul>
+            </li>
+            <li>Small &#631;
+                <ul>
+                    <li>f(n) = &#631;(g(n))</li>
+                    <li>0 &le; cg(n) &lt; f(n) for any positive constance c, n &ge; n<sub>0</sub></li>
+                </ul>
+            </li>
+            <li>&Theta;
+                <ul>
+                    <li>f(n) = &Theta;(g(n))</li>
+                    <li>0 &le; c<sub>1</sub>g(n) &le; f(n) &le; c<sub>2</sub>g(n) for any positive constance c<sub>1</sub> and c<sub>2</sub>, n &ge; n<sub>0</sub></li>
+                </ul>
+            </li>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+def func(n):
+    a=5 # 1 time
+    b=6 # 1 time
+    c=10 # 1 time
+
+    for i in range(n):
+        for j in range(n):
+            x = i * i # n^2 times
+            y = j * j # n^2 times
+            z = i * j # n^2 times
+
+    for k in range(n):
+        w = a*k + 45 # n times
+        v = b*b # n times
+
+    d = 33 # 1 time
+
+# Run times
+#  1 + 1 + 1 + n^2 + n^2 + n^2 + n + n + 1
+# = 3*n^2 + 2*n +4
+
+# O(n^2)
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://runestone.academy/ns/books/published/pythonds/AlgorithmAnalysis/BigONotation.html">Problem Solving with Algorithms and Data Structures using Python</a>
+            <li><a href = "https://www.bigocheatsheet.com/">Big O Cheat Sheet</a></li>
+        </div>
+    </body>
+</html>

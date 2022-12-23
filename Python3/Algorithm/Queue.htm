@@ -44,10 +44,88 @@
 		<div class = "block">
 			<p style = "text-align:center;"><img src = "img/Queue_9.png" width = "70%"></p>
 		</div>
-		<div class = "subtitle">Node</div>
+		<div class = "subtitle">Implementation with list</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
-#!/usr/bin/python
+# QueueModule.py
+#!/usr/bin/python3
+class Queue(object):
+    def __init__(self):
+        self.items = []
+
+    def isEmpty(self):
+        return len(self.items) == 0
+
+    def enqueue(self, v):
+        try:
+            self.items.insert(0,v)
+            return True
+        except Exception as e:
+            return False
+
+    def dequeue(self):
+        try:
+            item = self.items.pop()
+            return item
+        except Exception as e:
+            return None
+
+    def size(self):
+        return len(self.items)
+
+    def front(self):
+        if self.size() == 0:
+            return None
+        return self.items[self.size()-1]
+
+    def rear(self):
+        if self.size() == 0:
+            return None
+        return self.items[0]
+
+    def __str__(self):
+        s = 'rear -&gt;'
+
+        output = []
+
+        for item in self.items:
+            output.append(str(item))
+
+        s += '-&gt;'.join(output)
+
+        s += '-&gt; front'
+
+        return s
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python3
+from QueueModule import Queue
+
+def main():
+    q = Queue()
+
+    q.enqueue(4)
+    q.enqueue('dog')
+    q.enqueue(True)
+
+    print(q) # rear -&gt;True-&gt;dog-&gt;4-&gt; front
+    print(q.size()) # 3
+
+    print(q.dequeue()) # 4
+
+    print(q.front()) # dog
+    print(q.rear()) # True
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+		<div class = "subtitle">Implementation with linked list</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python3
 """ A model containing Node class """
 import copy
 

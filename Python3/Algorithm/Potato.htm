@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+			th, td { border-bottom: 1px solid #ddd;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Hot Potato</div>
+		<div class = "block">
+            <li>Children line up in a circle and pass an item from neighbor to neighbor as fast as they can</li>
+            <li>To simulate the circle, use a queue and assume that the child holding the potato will be at the front of the queue</li>
+            <li>Upon passing the potato, the simulation will simply dequeue and then immediately enqueue that child, putting her at the end of the line</li>
+            <li>After <span class="red">num</span> dequeue/enqueue operations, the child at the front will be removed permanently and another cycle will begin</li>
+            <li>This process will continue until only one name remains</li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# QueueModule.py
+#!/usr/bin/python3
+class Queue(object):
+    def __init__(self):
+        self.items = []
+
+    def isEmpty(self):
+        return len(self.items) == 0
+
+    def enqueue(self, v):
+        try:
+            self.items.insert(0,v)
+            return True
+        except Exception as e:
+            return False
+
+    def dequeue(self):
+        try:
+            item = self.items.pop()
+            return item
+        except Exception as e:
+            return None
+
+    def size(self):
+        return len(self.items)
+
+    def front(self):
+        if self.size() == 0:
+            return None
+        return self.items[self.size()-1]
+
+    def rear(self):
+        if self.size() == 0:
+            return None
+        return self.items[0]
+
+    def __str__(self):
+        s = 'rear -&gt;'
+
+        output = []
+
+        for item in self.items:
+            output.append(str(item))
+
+        s += '-&gt;'.join(output)
+
+        s += '-&gt; front'
+
+        return s
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#!/usr/bin/python3
+from QueueModule import Queue
+
+def potato(q, num):
+
+    for i in range(num):
+        item = q.dequeue()
+        q.enqueue(item)
+
+    q.dequeue()
+
+def main():
+    q = Queue()
+
+    q.enqueue('Bill')
+    q.enqueue('David')
+    q.enqueue('Susan')
+    q.enqueue('Jane')
+    q.enqueue('Kent')
+    q.enqueue('Brad')
+
+    print(q)
+
+    while q.size() &gt; 1:
+        potato(q, 4)
+        print(q)
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://runestone.academy/ns/books/published/pythonds/BasicDS/SimulationHotPotato.html">Problem Solving with Algorithms and Data Structures using Python</a></li>
+		</div>
+	</body>
+</html>
