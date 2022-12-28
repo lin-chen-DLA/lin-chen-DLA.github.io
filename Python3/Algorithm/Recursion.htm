@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+			th, td { border-bottom: 1px solid #ddd;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Recursion</div>
+		<div class = "block">
+            <li><span class="red">Recursion</span> is a method of solving by breaking a problem down into smaller and smaller subproblems until it is small enough problem to be solved trivially</li>
+            <li><span class="red">Base case</span>, the simplest, smallest instance of the problem, that can’t be decomposed any further</li>
+            <li><span class="red">Recursive step</span>, <span class="blue">decomposes</span> a larger instance of the problem into one or smaller instances that can be solved by recursive calls, then <span class="blue">recombines</span> the results of those subproblems to produce the solution to the original problem</li>
+		</div>
+        <div class = "subtitle">List Sum</div>
+		<div class = "block">
+            <li>Calculate the sum of a list of numbers</li>
+        </div>
+        <div class = "block">
+			<pre class = "prettyprint linenums">
+def summation(l):
+    if len(l) == 0:
+        return 0
+    if len(l) == 1:
+        return l[0]
+    return l[0]+summation(l[1:])
+
+if __name__ == '__main__':
+    print(summation([]))
+    print(summation([1, 2, 3, 4]))
+            </pre>
+        </div>
+        <div class = "subtitle">Convert Integer to a String in Any Base</div>
+		<div class = "block">
+            <li>Convert an integer to a string in some base between binary and hexadecimal</li>
+        </div>
+        <div class = "block">
+			<pre class = "prettyprint linenums">
+def convert(n, base):
+    convertString = "0123456789ABCDEF"
+    if n &lt; base:
+        return convertString[n]
+
+    return convert(n//base, base) + convertString[n%base]
+
+if __name__ == '__main__':
+    print(convert(10, 2))
+    print(convert(769, 10))
+    print(convert(1000, 16))
+            </pre>
+        </div>
+        <div class = "subtitle">Reverse String</div>
+		<div class = "block">
+            <li>Get a new string that is the reverse of the old string</li>
+        </div>
+        <div class = "block">
+			<pre class = "prettyprint linenums">
+def reverse(s):
+    if len(s) &lt;=1:
+        return s
+
+    return s[len(s)-1] + reverse(s[1:(len(s)-1)]) + s[0]
+
+if __name__ == '__main__':
+    print(reverse('abc'))
+            </pre>
+        </div>
+        <div class = "subtitle">Palindrome</div>
+		<div class = "block">
+            <li>Returns True if the string is a palindrome</li>
+        </div>
+        <div class = "block">
+			<pre class = "prettyprint linenums">
+import string
+
+def isPalindrome(s):
+    if len(s) &lt;= 1:
+        return True
+
+    if s[0] != s[len(s)-1]:
+        return False
+    else:
+        return isPalindrome(s[1:(len(s)-1)])
+
+def remove_space_punctuation(s):
+    return s.translate(str.maketrans('', '', ' '+string.punctuation))
+
+if __name__ == '__main__':
+    print(isPalindrome('kayak'))
+    print(isPalindrome(remove_space_punctuation('Reviled did I live, said I, as evil I did deliver').lower()))
+            </pre>
+        </div>
+        <div class = "subtitle">Tower of Hanoi</div>
+		<div class = "block">
+            <li>Move all the disks from source to destination without violating the sequence of arrangement. A few rules to be followed for Tower of Hanoi are:
+                <ul>
+                    <li>Only one disk can be moved among the towers at any given time</li>
+                    <li>Only the "top" disk can be removed</li>
+                    <li>No large disk can sit over a small disk</li>
+                </ul>
+            </li>
+        </div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Hanoi.png" width = "40%"></p>
+		</div>
+        <div class = "block">
+			<pre class = "prettyprint linenums">
+def hanoi(n, source, dest, aux):
+    if n &gt;= 1:
+        hanoi(n-1, source, aux, dest)
+        print('Move from '+source+' to '+dest)
+        hanoi(n-1, aux, dest, source)
+
+if __name__ == '__main__':
+    hanoi(2, 'source', 'dest', 'aux')
+            </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://runestone.academy/ns/books/published/pythonds/Recursion/toctree.html">Problem Solving with Algorithms and Data Structures using Python</a></li>
+        </div>
+    </body>
+</html>
