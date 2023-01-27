@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>QRF Training</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Docker
+		</div>
+		<div class = "subtitle">Flowchart</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/DK_2.png" width = "80%"></p>
+		</div>
+		<div class = "subtitle">Step 1. Development</div>
+		<div class = "block">
+            <li>Download the sample code</li>
+		<pre class = "prettyprint linenums">
+git clone https://github.com/lin-chen-Langley/count
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Fetch Redis image to local docker daemon</li>
+		<pre class = "prettyprint linenums">
+# docker login
+docker image pull redis
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Run Redis image as a container</li>
+		<pre class = "prettyprint linenums">
+docker run -d -p 6379:6379 redis
+        </pre>
+        </div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/DK_5.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+            <li>Run Count in local</li>
+		<pre class = "prettyprint linenums">
+# install needed dependencies
+
+# run app
+python app.py
+
+# access app
+http://localhost:5000/
+        </pre>
+        </div>
+		<div class = "subtitle">Step 2. Image Creation</div>
+		<div class = "block">
+            <li>Create an Docker Hub account if you do not have one</li>
+		<pre class = "prettyprint linenums">
+https://hub.docker.com/
+        </pre>
+        </div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/DK_3.png" width = "80%"></p>
+		</div>
+		<div class = "block">
+            <li>Create a Dockerfile in your code folder</li>
+		<pre class = "prettyprint linenums">
+# Dockerfile
+FROM python:3.7-alpine # build image from python:3.7
+WORKDIR /code # set up default directory
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+RUN apk add --no-cache gcc musl-dev linux-headers # install needed Linux tools
+COPY requirements.txt requirements.txt # copy a file from local to image
+RUN pip install -r requirements.txt # install dependencies of the app
+EXPOSE 5000
+COPY . . # copy all files in the current folder to image
+CMD ["python", "app.py"] # run the command when run the image as container
+        </pre>
+        </div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/DK_4.png" width = "80%"></p>
+		</div>
+		<div class = "block">
+            <li>Create an image for Count</li>
+		<pre class = "prettyprint linenums">
+docker build -t lchenlangley/count .
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Push the image to a registry</li>
+		<pre class = "prettyprint linenums">
+# docker login
+docker push lchenlangley/count
+        </pre>
+        </div>
+		<div class = "subtitle">Step 3. Orchestration</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/DK_6.png" width = "80%"></p>
+		</div>
+		<div class = "block">
+            <li>Create a compose file</li>
+		<pre class = "prettyprint linenums">
+# compose.yaml
+version: "3.9" # version of Docker Compose
+services:
+  webapp: # create a container for Count
+    image: lchenlangley/count # load image from DockerHub
+    ports:
+      - 8000:5000 # port mapping
+    environment:
+      - MYREDIS_HOST=redisserver # pass ip of redisserver to webapp
+      - FLASK_ENV=development
+  redisserver: # create a container for redis
+    image: "redis:alpine" # load image from DockerHub
+        </pre>
+        </div>
+		<div class = "block">
+            <li>Run the app</li>
+		<pre class = "prettyprint linenums">
+# compose containers
+docker-compose up
+
+# access app
+http://localhost:8000/
+        </pre>
+        </div>
+		<div class = "subtitle">Exercise</div>
+		<div class = "block">
+            <li>1. Run the app with <span>docker-compose up</span></li>
+            <li>2. Update the app, change <span>Hello World from Docker</span> to <span>Hello [Your Name]</span></li>
+            <li>3. Create an image for the updated code, the image name should be <span>[your_dockerhub_username]/count</span></li>
+            <li>4. Push the built image to Docker Hub</li>
+            <li>5. Rerun the app</li>
+        </div>
+    </body>
+</html>
