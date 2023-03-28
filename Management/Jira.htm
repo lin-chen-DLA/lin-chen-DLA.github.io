@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Management</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color:red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Jira
+		</div>
+
+		<div class = "subtitle">Issues</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Jira_1.png" width = "35%"></p>
+		</div>
+		<div class = "block">
+            <li>Project</li>
+            <li>Epic</li>
+            <li>Task</li>
+            <li>Sub-Task</li>
+            <li>Multiple Assignees
+                <ul>
+                    <li>Jira Settings &gt; Choose Issues </li>
+                    <li>Find a Tab Custom Fields &gt; Create New Custom Field</li>
+                    <li>Proceed with Advanced Fields &gt; Find a “Multi-user Picker” Field</li>
+                    <li>Create Custom Field</li>
+                    <li>Add more assignees in the created Custom Field in an issue</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "subtitle">Board</div>
+		<div class = "block">
+            <li>Scrum</li>
+            <li>Kanban</li>
+        </div>
+		<div class = "subtitle">Permission</div>
+		<div class = "block">
+            <li><span>Global permission</span>
+                <ul>
+                    <li>Apply to applications as a whole</li>
+                    <li>By system adminstrator</li>
+                    <li>System configuration</li>
+                </ul>
+            </li>
+            <li><span>Project permission</span>
+                <ul>
+                    <li>Apply to a project</li>
+                    <li>A user with Admin access</li>
+                </ul>
+            </li>
+            <li><span>Issue security permission</span>
+                <ul>
+                    <li>Project admin, a user with Admin access, system administrator</li>
+                </ul>
+            </li>
+            <li><span>Board permission</span>
+                <ul>
+                    <li>Create road map</li>
+                    <li>Quick filter</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "subtitle">JQL</div>
+		<div class = "block">
+            <li><a href = "https://support.atlassian.com/jira-software-cloud/docs/advanced-search-reference-jql-fields/">Field</a></li>
+            <li><a href = "https://confluence.atlassian.com/jira064/advanced-searching-720416661.html#AdvancedSearching-operatoroperatorsOperatorsReference">Operator</a></li>
+            <li>Value</li>
+            <li><a href = "https://confluence.atlassian.com/jira064/advanced-searching-720416661.html#AdvancedSearching-keywordkeywordsKeywordsReference">Keyword</a></li>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://www.atlassian.com/blog/jira-software/jql-the-most-flexible-way-to-search-jira-14">JQL: the most flexible way to search Jira</a></li>
+            <li><a href = "https://support.atlassian.com/jira-software-cloud/">Jira Software Cloud support</a></li>
+        </div>
+    </body>
+</html>
