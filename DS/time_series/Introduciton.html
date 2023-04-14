@@ -36,7 +36,6 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .highlight .m { color: var(--jp-mirror-editor-number-color) } /* Literal.Number */
 .highlight .s { color: var(--jp-mirror-editor-string-color) } /* Literal.String */
 .highlight .ow { color: var(--jp-mirror-editor-operator-color); font-weight: bold } /* Operator.Word */
-.highlight .pm { color: var(--jp-mirror-editor-punctuation-color) } /* Punctuation.Marker */
 .highlight .w { color: var(--jp-mirror-editor-variable-color) } /* Text.Whitespace */
 .highlight .mb { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Bin */
 .highlight .mf { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Float */
@@ -14455,102 +14454,25 @@ all of MD as it is not optimized for dense, information rich UIs.
 </style>
 
 <style type="text/css">
-/* Force rendering true colors when outputing to pdf */
-* {
-  -webkit-print-color-adjust: exact;
-}
-
-/* Misc */
 a.anchor-link {
-  display: none;
+   display: none;
+}
+.highlight  {
+    margin: 0.4em;
 }
 
 /* Input area styling */
 .jp-InputArea {
-  overflow: hidden;
+    overflow: hidden;
 }
 
 .jp-InputArea-editor {
-  overflow: hidden;
-}
-
-.CodeMirror.cm-s-jupyter .highlight pre {
-/* weird, but --jp-code-padding defined to be 5px but 4px horizontal padding is hardcoded for pre.CodeMirror-line */
-  padding: var(--jp-code-padding) 4px;
-  margin: 0;
-
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  color: inherit;
-
-}
-
-.jp-OutputArea-output pre {
-  line-height: inherit;
-  font-family: inherit;
-}
-
-.jp-RenderedText pre {
-  color: var(--jp-content-font-color1);
-  font-size: var(--jp-code-font-size);
-}
-
-/* Using table instead of flexbox so that we can use break-inside property */
-/* CSS rules under this comment should not be required anymore after we move to the JupyterLab 4.0 CSS */
-
-
-.jp-CodeCell.jp-mod-outputsScrolled .jp-OutputArea-prompt {
-  min-width: calc(
-    var(--jp-cell-prompt-width) - var(--jp-private-cell-scrolling-output-offset)
-  );
-}
-
-.jp-OutputArea-child {
-  display: table;
-  width: 100%;
-}
-
-.jp-OutputPrompt {
-  display: table-cell;
-  vertical-align: top;
-  min-width: var(--jp-cell-prompt-width);
-}
-
-body[data-format='mobile'] .jp-OutputPrompt {
-  display: table-row;
-}
-
-.jp-OutputArea-output {
-  display: table-cell;
-  width: 100%;
-}
-
-body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
-  display: table-row;
-}
-
-.jp-OutputArea-output.jp-OutputArea-executeResult {
-  width: 100%;
-}
-
-/* Hiding the collapser by default */
-.jp-Collapser {
-  display: none;
-}
-
-@page {
-    margin: 0.5in; /* Margin for each printed piece of paper */
+    overflow: hidden;
 }
 
 @media print {
-  .jp-Cell-inputWrapper,
-  .jp-Cell-outputWrapper {
-    display: block;
-  }
-
-  .jp-OutputArea-child {
-    break-inside: avoid-page;
+  body {
+    margin: 0;
   }
 }
 </style>
@@ -14577,12 +14499,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: {
-                    automatic: true
+                    linebreaks: { 
+                    automatic: true 
                     }
                 }
             });
-
+        
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
@@ -14591,33 +14513,17 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     <!-- End of mathjax configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Introduciton-to-Time-Series"><center>Introduciton to Time-Series</center><a class="anchor-link" href="#Introduciton-to-Time-Series">&#182;</a></h1>
 </div>
 </div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Introduction"><font color="blue">Introduction</font><a class="anchor-link" href="#Introduction">&#182;</a></h2>
+<h4 id="Introduction"><font color="blue">Introduction</font><a class="anchor-link" href="#Introduction">&#182;</a></h4>
 </div>
 </div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="Definition">Definition<a class="anchor-link" href="#Definition">&#182;</a></h4><ul>
 <li>A stochastic process
@@ -14630,13 +14536,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 </div>
 </div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="Time-Series-Decomposition">Time-Series Decomposition<a class="anchor-link" href="#Time-Series-Decomposition">&#182;</a></h4><ul>
 <li>decomposes time-series data into the following four components<ul>
@@ -14672,13 +14572,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 </div>
 </div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="Prominent-Libraries-in-Time-Series">Prominent Libraries in Time-Series<a class="anchor-link" href="#Prominent-Libraries-in-Time-Series">&#182;</a></h4><ul>
 <li>prophet</li>
@@ -14694,13 +14588,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 </div>
 </div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="Time-Series-Regression-Models">Time-Series Regression Models<a class="anchor-link" href="#Time-Series-Regression-Models">&#182;</a></h4><ul>
 <li>Linear regression</li>
@@ -14709,13 +14597,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 </div>
 </div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="Exponential-Smoothing">Exponential Smoothing<a class="anchor-link" href="#Exponential-Smoothing">&#182;</a></h4><ul>
 <li>a time series forecasting method for univariate data</li>
@@ -14725,36 +14607,21 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 </div>
 </div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="AutoRegressive-Integrated-Moving-Average-(ARIMA)-Models">AutoRegressive Integrated Moving Average (ARIMA) Models<a class="anchor-link" href="#AutoRegressive-Integrated-Moving-Average-(ARIMA)-Models">&#182;</a></h4><ul>
-<li>autogression model, uses observations from previous time steps to predict future values using a regression equation</li>
-</ul>
-$$y_t = c + \phi_{1}y_{t-1} + \phi_{2}y_{t−2} + ⋯ + \phi_{p}y_{t−p} + ε_{t}$$<ul>
-<li>moving average model, a linear combination of forecast errors</li>
-</ul>
-$$yt = c + \epsilon t + \theta_{1}\epsilon_{t−1} + \theta_{2}\epsilon_{t−2} + ⋯ + \theta_{p}\epsilon_{t−p}$$<ul>
-<li>ARIMA model</li>
-</ul>
-$$y^{'}_{t} = c + \phi_{1}y^{'}_{t−1} + ⋯ + \phi_{p}y^{'}_{t−p} + \epsilon_{1}\theta_{t−1} + ⋯ + \epsilon_{q}\theta_{t−q} + \theta_{t}$$<ul>
+<li>autogression model, uses observations from previous time steps to predict future values using a regression equation
+$$y_t = c + \phi_{1}y_{t-1} + \phi_{2}y_{t−2} + ⋯ + \phi_{p}y_{t−p} + ε_{t}$$</li>
+<li>moving average model, a linear combination of forecast errors
+$$yt = c + \epsilon t + \theta_{1}\epsilon_{t−1} + \theta_{2}\epsilon_{t−2} + ⋯ + \theta_{p}\epsilon_{t−p}$$</li>
+<li>ARIMA model
+$$y^{'}_{t} = c + \phi_{1}y^{'}_{t−1} + ⋯ + \phi_{p}y^{'}_{t−p} + \epsilon_{1}\theta_{t−1} + ⋯ + \epsilon_{q}\theta_{t−q} + \theta_{t}$$</li>
 <li>Seasonal ARIMA (SARIMA) model, add a linear combination of seasonal past values and forecast errors to ARIMA</li>
 </ul>
 
 </div>
 </div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="Neural-Networks">Neural Networks<a class="anchor-link" href="#Neural-Networks">&#182;</a></h4><ul>
 <li>Robust to noise</li>
@@ -14765,13 +14632,7 @@ $$y^{'}_{t} = c + \phi_{1}y^{'}_{t−1} + ⋯ + \phi_{p}y^{'}_{t−p} + \epsilon
 
 </div>
 </div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="TBATS">TBATS<a class="anchor-link" href="#TBATS">&#182;</a></h4><ul>
 <li>can deal with complex and multiple seasonal patterns</li>
@@ -14784,49 +14645,59 @@ $$y^{'}_{t} = c + \phi_{1}y^{'}_{t−1} + ⋯ + \phi_{p}y^{'}_{t−p} + \epsilon
 
 </div>
 </div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="Long-Short-Term-Memory-(LSTM)">Long Short-Term Memory (LSTM)<a class="anchor-link" href="#Long-Short-Term-Memory-(LSTM)">&#182;</a></h4>
 </div>
 </div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Evaluation"><font color="blue">Evaluation</font><a class="anchor-link" href="#Evaluation">&#182;</a></h2><ul>
-<li>Mean Square Error (MSE)</li>
+<h4 id="Evaluation"><font color="blue">Evaluation</font><a class="anchor-link" href="#Evaluation">&#182;</a></h4><ul>
+<li>Mean Square Error (MSE)
+$$MSE = \frac{1}{n}\sum_{t=1}^{n}(Y_{t}-F_{t})^2$$</li>
+<li>Mean Percentage Error (MPE)
+$$MPE = \frac{1}{n}\sum_{t=1}^{n}\frac{Y_{t}-F_{t}}{Y_{t}}*100$$</li>
+<li>Mean Absolute Error (MAE)
+$$MAE = \frac{1}{n}\sum_{t=1}^{n}|Y_{t}-F_{t}|$$</li>
+<li>Mean Absolute Percentage Error (MAPE)
+$$MAPE = \frac{1}{n}\sum_{t=1}^{n}\frac{|Y_{t}-F_{t}|}{Y_{t}}*100$$</li>
+<li>Theil’s U-Statistic
+$$U1 = \frac{\sqrt{\sum_{t=1}^{n}(Y_{t}-F_{t})^2}}{\sqrt{\sum_{t=1}^{n}Y_{t}^2}+\sqrt{\sum_{t=1}^{n}F_{t}^2}}$$<ul>
+<li>U1, 0~1, closer to 0 indicates greater forecasting accuracy
+$$U2 = \sqrt{\frac{\sum_{t=1}^{n-1}(\frac{Y_{t+1}-F_{t+1}}{Y_{t}})^2}{\sum_{t=1}^{n-1}(\frac{Y_{t+1}-Y_{t}}{Y_{t}})^2}}$$</li>
+<li>Naive forecast, forecast values for all future periods equal to the value from the current period</li>
+<li>U2 = 1, no difference between navie forecast and the forecast technique</li>
+<li>U2 &lt; 1, the forecast technique is better than navie forecast</li>
+<li>U2 &gt; 1, the forecast technique is no better than navie forecast</li>
 </ul>
-$$MSE = \frac{1}{n}\sum_{i}(Y_{i}-F_{i})^2$$<ul>
-<li>Theil’s U-Statistic</li>
+</li>
 </ul>
-$$U = \sqrt{\frac{\sum_{t=1}^{n-1}(\frac{Y_{t+1}-F_{t+1}}{Y_{t}})^2}{\sum_{t=1}^{n-1}(\frac{Y_{t+1}-Y_{t}}{Y_{t}})^2}}$$
+
 </div>
 </div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Libraries"><font color="blue">Libraries</font><a class="anchor-link" href="#Libraries">&#182;</a></h4><ul>
+<li>prophet</li>
+<li>sktime</li>
+<li>gluon-ts</li>
+<li>tslearn</li>
+<li>pyts</li>
+<li>seglearn</li>
+<li>darts</li>
+<li>cesium</li>
+<li>pmdarima</li>
+</ul>
+
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="Reference">Reference<a class="anchor-link" href="#Reference">&#182;</a></h4><ul>
 <li><a href = "https://www.fsb.miamioh.edu/lij14/690_s7.pdf">Exponential Smoothing Methods</a></li>
 <li><a href = "https://www.timescale.com/blog/what-is-time-series-forecasting/">What Is Time-Series Forecasting?</a></li>
 </ul>
 
-</div>
-</div>
 </div>
 </div>
 </body>
