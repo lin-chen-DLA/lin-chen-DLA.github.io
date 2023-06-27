@@ -26,6 +26,7 @@ ssh-keygen -t rsa -C "lin.chen@ieee.org" # create id_rsa and id_rsa.pub under .s
         <div class = "subtitle">2. Edit config file</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# GitHub.com
 # .ssh/config
 Host [github_name]
     HostName github.com
@@ -34,6 +35,15 @@ Host [github_name]
     ServerAliveInterval 300
     TCPKeepAlive no
     User git
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# GitLab.com
+# .ssh/config
+Host gitlab.com
+  PreferredAuthentications publickey
+  IdentityFile ~/.ssh/[private_key_file_name]
         </pre>
         </div>
         <div class = "subtitle">3. Store passphrase in the keychain</div>
@@ -45,7 +55,8 @@ ssh-add -K ~/.ssh/[private_key_file_name]
         <div class = "subtitle">4. Add public key to github</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# setting/SSH and GPG keys
+# setting/SSH and GPG keys at GitHub.com
+# profile/SSH Keys at GitLab.com
         </pre>
         </div>
         <div class = "subtitle">5. Add remote repository at github</div>
@@ -54,8 +65,8 @@ ssh-add -K ~/.ssh/[private_key_file_name]
 # github account, lin-chen-Langley
 git remote add origin git@github.com:lin-chen-Langley/[repository_name]
 
-# http
-# git remote add origin https://github.com/lin-chen-Langley/[repository_name]
+# gitlab, lin.chen2
+git remote add origin git@gitlab.com:lin.chen2/[repository_name]
         </pre>
         </div>
         <div class = "subtitle">6. Push to repository</div>

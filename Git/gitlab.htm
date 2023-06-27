@@ -4,29 +4,100 @@
        <title>GitLab</title>
        <meta http-equiv="Page-Enter" contect="revealTrans(duration=10,transtion= 50)">
        <style>
-	       span {color: red}
+	       .red {color: red; font-weight: bold}
+	       .blue {color: blue; font-weight: bold}
 	</style>
     </head>
     <body bgcolor = white text = #4E6AAA link = silver alink = silver vlink = silver>
-	    <li>Created two account
-		    <ul>
-			    <li>eagletiger1</li>
-			    <li>lin.chen2</li>
-		    </ul>
-	    </li>
-	    <li><a href = "https://docs.gitlab.com/13.8/ee/user/permissions.html">Permission</a>
-		    <ul>
-			    <li>Guest</li>
-			    <li>Reporter</li>
-			    <li>Developer</li>
-			    <li>Maintainer</li>
-		    </ul>
-	    </li>
-	    <li>Merge Request
-		    <ul>
-			    <li>source branch, branch with changes</li>
-			    <li>target branch, the branch requested to merge into</li>
-		    </ul>
-	    </li>
+        <li><span class = "red">Profile</span>
+            <ul>
+                <li>Access Token
+                    <ul>
+                        <li><span class = "blue">Personal Token</span>
+                            <ul>
+                                <li>Authenticate against Git or API access</li>
+                                <li>Generate a token and save it</li>
+                            </ul>
+                        </li>
+                        <li><span class = "blue">Feed Token</span>
+                            <ul>
+                                <li>Used to load RSS feed, cannot be used to access other data</li>
+                                <li>https://gitlab.com/[username]/[project_name]/-/commits/main.atom?/private_token=[feed_token]</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>SSH Keys
+                    <ul>
+                        <li><a href = "ssh.htm">Config SSH Key</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><span class = "red">Projects</span>
+            <ul>
+                <li>Create Blank Project
+                    <ul>
+                        <li><span class = "blue">URL</span>, https://gitlab.com/[username]/[project_name]</li>
+                        <li><span class = "blue">Visibility Level</span>
+                            <ul>
+                                <li>Private
+                                    <ul>
+                                        <li>Members of the project or group can clone project</li>
+                                        <li>Guest cannot clone project</li>
+                                    </ul>
+                                </li>
+                                <li>Public
+                                    <ul>
+                                        <li>Guest can clone project, but not able to push</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href = "https://docs.gitlab.com/ee/user/permissions.html">Permissions and Roles</a>
+                    <ul>
+                        <li>Guest</li>
+                        <li>Reporter</li>
+                        <li>Developer</li>
+                        <li>Maintainer</li>
+                        <li>Owner</li>
+                    </ul>
+                </li>
+                <li>Plan
+                    <ul>
+                        <li>Issue, a list of issues</li>
+                        <li><span class = "blue">Issue Board,</span> a Kanban board of issues</li>
+                        <li>Milestone, organize issue</li>
+                        <li>Wiki, wiki page</li>
+                    </ul>
+                </li>
+                <li><span class = "red">Code</span>
+                    <ul>
+                        <li><span class = "blue">Merge Request</span>
+                            <ul>
+                                <li>A request to merge branches</li>
+                                <li>Developer, maintainer, owner can approve, manage, and accept merge request</li>
+                                <li>Create a merge request, resolve conflicts, commit</li>
+                            </ul>
+                        </li>
+                        <li><span class = "blue">Repository</span></li>
+                        <li>Repository graph</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><span class = "red">Group</span>
+            <ul>
+                <li>URL, https://gitlab.com/[group_name]/[project_name]</li>
+                <li><span class = "blue">Permission</span>
+                    <ul>
+                        <li>By default, branches are protected, only maintainer/owner can push to protected branches</li>
+                        <li>Setting -&gt; Repository -&gt; Expan Protected branches, allow developers to merge and push</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
     </body>
 </html>

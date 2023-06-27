@@ -37,30 +37,20 @@
 				    <li>--local, .git/gitconfig, specific to a project</li>
 
 				    <li>-l, list all values
-
 				    <ul>
-
 					    <li>git config -l --show-list, list all values and locations</li>
-
 					    <li>git config --global -l, list the global values</li>
-
 				    </ul>
-
 				    </li>
-
 				    <li>set a value
-
 				    <ul>
-
 					    <li>git config --global user.age 31</li>
-
+                        <li>git config --global core.editor "vim"</li>
 				    </ul>
-
 				    </li>
-
 				    <li>add a value
 					    <ul>
-						    <li>git config --global --add user.email lchen@ecsu.edu</li>
+						    <li>git config --global --add user.email lin.chen@ieee.org</li>
 					    </ul>
 				    </li>
 				    <li>remove values
@@ -464,6 +454,7 @@ doc/**/*.pdf
 				    <li>git push origin HEAD:master, push the current branch to the remote master branch</li>
 				    <li>git push origin v1.5, push a tag to the remote server</li>
 				    <li>git push origin --tags, push tags to the remote server</li>
+                    <li>git push --all origin, push all commits of all branches to the remote server</li>
 				    <li><span>git push origin --delete [branchName]</span>, remove the branch in the remote repository</li>
 			    </ul>
 			    </li>
@@ -548,7 +539,11 @@ doc/**/*.pdf
 
 				    <li>git log --graph, show the branch and merge history</li>
 
-				    <li>git merge orgin/master, merge the remote version to the current branch</li>
+				    <li>git merge orgin/master, merge the remote version to the current branch
+                        <ul>
+                            <li>git merge origin/master --allow-unrelated-histories, solve the error occurred when two unrelated projects are merged</li>
+                        </ul>
+                    </li>
 
 				    <li>Conflict
 
@@ -596,6 +591,7 @@ doc/**/*.pdf
 				    <li>git branch -v, display branches and the commit in each branch</li>
 				    <li>git branch -r, list all remote branches</li>
 				    <li>git branch -m [oldName] [newName], rename a branch</li>
+                    <li>git branch -M [newname], rename the current branch name to a new branch name</li>
 				    <li>git branch -d [branchName], delete a local branch</li>
 				    <li>git branch -r -d origin/b_1, delete a branch on the remote repository
 					    <ul>
