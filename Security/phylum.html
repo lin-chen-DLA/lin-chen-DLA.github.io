@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			phylum
+		</div>
+
+		<div class = "subtitle">Installation</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Linux
+
+# download install script to local
+curl https://sh.phylum.io/ &gt;phylum.sh
+
+# change mode to executable
+chmod 655 phylum.sh
+
+# execute script
+./phylum.sh
+
+# Mac
+
+brew tap phylum-dev/cli
+brew install phylum
+		</pre>
+		</div>
+
+		<div class = "subtitle">Registration</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# register new account
+phylum auth register
+		</pre>
+		</div>
+
+		<div class = "subtitle">Login</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# login
+phylum auth login
+		</pre>
+		</div>
+
+		<div class = "subtitle">Initialize Project</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+phylum init
+
+# select lockfiles and manifests with space key
+
+# or end selection with a comma
+
+# lockfile, contains all information necessary to ensure you're always installing 
+# exactly the same dependencies every time on every machine, such as, requirements.txt in Python
+
+# manifest, contains a list of files that will be included in the archive file
+		</pre>
+		</div>
+		<div class = "subtitle">Submit Lockfile</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# submit selected lockfile in init
+phylum analyze
+
+# submit a specifc lockfile
+phylum analyze requirements.txt
+		</pre>
+		</div>
+		<div class = "subtitle">View Analysis</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+https://app.phylum.io/
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.phylum.io/docs/welcome">Docs</a></li>
+		</div>
+	</body>
+</html>

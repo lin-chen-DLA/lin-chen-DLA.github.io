@@ -19,7 +19,6 @@
 		<div class = "subtitle">Levels</div>
 		<div class = "block">
 			<ol>
-                <li>UNSET</li>
 				<li>DEBUG, logging.debug()</li>
 				<li>INFO, logging.info()</li>
 				<li>WARNING, default level, only events of this level and above will be tracked
@@ -58,7 +57,7 @@ logging.info('I told you so') # will print
 			<pre class = "prettyprint linenums">
 import logging
 
-logging.basicConfig(filename='log.txt', level=logging.DEBUG)
+logging.basicConfig(filename='log.txt', level=logging.DEBUG);
 
 logging.warning('Watch out!')
 logging.info('I told you so')
@@ -70,7 +69,7 @@ logging.info('I told you so')
 # l2.py
 import logging
 
-def do_something():
+def doSomething():
     logging.info('Logging in lib ...');
 			</pre>
 			<pre class = "prettyprint linenums">
@@ -79,10 +78,10 @@ import logging
 import l2
 
 def main():
-    logging.basicConfig(filename='log.txt', level=logging.INFO)
+    logging.basicConfig(filename='log.txt', level=logging.INFO);
 
-    logging.warning('Watch out!')
-    logging.info('I told you so')
+    logging.warning('Watch out!')  # will print a message to the console
+    logging.info('I told you so')  # will not print anything
 
     l2.do_something()
 
@@ -95,99 +94,33 @@ if __name__ == '__main__':
 			<pre class = "prettyprint linenums">
 import logging
 
-logging.basicConfig(format='[%(levelname)s] (%(threadName)-10s) %(name)s %(asctime)s : %(message)s', filename='log.txt', level=logging.INFO)
+logging.basicConfig(format='%(levelname)s %(asctime)s : %(message)s', filename='log.txt', level=logging.INFO);
 
 logging.warning('Watch out!')
 logging.info('I told you so')
 			</pre>
 		</div>
-		<div class = "block">
-			<pre class = "prettyprint linenums">
-[WARNING] (MainThread) root 2023-07-06 06:21:26,437 : Watch out!
-[INFO] (MainThread) root 2023-07-06 06:21:26,437 : I told you so
-            </pre>
-        </div>
 		<div class = "subtitle">Logger</div>
 		<div class = "block">
-			<li>Logger, Expose the interface that application code directly uses</li>
-			<li>Handler, Send the log records (created by loggers) to the appropriate destination</li>
-			<li>Filter, Determining which log records to output</li>
-			<li>Formatter, Specify the layout of log records in the final output</li>
-            <li>LogRecord, instances are created automatically by the Logger every time something is logged</li>
+			<li>Expose the interface that application code directly uses</li>
 		</div>
+		<div class = "subtitle">Handler</div>
 		<div class = "block">
-			<pre class = "prettyprint linenums">
-#WARNING is defalut level
-import logging
-
-class UserRunningProgramFilter(logging.Filter):
-    def filter(self, record):
-        print(record.module, record.name, record.pathname, record.getMessage())
-        if record.name != 'root': # do not keep logs from logger root
-            return True
-
-def get_logger():
-    # create a logger
-    logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG) # set up logging level
-
-    # create handler
-    handler = logging.FileHandler('log.txt', mode='a', encoding=None, delay=False)
-
-    # create formater
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-    handler.addFilter(UserRunningProgramFilter())
-    handler.setFormatter(formatter) # set up format for handler
-    logger.addHandler(handler) # add handler for logger
-
-    return logger
-
-logger = get_logger()
-
-def main():
-
-    logger.warning('Watch out!')
-    logger.info('I told you so')
-
-    logger.info('End ...')
-
-if __name__ == '__main__':
-    main()
-            </pre>
-        </div>
-		<div class = "subtitle">Rotating Log Files</div>
+			<li>Send the log records (created by loggers) to the appropriate destination</li>
+		</div>
+		<div class = "subtitle">Filter</div>
 		<div class = "block">
-            <li>Create rotating log files
-            <li>Output logging into a new log file each time logging some messages</li>
-			<pre class = "prettyprint linenums">
-import logging
-import logging.handlers
-
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
-
-handler = logging.handlers.RotatingFileHandler(
-    'log.txt',
-    maxBytes=2,
-    backupCount=3, # create 4 log rotating log files
-)
-logger.addHandler(handler)
-
-# Log some messages
-for i in range(10):
-    logger.debug('i = %d' % i)
-            </pre>
-        </div>
+			<li>Determining which log records to output</li>
+		</div>
+		<div class = "subtitle">Formatters</div>
+		<div class = "block">
+			<li>Specify the layout of log records in the final output</li>
+		</div>
 		<div class = "subtitle">The Logging Tree</div>
 		<div class = "block">
 			<li>Logger instances are configured in a tree structure, based on their <span>names</span></li>
 			<li>root has no name</li>
-			<li>If a logger does not have any handlers, the message is handed to its parent for processing
-                <ul>
-                    <li>In the following sample code, loggers in the module <span>l2</span> and the <span>package</span> use the handlers defined in <span>parent module l1</span></li>
-                </ul>
-            </li>
+			<li>If a logger does not have any handlers, the message is handed to its parent for processing</li>
 			<p style = "text-align:center;"><img src = "img/Logging.png" width = "40%"></p>
 		</div>
 		<div class = "block">
@@ -198,32 +131,23 @@ import logging
 import l2
 from package.l3 import do_something
 
-def get_logger():
-    # create a logger
-    logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG) # set up logging level
-
-    # create handler
-    handler = logging.FileHandler('log.txt', mode='a', encoding=None, delay=False)
-
-    # create formater
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter) # set up format for handler
-    logger.addHandler(handler) # add handler for logger
-
-    return logger
-
-logger = get_logger()
+# create a logger
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG) # set up logging level
+# create handler
+handler = logging.FileHandler('log.txt', mode='a', encoding=None, delay=False)
+# create formater
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter) # set up format for handler
+logger.addHandler(handler) # add handler for logger
 
 def main():
 
-    logger.warning('Watch out!')
-    logger.info('I told you so')
+    logger.warning('Watch out!')  # will print a message to the console
+    logger.info('I told you so')  # will not print anything
 
     l2.do_something()
     do_something()
-
-    logger.info('End ...')
 
 if __name__ == '__main__':
     main()
@@ -260,36 +184,12 @@ def do_something():
 		<div class = "block">
 			<span>log.txt</span>
 			<pre class = "prettyprint linenums">
-2023-07-06 06:36:24,954 - root - WARNING - Watch out!
-2023-07-06 06:36:24,954 - root - INFO - I told you so
-2023-07-06 06:36:24,954 - l2 - INFO - Do Something ...
-2023-07-06 06:36:24,955 - package.l3 - INFO - Do Something ...
-2023-07-06 06:36:24,955 - root - INFO - End ...
+2020-04-17 11:08:16,349 - root - WARNING - Watch out!
+2020-04-17 11:08:16,349 - root - INFO - I told you so
+2020-04-17 11:08:16,349 - l2 - INFO - Do Something ...
+2020-04-17 11:08:16,349 - package.l3 - INFO - Do Something ...
 			</pre>
 		</div>
-		<div class = "subtitle">Integration with the warnings Module</div>
-		<div class = "block">
-            <li>Integrates warning into logging using the WARNING level</li>
-			<pre class = "prettyprint linenums">
-import logging
-import warnings
-
-logging.basicConfig(
-    filename='log.txt',
-    level=logging.INFO,
-)
-
-# output warning on screen
-warnings.warn('This warning is not sent to the logs')
-
-# send warning information to logging
-logging.captureWarnings(True)
-
-# output warning to logging file
-warnings.warn('This warning is sent to the logs')
-warnings.warn('End ...')
-            </pre>
-        </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
 			<ul>

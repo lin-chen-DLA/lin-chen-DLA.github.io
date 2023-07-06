@@ -94,8 +94,8 @@ print 'End of program'
 		<div class = "subtitle">Daemon thread</div>
 		<div class = "block">
 			<ul>
-				<li>runs without blocking the main program from exiting</li>
-				<li>like detach of thead in C++11</li>
+                <li>daemon threads are terminated when the main program exits</li>
+                <li>non-daemon threads are terminated only when they finish their tasks</li>
 			</ul>
 		</div>
 		<div class = "block">
