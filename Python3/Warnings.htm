@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+            Warning
+		</div>
+
+		<div class = "subtitle">Use</div>
+		<div class = "block">
+            <li>Warn changes in language or library features</li>
+            <li>Report recoverable configuration errors or feature degradation from missing libraries</li>
+            <li>Warnings are sent to console</li>
+        </div>
+		<div class = "subtitle">Filter</div>
+		<div class = "block">
+            <li>action
+                <ul>
+                    <li>error, Turn the warning into an exception</li>
+                    <li>ignore, Discard the warning</li>
+                    <li>always, Always emit a warning</li>
+                    <li>default, Print the warning the first time it is generated from each location</li>
+                    <li>module, Print the warning the first time it is generated from each module</li>
+                    <li>once, Print the warning the first time it is generated</li>
+                </ul>
+            </li>
+            <li>message, regular expression</li>
+            <li>category, name of an exception class</li>
+            <li>module, regular expression to be matched against the module name</li>
+            <li>line, line number</li>
+        </div>
+		<div class = "subtitle">Generating Warnings</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import warnings
+
+warnings.warn('This is a warning message')
+
+try:
+    warnings.simplefilter('error', UserWarning) # throw Exception
+    warnings.warn('This is second warning message')
+except Exception as err:
+    print('Exception: ', err)
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+w1.py:3: UserWarning: This is a warning message
+  warnings.warn('This is a warning message')
+Exception:  This is second warning message
+            </pre>
+        </div>
+		<div class = "subtitle">Controlling by Command Line</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import warnings
+
+try:
+    warnings.warn('This is second warning message')
+except Exception as err:
+    print('Exception: ', err)
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# command line
+# (action, message, category, module, and line number) separated by colons (:)
+python -W "error::UserWarning::0" w2.py
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+Exception:  This is second warning message
+            </pre>
+        </div>
+		<div class = "subtitle">Message Filter</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import warnings
+
+warnings.filterwarnings('ignore', '.*do not.*',)
+
+warnings.warn('Show this message')
+warnings.warn('Do not show this message') # do not show, case insensitive
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+w3.py:5: UserWarning: Show this message
+  warnings.warn('Show this message')
+            </pre>
+        </div>
+		<div class = "subtitle">Module Filter</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# w4.py
+
+import warnings
+
+warnings.filterwarnings(
+    'ignore',
+    '.*',
+    UserWarning,
+    '__main__', # supress the warnings from the current module
+)
+
+warnings.warn('Do not show this message') # do not show
+
+warnings.filterwarnings(
+    'ignore',
+    '.*',
+    UserWarning,
+    'w.*', # supress the warnings form modules starting with w
+)
+
+import warning
+warning.get_warning()
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# warning.py
+
+import warnings
+
+def get_warning():
+    warnings.warn('Warining in a sub module') # do not show
+            </pre>
+        </div>
+		<div class = "subtitle">Line Filter</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import warnings
+
+warnings.filterwarnings(
+    'ignore',
+    '.*',
+    UserWarning,
+    '__main__',
+    12 # do not show the warning in line 12
+)
+
+warnings.warn('Show this message')
+warnings.warn('Do not show this message')
+            </pre>
+        </div>
+		<div class = "subtitle">Repeat Warnings</div>
+		<div class = "block">
+            <li>By default, most types of warnings are only printed the first time they occur</li>
+            <li>The <span>once</span> action can be used to suppress instances of the same message from different locations</li>
+			<pre class = "prettyprint linenums">
+import warnings
+
+def get_warning():
+    warnings.warn('Warning ...')
+
+# only display once
+get_warning()
+get_warning()
+
+warnings.warn('Show this message') # display
+warnings.warn('Show this message') # display
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import warnings
+
+warnings.simplefilter('once', UserWarning)
+warnings.warn('Show this message') # display
+warnings.warn('Show this message') # do not display
+            </pre>
+        </div>
+		<div class = "subtitle">Send Warning to Log</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# replace the showwarning() function inside the warnings module
+import warnings
+import logging
+
+
+def send_warnings_to_log(message, category, filename, lineno,
+                         file=None, line=None):
+    logging.warning('%s:%s',category.__name__, message)
+
+
+logging.basicConfig(filename = 'log.txt', level=logging.INFO)
+
+warnings.showwarning = send_warnings_to_log
+
+warnings.warn('message')
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# integrate warning into logging
+import logging
+import warnings
+
+logging.basicConfig(filename='log.txt', level=logging.INFO)
+
+# send warning information to logging
+logging.captureWarnings(True)
+
+# output warning to logging file
+warnings.warn('This warning is sent to the logs')
+            </pre>
+        </div>
+		<div class = "subtitle">Send Warning to Log</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# replace formatwarning() function inside the warnings module
+import warnings
+
+def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
+    return '-> {}:{}'.format(category.__name__, message)
+
+warnings.formatwarning = warning_on_one_line
+warnings.warn('Warning message, after')
+            </pre>
+        </div>
+		<div class = "subtitle">Stack</div>
+		<div class = "block">
+            <li>Display the line number of caller instead of the line number of warning</li>
+			<pre class = "prettyprint linenums">
+import warnings
+
+# stacklevel, 1, self, 2, parent, 3, parent of parent
+def old_function():
+    warnings.warn(
+        'old_function() is deprecated, use new_function()',
+        stacklevel=3)
+
+def caller_of_old_function():
+    old_function()
+
+caller_of_old_function()
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+w10.py:12: UserWarning: old_function() is deprecated, use new_function()
+  caller_of_old_function()
+            </pre>
+        </div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.python.org/3/library/warnings.html">Document</a></li>
+            <li><a href = "https://pymotw.com/3/warnings/">PyMOTW</a></li>
+        </div>
+    </body>
+</html>
