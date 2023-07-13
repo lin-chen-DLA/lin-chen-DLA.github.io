@@ -34,8 +34,8 @@ class Vehicle(object):
     """Document String: Define a Vehicle class"""
  
     def __init__(self, brand: str, year: int):
-        self._brand = brand;
-        self._year = year;
+        self._brand = brand
+        self._year = year
  
     @property
     def brand(self) -&gt; str:
@@ -43,7 +43,7 @@ class Vehicle(object):
  
     @brand.setter
     def brand(self, b : str) -&gt; None:
-        self._brand = b;
+        self._brand = b
  
     @brand.deleter
     def brand(self) -&gt; None:
@@ -68,7 +68,7 @@ class Vehicle(object):
         return '~'
  
 def main():
-    v = Vehicle("Lincoln", 1998);
+    v = Vehicle("Lincoln", 1998)
     print(v) # equals to print(v.__str__())
  
     v.brand = "Honda"
@@ -109,7 +109,7 @@ class Vehicle(object):
     """Document String: Define a Vehicle class"""
  
     def __init__(self, brand):
-        self.__brand = brand;
+        self.__brand = brand
  
     @property
     def brand(self):
@@ -117,7 +117,7 @@ class Vehicle(object):
  
     @brand.setter
     def brand(self, b):
-        self.__brand = b;
+        self.__brand = b
  
     @brand.deleter
     def brand(self):
@@ -130,7 +130,7 @@ class Vehicle(object):
         return '~'
  
 def main():
-    v = Vehicle("Lincoln");
+    v = Vehicle("Lincoln")
  
     print("Brand: %s" % (v.brand)) # use getter to access attribute
     print("Brand: %s" % getattr(v, 'brand')) # use getattr() and getter
@@ -149,7 +149,7 @@ class Vehicle(object):
     """Document String: Define a Vehicle class"""
  
     def __init__(self, brand):
-        self._brand = brand;
+        self._brand = brand
  
     @property
     def brand(self):
@@ -157,7 +157,7 @@ class Vehicle(object):
  
     @brand.setter
     def brand(self, b):
-        self._brand = b;
+        self._brand = b
  
     @brand.deleter
     def brand(self):
@@ -182,7 +182,7 @@ class Vehicle(object):
         return '~'
  
 def main():
-    v = Vehicle("Lincoln");
+    v = Vehicle("Lincoln")
  
     v.year = 1998
  
@@ -199,9 +199,9 @@ class Vehicle(object):
     """Document String: Define a Vehicle class"""
  
     def __init__(self, brand, year):
-	#print "Create Vehicle Object ...";
-        self._brand = brand;
-        self._year = year;
+	#print "Create Vehicle Object ..."
+        self._brand = brand
+        self._year = year
  
     @property
     def brand(self):
@@ -209,7 +209,7 @@ class Vehicle(object):
  
     @brand.setter
     def brand(self, b):
-        self._brand = b;
+        self._brand = b
  
     @brand.deleter
     def brand(self):
@@ -234,17 +234,17 @@ class Vehicle(object):
         return '~'
  
 def main():
-    v = Vehicle("Lincoln", 1998);
+    v = Vehicle("Lincoln", 1998)
     print(v)
  
-    setattr(v, 'year', 2000); # use setattr() and setter
-    setattr(v, 'brand', 'Buick');
+    setattr(v, 'year', 2000) # use setattr() and setter
+    setattr(v, 'brand', 'Buick')
     print(v)
  
     if hasattr(v, 'year'):
         print("Year Attribute: ", getattr(v, 'year')) # use getattr() and getter
  
-    delattr(v, 'year');
+    delattr(v, 'year')
     print("Year Attribute: ",getattr(v, 'year'))
  
 if __name__ == "__main__":
@@ -258,8 +258,8 @@ class Vehicle(object):
     """Document String: Define a Vehicle class"""
 
     def __init__(self, brand = "None", year = 0):
-        self._brand = brand;
-	self._year = year;
+        self._brand = brand
+	self._year = year
 
     @property
     def brand(self):
@@ -267,7 +267,7 @@ class Vehicle(object):
 
     @brand.setter
     def brand(self, b):
-        self._brand = b;
+        self._brand = b
 
     @brand.deleter
     def brand(self):
@@ -292,10 +292,10 @@ class Vehicle(object):
         return '~'
 
 def main():
-    v = Vehicle("Lincoln", 1998); # Lincoln 1998
+    v = Vehicle("Lincoln", 1998) # Lincoln 1998
     print(v)
 
-    v = Vehicle("Lincoln"); # Lincoln 0
+    v = Vehicle("Lincoln") # Lincoln 0
     print(v)
 
     v = Vehicle(year = 1998) # None 1998
@@ -311,7 +311,7 @@ if __name__ == "__main__":
 class Vehicle(object):
     """ Vehicle class """
 
-    count = 0; # class attribute
+    count = 0 # class attribute
 
     def __init__(self, brand):
         self.__brand = brand
@@ -386,8 +386,8 @@ class Vehicle(object):
     __slots__ = ['_brand', '_year', '_model']
  
     def __init__(self, brand, year):
-        self._brand = brand;
-        self._year = year;
+        self._brand = brand
+        self._year = year
  
     def __str__(self):
         return self._brand+' '+str(self._year)+' '+self._model

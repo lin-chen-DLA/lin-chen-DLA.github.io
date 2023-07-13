@@ -26,6 +26,9 @@ pip install mypy
 
 # check type
 mypy scripy.py
+
+# recursively check type in a directory
+mypy ./path
         </pre>
         </div>
 		<div class = "block">
@@ -151,7 +154,60 @@ get_info(100) # error by type checker
 		</pre>
 		</div>
 
+		<div class = "subtitle">User-Defined Type</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import typing
+
+class Employee:
+    def __init__(self, name: str):
+        self.name = name
+
+    def __str__(self):
+        return self.name
+
+def get_employee(e: Employee):
+    print(e)
+
+e = Employee('Lin')
+get_employee(e)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# inheritence
+class QRFMember(Employee):
+    def __init__(self, name: str, role:str):
+        super().__init__(name)
+        self.role = role
+
+    def __str__(self):
+        return super().__str__()+': '+self.role
+
+def get_employee(e: Employee):
+    print(e)
+
+e = Employee('Lin')
+e_2 = QRFMember('Yanhua', 'Data Scientist')
+
+get_employee(e)
+get_employee(e_2)
+        </pre>
+        </div>
+
 		<div class = "subtitle">Generics</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import typing
+from collections.abc import Sequence
+
+def get_seq(s: Sequence):
+    print(s)
+
+get_seq(list(range(10)))
+get_seq(range(10))
+        </pre>
+        </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 import typing
@@ -167,6 +223,21 @@ print(get_info(1, 'Hello')) # error by type checker
 print(get_info(1, 3.14)) # error by type checker
 		</pre>
 		</div>
+
+		<div class = "subtitle">NewType</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from typing import NewType
+
+UserId = NewType('UserId', int)
+some_id = UserId(524313) # int
+
+def get_id(id: UserId) -&gt; int:
+    return id+1
+
+print(get_id(some_id))
+        </pre>
+        </div>
 
 		<div class = "subtitle">Reference</div>
 		<div class = "block">

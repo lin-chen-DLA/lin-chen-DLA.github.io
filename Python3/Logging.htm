@@ -123,7 +123,7 @@ import logging
 class UserRunningProgramFilter(logging.Filter):
     def filter(self, record):
         print(record.module, record.name, record.pathname, record.getMessage())
-        if record.name != 'root': # do not keep logs from logger root
+        if record.name != 'root': # returns True to log it or False to discard it
             return True
 
 def get_logger():
