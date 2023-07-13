@@ -121,7 +121,7 @@ setuptools.setup(
         'PyPI': 'https://pypi.org/manage/project/linlangleyprime/releases/',
         'Conda': 'https://anaconda.org/linchenVA/linlangleyprime'
         },
-    classifiers=[
+    classifiers=[ # list of classifiers at https://pypi.org/pypi?%3Aaction=list_classifiers
       'Development Status :: 4 - Beta',
       'Environment :: X11 Applications :: GTK',
       'Intended Audience :: End Users/Desktop',
@@ -135,9 +135,9 @@ setuptools.setup(
     install_requires=requirements,
     package_dir={'':'src'}, # location to find the packages
     packages=setuptools.find_packages(where="src"),
-    #packages=['primepackage', ], # packages and subpackages containing .py files
+    #packages=['primepackage', ], # packages and subpackages containing .py files will be installed for users
     python_requires="&gt;=3.9",
-    scripts=['src/generator',], # the executable files will be installed for user
+    scripts=['src/generator',], # executable files will be installed for users
     license='Creative Commons Attribution-Noncommercial-Share Alike license',
 )
 		</pre>
@@ -269,10 +269,10 @@ conda install anaconda-client conda-build # install need modules
 		<pre class = "prettyprint linenums">
 # for pip package
 # build
-python setup.py sdist # 
+python setup.py sdist #  build a source file (.tar.gz) in /dist folder
 
 # deposit
-anaconda upload dist/*
+anaconda upload dist/* # deposite the archive file to Conda repository
 
 # install
 pip install -i https://pypi.anaconda.org/linchenva/simple linlangleyprime

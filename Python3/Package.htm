@@ -26,21 +26,21 @@
 #__init__.py is empty
 
 #test.py, same folder as the myPackage
-import myPackage
-myPackage.m1.f_1() # Error, myPackage has no module m1
+import myPackage # nothing under myPackage
+# myPackage.m1.f_1() # Error, myPackage has no module m1
 
-import myPackage.m1 # myPackage.* is not allowed here, import myPackage.m1
+import myPackage.m1 # f_1 and f_2 are under myPackage.m1
 myPackage.m1.f_1()
 
-#import myPackage.m1.f_1, not allowed to import function
-
-import myPackage.m1 as m # rename imported module, import m, no myPackage
+import myPackage.m1 as m # rename imported module, import m
 m.f_1()
 
-from myPackage import m1 # import m1, no myPackage
+#import myPackage.m1.f_1 # Error, not allowed to import function
+
+from myPackage import m1 # import m1
 m1.f_1()
 
-from myPackage.m1 import f_1 # import f_1, no myPackage and m1
+from myPackage.m1 import f_1 # import f_1
 f_1()
 </pre>
 		</div>
@@ -49,16 +49,18 @@ f_1()
 <pre class = "prettyprint linenums">
 #__init__.py
 #from m1 import f_1 # not allowed in Python 3
-from myPackage.m1 import f_1, f_2 # #access module from the root of the package
+from myPackage.m1 import f_1 # access module from the root of the package
 
 #test.py, same folder as myPackage
 import myPackage # import myPackage.m1 and myPackage.f_1
 myPackage.f_1()
 myPackage.m1.f_1()
+myPackage.m1.f_2()
 
 from myPackage import * # import m1 and f_1 to the current namespace
 f_1()
 m1.f_1()
+m1.f_2()
 
 from myPackage import f_1 # import f_1
 f_1()
@@ -166,6 +168,13 @@ def main():
 if __name__ == "__main__":
     main()
 </pre>
+<li>Call main function</li>
+<pre class = "prettyprint linenums">
+# test.py
+import myPackage.sub_1.m5 as m5
+
+m5.main()
+</pre>
 		</div>
 				<div class = "block">
 				<p style = "text-align:center;"><img src = "../Python/img/Package_4.png" width = "50%"></p>
@@ -204,6 +213,13 @@ def main():
 
 if __name__ == "__main__":
     main()
+</pre>
+<li>Call main function</li>
+<pre class = "prettyprint linenums">
+# test.py
+from myPackage.sub_2 import m4
+
+m4.main()
 </pre>
 			<pre class = "prettyprint linenums">
 			</pre>
