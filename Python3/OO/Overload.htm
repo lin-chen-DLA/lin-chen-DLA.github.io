@@ -235,13 +235,9 @@ if __name__ == '__main__':
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-#!/usr/bin/python
 class MyRange:
     def __init__(self, start, stop, step):
         self.__sequence = list(range(start, stop, step))
- 
-    def __getitem__(self, index):
-        return self.__sequence[index]
  
     def __str__(self):
         s = '[';
@@ -263,11 +259,12 @@ class MyRange:
         del self.__sequence[index]
  
 def main():
-    l = MyRange(0, 10, 1);
+    l = MyRange(0, 10, 1)
  
     print(l) # [0 1 2 3 4 5 6 7 8 9],  __str__
     print(len(l)) # 10,  __len__
     print(l[1]) # 1, __getitem__
+    print(l[:3]) # [0, 1, 2], __getitem__
     l[1] = 100 # __setitem__
     print(l) # [0 100 2 3 4 5 6 7 8 9]
  

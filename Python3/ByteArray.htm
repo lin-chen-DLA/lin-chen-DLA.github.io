@@ -67,14 +67,14 @@ print(arr[:2]) # bytearray(b'\nb')
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 arr = bytearray("Café", "utf-8")
-print(type(arr))
+print(type(arr)) # bytearray
  
 # convert to string
 u = arr.decode('utf-8')
 print(type(u), u) # unicode, Café
  
 #count
-print(arr.count(b'a'))
+print(arr.count(b'a')) # 1
 
 # in
 if 97 in arr:
@@ -88,19 +88,19 @@ print(list(arr)) # [67, 97, 102, 195, 169]
 
 #append
 arr.append(97)
-print(arr)
+print(arr) # bytearray(b'Caf\xc3\xa9a')
 
 #delete
 del arr[:2]
-print(arr)
+print(arr) # bytearray(b'f\xc3\xa9a')
 
 #insert
 arr.insert(0, 98)
-print(arr)
+print(arr) # bytearray(b'bf\xc3\xa9a')
 
 #replace
 arr = arr.replace(b'b', b'c')
-print(arr)
+print(arr) # bytearray(b'cf\xc3\xa9a')
 		</pre>
 		</div>
 		<div class="subtitle">Reference</div>

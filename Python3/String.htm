@@ -175,7 +175,15 @@ print(r) # ****-***-***, This is Phone Number
 			<li>a sequence of code points, immutable</li>
 			<li>Python keep characters as unicode in memory</li>
 			<li>type 'str' represents unicode in Python 3, type 'bytes' represent byte string</li>
-            <li>byte string can only contain ASCII literal characters, appropriate for storing data on the filesystem or sending across the internet</li>
+            <li>byte string can only contain ASCII literal characters
+                <ol>
+                    <li>Working with binary data, such as images, or audio files</li>
+                    <li>When sending or receiving data over network sockets</li>
+                    <li>When reading from or writing to binary files, such as reading an image file</li>
+                    <li>Cryptographic operations often work with binary data, and byte strings are used to hold the binary input, output, and intermediate values in these operations</li>
+                    <li>In some cases, using byte strings can be more memory-efficient and faster than using Unicode strings</li>
+                </ol>
+            </li>
 		</div>
         <div class = "block">
 			<p style = "text-align:center;"><img src = "img/String_1.png" width = "40%"></p>

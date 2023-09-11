@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+            itertools
+		</div>
+
+		<div class = "block">
+            Intends to be fast and use memory efficiently, and also to be hooked together to express more complicated iteration-based algorithms
+        </div>
+		<div class = "subtitle">chain</div>
+		<div class = "block">
+            <li>Takes several iterators as arguments and returns a single iterator</li>
+		<pre class = "prettyprint linenums">
+from itertools import *
+
+a = [1, 2, 3]
+b = ['a', 'b', 'c']
+c = [10, 20, 30]
+
+# chain
+d = chain(a, b, c) # decorator
+for i in d:
+    print(i, end = ' ') # 1 2 3 a b c 10 20 30
+print()
+
+# chain.from_iterable
+d = chain.from_iterable([a, b, c]) # decorator
+for i in d:
+    print(i, end = ' ') # 1 2 3 a b c 10 20 30
+print()
+        </pre>
+        </div>
+		<div class = "subtitle">zip_longest</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# zip() stops when the first input iterator is exhausted
+a = [1, 2, 3]
+b = ['a', 'b', 'c', 'd']
+
+for e in zip(a, b):
+    print(e)
+
+# (1, 'a')
+# (2, 'b')
+# (3, 'c')
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# substitutes None for any missing values
+from itertools import *
+
+a = [1, 2, 3]
+b = ['a', 'b', 'c', 'd']
+
+for e in zip_longest(a, b):
+    print(e)
+
+# (1, 'a')
+# (2, 'b')
+# (3, 'c')
+# (None, 'd')
+        </pre>
+        </div>
+		<div class = "subtitle">islice</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# slice with parameters, start, stop, and ste
+from itertools import *
+
+l = list(range(10))
+
+for i in islice(l, 1, 5, 2):
+    print(i, end=' ')
+print('\n')
+        </pre>
+        </div>
+		<div class = "subtitle">tee</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# return n independent iterators from a single iterable
+# the new iterators created by tee() share their input, so the original iterator should not be used after the new ones are created
+from itertools import *
+
+l = list(range(10))
+
+l1, l2, l3 = tee(l, 3)
+
+print(list(l1))
+print(list(l2))
+print(list(l3))
+        </pre>
+        </div>
+		<div class = "subtitle">starmap</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+def multiply(x, y):
+    return (x, y, x * y)
+
+r = map(multiply, range(5), range(5, 10))
+
+for i in r:
+    print(i) # tuple
+
+# (0, 5, 0)
+# (1, 6, 6)
+# (2, 7, 14)
+# (3, 8, 24)
+# (4, 9, 36)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from itertools import *
+
+def multiply(x, y):
+    return (x, y, x * y)
+
+values = [(0, 5), (1, 6), (2, 7), (3, 8), (4, 9)]
+
+r = starmap(multiply, values)
+
+for i in r:
+    print(i)
+
+# (0, 5, 0)
+# (1, 6, 6)
+# (2, 7, 14)
+# (3, 8, 24)
+# (4, 9, 36)
+        </pre>
+        </div>
+		<div class = "subtitle">count</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# generate infinite numbers
+from itertools import *
+
+c = count(10, 2)
+
+for i in zip(c, [1, 2, 3]):
+    print(i)
+
+# (10, 1)
+# (12, 2)
+# (14, 3)
+        </pre>
+        </div>
+		<div class = "subtitle">cycle</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# repeats the contents of the arguments indefinitely
+from itertools import *
+
+for i in zip(range(6), cycle([1, 2, 3])):
+    print(i)
+        </pre>
+        </div>
+		<div class = "subtitle">repeat</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# produces the same value repeatly
+from itertools import *
+
+for i in repeat('Hello World!', 3):
+    print(i)
+        </pre>
+        </div>
+		<div class = "subtitle">dropwhile</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# returns an iterator containing elements of the input iterator after a condition becomes false
+from itertools import *
+
+def condition(x):
+    return x &lt; 1
+
+for i in dropwhile(condition, [-2, -1, 0, 1, 2]):
+    print(i)
+
+# 1
+# 2
+        </pre>
+        </div>
+		<div class = "subtitle">takewhile</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# returns an iterator containing elements of the input iterator before a condition becomes false
+from itertools import *
+
+def should_drop(x):
+    return x &lt; 1
+
+for i in takewhile(should_drop, [-2, -1, 0, 1, 2]):
+    print(i)
+
+# -2
+# -1
+# 0
+        </pre>
+        </div>
+		<div class = "subtitle">filterfalse</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# returns an iterator that includes only items for which the condition returns true
+def should_drop(x):
+    return x &lt; 1
+
+for i in filter(should_drop, [-2, -1, 0, 1, 2]):
+    print(i)
+
+# -2
+# -1
+# 0
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# returns an iterator that includes only items for which the condition returns false
+from itertools import *
+
+def should_drop(x):
+    return x &lt; 1
+
+for i in filterfalse(should_drop, [-2, -1, 0, 1, 2]):
+    print(i)
+
+# 1
+# 2
+        </pre>
+        </div>
+		<div class = "subtitle">compress</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# filter the contents of an iterable with the values in another iterable
+# a true value causes the value to be produced, a false value causes it to be ignored
+from itertools import *
+
+conditions = [False, False, True, False, True]
+data = range(5)
+
+for i in compress(data, conditions):
+    print(i, end=' ')
+print()
+        </pre>
+        </div>
+		<div class = "subtitle">accumulate</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# passing the nth and n+1st item to a function and producing the return value instead of either input
+from itertools import *
+
+r = accumulate(range(5))
+
+print(list(r)) # [0, 1, 3, 6, 10]
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from itertools import *
+
+def f(a, b):
+    return a*10 + b*10
+
+r = accumulate(range(5), f)
+
+print(list(r)) # [0, 10, 120, 1230, 12340]
+        </pre>
+        </div>
+		<div class = "subtitle">product</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# cartesian product
+from itertools import *
+
+l1 = [1, 2, 3]
+l2 = ['A', 'B', 'C']
+
+r = product(l1, l2)
+
+for i in r:
+    print(i)
+
+# (1, 'A')
+# (1, 'B')
+# (1, 'C')
+# (2, 'A')
+# (2, 'B')
+# (2, 'C')
+# (3, 'A')
+# (3, 'B')
+# (3, 'C')
+        </pre>
+        </div>
+		<div class = "subtitle">permutations</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# all possible ordering tuple with r length
+# permutations[l, r]
+from itertools import *
+
+l1 = [1, 2, 3]
+
+r = permutations(l1, 2)
+
+for i in r:
+    print(i)
+
+# (1, 2)
+# (1, 3)
+# (2, 1)
+# (2, 3)
+# (3, 1)
+# (3, 2)
+        </pre>
+        </div>
+		<div class = "subtitle">combinations</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# in sorted order, no repeated elements
+from itertools import *
+
+l1 = [1, 2, 3]
+
+r = combinations(l1, 2)
+
+for i in r:
+    print(i)
+
+# (1, 2)
+# (1, 3)
+# (2, 3)
+        </pre>
+        </div>
+		<div class = "subtitle">combinations_with_replacement</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# in sorted order, with repeated elements
+from itertools import *
+
+l1 = [1, 2, 3]
+
+r = combinations_with_replacement(l1, 2)
+
+for i in r:
+    print(i)
+
+# (1, 1)
+# (1, 2)
+# (1, 3)
+# (2, 2)
+# (2, 3)
+# (3, 3)
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://pymotw.com/3/itertools/index.html">PyMOTW</a></li>
+            <li><a href = "https://docs.python.org/3/library/itertools.html#itertools.tee">Python STL</a></li>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Effective Python
+		</div>
+
+		<div class = "subtitle">Chapter 1 Pythonic Thinking</div>
+		<div class = "block">
+            <span>Item 1: Know Which Version of Python You're Using</span>
+		<pre class = "prettyprint linenums">
+python --version
+        </pre>
+		<pre class = "prettyprint linenums">
+import sys
+print(sys.version)
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 2: Follow the PEP 8 Style Guide</span>
+        </div>
+		<div class = "block">
+            <span>Item 3: Know the Differences Between bytes, str, and unicode</span>
+            <li>bytes, raw 8-bit values, encoded characters</li>
+            <li>str, unicode, no specific encoding</li>
+        </div>
+		<div class = "block">
+            <span>Item 4: Write Helper Functions Instead of Complex Expressions</span>
+            <li>A helper function is a function that performs part of the computation of another function following the DRY (Don’t repeat yourself) concept</li>
+            <li>Move complex expressions into helper functions, especially if you need to use the same logic repeatedly</li>
+            <li>If/else expression provides a more readable alternative to using Boolean operators</li>
+        </div>
+		<div class = "block">
+            <span>Item 5: Know How to Slice Sequences</span>
+            <li>Avoid being verbose: Don't supply 0 for the start index or the length of the sequence for the end index</li>
+		<pre class = "prettyprint linenums">
+# start and end indexes that are beyond the boundaries of the list
+# establish a maximum length to consider for an input sequence
+a = ['a', 'b', 'c', 'd']
+
+print(a[:10])
+print(a[-10:])
+        </pre>
+		<pre class = "prettyprint linenums">
+# The result of slicing is a shallow copy
+a = [[1, 2, 3], 'b', 'c', 'd']
+b = a[:3]
+
+b[0][0] = 10
+
+print(a, b) # [[10, 2, 3], 'b', 'c', 'd'] [[10, 2, 3], 'b', 'c']
+        </pre>
+		<pre class = "prettyprint linenums">
+# slices can be replaced by a list
+# the length of slice assignments don't need to be the same
+a = ['a', 'b', 'c', 'd']
+a[2:8] = [10, 20]
+
+print(a) # ['a', 'b', 10, 20]
+        </pre>
+		<pre class = "prettyprint linenums">
+# leaving out both the start and the end indexes end up with a shadow copy
+a = [[1, 2, 3], 'b', 'c', 'd']
+b = a[:]
+
+print(a == b, a is b) # True False
+
+b[0][0] = 10
+
+print(a, b) # [[10, 2, 3], 'b', 'c', 'd'] [[10, 2, 3], 'b', 'c', 'd']
+        </pre>
+		<pre class = "prettyprint linenums">
+# assign a list to a slice with no start or end indexes
+# replace the content with the content of the list instead of allocating a new list
+a = ['a', 'b', 'c', 'd']
+
+b = a
+print(id(a), id(b)) # 140420333398144 140420333398144
+
+a[:] = [10, 20]
+
+print(a is b, id(a), id(b)) # True 140420333398144 140420333398144
+
+print(a) # [10, 20]
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 6: Avoid Using start, end, and stride in a Single Slice</span>
+		<pre class = "prettyprint linenums">
+# list[start:end:stride]
+a = ['a', 'b', 'c', 'd']
+
+print(a[::2])
+print(a[::-1]) # ['d', 'c', 'b', 'a']
+        </pre>
+        </div>
+    </body>
+</html>

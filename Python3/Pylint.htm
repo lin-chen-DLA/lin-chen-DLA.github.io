@@ -8,6 +8,7 @@
 			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
 			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
 			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold]}
 		</style>
 	</head>
 	<body>
@@ -291,8 +292,54 @@ Your code has been rated at 10.00/10 (previous run: 1.43/10, +8.57)
 
 		</pre>
 		</div>
+		<div class = "subtitle">Options</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# show help of pylint message
+--help-msg
+--help-msg=[pylint_message]
+
+# generate reports or not
+--reports
+--reports=y
+
+# disable message types
+--disable
+--disable=C,R # disable convection and refactor
+        </pre>
+        </div>
+		<div class = "subtitle">Tools</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# generate UML diagram
+pyreverse -o png -p [output_name] [package_directory]
+pyreverse -o png -p [output_name] [package_name]
+
+# search duplicate lines
+symilar script_1.py script_2.py script_3.py
+        </pre>
+        </div>
+		<div class = "subtitle">API</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from pylint.lint import Run
+Run(['--reports=y', 't2.py'])
+        </pre>
+        </div>
+		<div class = "subtitle">Configuration</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+        </pre>
+        </div>
+		<div class = "subtitle">Plugin</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+        </pre>
+        </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://www.codeac.io/documentation/pylint-configuration.html">Pylint Configuration</a></li>
+            <li><a href = "https://github.com/pylint-dev/pylint">Source Code</a></li>
 			<li><a href = "https://docs.pylint.org/en/1.9/tutorial.html">Pylint tutorial</a></li>
 			<li><a href = "https://www.pylint.org/">Pylint</a></li>
 		</div>

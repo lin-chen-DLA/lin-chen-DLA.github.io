@@ -335,6 +335,75 @@ print(f.cache_info()) # print out the cache information
 f.cache_clear() # clear cache
 			</pre>
 		</div>
+		<div class = "block">
+            <li>Six rich class comparison functions, __lt__, __le__, __gt__, __ge__, __eq__, __ne__</li>
+			<pre class = "prettyprint linenums">
+class Vehicle(object):
+    def __init__(self, year: int):
+        self._year = year
+
+    @property
+    def year(self) -&gt; int:
+        return self._year
+
+    @year.setter
+    def year(self, y : int) -&gt; None:
+        self._year = y
+
+    def __eq__(self, other):
+        return self._year == other._year
+
+    def __lt__(self, other):
+        return self._year &lt; other._year
+
+v1 = Vehicle(1999)
+v2 = Vehicle(2022)
+
+print(v1.__lt__(v2)) # True
+print(v1.__le__(v2)) # NotImplemented
+print(v1.__gt__(v2)) # NotImplemented
+print(v1.__ge__(v2)) # NotImplemented
+print(v1.__eq__(v2)) # False
+print(v1.__ne__(v2)) # True
+            </pre>
+        </div>
+		<div class = "block">
+            <li>functools.total_ordering Provides rich class comparison methods that help in comparing classes without explicitly defining the six rich comparison function</li>
+            <li>At least one of the comparison methods must be defined from lt(less than), le(less than or equal to), gt(greater than) or ge(greater than or equal to)</li>
+            <li>The eq function must also be defined</li>
+			<pre class = "prettyprint linenums">
+from functools import total_ordering
+
+@total_ordering
+class Vehicle(object):
+    def __init__(self, year: int):
+        self._year = year
+
+    @property
+    def year(self) -&gt; int:
+        return self._year
+
+    @year.setter
+    def year(self, y : int) -&gt; None:
+        self._year = y
+
+    def __eq__(self, other):
+        return self._year == other._year
+
+    def __lt__(self, other):
+        return self._year &lt; other._year
+
+v1 = Vehicle(1999)
+v2 = Vehicle(2022)
+
+print(v1.__lt__(v2)) # True
+print(v1.__le__(v2)) # NotImplemented
+print(v1.__gt__(v2)) # NotImplemented
+print(v1.__ge__(v2)) # NotImplemented
+print(v1.__eq__(v2)) # False
+print(v1.__ne__(v2)) # True
+            </pre>
+        </div>
 
 		<div class = "subtitle">Overload</div>
 		<div class = "block">
