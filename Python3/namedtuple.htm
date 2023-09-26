@@ -7,7 +7,8 @@
 		<style>
 			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
 			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
-			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold}
 		</style>
 	</head>
 	<body>
@@ -124,6 +125,20 @@ t = p.__getnewargs__() # tuple, (11, 22)
 		<div class = "subtitle">Define Class</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
+from collections import namedtuple
+
+class Point(namedtuple('Point', ['x', 'y'])):
+
+    @property
+    def hypot(self):
+        return (self.x ** 2 + self.y ** 2) ** 0.5
+
+    def __str__(self):
+        return 'Point: x=%6.3f  y=%6.3f  hypot=%6.3f' % (self.x, self.y, self.hypot)
+
+p = Point(1, 2)
+# p = Point._make([1, 2])
+print(p)
             </pre>
         </div>
 		<div class = "subtitle">Reference</div>
