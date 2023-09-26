@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+            __slots__
+		</div>
+
+		<div class = "subtitle">__dict__</div>
+        <div class = "block">
+				<p style = "text-align:center;"><img src = "img/OO_5.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+            <li>By default, Python creates a __dict__ to save the attributes in the instance of class</li>
+            <li>Be able to create new attributes</li>
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+
+    def __init__(self, brand, year):
+        self._brand = brand
+        self._year = year
+
+    def __str__(self) -> str:
+        return 'Brand: '+self._brand+' '+'Year: '+str(self._year)
+
+v1 = Vehicle('Subaru', 2022)
+v1.cylinder = 6
+v2 = Vehicle('Accord', 2016)
+
+print(v1.__dict__) # {'_brand': 'Subaru', '_year': 2022, 'cylinder': 6}
+print(v2.__dict__) # {'_brand': 'Accord', '_year': 2016}
+        </pre>
+        </div>
+		<div class = "subtitle">__slots__</div>
+        <div class = "block">
+				<p style = "text-align:center;"><img src = "img/OO_6.png" width = "40%"></p>
+        </div>
+		<div class = "block">
+            <li>More efficient in terms of memory space and speed of access</li>
+            <li>Prevents the creation of __dict__  and __weakref__ attributes</li>
+            <li>Any non-string iterable can be used for the __slots__ declaration, such as list, tuple, etc.</li>
+            <li>Adding a new attribute will raise an AttributeError</li>
+		<pre class = "prettyprint linenums">
+class Vehicle(object):
+    __slots__ = ('brand', 'year')
+
+    def __init__(self, brand, year):
+        self.brand = brand
+        self.year = year
+
+    def __str__(self):
+        return 'Brand: '+self.brand+' '+'Year: '+str(self.year)
+
+v1 = Vehicle('Subaru', 2022)
+v2 = Vehicle('Accord', 2016)
+
+print(v1.brand, v1.year)
+print(v2.brand, v2.year)
+
+# v1.cylinder = 6 # error
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://wiki.python.org/moin/UsingSlots">Wiki</a></li>
+        </div>
+    </body>
+</html>

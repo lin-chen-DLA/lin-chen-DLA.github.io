@@ -99,10 +99,501 @@ print(a) # [10, 20]
             <span>Item 6: Avoid Using start, end, and stride in a Single Slice</span>
 		<pre class = "prettyprint linenums">
 # list[start:end:stride]
+# Slicing create a shallow copy 
 a = ['a', 'b', 'c', 'd']
 
 print(a[::2])
 print(a[::-1]) # ['d', 'c', 'b', 'a']
+
+# prefer using positive stride values
+# use one assignment to stride and another to slice
+a = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+
+b = a[::2]
+c = b[1:-1]
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 7: Use List Comprehensions Instead of map and filter</span>
+            <li>The expressions deriving one list from another are called list comprehensions</li>
+		<pre class = "prettyprint linenums">
+a = range(10)
+
+# list comprehension
+b = [e**2 for e in a]
+d = [e**2 for e in a if e%2 == 0]
+
+# map
+c = list(map(lambda x:x**2, a))
+e = list(map(lambda x:x**2, filter(lambda x: x%2 == 0, a)))
+
+d = {'name':'Lin', 'age': 43}
+
+# dictionary comprehensions
+d2 = {key:value for key, value in d.items()}
+
+# set comprehensions
+s = {value for value in d.values()}
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 8: Avoid More Than Two Expressions in List Comprehensions</span>
+            <li>List comprehensions support multiple levels of loops and multiple conditions per loop level</li>
+		<pre class = "prettyprint linenums">
+m = [[1, 2], [3, 4]]
+
+s = [[x**2 for x in row] for row in m]
+
+print(s)
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 9: Consider Generator Expressions for Large Comprehensions</span>
+            <li>Generator expression avoid using too much memory by yielding one item at a time from the expression</li>
+            <li>Geneator expressions can be chained together</li>
+		<pre class = "prettyprint linenums">
+a = list(range(10))
+
+# do not materialize the output sequence
+b = (x**2 for x in a)
+
+# print
+for e in b:
+    print(e, end = ' ')
+
+# not print, has been consumed
+for e in b:
+    print(e, end = ' ')
+
+# use a generator as the input for another generator
+a = list(range(10))
+
+b = (x**2 for x in a)
+
+c = (x*10 for x in b)
+
+# the parent generator is consumed, the child generator is empty
+# print
+for e in b:
+    print(e, end = ' ')
+
+# not print
+for e in c:
+    print(e, end = ' ')
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 10: Prefer enumerate Over range</span>
+		<pre class = "prettyprint linenums">
+# enumerate generate a lazy generator
+a = enumerate(range(10))
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 11: Use zip to Process Iterators in Parallel</span>
+		<pre class = "prettyprint linenums">
+# wraps two or more iterators with a lazy generator
+a = range(10)
+b = [e**2 for e in a]
+c = [e*2 for e in a]
+
+z = zip(a, b, c)
+
+for item in z:
+    print(item)
+
+# yield tuples until a wrapped iterator is exhausted
+a = range(4)
+b = [e**2 for e in range(3)]
+
+z = zip(a, b)
+
+for item in z:
+    print(item)
+
+# (0, 0)
+# (1, 1)
+# (2, 4)
+
+from itertools import *
+
+z = zip_longest(a, b)
+
+for item in z:
+    print(item)
+
+# (0, 0)
+# (1, 1)
+# (2, 4)
+# (3, None)
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 12: Avoid else Blocks After for and while Loops</span>
+		<pre class = "prettyprint linenums">
+# the else block runs after the loop finishes
+for e in range(4):
+    print(e)
+else:
+    print('Else block ...')
+
+# break in a loop will skip the else block
+for e in range(4):
+    print(e)
+    if e % 2 == 0:
+        break
+else:
+    print('Else block ...')
+
+# the else block runs after the loop finishes
+a = 0
+while a &lt; 4:
+    print(a)
+    a += 1
+else:
+    print('Else block ...')
+
+# break in a loop will skip the else block
+a = 0
+while a &lt; 4:
+    print(a)
+    if a % 2 == 0:
+        break
+    a += 1
+else:
+    print('Else block ...')
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 13: Take Advantage of Each Block in try/except/else/finally</span>
+		<pre class = "prettyprint linenums">
+# finally, run clearn up even when exeption occur
+def get_exception():
+    raise Exception('Raising exception ...')
+
+def run_block():
+    try:
+        get_exception()
+    finally:
+        print('Run finally ...') # Always runs after try
+
+def calling():
+    try:
+        run_block()
+    except Exception as e:
+        print(e)
+
+calling()
+
+# Run finally ...
+# Raising exception ...
+
+# else, can be used to perform additional actions after a successful try block
+def run_block():
+    try:
+        pass
+    except Exception as e:
+        print(e)
+    else:
+        print('Additional actions ...')
+    finally:
+        print('Run finally ...')
+
+run_block()
+
+# Additional actions ...
+# Run finally ...
+        </pre>
+        </div>
+		<div class = "subtitle">Chapter 2 Functions</div>
+		<div class = "block">
+            <span>Item 14: Prefer Exceptions to Returning None</span>
+		<pre class = "prettyprint linenums">
+# None, zero, the empty string are evaluated to False in condition expressions
+def divide(a, b):
+    try:
+        return a/b
+    except Exception as e:
+        return None
+
+if divide (2, 0) is None:
+    print('Denominator is zero ...')
+
+# 0 is False in python
+if not divide(0, 2):
+    print('Invalid inputs ...') # This is wrong!
+
+# raise exceptions to indicate special situations instead of returning None
+def divide(a, b):
+    try:
+        return a/b
+    except Exception as e:
+        raise ValueError('Invalid inputs ...') from e
+
+try:
+    result = divide(0, 2)
+except Exception as e:
+    print(e)
+else:
+    print(result)
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 15: Know How Closures Interact with Variable Scope</span>
+            <li>A closure is a function value that references variables from outside its body</li>
+            <li>Python traverse the scope in the order
+                <ul>
+                    <li>Local can be inside a function or class method</li>
+                    <li>Enclosed can be its enclosing function</li>
+                    <li>Module containing the code, referred as global</li>
+                    <li>Built-in scope</li>
+                    <li>Return a NameError exception</li>
+                </ul>
+            </li>
+            <li><span>nonlocal</span>, traverse the scope of enclosing function</li>
+            <li><span>global</span>, go into the module scope</li>
+		<pre class = "prettyprint linenums">
+n = 10 # global variable
+
+def f1():
+    print(n) # 10, access global variable
+
+def f2():
+    n = 100 # 100, define a local variable
+    print(n)
+
+def f3():
+    global n
+    n = 100
+    print(n) # access global variable
+
+def f4():
+    def f5():
+        nonlocal m
+        m = 1000
+        print(m) # 1000
+
+    m = 100
+    print(m) # 100
+    f5()
+    print(m) # 1000
+
+# f1(), 10
+# print(n), 10
+
+# f2(), 100
+# print(n), 10
+
+# f3(), 100
+# print(n), 100
+
+# f4(), 100, 1000, 1000
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 16: Consider Generators Instead of Returning Lists</span>
+            <li>Generators are functions that use <span>yield</span> expressions</li>
+            <li>Generator functions do not actually run, instead, return an iterator</li>
+            <li>With each call to <span>next</span> function, the iterator advances the generator to its next yield expression</li>
+            <li>Each value passed to yield by the generator is returned by the iterator to the caller</li>
+            <li>The iterator can be converted to a list by <span>list</span> function</li>
+            <li>Iterators returned are stateful and can't be resued</li>
+            <li>Generator does not support slicing, use islice instead</li>
+		<pre class = "prettyprint linenums">
+# list
+def get_values(s):
+    c = []
+    for l in s:
+        c.append(ord(l))
+
+    return c
+
+# generator
+def get_values(s):
+    c = []
+    for l in s:
+        yield ord(l)
+
+r = get_values('Hello World!')
+
+from itertools import *
+
+r2 = islice(r, 0, 3) # generator
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 17: Be Defensive When Iterating Over Arguments</span>
+            <li>Beware of functions that iterate over input arguments multiple time. If these arguments are iterators, may see strange behavior and missing values</li>
+		<pre class = "prettyprint linenums">
+a = [10, 20, 30]
+
+def get_values():
+    for e in a:
+        yield e
+
+def normalize(func):
+    total = sum(get_values()) # New iterator
+    result = []
+    for value in get_values(): # New iterator
+        result.append(value/total)
+
+    return result
+
+percentages = normalize(get_values)
+
+print(percentages)
+
+# iterator protocol, how to traver the contents of a container
+# iter function calls __iter__ method in class
+a = [10, 20, 30]
+
+class ReadValues():
+    def __init__(self, a):
+        self.a = a
+
+    def __iter__(self):
+        for e in self.a:
+            yield e
+
+def normalize(values):
+    # raise an exception if the inputs is iterable but not a container
+    if iter(values) is iter(values):
+        raise TypeError('Must be a container ...')
+    total = sum(values)
+    result = []
+    for value in values:
+        result.append(value/total)
+
+    return result
+
+values = ReadValues(a)
+percentages = normalize(values)
+
+print(percentages)
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 18: Reduce Visual Noise with Variable Positional Arguments</span>
+            <li>Optional positional arguments, start args, *args</li>
+            <li>Problems
+                <ul>
+                    <li>Arguments are truned into a <span>tuple</span> before they are passed to a function. The generator passed will be iterated. It will consume plenty of memory</li>
+                    <li>Cannot add new positional arguments without migrating caller</li>
+                </ul>
+            </li>
+		<pre class = "prettyprint linenums">
+def log(m, *values):
+    print(m, ': ', values)
+
+log('Numbers', 1, 2)
+
+a = [1, 2]
+log('Numbers', *a) # singularization
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 19: Provide Optional Behavior with Keyword Arguments</span>
+            <li>Function arguments can be specified by position or by keyword</li>
+            <li>Optional keyword arguments should always be passed by keyword instead of by position</li>
+		<pre class = "prettyprint linenums">
+def info(message, value):
+    print(message, value)
+
+info('Hello: ', 10) # positional arguments
+info(value = 10, message = 'Hello: ') # keyword arguments in any order
+#info(message = 'Hello: ', 10) # error
+info('Hello: ', value = 10) # positional arguments must be specified before keyword arguments
+info('Hello: ', message = 'World!') # each argument can only be specified once
+
+def info(message = 'Hello: ', value = 10):
+    print(message, value)
+
+info('World: ') # positional argument
+info(value = 100) # keyword argument
+info('World', value = 100) # positional arguments must be specified before keyword arguments
+
+def info(message = 'Hello: ', value = 10, **args):
+    print(message, value, args)
+
+info(value = 100, key_1 = 10, key_2 = 20) # optional arguments
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 20: Use None and Docstrings to Specify Dynamic Default Arguments</span>
+            <li>Default arguments are only evaluated once at the time of function is loaded</li>
+            <li><span>Mutable</span> argument values, like {} or [], are shared by all functions calls</li>
+            <li>Use <span>None</span> as the default value for mutable argument to avoid odd behaviors</li>
+		<pre class = "prettyprint linenums">
+from datetime import datetime
+
+# static default arguments
+def info(when = datetime.now()):
+    print(when)
+
+# timestamps are same, datetime.now is executed a single time when the function is defined
+# default argument value is static
+info() # 2019-09-22 11:05:17.924218
+info() # 2019-09-22 11:05:17.924218
+
+# dynamic default arguments
+def info(when = None):
+    when = datetime.now() if when is None else when
+    print(when)
+
+info() # 2019-09-22 11:12:04.619564
+info() # 2023-09-22 11:12:04.619604
+
+# using mutable value as default argument value
+def info(default = {}): # default is shared by all calls to info
+    return default
+
+c1 = info()
+c1['Name'] = 'Lin'
+
+c2 = info()
+c2['Age'] = 43
+
+# {'Name': 'Lin', 'Age': 43} {'Name': 'Lin', 'Age': 43} 4434628928 4434628928
+print(c1, c2, id(c1), id(c2))
+
+# use None as the default argument
+def info(default = None):
+    return {} if default is None else default
+
+c1 = info()
+c2 = info()
+
+print(id(c1), id(c2))
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 21: Enforce Clarity with Keyword-Only Arguments</span>
+            <li>Use * symbol to indicate the start of keyword-only arguments</li>
+            <li>Use **kwargs to support keyword-only arguments</li>
+		<pre class = "prettyprint linenums">
+# use * to indicate keyword-only arguments
+def info(message, *, value = 10):
+    print(message, value)
+
+info('Hello', value = 100) # positional argument and keyword-only argument
+info(value = 100, message = 'Hello') # keyword arguments in any order
+
+# info('Hello', 100) # error, pass positional argument to keyword-only argument
+
+# use **kwargs to indicate keyword-only arguments
+def info(message, **kwargs):
+    print(message, kwargs['value'])
+
+info('Hello', value = 100) # positional argument and keyword-only argument
+info(value = 100, message = 'Hello') # keyword arguments in any order
+
+# info('Hello', 100) # error, pass positional argument to keyword-only argument
+        </pre>
+        </div>
+		<div class = "subtitle">Chapter 3 Classes and Inheritance</div>
+		<div class = "block">
+            <span>Item 22: Prefer Helper Classes Over Bookkeeping with Dictionaries and Tuples</span>
+		<pre class = "prettyprint linenums">
         </pre>
         </div>
     </body>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+            namedtuple
+		</div>
+
+		<div class = "subtitle">Declaration</div>
+		<div class = "block">
+            <li>Returns a new tuple subclass named <span><i>typename</span></i></li>
+            <li>namedtuple is <span>immutable</span></li>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+from collections import namedtuple
+
+Point = namedtuple('Point', ['x', 'y']) # define a type and its fields
+
+p = Point(x=11, y=22)
+#p = Point(11, 22)
+
+# access
+x, y = p # unpack like a regular tuple
+print(x, y)
+
+print(p[0], p[1]) # Access by index
+print(p.x, p.y) # Access by keyname
+print(getattr(p, 'x'), getattr(p, 'y')) # Access Using getattr
+
+print('x is {}, y is {}'.format(*p))
+			</pre>
+		</div>
+		<div class = "subtitle">Methods</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# _make, makes a new instance from an existing sequence or iterable
+from collections import namedtuple
+
+Point = namedtuple('Point', ['x', 'y']) # define a type and its fields
+
+l = [11, 22]
+p = Point._make(l)
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# _asdict, return a dict which maps field names to their corresponding values
+from collections import namedtuple
+
+Point = namedtuple('Point', ['x', 'y']) # define a type and its fields
+
+p = Point(x=11, y=22)
+
+d = p._asdict() # dict
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# **, convert a dictionary into the namedtuple
+from collections import namedtuple
+
+Point = namedtuple('Point', ['x', 'y']) # define a type and its fields
+
+d = {'x':11, 'y':22}
+p = Point(**d)
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# _fields, get all the keynames of a namedtuplefrom collections import namedtuple
+from collections import namedtuple
+
+Point = namedtuple('Point', ['x', 'y']) # define a type and its fields
+p = Point(x=11, y=22)
+
+print(p._fields) # ('x', 'y')
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# _replace, return a new instance of the named tuple replacing specified fields with new values
+from collections import namedtuple
+
+Point = namedtuple('Point', ['x', 'y']) # define a type and its fields
+p = Point(x=11, y=22)
+
+p2 = p._replace(x=33)
+
+print(p2)
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# __new__, returns a new instance with assigned values to keys
+from collections import namedtuple
+
+Point = namedtuple('Point', ['x', 'y']) # define a type and its fields
+p = Point(x=11, y=22)
+
+p2 = p.__new__(Point, 10, 20)
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# __getnewargs__, returns the namedtuple as a plain tuple
+from collections import namedtuple
+
+Point = namedtuple('Point', ['x', 'y']) # define a type and its fields
+p = Point(x=11, y=22)
+
+t = p.__getnewargs__() # tuple, (11, 22)
+            </pre>
+        </div>
+		<div class = "subtitle">Define Class</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.python.org/3/library/collections.html#collections.namedtuple">Documents</a></li>
+            <li><a href = "https://pymotw.com/3/collections/namedtuple.html">PyMOTW</a></li>
+            <li><a href = "https://www.geeksforgeeks.org/namedtuple-in-python/">Geeksforgeeks</a></li>
+		</div>
+    </body>
+</html>
