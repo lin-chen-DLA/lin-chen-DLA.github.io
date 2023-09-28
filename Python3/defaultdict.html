@@ -23,12 +23,46 @@
 		<div class = "subtitle">Initialization</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
+# default_factory=None, defaultdict has the same performance as dict
+import collections
+
+def default_factory():
+    return 'default value'
+
+d = collections.defaultdict()
+
+d['blue'] = 20 # defaultdict(None, {'blue': 20})
+
+# print(d['red']) # key doesn't exist, raise KeyError
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# default_factory=func_missing, if key does not exist, insert key with default value
+import collections
+
+def func_missing():
+    return 0
+
+d = collections.defaultdict(default_factory = func_missing)
+
+d['blue'] = 20 # defaultdict(&lt;function func_missing at 0x108af04a0&gt;, {'blue': 20})
+
+print(d['red']) # key doesn't exist, insert key with default value
+# defaultdict(&lt;function func_missing at 0x108af04a0&gt;, {'blue': 20, 'red': 0})
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
 # list
 from collections import defaultdict
 
 s = [('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)]
 d_list = defaultdict(list) # each value is a list
 for k, v in s:
+    # access key which does not exist
+    # insert key with an empty list
+    # append value to list
     d_list[k].append(v)
 
 print(d_list) # defaultdict(list, {'yellow': [1, 3], 'blue': [2, 4], 'red': [1]})
@@ -42,24 +76,12 @@ from collections import defaultdict
 s = [('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)]
 d_dict = defaultdict(dict) # each value is a list
 for k, v in s:
+    # access key which does not exist
+    # insert key with an empty dict
+    # add key/value to dict
     d_dict[k][v] = 0
     
 print(d_dict) # defaultdict(<class 'dict'>, {'yellow': {1: 0, 3: 0}, 'blue': {2: 0, 4: 0}, 'red': {1: 0}})
-            </pre>
-        </div>
-		<div class = "subtitle">Access</div>
-		<div class = "block">
-			<pre class = "prettyprint linenums">
-# list
-d_list['yellow'].append(4) # defaultdict(list, {'yellow': [1, 3, 4], 'blue': [2, 4], 'red': [1]})
-d_list['yellow'][0] = 10 # defaultdict(list, {'yellow': [10, 3, 4], 'blue': [2, 4], 'red': [1]})
-            </pre>
-        </div>
-		<div class = "block">
-			<pre class = "prettyprint linenums">
-# dict
-d_dict['yellow'] # {1: 0, 3: 0}
-d_dict['yellow'][4] = 10 # defaultdict(dict, {'yellow': {1: 0, 3: 0, 4: 10}, 'blue': {2: 0, 4: 0}, 'red': {1: 0}})
             </pre>
         </div>
 		<div class = "subtitle">Methods</div>
