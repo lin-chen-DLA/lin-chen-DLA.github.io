@@ -598,6 +598,38 @@ info(value = 100, message = 'Hello') # keyword arguments in any order
         </div>
 		<div class = "block">
             <span>Item 23: Accept Functions for Simple Interfaces Instead of Classes</span>
+            <li>Many of Python's built-in APIs allow to customize behavior by passing in a function</li>
+            <li>Instead of defineing classes, functions are often all need for simple interfaces between components in Python</li>
+            <li>References to functions in Python can be used in expressions like any other type</li>
+            <li>When need to maintain state, consider defining a class with __call__ method instead of defining a stateful closure</li>
+		<pre class = "prettyprint linenums">
+from collections import defaultdict
+
+current = {'green':12, 'blue':3}
+
+increments = [('red', 5), ('blue', 17), ('orange', 9)]
+
+class CallMissing(object):
+    added = 0 # keep operation state
+
+    def __init__(self):
+        pass
+
+    # create a callable class
+    def __call__(self):
+        CallMissing.added += 1
+        return 0
+
+result = defaultdict(CallMissing(), current)
+
+for key, value in increments:
+    result[key] += value
+
+print(CallMissing.added, dict(result)) # 2 {'green': 12, 'blue': 20, 'red': 5, 'orange': 9}
+        </pre>
+        </div>
+		<div class = "block">
+            <span>Item 24: Use @classmethod Polymorphism to Construct Objects Generically</span>
 		<pre class = "prettyprint linenums">
         </pre>
         </div>
