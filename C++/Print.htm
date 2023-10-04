@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>C++</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Print
+		</div>
+		<div class = "subtitle">cout</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+using namespace std;
+
+int main()
+{
+    cout&lt;&lt;"Hello World!"&lt;&lt;endl;
+
+    return 0;
+}
+            </pre>
+        </div>
+		<div class = "subtitle">setw</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+int main()
+{
+    int a = 10;
+
+    cout&lt;&lt;left&lt;&lt;setw(5)&lt;&lt;a&lt;&lt;endl; // left alignment
+    cout&lt;&lt;right&lt;&lt;setw(5)&lt;&lt;a&lt;&lt;endl; // right alignment
+
+    return 0;
+}
+            </pre>
+        </div>
+		<div class = "subtitle">setfill</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+int main()
+{
+    int a = 10;
+
+    cout&lt;&lt;setfill('0')&lt;&lt;setw(5)&lt;&lt;a&lt;&lt;endl;
+
+    return 0;
+}
+            </pre>
+        </div>
+		<div class = "subtitle">setprecision</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+int main()
+{
+    double a = 3.1415926;
+
+    cout&lt;&lt;setprecision(4)&lt;&lt;a&lt;&lt;"|"&lt;&lt;endl; // 3.142
+    cout&lt;&lt;setprecision(3)&lt;&lt;a&lt;&lt;"|"&lt;&lt;endl; // 3.14
+    cout&lt;&lt;setprecision(2)&lt;&lt;a&lt;&lt;"|"&lt;&lt;endl; // 3.1
+
+    return 0;
+}
+            </pre>
+        </div>
+		<div class = "subtitle">base</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+int main()
+{
+    int a = 100;
+
+    cout&lt;&lt;oct&lt;&lt;a&lt;&lt;endl; // 144
+    cout&lt;&lt;hex&lt;&lt;a&lt;&lt;endl; // 64
+    cout&lt;&lt;dec&lt;&lt;a&lt;&lt;endl; // 100
+                        //
+    cout&lt;&lt;showbase&lt;&lt;hex&lt;&lt;a&lt;&lt;endl; // 0x64
+
+    return 0;
+}
+            </pre>
+        </div>
+		<div class = "subtitle">float</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+int main()
+{
+    float a = 1234;
+
+    cout&lt;&lt;scientific&lt;&lt;a&lt;&lt;endl; // 1.234000e+03
+    cout&lt;&lt;fixed&lt;&lt;a&lt;&lt;endl; // 1234.000000
+
+    return 0;
+}
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://faculty.cs.niu.edu/~hutchins/csci241/output.htm">Formatting Output in C++</a></li>
+        </div>
+    </body>
+</html>
