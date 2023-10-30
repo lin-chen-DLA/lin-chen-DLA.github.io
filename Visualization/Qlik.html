@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Qlik</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
+			span {color: red}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class = "title">
+            Qlik Sense
+		</div>
+
+		<div class = "subtitle">Introduction</div>
+		<div class = "block">
+			<li>Advantages
+				<ul>
+					<li>Makes Analytics Easy</li>
+					<li>Instantly Outputs Insights</li>
+					<li>Efficient Collab</li>
+					<li>Embedded Analytics</li>
+				</ul>
+			</li>
+			<li>Terms
+				<ul>
+					<li><span>file</span>, table</li>
+					<li><span>field</span>, column</li>
+					<li><span>record</span>, row</li>
+					<li><span>dimension</span>
+						<ul>
+							<li>Determine how the data in a visualization is grouped</li>
+							<li>Descriptive field in the data set which represents few distinct values, such as time, place, or category</li>
+						</ul>
+					</li>
+					<li><span>measure</span>
+						<ul>
+							<li>The result of some sort of calculation, often aggregations, such as Sum, Count, or Avg</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+    	</div>
+    	<div class = "subtitle">Architecture</div>
+    	<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Qlik_1.png" width = "60%"></p>
+		</div>
+		<div class = "subtitle">Workflow</div>
+    	<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Qlik_2.png" width = "60%"></p>
+		</div>
+		<div class = "subtitle">Visualizations</div>
+		<div class = "block">
+			<li>Filter Panes
+				<ul>
+					<li>Add several fields</li>
+					<li>Define the appearance for each field</li>
+				</ul>
+			</li>
+			<li>Pie Chart | Donut Chart
+				<ul>
+					<li>One dimension, one or two measures</li>
+					<li>Slice, define group</li>
+					<li>Angle, percentage of aggregation of a measure in a group</li>
+					<li>Radius, value of aggregation of another measure in the group</li>
+				</ul>
+			</li>
+			<li>Combo Chart
+				<ul>
+					<li>Comparing two sets of measure values with the different scale</li>
+					<li>One dimension, 2-15 measures</li>
+					<li>Dimension, define group, x-axis</li>
+					<li>Primary axis, aggregation of a measure in a group using primary axis</li>
+					<li>Secondary axis, aggregation of another measure in the group</li>
+				</ul>
+			</li>
+			<li>KPI
+				<ul>
+					<li>Show one or two measure values</li>
+				</ul>
+			</li>
+			<li>Gauge
+				<ul>
+					<li>Display a single key measure value as a position along a range</li>
+				</ul>
+			</li>
+			<li>Line Chart
+				<ul>
+					<li>Dimension, x-axis</li>
+					<li>Measure, y-axis</li>
+				</ul>
+			</li>
+			<li>Bar Chart
+				<ul>
+					<li>Dimension, define group</li>
+					<li>Measure, show the value for each category item</li>
+				</ul>
+			</li>
+			<li>Box Plot
+				<ul>
+					<li>Two dimensions, one measure</li>
+					<li>First dimension, define group, calculate the aggregation of the measure in each group, and create a box plot</li>
+					<li>Second dimension, define multiple boxes</li>
+				</ul>
+			</li>
+			<li>Bullet Chat
+				<ul>
+					<li>One dimension, one measure</li>
+				</ul>
+			</li>
+			<li>Button
+				<ul>
+							<li>Selection values from field
+								<ul>
+<pre class = "prettyprint linenums">
+# create an action, "Select value matching search criteria"
+# select a field
+# set up values
+='NEAR OCEAN' # single value
+='("NEAR OCEAN"|"NEAR BAY")' # multiple values
+</pre>
+<pre class = "prettyprint linenums">
+# create an action, "Select value matching search criteria"
+# select a field
+# set up range
+='>=5 <=10'
+</pre>
+<pre class = "prettyprint linenums">
+# create an action, "Select values in a field"
+# select a field
+# set up values
+='3;4;5'
+</pre>
+								</ul>
+							</li>
+							<li>Navigation
+								<ul>
+									<li>links to other sheets, stories, or websites</li>
+								</ul>
+							</li>
+							<li>Reload data</li>
+						</ul>
+					</li>
+					<li>Container
+						<ul>
+							<li>Tab for switching multiple visualizations</li>
+						</ul>
+					</li>
+					<li>Distribution Plot
+						<ul>
+							<li>Two dimensions, one measure</li>
+							<li>First dimension, define group, calculate the aggregation of the measure in each group, and create a ditribution plot</li>
+							<li>Second dimension, define multiple distribution plots</li>
+						</ul>
+					</li>
+					<li>Histogram</li>
+					<li>Map Chart
+						<ul>
+							<li>Requirements
+								<ul>
+									<li>location lookups and background map, connection to maps.qlikcloud.com</li>
+									<li>Satellite base map, connection to ibasemaps-api.arcgis.com</li>
+								</ul>
+							</li>
+							<li>Layers
+								<ul>
+									<li>Point layer, Area layer, Line layer, Density layer, Chart layer, Background layer</li>
+								</ul>
+							</li>
+							<li>Location data
+								<ul>
+									<li>Geometries, such as coordinates</li>
+									<li>Names of locations, such as countries, regions, cities, postal codes etc.</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>Mekko Chart
+						<ul>
+							<li>Two dimensions, one measure</li>
+							<li>Columns, define group for columns</li>
+							<li>Cells, define group within a column</li>
+							<li>Size, measure</li>
+						</ul>
+					</li>
+					<li>Pivot Table</li>
+					<li>Scatter Plot
+						<ul>
+							<li>One dimension, two measures</li>
+							<li>Dimension, define group</li>
+							<li>X-axis, measure in x-axis</li>
+							<li>Y-axis, measure in y-axis</li>
+						</ul>
+					</li>
+					<li>Table</li>
+					<li>Text &amp; Image</li>
+					<li>Treemap</li>
+					<li>Waterfall Chart</li>
+		</div>
+		<div class = "subtitle">Search</div>
+		<div class = "block">
+			<li>Text search
+				<ul>
+					<li>Normal search, strings that match the search string are displayed</li>
+<pre class = "prettyprint linenums">
+NEAR # NEAR BAY, NEAR OCEAN
+"NEAR BAY" # NEAR BAY
+NEAR Bay # NEAR BAY, NEAR OCEAN, values that contain any of the search strings
++OCEAN NEAR # NEAR OCEAN, &lt;1H OCEAN, strings with a plus sign must be included
+NEAR -BAY # NEAR OCEAN, removes all values containing this string with a minus sign
+</pre>
+					<li>Wildcard search</li>
+<pre class = "prettyprint linenums">
+# *, in the place of zero or more characters
+N* # NEAR BAY, NEAR OCEAN
+
+# ?, in the place of a single character
+N?ar* # NEAR BAY, NEAR OCEAN
+
+# ^, beginning of a work
+*^Ba* # NEAR BAY
+</pre>
+			  </ul>
+			</li>
+			<li>Numeric search
+				<ul>
+<pre class = "prettyprint linenums">
+&gt; 100
+&gt; 100 &lt; 200 # and
+</pre>
+				</ul>
+			</li>
+			<li>Fuzzy search
+				<ul>
+<pre class = "prettyprint linenums">
+# returns a list of values which may not be identical to the search input
+~neay ocean # NEAR OCEAN, &lt;H OCEAN, NEAR BAY
+</pre>
+				</ul>
+			</li>
+			<li>Expression search
+				<ul>
+<pre class = "prettyprint linenums">
+# Search for values across all fields associated with the search field
+# An expression search always begins with an equals sign =
+# within the filter panel of ocean_proximity
+=avg(total_rooms) > 2500 # &lt;1H OCEAN, INLAND, NEAR OCEAN
+</pre>
+				</ul>
+			</li>
+			<li>Compound search
+				<ul>
+<pre class = "prettyprint linenums">
+# use multiple search operators in a single compound search
+# enclose the search within a set of parentheses
+(N*|*land) # INLAND, ISLAND, NEAR BAY, NEAR OCEAN
+</pre>
+				</ul>
+			</li>
+			<li>Associative insights within selections tool
+				<ul>
+<pre class = "prettyprint linenums">
+# compare the contributions of your selections and excluded values against your measures
+</pre>
+				</ul>
+			</li>
+			<li>Smart search
+				<ul>
+<pre class = "prettyprint linenums">
+# only supports text search
+# measure values are not included in smart search
+# When use smart search to search the data, make a selection from the searched results
+</pre>
+				</ul>
+			</li>
+	    </div>
+	    <div class = "subtitle">Insight Advisor</div>
+		<div class = "block">
+			<li><span>Explore Data</span>, generate analyses usig the selected field</li>
+			<li><span>Ask Question</span>, natural language queries</li>
+<pre class = "prettyprint linenums">
+Show me the sales in USA
+</pre>
+			<li><span>Create an Analysis</span>, create charts from a range of possible analysis types</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://help.qlik.com/">Qlik Online Help</a></li>
+			<li><a href = "https://help.qlik.com/en-US/sense/August2023/Content/Sense_Helpsites/Tutorials.htm">Tutorial</a></li>
+			<li><a href = "https://www.youtube.com/watch?v=6KHs0xa-jgE">Qlik Sense Tutorial for Beginners - Qlik Sense Training</a></li>
+			<li><a href = "https://www.kaggle.com/datasets/camnugent/california-housing-prices">California Housing Prices</a></li>
+        </div>
+    </body>
+</html>
