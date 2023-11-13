@@ -67,10 +67,10 @@ class A(object):
     def __init__(self, v):
         self.value = v
         
-    def static():
+    def static_method():
         return 'S ...'
     
-    static = staticmethod(static)
+    static = staticmethod(static_method)
         
 # call by class
 A.static()
@@ -88,15 +88,15 @@ class A(object):
         self.value = v
         
     @staticmethod
-    def static():
+    def static_method():
         return 'S ...'
         
 # call by class
-A.static()
+A.static_method()
 
 # call by instance
 #a = A(10)
-#a.static()
+#a.static_method()
         </pre>
         </div>
 		<div class = "block">

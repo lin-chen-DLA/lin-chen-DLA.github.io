@@ -89,6 +89,64 @@ f.close()
 o.close()
 		</pre>
 		</div>
+		<div class = "subtitle">Mode</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+'''
+abcdefg
+'''
+
+# r
+# reading, stream is positioned at the beginning of the file
+f = open('data.txt', 'r')
+s = f.read(2) # ab
+
+# r+, reading and writing
+# read from the beginning of the file
+# write from the end of the file
+f = open('data.txt', 'r+')
+s = f.read(2) # ab
+f.write('AA')
+'''
+abcdefg
+AA
+'''
+
+# w, truncate file to zero length or create text file for writing
+# stream is positioned at the beginning of the file
+f = open('data.txt', 'w')
+f.write('AA')
+'''
+AA
+'''
+
+# w+, truncate file to zero length or create text file for reading and writing
+# stream is positioned at the beginning of the file
+f = open('data.txt', 'w+')
+f.write('AA')
+'''
+AA
+'''
+f.seek(0, 0)
+s = f.read(2) # AA
+
+# a, open for writing
+# stream is positioned at the end of the file
+f = open('data.txt', 'a')
+f.write('AA')
+'''
+abcdefg
+AA
+'''
+
+# a+, open for reading and writing
+# stream is positioned at the end of the file
+f = open('data.txt', 'a+')
+f.write('AA') # write AA at the end of the file
+f.seek(0, 0)
+s = f.read(2) # ab
+        </pre>
+        </div>
 
 		<div class = "subtitle">File Attributes</div>
 		<div class = "block">
@@ -97,12 +155,13 @@ o.close()
 f = open('data.txt', 'rb')
 
 # file attributes
-print(f.closed)
+print(f.closed) # False
 print(f.mode) # rb
 print(f.name) # data.txt
 
 # close file
 f.close()
+print(f.closed) # True
 		</pre>
 		</div>
 
@@ -181,7 +240,7 @@ def info():
 import i11
 
 filename, line_index = i11.info()
-print(filename, line_index)
+print(filename, line_index) # i11.py 5
 		</pre>
 		</div>
 

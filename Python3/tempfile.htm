@@ -29,7 +29,7 @@ filename = '/tmp/{}.txt'.format(os.getpid())
 
 with open(filename, 'w+') as temp:
     temp.write('temp.name:')
-    temp.write('  {!r}'.format(temp.name))
+    temp.write('  {!r}'.format(temp.name)) # !r, repr
 
 # Clean up the temporary file
 os.remove(filename)
@@ -69,17 +69,95 @@ with tempfile.TemporaryFile(mode='w+t') as f:
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # create a temporary file with a name
-# the file is removed after the handle is closed
+# delete = True, delete_on_close = True, the file is removed after the handle is closed
+# delete = True, delete_on_close = True, the file is deleted on context manager exit only
+# delete = False, the value of delete_on_close is ignored, the file is not deleted
 import tempfile
 
-with tempfile.NamedTemporaryFile() as temp:
+with tempfile.NamedTemporaryFile(delete=False) as temp:
     print('temp.name:')
     print('  {!r}'.format(temp.name))
+        </pre>
+        </div>
+		<div class = "subtitle">Spooled Files</div>
+		<div class = "block">
+            <li>When the amount of data is less than a threshold, holds the file contents in memory using a io.BytesIO or io.StringIO buffer</li>
+            <li>When the amount of data is greater than the threshold, the buffer is replaced with a normal TemporaryFile()</li>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import tempfile
+
+with tempfile.SpooledTemporaryFile(max_size=100, mode='w+t', encoding='utf-8') as temp:
+
+    for i in range(3):
+        # write
+        temp.write('This line is repeated over and over.\n')
+        print(temp._rolled, temp._file)
+
+        # read
+        temp.seek(0, 0)
+        for line in temp:
+            print(line)
+        </pre>
+        </div>
+		<div class = "subtitle">Temporary Directories</div>
+		<div class = "block">
+            <li>Create a single temporary directory</li>
+            <li>Create temporatory files under the temporary ddirectory</li>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import pathlib
+import tempfile
+
+with tempfile.TemporaryDirectory() as directory_name:
+    the_dir = pathlib.Path(directory_name)
+
+    # write
+    a_file = the_dir / 'a_file.txt'
+    a_file.write_text('Content in a_file')
+
+    b_file = the_dir / 'b_file.txt'
+    b_file.write_text('Content in b_file')
+
+    # read
+    print(a_file.read_text())
+    print(b_file.read_text())
+        </pre>
+        </div>
+		<div class = "subtitle">Predicting Names</div>
+		<div class = "block">
+            name = dir + prefix + <span style = "color:red; font-weight:bold;">random</span> + suffix
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import tempfile
+
+with tempfile.NamedTemporaryFile(suffix='_suffix', prefix='prefix_', dir='/tmp') as temp:
+    print('temp.name:', temp.name)
+        </pre>
+        </div>
+		<div class = "subtitle">Temporary File Location</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import tempfile
+
+# temporary dir
+print('gettempdir():', tempfile.gettempdir())
+
+# temporary prefix
+print('gettempprefix():', tempfile.gettempprefix())
+
+# set temporary dir
+tempfile.tempdir = '/I/changed/this/path'
+print('gettempdir():', tempfile.gettempdir())
         </pre>
         </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
 			<ul>
+                <li><a href = "https://docs.python.org/3/library/tempfile.html">Python STL</a></li>
                 <li><a href = "https://pymotw.com/3/tempfile/">PyMOTW</a></li>
 			</ul>
 		</div>
