@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			pathlib
+		</div>
+
+		<div class = "subtitle">Create Path</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from pathlib import Path
+
+# create a path
+p = Path('.') # .
+
+# path concatination
+p2 = p / 'temp' # temp
+print(p2)
+
+p3 = p.joinpath('.', 'temp') # temp
+print(p3)
+
+p5 = Path('temp', 'world.py') # temp/world.py
+
+# change path
+p4 = p / 'temp' / 'hello.py'
+print(p4.with_name('world.py')) # temp/world.py
+print(p4.with_suffix('.pyc')) # temp/hello.pyc
+        </pre>
+        </div>
+		<div class = "subtitle">Path Property</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# get absolute path
+print(str(p.resolve())) # /Users/.../Python/Pathlib
+
+# parse path
+print(p4.parts) # ('temp', 'hello.py')
+
+# parent path
+print(p4.parent) # temp
+for up in p4.parents: # temp, .
+    print(up)
+
+# name property
+print(p4.name) # hello.py, str
+print(p4.suffix) # .py, str
+print(p4.stem) # hello, str
+        </pre>
+        </div>
+		<div class = "subtitle">Concrete Path</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+home = Path.home() # home directory
+cwd = Path.cwd() # current directory
+        </pre>
+        </div>
+		<div class = "subtitle">List Files or Directories</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# list files and directories in a directory
+for f in p.iterdir():
+    print(f)
+
+# list files matching a pattern
+for f in p.glob('*.py'):
+    print(f)
+
+# list files matching a pattern recursively
+for f in p.rglob('*.py'):
+    print(f)
+        </pre>
+        </div>
+		<div class = "subtitle">IO</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from pathlib import Path
+
+# create a path
+p = Path('hello.py')
+
+p.write_bytes('Hello World!'.encode('utf-8'))
+print(p.read_bytes())
+
+p.write_text('Hello World!')
+print(p.read_text())
+
+with p.open('r', encoding='utf-8') as handle:
+    print(handle.read())
+        </pre>
+        </div>
+		<div class = "subtitle">Manipulation</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create directory
+p = Path('temp2')
+p.mkdir()
+
+# create symbolic link
+p = Path('link.py')
+p.symlink_to('hello.py')
+
+# delete file
+p = Path('hello.py')
+p.unlink()
+
+# delete empty directory
+p = Path('temp')
+p.rmdir()
+
+# touch
+from pathlib import Path
+
+p = Path('world.py')
+
+if not p.exists():
+    p.touch()
+        </pre>
+        </div>
+		<div class = "subtitle">File Types | Properties | Permission</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from pathlib import Path
+
+p = Path('hello.py')
+
+# types
+print(p.is_file())
+print(p.is_dir())
+print(p.is_symlink())
+
+# properties
+print(p.stat())
+
+# permission
+p.chmod(777)
+        </pre>
+        </div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.python.org/3/library/pathlib.html">Python STL</a></li>
+            <li><a href = "https://pymotw.com/3/pathlib/">PyMOTW</a></li>
+        </div>
+    </body>
+</html>

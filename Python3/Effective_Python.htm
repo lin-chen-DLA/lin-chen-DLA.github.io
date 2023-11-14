@@ -630,7 +630,45 @@ print(CallMissing.added, dict(result)) # 2 {'green': 12, 'blue': 20, 'red': 5, '
         </div>
 		<div class = "block">
             <span>Item 24: Use @classmethod Polymorphism to Construct Objects Generically</span>
+            <li>Python only support a single constructor</li>
+            <li>Use @classmethod to define alternative constructors</li>
 		<pre class = "prettyprint linenums">
+# Vehicle.py
+class Vehicle(object):
+    """Document String: Define a Vehicle class"""
+
+    def __init__(self, brand, year):
+        self._brand = brand
+        self._year = year
+
+    @classmethod
+    def get_instance_brand(cls, brand):
+        return cls(brand, None)
+
+    @classmethod
+    def get_instance_year(cls, year):
+        return cls(None, year)
+
+    def convert(self, v):
+        return v or 'None'
+
+    def __str__(self):
+        return self.convert(self._brand)+' '+str(self._year)
+
+    def info(self):
+        print('Class: %s, %s, %d' % (self.__class__, self._brand, self._year))
+        </pre>
+		<pre class = "prettyprint linenums">
+# main.py
+from Vehicle import Vehicle
+
+v1 = Vehicle('Buick', 1999)
+v2 = Vehicle.get_instance_brand('Subaru')
+v3 = Vehicle.get_instance_year(2012)
+
+print(v1) # Buick 1999
+print(v2) # Subaru None
+print(v3) # None 2012
         </pre>
         </div>
     </body>
