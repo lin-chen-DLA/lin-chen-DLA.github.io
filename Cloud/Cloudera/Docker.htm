@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Cloudera</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+		<div class = "title">
+			Cloudera
+		</div>
+
+        <div class = "subtitle">Options</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# pull cloudera
+docker pull cloudera/quickstart:latest
+
+# run cloudera
+docker run --hostname=quickstart.cloudera --privileged=true -p 8888:8888 -p 7180:7180 -p 80:80 -it cloudera/quickstart /usr/bin/docker-quickstart
+
+# access
+http://localhost:8888 # username, cloudera; password, cloudera
+
+# tutorial
+http://localhost:80
+
+# start Cloudera Manager
+/home/cloudera/cloudera-manager --force --express # inside cloudera container
+http://localhost:7180/
+
+# built-in tools
+MySQL, http://localhost:3306
+Hadoop, hdfs://quickstart.cloudera:8020
+Oozie, http://localhost:11000/oozie
+Spark, http://quickstart.cloudera:8090
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+docker run --hostname=quickstart.cloudera --privileged=true -ti -p 8180:8080 -p 19888:19888 -p 7077:7077 -p 8188:8088 -p 8032:8032 -p 8020:8020 -p 50010:50010 -p 8042:8042 -p 7180:7180 -p 88:88/udp -p 88:88 mikelemikelo/cloudera-spark:latest /usr/bin/docker-quickstart-light
+
+Cloudera welcome tutorial - 80
+Oozie - 8888
+Cloudera Manager - 7180
+HDFS REST Api - 8020
+WebHDFS - 50070
+Kerberos - 88 (both TCP and UDP)
+Secure Data Transfer - 1004 / 1006
+Custom Spring Boot Webserver - 8990
+
+ # Cloudera Manager
+ sudo /home/cloudera/cloudera-manager --express --force
+ # sudo /home/cloudera/cloudera-manager --express && service ntpd start
+
+ # hadoop
+ sudo  service hadoop-hdfs-namenode restart
+ sudo  service hadoop-hdfs-datanode restart
+		</pre>
+		</div>
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li><a href = "https://medium.com/@anuphunt1/how-to-run-cloudera-quickstart-vm-in-docker-df1c85ef2e16">How to run Cloudera Quickstart VM in Docker</a></li>
+            <li><a href = "https://hub.docker.com/r/cloudera/quickstart/">Cloudera at Docker</a></li>
+        </div>
+    </body>
+</html>

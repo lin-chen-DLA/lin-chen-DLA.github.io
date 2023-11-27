@@ -23,61 +23,42 @@
 
 	<body>
 		<div class = "title">
-			Cloudera
+			Cloudera Data Science Workbench
 		</div>
 
-        <div class = "subtitle">Options</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-# pull cloudera
-docker pull cloudera/quickstart:latest
-
-# run cloudera
-docker run --hostname=quickstart.cloudera --privileged=true -p 8888:8888 -p 7180:7180 -p 80:80 -it cloudera/quickstart /usr/bin/docker-quickstart
-
-# access
-http://localhost:8888 # username, cloudera; password, cloudera
-
-# tutorial
-http://localhost:80
-
-# start Cloudera Manager
-/home/cloudera/cloudera-manager --force --express # inside cloudera container
-http://localhost:7180/
-
-# built-in tools
-MySQL, http://localhost:3306
-Hadoop, hdfs://quickstart.cloudera:8020
-Oozie, http://localhost:11000/oozie
-Spark, http://quickstart.cloudera:8090
-		</pre>
+        <div class = "subtitle">Architecture</div>
+        <div class = "block">
+        	<li><span>Session</span>, containers running on K8s, <span>temporary</span></li>
+        	<li>Each project has a <span>persistent</span> directory, <span>/home/cdsw</span></li>
+        	<li><span>Packages</span> installed locate at /home/cdsw/.local and are <span>persistent</span>. In other words, sessions share the installed packages</li>
+			<p style = "text-align:center;"><img src = "img/Cloudera_3.png" width = "60%"></p>
 		</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-docker run --hostname=quickstart.cloudera --privileged=true -ti -p 8180:8080 -p 19888:19888 -p 7077:7077 -p 8188:8088 -p 8032:8032 -p 8020:8020 -p 50010:50010 -p 8042:8042 -p 7180:7180 -p 88:88/udp -p 88:88 mikelemikelo/cloudera-spark:latest /usr/bin/docker-quickstart-light
-
-Cloudera welcome tutorial - 80
-Oozie - 8888
-Cloudera Manager - 7180
-HDFS REST Api - 8020
-WebHDFS - 50070
-Kerberos - 88 (both TCP and UDP)
-Secure Data Transfer - 1004 / 1006
-Custom Spring Boot Webserver - 8990
-
- # Cloudera Manager
- sudo /home/cloudera/cloudera-manager --express --force
- # sudo /home/cloudera/cloudera-manager --express && service ntpd start
-
- # hadoop
- sudo  service hadoop-hdfs-namenode restart
- sudo  service hadoop-hdfs-datanode restart
-		</pre>
+        <div class = "subtitle">Account</div>
+        <div class = "block">
+        	<li><span>Personal account</span> is used to work on projects</li>
+        	<li>Collaborators of a personal project are selected from global</li>
+		</div>
+        <div class = "block">
+        	<li><span>Team account</span> can add/remove team members</li>
+        	<li>Projects in a team can be private, team, or public</li>
+        	<li>Collaborators in a team project are selected from team members</li>
+			<p style = "text-align:center;"><img src = "img/Cloudera_2.png" width = "60%"></p>
+		</div>
+		<div class = "subtitle">Code Share</div>
+        <div class = "block">
+        	<li>Use a <span>git repository</span> to share code between projects</li>
+			<p style = "text-align:center;"><img src = "img/Cloudera_4.png" width = "30%"></p>
+		</div>
+        <div class = "subtitle">Environment Variable</div>
+        <div class = "block">
+            <li><span>Site</span> environment variable, Site Administration &gt; Runtime</li>
+            <li><span>User</span> environment variable, User Settings &gt; Environment Variables</li>
+            <li><span>Project</span> environment variable, Project Settings &gt; Advanced</li>
+			<p style = "text-align:center;"><img src = "img/Cloudera_1.png" width = "50%"></p>
 		</div>
         <div class = "subtitle">Reference</div>
         <div class = "block">
-            <li><a href = "https://medium.com/@anuphunt1/how-to-run-cloudera-quickstart-vm-in-docker-df1c85ef2e16">How to run Cloudera Quickstart VM in Docker</a></li>
-            <li><a href = "https://hub.docker.com/r/cloudera/quickstart/">Cloudera at Docker</a></li>
+        	<li><a href = "https://docs.cloudera.com/cdsw/1.10.4/index.html">CDSW Documentation</a></li>
         </div>
     </body>
 </html>
