@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>MySQL</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
+            span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class = "title">
+			Command
+		</div>
+
+		<div class = "subtitle">Connect Database</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+mysql -u root -p # root
+
+# exit # disconnect database
+			</pre>
+		</div>
+		<div class = "subtitle">Database</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# list databases
+show databases;
+
+# use database
+# use [database_name]
+use University;
+
+# show the current database
+select database();
+
+# create database
+# create database [database_name]
+create database university2;
+
+# backup database
+# mysqldump -u root -p [database_name] &gt; [backup_name.sql]
+mysqldump -u root -p University &gt; backup.sql
+
+# recover database
+create database University3 # inside mySQL
+mysql -u root -p University3 &lt; backup.sql # host terminal
+
+# remove database
+# drop database [database_name]
+drop database university2;
+            </pre>
+        </div>
+		<div class = "subtitle">Table</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# list tables under the current database
+show tables;
+
+# show the metadata of a table
+# desceibe [table_name]
+describe Department;
+
+# create table
+# create table [table_name] ([table_metadata])
+create table People (
+    -&gt; fname VARCHAR(15) NOT NULL,
+    -&gt; lname VARCHAR(15) NOT NULL,
+    -&gt; ssn int NOT NULL,
+    -&gt; primary key (ssn)
+    -&gt; );
+
+# copy table
+create table Employee2 as select Fname, Lname, Ssn, from Employee;
+
+insert into Employee2 select Fname, Lname, Ssn from Employee;
+
+# remove duplicates
+create table Employee3 select distinct Fname, Lname, Ssn from Employee2;
+
+# remove table
+# drop table [table_name]
+drop table People;
+
+# add a column
+# alter table [table_name] add column [column_name] [data_type]
+alter table People add column ssn int;
+
+# remove a column
+# alter table [table_name] drop column [column_name]
+alter table People drop column lname;
+
+# show columns
+# show columns from [table_name]
+show columns from Department;
+
+# insert record
+# insert into [table_name] ([column], [column]) values ([value], [value]);
+insert into People (lname, fname, ssn) values ('Chen', 'Lin', 10000);
+
+# explain records
+explain select * from Department;
+
+# update records
+# update [table_name] set [column_name] = [value] where [column_name] = [value]
+update Department set Dnumber = 2 where Dnumber = 1;
+
+# delete records
+# delete from [table_name] where [column_name] = [value]
+delete from university2.People where lname = 'Chen';
+
+# delete all records in a table
+# delete from [table_name]
+
+# case
+select *, case Sex when 'M' then 'Man' else 'Woman' end Sex2
+from Employee;
+
+# backup table
+# mysqldump -u root -p [database_name] [table_name] &gt; [backup_table_name].sql
+mysqldump -u root -p University Employee &gt; Employee_backup.sql
+
+# recovery table
+# mysql -u root -p [database_name] &lt; [table_name].sql
+mysql -u root -p univeristy2 &lt; Employee_backup.sql
+            </pre>
+        </div>
+		<div class = "subtitle">Query</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# SELECT field1, field2,...fieldN 
+# FROM table_name1, table_name2...
+# [WHERE Clause]
+# [GROUP BY grouping_attribute(s)]
+# [HAVING grouping_condition]
+# [ORDER BY attribute_list]
+# [OFFSET M ][LIMIT N]
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# offset and limit
+select *
+from Employee
+limit 1, 2; # start from row 1, limits the return results to 2 records
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# alias
+select e.Fname as fn, e.Lname as ln
+from Employee as e;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# distinct
+select distinct Dno
+from Employee;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# order by
+select *
+from Employee
+order by Lname;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# cartesian product
+select Fname, Lname, Dno, Dnumber
+from Employee e, Department d
+
+# equals to cross join
+select Fname, Lname, Dno, Dnumber
+from Employee cross join Department
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# join
+select *
+from Employee e, Department d
+where e.Dno = d.Dnumber;
+
+select *
+from Employee join Department on Employee.Dno = Department.Dnumber;
+
+# inner join
+select *
+from Employee inner join Department on Employee.Dno = Department.Dnumber;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# left join
+select *
+from Employee left join Department on Employee.Dno = Department.Dnumber;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# right join
+select *
+from Employee right join Department on Employee.Dno = Department.Dnumber;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# union
+select * from Employee where Salary &lt; 30000
+union
+select * from Employee where Salary &gt; 50000;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# NULL
+select *
+from Employee
+where Super_ssn is NULL;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# regular expression
+select *
+from Empliyee
+where Lname regexp 'bb';
+            </pre>
+			<pre class = "prettyprint linenums">
+# ^, beginning of string
+select *
+from Employee
+where Lname regexp '^W';
+            </pre>
+			<pre class = "prettyprint linenums">
+# $, end of string
+select *
+from Employee
+where Lname regexp 'a$';
+            </pre>
+			<pre class = "prettyprint linenums">
+# ., single character
+select *
+from Employee
+where Lname regexp '^....$'
+            </pre>
+			<pre class = "prettyprint linenums">
+# [...], character listed between the square brackets
+select *
+from Employee
+where Minit regexp '[BT]';
+            </pre>
+			<pre class = "prettyprint linenums">
+# [^...], character not listed between the square brackets
+select *
+from Employee
+where Minit regexp '[^BT]';
+            </pre>
+			<pre class = "prettyprint linenums">
+# p1|p2|p3, Alternative patterns
+select *
+from Employee
+where Minit regexp 'B|T';
+            </pre>
+			<pre class = "prettyprint linenums">
+# *, zero or more instances of preceding element
+select *
+from Employee
+where Lname regexp '(b)*ar$';
+            </pre>
+			<pre class = "prettyprint linenums">
+# +, one or more instances of preceding element
+select *
+from Employee
+where Lname regexp '(ya)+';
+            </pre>
+			<pre class = "prettyprint linenums">
+# {n}, n instances of preceding element
+select *
+from Employee
+where Lname regexp '^.{6}$';
+            </pre>
+			<pre class = "prettyprint linenums">
+# {m, n}, m through n instances of preceding element
+select *
+from Employee
+where Lname regexp '^.{4, 6}$'; # inclusive
+            </pre>
+        </div>
+        <div class = "subtitle">Arithmetic Operators</div>
+        <div class = "block">
+			<pre class = "prettyprint linenums">
+# +, -, *, /, %
+select *, Salary*1.2 as Salary_increase
+from Employee;
+			</pre>
+		</div>
+        <div class = "subtitle">Comparison Operators</div>
+        <div class = "block">
+			<pre class = "prettyprint linenums">
+# where
+# =, !=, &gt; &lt;, &gt;=, &lt;=
+select *
+from Employee
+where Salary &gt; 40000;
+            </pre>
+			<pre class = "prettyprint linenums">
+select *
+from Employee
+where Lname = 'Wong'; # comparision is not case sensitive
+            </pre>
+        </div>
+		<div class = "subtitle">Logical Operators</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# and, or, not
+select *
+from Employee
+where Salary > 3000 and Dno = 5;
+            </pre>
+        </div>
+        <div class = "block">
+			<pre class = "prettyprint linenums">
+# like
+# %, represents zero, one, or multiple characters
+# _, represents one, single character
+select *
+from Employee
+where Address like '%Houston%';
+            </pre>
+        </div>
+        	<div class = "block">
+			<pre class = "prettyprint linenums">
+# in
+select *
+from Employee
+where Minit in ('B', 'T', 'V')
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# between
+select *
+from Employee
+where Salary between 30000 and 50000;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# exists
+select *
+from Employee
+where exists
+(select * from Department where Employee.Dno = Department.Dnumber);
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# any
+select *
+from Employee
+where Dno = Any
+(select Dnumber from Department where Dnumber &gt; 1);
+            </pre>
+        </div>
+        <div class = "block">
+			<pre class = "prettyprint linenums">
+# some
+select *
+from Employee
+where Salary > Some (select Salary from Employee where Salary > 30000);
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# all
+select all Dno
+from Employee;
+            </pre>
+        </div>
+		<div class = "subtitle">Aggregation</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# min
+select min(Salary) as Salary_min
+from Employee;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# max
+select max(Salary) as Salary_max
+from Employee;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# count
+select count(Salary)
+from Employee;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# avg
+select avg(Salary)
+from Employee;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# sum
+select sum(Salary)
+from Employee;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# group by
+select avg(Salary)
+from Employee
+group by Dno;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# having
+select avg(Salary)
+from Employee
+group by Dno
+having Dno = 5;
+            </pre>
+        </div>
+		<div class = "subtitle">View</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# create view
+create view myview as
+select *
+from Employee
+where Lname regexp '^.{4}$';
+
+# list view
+show full tables in University where table_type like 'VIEW';
+
+# use view
+select *
+from myview;
+            </pre>
+        </div>
+		<div class = "subtitle">Index</div>
+		<div class = "block">
+            <li>Indexes are used to find rows with specific column values quickly</li>
+			<pre class = "prettyprint linenums">
+# show index
+# show index from [table_name]
+show index from People;
+            </pre>
+        </div>
+		<div class = "subtitle">Comment</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# line comment
+--
+
+# multi-line comment
+/* line 1
+line 2
+*/
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://www.w3schools.com/sql/sql_any_all.asp">W3Schools</a></li>
+            <li><a href = "https://www.javatpoint.com/mysql-regular-expressions">Regular Expression</a></li>
+            <li><a href = "https://www.sqlteaching.com/">SQL Teaching</a></li>
+            <li><a href = "https://gist.github.com/hofmannsven/9164408">Cheatsheet</a></li>
+        </div>

@@ -40,6 +40,12 @@ README.md
 LICENSE
 		</pre>
 		</div>
+		<div class = "subtitle">requirements.txt</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+Flask==1.0
+        </pre>
+        </div>
 		<div class = "subtitle">app.py</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
@@ -75,12 +81,14 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
 		</pre>
 		</div>
+		<div class = "subtitle">Create Image</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # create image
 docker build -t lchenlangley/cat .
 		</pre>
 		</div>
+		<div class = "subtitle">Push Image to Registry</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # push the image to Docker Hub
@@ -88,13 +96,7 @@ docker login
 docker push lchenlangley/cat
 		</pre>
 		</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-# push the image with a tag to Docker Hub
-docker tag lchenlangley/cat lchenlangley/cat:v2.0 # create an image named lchenlangley/cat:v2.0
-docker push lchenlangley/cat:v2.0 # push the image with the tag to Docker Hub
-        </pre>
-        </div>
+		<div class = "subtitle">Deployment</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # run image
@@ -108,8 +110,29 @@ docker run -p 8080:8000 lchenlangley/cat # map container port 8000 to host port 
 http://0.0.0.0:8080/ # host_ip:host_port
 		</pre>
 		</div>
+		<div class = "subtitle">Push Image with Tag</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# build an image with a tag
+# docker build -t [imageName:tagName] [sourceCodeDir]
+docker build -t lchenlangley/cat:v2.0 .
+
+# or
+# add tag to an exist image
+docker tag lchenlangley/cat lchenlangley/cat:v2.0 # create an image named lchenlangley/cat:v2.0
+
+# multiple images with different tags are under one image repository
+
+# push the image with a tag to Docker Hub
+docker push lchenlangley/cat:v2.0 # push the image with the tag to Docker Hub
+
+# pull and run an image with tag
+docker run -p 8080:8000 lchenlangley/cat:v2.0
+        </pre>
+        </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+            <li><a href = "https://github.com/prakhar1989/docker-curriculum/tree/master/flask-app">Source Code</a></li>
 			<li><a href = "https://docker-curriculum.com/">Tutorial</a></li>
 		</div>
 	</body>

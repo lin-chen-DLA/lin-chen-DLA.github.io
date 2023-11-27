@@ -15,11 +15,17 @@
 		<div class = "title">
 			Hello App
 		</div>
+        <div class = "subtitle">Workflow</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_18.png" width = "60%"></p>
+		</div>
+        <div class = "subtitle">hello.py</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 print("Hello World!")
 		</pre>
 		</div>
+        <div class = "subtitle">Dockerfile</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # 885.45M, python3 image have many development tools installed
@@ -71,12 +77,21 @@ COPY . .
 CMD ["python", "./hello.py"]
         </pre>
         </div>
+        <div class = "subtitle">Create Image</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# build
+# build image on local
 docker build -t lchenlangley/hello .
 		</pre>
 		</div>
+        <div class = "subtitle">Push Image</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+docker login
+docker push lchenlangley/hello
+        </pre>
+        </div>
+        <div class = "subtitle">Implementation</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 docker run lchenlangley/hello

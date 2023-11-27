@@ -33,13 +33,17 @@
 docker volume create [name] # create a volume
 docker volume ls # list volumes
 docker volume rm [volumeName] # remove one or more volumes
+docker volume rm $(docker volume ls -q) # remove all volumes
 docker volume inspect [volumeName] # show volume information
         </pre>
         </div>
         <div class = "block">
 		<pre class = "prettyprint linenums">
-docker volume create sandbox-home # create a named volume "sandbox-home"
-docker run -v sandbox-home:/home -it busybox sh # run the sandbox linux
+# create a volume
+docker volume create sandbox-home
+
+# run an image with mapping a directory of the container to a volume on host file system
+docker run -v sandbox-home:/home -it busybox sh
 
 # create a readme file under /home and exit the sanbox
 cd /home
@@ -49,7 +53,8 @@ exit
 # remove the container
 docker rm [containerName]
 
-docker run -v sandbox-home:/home -it busybox sh # run the sandbox linux again
+# run the image again
+docker run -v sandbox-home:/home -it busybox sh
 
 # check the /home directory, readme file is still there
 cd /home
@@ -58,7 +63,8 @@ ls
 		</div>
         <div class = "block">
 		<pre class = "prettyprint linenums">
-docker run -v sandbox-home:/home -it lchenlangley/hello sh # mount the volumn to a container running another image
+# mount the volume to the container running another image
+docker run -v sandbox-home:/home -it lchenlangley/hello sh
 
 # check the /home directory, readme file is there
 cd /
@@ -93,16 +99,15 @@ docker run -it -v $PWD/temp:/home busybox sh
 
 # on container
 cd /home
-touch hello.py
-ls # no file is there
+touch hello.py # create a file within container
 
 # on host
 cd $PWD/temp
 ls # hello.py file is here
-echo "print('Hello')" &gt; hello.py
+echo "print('Hello')" &gt; hello.py # update the file on the host
 
 # on container
-cat hello.py # can access hello.py, though hello.py does not appear in /home on container
+cat hello.py # be able to see the update within container
         </pre>
         </div>
 		<div class = "subtitle">Reference</div>

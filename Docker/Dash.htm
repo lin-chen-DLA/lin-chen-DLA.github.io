@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Docker</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Dash App
+		</div>
+		<div class = "subtitle">Dockerfile</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+FROM python:3
+WORKDIR /usr/src/app
+COPY . .
+RUN pip install --no-cache-dir -r requirements.txt
+EXPOSE 8080
+CMD ["python", "./app.py"]
+		</pre>
+		</div>
+		<div class = "subtitle">requirements.txt</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+dash
+		</pre>
+		</div>
+		<div class = "subtitle">app.py</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import dash
+from dash import html
+from dash.dependencies import Input, Output
+
+app = dash.Dash(__name__)
+server = app.server
+
+num_click = 0
+
+app.layout = html.Div([
+    html.Button('Click', id = 'click'),
+    html.Div('0', id = 'content')
+        ])
+
+@app.callback(
+    Output('content', 'children'),
+    Input('click', 'n_clicks'))
+def display_hover_data(c):
+    if c:
+        global num_click
+        num_click += 1
+        return num_click
+    else:
+        return 0
+
+if __name__ == "__main__":
+    app.run_server(host="0.0.0.0", port=8080, debug=True)
+		</pre>
+		</div>
+        <div class = "subtitle">Workflow</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_17.png" width = "60%"></p>
+		</div>
+        <div class = "subtitle">Create Image</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create image on local
+# docker build -t [docker_hub_username/app_name] [source_code_directory]
+docker build -t lchenlangley/click .
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# test image on local
+# docker run -p [docker_host_port]:[container_port] [image_name]
+docker run -p 8080:8080 lchenlangley/click
+		</pre>
+		</div>
+        <div class = "subtitle">Push Image to Registry</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# push the image to Docker Hub
+docker login
+docker push lchenlangley/click
+		</pre>
+		</div>
+        <div class = "subtitle">Deployment</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# pull image to local
+docker pull lchenlangley/click
+
+# docker run -p [docker_host_port]:[container_port] [image_name]
+docker run -p 8080:8080 lchenlangley/click
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# open on web browser
+http://0.0.0.0:8080/ # host_ip:host_port
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docker-curriculum.com/">Tutorial</a></li>
+		</div>
+	</body>
+</html>

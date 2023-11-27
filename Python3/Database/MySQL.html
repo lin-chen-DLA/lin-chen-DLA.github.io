@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>MySQL</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
+            span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class = "title">
+			Python MySQL Connector
+		</div>
+
+		<div class = "subtitle">Installation</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+pip install mysql-connector-python
+            </pre>
+        </div>
+		<div class = "subtitle">Connection</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import mysql.connector
+
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'University'
+
+try:
+    connect = mysql.connector.connect(host = hostname, port = port, user = username, password = password, database = database_name)
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import mysql.connector
+
+config = {
+  'user': 'root',
+  'password': 'root',
+  'host': '127.0.0.1',
+  'port': 3306,
+  'database': 'University',
+  'raise_on_warnings': True
+}
+
+try:
+    connect = mysql.connector.connect(**config)
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Query</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# fetchone, fetch one row
+import mysql.connector
+
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'University'
+
+try:
+    connect = mysql.connector.connect(host = hostname, port = port, user = username, password = password, database = database_name)
+    cursor = connect.cursor()
+
+    cursor.execute('Select * from Employee')
+
+    row = cursor.fetchone() # tuple
+    while row is not None:
+        row = cursor.fetchone()
+    print(cursor.rowcount) # 8
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# row by row
+import mysql.connector
+
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'University'
+
+try:
+    connect = mysql.connector.connect(host = hostname, port = port, user = username, password = password, database = database_name)
+    cursor = connect.cursor()
+
+    cursor.execute('Select * from Employee')
+    for row in cursor:
+        print(row)
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# fetchall, fetch all rows
+import mysql.connector
+
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'University'
+
+try:
+    connect = mysql.connector.connect(host = hostname, port = port, user = username, password = password, database = database_name)
+    cursor = connect.cursor()
+
+    cursor.execute('Select * from Employee')
+    print(cursor.column_names) # get column names
+    rows = cursor.fetchall() # list of tuples
+    print(cursor.rowcount) # 8
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# fetchmany, retrieve the first several rows of a result set
+import mysql.connector
+
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'University'
+
+try:
+    connect = mysql.connector.connect(host = hostname, port = port, user = username, password = password, database = database_name)
+    cursor = connect.cursor()
+
+    cursor.execute('Select * from Employee')
+    rows = cursor.fetchmany(size = 2) # list of tuples
+    print(cursor.rowcount) # 2
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Parameter</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import mysql.connector
+
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'University'
+
+try:
+    connect = mysql.connector.connect(host = hostname, port = port, user = username, password = password, database = database_name)
+    cursor = connect.cursor()
+
+    dno = 5
+    fname = 'J%'
+
+    query = 'Select * from Employee e where e.Dno = %s and e.Fname like %s'
+    cursor.execute(query, (dno, fname))
+    rows = cursor.fetchall() # list of tuples
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Dataframe</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import mysql.connector
+import pandas as pd
+
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'University'
+
+try:
+    connect = mysql.connector.connect(host = hostname, port = port, user = username, password = password, database = database_name)
+    cursor = connect.cursor()
+
+    dno = 5
+    fname = 'J%'
+
+    query = 'Select Fname, Lname, Dno from Employee e where e.Dno = %s and e.Fname like %s'
+    cursor.execute(query, (dno, fname))
+    rows = cursor.fetchall() # list of tuples
+
+    df = pd.DataFrame.from_records(rows, columns=['Fname', 'Lname', 'Dno'])
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Cursor</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# MySQLCursorBuffered
+import mysql.connector
+
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'University'
+
+try:
+    connect = mysql.connector.connect(host = hostname, port = port, user = username, password = password, database = database_name)
+
+    # buffered
+    cursor_buffered = connect.cursor(buffered = True) # create MySQLCursorBuffered object
+    cursor_buffered.execute('Select * from Employee')
+    print(cursor_buffered.rowcount) # 8
+    rows = cursor_buffered.fetchmany(size = 2) # list of tuples
+    print(cursor_buffered.rowcount) # 8
+
+    # unbuffered
+    cursor_unbuffered = connect.cursor()
+    cursor_unbuffered.execute('Select * from Employee')
+    print(cursor_unbuffered.rowcount) # -1
+    rows = cursor_unbuffered.fetchmany(size = 2) # list of tuples
+    print(cursor_unbuffered.rowcount) # 2
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# MySQLCursorNamedTuple
+import mysql.connector
+
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'University'
+
+try:
+    connect = mysql.connector.connect(host = hostname, port = port, user = username, password = password, database = database_name)
+    cursor = connect.cursor(named_tuple=True)
+
+    cursor.execute('Select * from Employee')
+    for row in cursor: # each row is a named tuple
+        print(row.Fname, row.Lname)
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Create Table</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import mysql.connector
+
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'University'
+
+try:
+    connect = mysql.connector.connect(host = hostname, port = port, user = username, password = password, database = database_name)
+    with connect.cursor() as cursor:
+        # create table
+        query = 'create table employee2 (Fname VARCHAR(15), Lname VARCHAR(15), Ssn INT primary key)'
+        cursor.execute(query)
+        connect.commit()
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Insert Records</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# execute
+import mysql.connector
+
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'University'
+
+try:
+    connect = mysql.connector.connect(host = hostname, port = port, user = username, password = password, database = database_name)
+    with connect.cursor() as cursor:
+        query = """
+        insert into employee2 (Fname, Lname, Ssn) values
+        ("Lin", "Chen", 1234),
+        ("Lin2", "Chen2", 5678)
+        """
+        cursor.execute(query)
+        connect.commit()
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import mysql.connector
+
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'University'
+
+try:
+    connect = mysql.connector.connect(host = hostname, port = port, user = username, password = password, database = database_name)
+    with connect.cursor() as cursor:
+        query = "insert into employee2 (Fname, Lname, Ssn) values (%s, %s, %s)"
+        records = [("Lin3", "Chen3", 12),
+                   ("Lin4", "Chen4", 34)]
+        cursor.executemany(query, records)
+        connect.commit()
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Update Record</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import mysql.connector
+
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'University'
+
+try:
+    connect = mysql.connector.connect(host = hostname, port = port, user = username, password = password, database = database_name)
+    with connect.cursor() as cursor:
+        query = "update employee2 set Ssn = '123456789' where Fname = 'Lin'"
+        cursor.execute(query)
+        connect.commit()
+except Exception as err:
+    print(err)
+else:
+    connect.close()
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://peps.python.org/pep-0249/">PEP 249</a></li>
+            <li><a href = "https://realpython.com/python-mysql/#connecting-to-an-existing-database">Python and MySQL Database: A Practical Introduction</a></li>
+            <li><a href = "https://github.com/mysql/mysql-connector-python">Tutorial</a></li>
+            <li><a href = "https://dev.mysql.com/doc/connector-python/en/">MySQL Connector/Python Developer Guide</a></li>
+        </div>
+    </body>
+</html>

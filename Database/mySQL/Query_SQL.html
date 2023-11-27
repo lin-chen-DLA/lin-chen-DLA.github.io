@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>MySQL</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
+            span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class = "title">
+			Query
+		</div>
+
+		<div class = "subtitle">Query 0</div>
+		<div class = "block">
+            Retrieve the birht date and address of the employee(s) whose name is 'John B. Smith'
+			<pre class = "prettyprint linenums">
+select Bdate, Address
+from Employee
+where Fname = 'John' and Minit = 'B' and Lname = 'Smith';
+			</pre>
+		</div>
+		<div class = "subtitle">Query 1</div>
+		<div class = "block">
+            Retrieve the name and address of all employees who work for the 'Research' ddepartment
+			<pre class = "prettyprint linenums">
+select Fname, Lname, Address
+from Employee e, Department d
+where e.Dno = d.Dnumber and d.Dname = 'Research';
+            </pre>
+			<pre class = "prettyprint linenums">
+select e.Fname, e.Lname, e.Address
+from Employee e join Department d on e.Dno = d.Dnumber
+where d.Dname = 'Research';
+            </pre>
+        </div>
+		<div class = "subtitle">Query 2</div>
+		<div class = "block">
+            For every project located in 'Stafford', list the project number, the controlling department number, and the department manager's last name, address, and birth date
+			<pre class = "prettyprint linenums">
+select p.Pnumber, p.Dnum, e.Fname, e.Lname, e.Address, e.Bdate
+from Employee e, Department d, Project p
+where p.Plocation = 'Stafford' and p.Dnum = d.Dnumber and d.Mgr_ssn;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 3</div>
+		<div class = "block">
+            Retrieve the name of each employee who works on all the projects controlled by department number 5
+			<pre class = "prettyprint linenums">
+select e.Fname, e.Lname
+from Employee e
+where not exists (select *
+                  from Works_on B
+                  where (B.Pno in (select p.Pnumber
+                                   from Project p
+                                   where p.Dnum = 5)
+                                   
+                                   and
+                                   not exists (select *
+                                               from Works_on C
+                                               where C.Essn = e.Ssn and C.Pno = B.Pno)));
+            </pre>
+        </div>
+		<div class = "subtitle">Query 4</div>
+		<div class = "block">
+Make a list of all project numbers for projects that involve an employee whose last name is 'Smith', either as a worker or as a manager of the department that controls the project
+			<pre class = "prettyprint linenums">
+select distinct p.Pnumber
+from Project p, Works_on w, Employee e
+where e.Lname = 'Smith' and p.Pnumber = w.Pno and w.Essn = e.Ssn
+
+union
+
+select distinct p.Pnumber
+from Employee e, Department d, Project p
+where e.Lname = 'Smith' and d.Dnumber = p.Dnum and d.Mgr_ssn = e.Ssn;
+            </pre>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+select distinct Pnumber
+from Project
+where Pnumber in
+    (select Pnumber
+     from Project p, Department d, Employee e
+     where p.Dnum = d.Dnumber and d.Mgr_ssn = e.Ssn and e.Lname = 'Smith')
+
+     or
+
+     Pnumber in
+     (select Pnumber
+      from Project p, Works_on w, Employee e
+      where e.Lname = 'Smith' and p.Pnumber = w.Pno and w.Essn = e.Ssn);
+            </pre>
+        </div>
+		<div class = "subtitle">Query 5</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+select Fname, Lname
+from Employee e
+where (select count(*)
+       from Dependent d
+       where e.Ssn = d.Essn) &gt;= 2;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 6</div>
+		<div class = "block">
+            Retrieve the names of employees who have no dependents
+			<pre class = "prettyprint linenums">
+select e.Fname, e.Lname
+from Employee e
+where not exists (select *
+                 from Dependent d
+                 where e.Ssn = d.Essn);
+            </pre>
+        </div>
+		<div class = "subtitle">Query 7</div>
+		<div class = "block">
+            List the names of managers who have at least one dependent
+			<pre class = "prettyprint linenums">
+select e.Fname, e.Lname
+from Employee e
+where exists (select *
+              from Dependent d
+              where e.Ssn = d.Essn)
+      and
+      exists (select *
+              from Department da
+              where e.Ssn = da.Mgr_ssn);
+            </pre>
+        </div>
+		<div class = "subtitle">Query 8</div>
+		<div class = "block">
+            For each employee, retrieve the employee's first and last name and the first and last name of his or her immediate supervisor
+			<pre class = "prettyprint linenums">
+select e.Fname as employee_Fname, e.Lname as employee_Lname, s.Fname as supervisor_Fname, s.Lname as supervisor_Lname
+from Employee e, Employee s
+where s.Ssn = e.Super_ssn;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 9</div>
+		<div class = "block">
+            Select all Employee Ssns
+			<pre class = "prettyprint linenums">
+select Ssn
+from Employee;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 10</div>
+		<div class = "block">
+            Select all combinations of Employee Sssn and Department Dname in the database
+			<pre class = "prettyprint linenums">
+select e.Ssn, d.Dname
+from Employee e, Department d;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 11</div>
+		<div class = "block">
+            Retrieve the salary of every employee
+			<pre class = "prettyprint linenums">
+select Salary
+from Employee;
+
+select all Salary
+from Employee;
+            </pre>
+        </div>
+		<div class = "block">
+            Retrieve the salary of all distinct salary values
+			<pre class = "prettyprint linenums">
+select distinct Salary
+from Employee;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 12</div>
+		<div class = "block">
+Retrieve all employees whose address is in Houston, Texas
+			<pre class = "prettyprint linenums">
+select Fname, Lname
+from Employee
+where Address like '%Houston, TX%';
+            </pre>
+			<pre class = "prettyprint linenums">
+ select Fname, Lname
+from Employee
+where Address regexp 'Houston,( )*TX';
+            </pre>
+        </div>
+		<div class = "subtitle">Query 13</div>
+		<div class = "block">
+            Show the resulting salaries if every employee working on the 'ProductX' project is given a 10 percent raise
+			<pre class = "prettyprint linenums">
+select e.Fname, e.Lname, e.Salary*1.1 as Increased_sal
+from Employee e, Project p, Works_on w
+where e.Ssn = w.Essn and w.Pno = p.Pnumber and p.Pname = 'ProductX';
+            </pre>
+        </div>
+		<div class = "subtitle">Query 14</div>
+		<div class = "block">
+            Retrieve all employees in department 5 whose salary is between $30,000 and $40,000
+			<pre class = "prettyprint linenums">
+select *
+from Employee
+where Dno = 5 and Salary between 30000 and 40000;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 15</div>
+		<div class = "block">
+            Retrieve a list of employees and the projects they are working on , ordered by department and, within each department, ordered alphabetically by last name, first name
+			<pre class = "prettyprint linenums">
+select e.Fname, e.Lname, p.Pname
+from Employee e, Project p, Works_on w, Department d
+where e.Ssn = w.Essn and w.Pno = p.Pnumber and e.Dno = d.Dnumber
+order by d.Dname DESC, e.Lname ASC, e.Fname ASC;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 16</div>
+		<div class = "block">
+            Retrieve the name of each employee who has a dependent with the same first name and same sex as the employee
+			<pre class = "prettyprint linenums">
+select Fname, Lname
+from Employee e, Dependent d
+where e.Fname = d.Name and e.Sex = d.Sex and e.Ssn = d.Essn;
+            </pre>
+			<pre class = "prettyprint linenums">
+select e.Fname, e.Lname
+from Employee e
+where e.Ssn in
+        (select Essn
+         from Dependent d where
+         e.Fname = d.Name and e.Sex = d.Sex);
+            </pre>
+			<pre class = "prettyprint linenums">
+select e.Fname, e.Lname
+from Employee e
+where exists (select *
+              from Dependent d
+              where e.Fname = d.Name and e.Sex = d.Sex and e.Ssn = d.Essn);
+            </pre>
+        </div>
+		<div class = "subtitle">Query 17</div>
+		<div class = "block">
+            Retrieve the social security numbers of all employees who work on project number 1, 2, or 3
+			<pre class = "prettyprint linenums">
+select w.Essn
+from Works_on w
+where w.Pno in (1, 2, 3);
+            </pre>
+        </div>
+		<div class = "subtitle">Query 18</div>
+		<div class = "block">
+            Retrieve the names of all employees who do not have supervisors
+			<pre class = "prettyprint linenums">
+select *
+from Employee
+where Super_ssn is NULL;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 19</div>
+		<div class = "block">
+            Find the sum of the salaries of all employees, the maximum salary, the minimum salary, and the average salary
+			<pre class = "prettyprint linenums">
+select sum(Salary), max(Salary), min(Salary), avg(Salary)
+from Employee;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 20</div>
+		<div class = "block">
+            Find the sum of the salaries of all employees of the 'Research' department, as well as the maximum salary, the minimum salary, and the average salary in this department
+			<pre class = "prettyprint linenums">
+select sum(Salary), max(Salary), min(Salary), avg(Salary)
+from Employee e, Department d
+where e.Dno = d.Dnumber and d.Dname = 'Research';
+            </pre>
+        </div>
+		<div class = "subtitle">Query 21</div>
+		<div class = "block">
+            Retrieve the total number of employees in the company
+			<pre class = "prettyprint linenums">
+select count(*)
+from Employee;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 22</div>
+		<div class = "block">
+            Retrieve the number of employees in the 'Research' department
+			<pre class = "prettyprint linenums">
+select count(*)
+from Employee e, Department d
+where e.Dno = d.Dnumber and d.Dname = 'Research';
+            </pre>
+        </div>
+		<div class = "subtitle">Query 23</div>
+		<div class = "block">
+            Count the number of distinct salary values in the database
+			<pre class = "prettyprint linenums">
+select count(distinct Salary)
+from Employee;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 24</div>
+		<div class = "block">
+            For each department, retrieve the department number, the number of employees in the department, and their average salary
+			<pre class = "prettyprint linenums">
+select e.Dno, count(e.Ssn), avg(e.Salary)
+from Employee e
+group by e.Dno;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 25</div>
+		<div class = "block">
+            For each project, retrieve the project number, the project name, and the number of employees who work on that project
+			<pre class = "prettyprint linenums">
+select p.Pnumber, p.Pname, count(w.Essn)
+from Project p, Works_on w
+where p.Pnumber = w.Pno
+group by p.Pnumber;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 26</div>
+		<div class = "block">
+            For each project on which more than two employees work, retrieve the project number, the project name, and the number of employees who work on the project
+			<pre class = "prettyprint linenums">
+select p.Pnumber, p.Pname, count(w.Essn)
+from Project p, Works_on w
+where p.Pnumber = w.Pno
+group by p.Pnumber
+having count(w.Essn) &gt; 2;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 27</div>
+		<div class = "block">
+            For each project, retrieve the project number, the project name, and the number of employees from department 5 who work on the project
+			<pre class = "prettyprint linenums">
+select p.Pnumber, p.Pname, count(w.Essn)
+from Project p, Works_on w, Employee e
+where w.Pno = p.Pnumber and w.Essn = e.Ssn and e.Dno = 5
+group by p.Pnumber;
+            </pre>
+        </div>
+		<div class = "subtitle">Query 28</div>
+		<div class = "block">
+            For each department that has more than five employees, retrieve the department number and the number of its employees who are making more than $40,000
+			<pre class = "prettyprint linenums">
+select d.Dnumber, count(*)
+from Department d, Employee e
+where d.Dnumber = e.Dno and e.Salary &gt; 4000 and e.Dno in (select e.Dno
+                                                          from Employee e2
+                                                          group by e.Dno
+                                                          having count(*) &gt; 5)
+group by d.Dnumber;
+            </pre>
+        </div>
+		<div class = "subtitle">Query</div>
+		<div class = "block">
+            Select the Ssns of all employees who work the same (project, hours) combination on some project that employee 'John Smith' whose Ssn = '123456789' works on
+			<pre class = "prettyprint linenums">
+select distinct Essn
+from Works_on
+where (Pno, Hours) in
+    (select Pno, Hours from Works_on where Essn = '123456789');
+            </pre>
+        </div>
+		<div class = "subtitle">Query</div>
+		<div class = "block">
+            Return the names of employees whose salary is greater than the salary of all the employees in department 5
+			<pre class = "prettyprint linenums">
+select Fname, Lname
+from Employee
+where Salary &gt; ALL
+      (select Salary
+       from Employee
+       where Dno = 5);
+            </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li>R. Elmasri, S.B. Navathe, Fundamentals of Database Systems</li>
+        </div>
+    </body>
+</html>

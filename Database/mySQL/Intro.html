@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Database</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
+            span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class = "title">
+			Introduction
+		</div>
+
+		<div class = "subtitle">Data Types</div>
+		<div class = "block">
+            <li>Numeric
+                <ul>
+                    <li>INT</li>
+                    <li>FLOAT(M, D)
+                        <ul>
+                            <li>M, display length</li>
+                            <li>D, number of decimals</li>
+                            <li>a floating-point data type that stores approximate values</li>
+                            <li>don't require precise decimal values</li>
+                        </ul>
+                    </li>
+			<pre class = "prettyprint linenums">
+FLOAT(10, 2) # 10, lengh, 2 is the number of decimals
+			</pre>
+                    <li>DOUBLE(M, D)
+                        <ul>
+                            <li>a floating-point data type that stores larger and more precise values than FLOAT</li>
+                        </ul>
+                    </li>
+                    <li>DECIMAL(M, D)
+                        <ul>
+                            <li>A fixed-precision data type</li>
+                            <li>Store values that require absolute precision</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>Date and Time Types
+                <ul>
+                    <li>DATETIME</li>
+                    <li>TIMESTAMP</li>
+                </ul>
+            </li>
+            <li>String
+                <ul>
+                    <li>CHAR(M), A fixed-length string</li>
+                    <li>VARCHAR(M), A variable-length string</li>
+                    <li>BLOB or TEXT, a field with a maximum length of 65535 characters</li>
+                </ul>
+            </li>
+		</div>
+		<div class = "subtitle">Transaction</div>
+		<div class = "block">
+            <li>A sequential group of database manipulation operations</li>
+            <li>Perform as if it were one single work unit</li>
+            <li>ACID
+                <ul>
+                    <li><span>Atomicity</span>, ensures that all operations within the work unit are completed successfully</li>
+                    <li><span>Consistency</span>, ensures that the database properly changes states upon a successfully committed transaction</li>
+                    <li><span>Isolation</span>, enables transactions to operate independently on and transparent to each other</li>
+                    <li><span>Durability</span>, ensures that the result or effect of a committed transaction persists in case of a system failure</li>
+                </ul>
+            </li>
+            <li>COMMIT and ROLLBACK
+                <ul>
+                    <li>When a successful transaction is completed, the COMMIT command should be issued so that the changes to all involved tables will take effect</li>
+                    <li>If a failure occurs, a ROLLBACK command should be issued to return every table referenced in the transaction to its previous state</li>
+                </ul>
+            </li>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://dev.mysql.com/doc/refman/8.0/en/">Manual for MySQL 8.0</a></li>
+            <li><a href = "https://www.tutorialspoint.com/mysql/index.htm">Tutorialspoint</a></li>
+        </div>
+    </body>
+</html>
