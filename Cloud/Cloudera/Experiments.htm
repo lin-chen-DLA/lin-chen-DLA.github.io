@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Cloudera</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+		<div class = "title">
+			Experiments
+		</div>
+
+        <div class = "block">
+            <li>Launch a docker container to run a script</li>
+            <li>Pass <span>metrics</span> to Experiments GUI from the container</li>
+            <li>Pass <span>files</span> to the project directory</li>
+        </div>
+        <div class = "subtitle">Workflow</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Cloudera_5.png" width = "80%"></p>
+		</div>
+
+        <div class = "subtitle">Project</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# experiment.py
+import cdsw
+import numpy as np
+import pandas as pd
+import joblib
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import cross_val_score
+
+class AddAttributes(BaseEstimator, TransformerMixin):
+    def __init__(self): # no *args or **kargs
+        pass
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+    def transform(self, X):
+        temp = X.copy()
+        temp["rooms_per_household"] = temp["total_rooms"]/temp["households"]
+        temp["bedrooms_per_room"] = temp["total_bedrooms"]/temp["total_rooms"]
+        temp["population_per_household"]=temp["population"]/temp["households"]
+        return temp
+
+def get_preprocessing():
+	"""Create a preprocessing pipeline
+	"""
+
+    num_pipeline = Pipeline([
+        ('attribs_adder', AddAttributes()),
+        ('imputer', SimpleImputer(strategy="median")),
+        ('std_scaler', StandardScaler()),
+    ])
+
+    cat_pipeline = Pipeline([
+        ('cat', OneHotEncoder()),
+    ])
+
+    preprocess_pipeline = ColumnTransformer([
+            ("num_pipeline", num_pipeline, ['longitude','latitude','housing_median_age','total_rooms','total_bedrooms','population','households','median_income']),
+            ("cat_pipeline", cat_pipeline, ['ocean_proximity']),
+    ])
+
+    return preprocess_pipeline
+
+def cross_validation(model, X, Y, k = 10):
+	"""Define a cross validation function
+	"""
+
+    scores = cross_val_score(model, X, Y, scoring='neg_mean_squared_error', cv = k);
+    print(scores)
+    return np.sqrt(-scores).mean(), np.sqrt(-scores).std() # represent perforance and precision respectively
+
+def main(model):
+	"""Train and evaluation a model
+	"""
+
+    data = pd.read_csv('Training.csv') # https://www.kaggle.com/datasets/camnugent/california-housing-prices
+    train_X = data.drop(['median_house_value'], axis = 1) # DataFrame
+    train_Y = data['median_house_value'] # Series
+
+    preprocess_pipeline = get_preprocessing()
+
+    train_X = preprocess_pipeline.fit_transform(train_X)
+
+    mean, std = cross_validation(model, train_X, train_Y, 10)
+
+    # pass metrics to Experiments GUI
+    cdsw.track_metric('RMSD', mean)
+    cdsw.track_metric('Std', std)
+
+    # pass a file from container to project directory
+    joblib.dump(model, 'model.pkl')
+    cdsw.track_file('model.pkl')
+
+if __name__ == '__main__':
+    model = LinearRegression()
+    main(model)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# requirements.txt
+cdsw
+numpy
+pandas
+scikit-learn
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# cdsw-build.sh
+pip install -r requirements.txt
+		</pre>
+		</div>
+        
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+        	<li><a href = "https://docs.cloudera.com/cdsw/1.10.4/experiments/topics/cdsw-experiments.html">CDSW Experiments</a></li>
+        	<li><a href = "https://github.com/cloudera/cdsw-training/blob/master/experiments/cdsw-build.sh">Sample at Github</a></li>
+        </div>
+    </body>
+</html>
