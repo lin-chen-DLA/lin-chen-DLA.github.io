@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Cloudera</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+		<div class = "title">
+			Applications
+		</div>
+
+        <div class = "subtitle">Development</div>
+        <div class = "block">
+            <li>Use Workbench</li>
+        </div>
+        <div class = "subtitle">Source Code</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Cloudera_7.png" width = "30%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.py
+import dash
+import pandas as pd
+from dash import html
+from dash import dcc
+from dash import dash_table
+from dash.dependencies import Output, Input
+from dash.exceptions import PreventUpdate
+import dash_bootstrap_components as dbc
+import plotly.express as px
+
+app = dash.Dash()
+
+def get_data():
+    df = pd.read_csv('Training.csv') # https://www.kaggle.com/datasets/camnugent/california-housing-prices
+    return df
+
+def get_title():
+    return dbc.Row(
+            html.Div('ACE Tutorial', className = 'title')
+        )
+
+def get_price_plot(data):
+    fig = px.histogram(data, x='median_house_value', nbins = 20)
+    fig.update_layout(
+         title = {'text':'Amount', 'x':0.5, 'y':0.95, 'font':dict(size=24, color='silver')},
+         plot_bgcolor='black',
+         paper_bgcolor='black',
+         margin={'l': 40, 'b': 40, 't': 40, 'r': 0},
+         xaxis = dict(tickfont = dict(size = 20), color='silver'),
+         yaxis = dict(tickfont = dict(size = 18), color='silver'),
+         hovermode='closest')
+    return dcc.Graph(figure = fig)
+
+def get_population_plot(data):
+    fig = px.pie(data, values='population', names='ocean_proximity')
+    fig.update_layout(
+         title = {'text':'Amount', 'x':0.5, 'y':0.95, 'font':dict(size=24, color='silver')},
+         plot_bgcolor='black',
+         paper_bgcolor='black',
+         margin={'l': 40, 'b': 40, 't': 40, 'r': 0},
+         xaxis = dict(tickfont = dict(size = 20), color='silver'),
+         yaxis = dict(tickfont = dict(size = 18), color='silver'),
+         hovermode='closest')
+    return dcc.Graph(figure = fig)
+
+def get_row_plot(data):
+    return dbc.Row([
+        dbc.Col(get_price_plot(data), md = 6),
+        dbc.Col(get_population_plot(data), md = 6)
+    ])
+
+def get_selection():
+    return dcc.Dropdown(
+        ['INLAND', 'NEAR OCEAN', 'NEAR BAY', 'ISLAND', '<1H OCEAN'],
+        ['INLAND', 'NEAR OCEAN', 'NEAR BAY', 'ISLAND', '<1H OCEAN'],
+        multi=True, id = 'select'
+    )
+
+def get_row_selection():
+    return dbc.Row([
+        dbc.Col(get_selection(), md = 4),
+    ])
+
+app.layout = html.Div([
+    dbc.Container([
+        get_title(),
+        get_row_selection(),
+        html.Div(id = 'plot-content')
+    ])
+])
+
+@app.callback(
+    Output("plot-content", "children"),
+    Input("select", "value"),
+)
+def change_item(value):
+    df = get_data()
+    if len(value) == 0:
+        return get_row_plot(df)
+    else:
+        l = df['ocean_proximity'].isin(value)
+        data = df[l]
+        return get_row_plot(data)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# my.style.css
+.title {color:silver; font-weight:bold; font-size:28px; padding-top:10px; padding-bottom:10px}
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# download bootstrap.min.css from https://bootswatch.com/
+		</pre>
+		</div>
+        
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+        	<li><a href = "https://docs.cloudera.com/cdsw/1.10.4/experiments/topics/cdsw-experiments.html">CDSW Experiments</a></li>
+        	<li><a href = "https://github.com/cloudera/cdsw-training/blob/master/experiments/cdsw-build.sh">Sample at Github</a></li>
+        </div>
+    </body>
+</html>
