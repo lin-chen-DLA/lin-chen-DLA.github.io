@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Cloudera</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+		<div class = "title">
+			Jobs
+		</div>
+
+        <div class = "block">
+            <li>A job automates the action of launching an engine, running a script, and tracking the results</li>
+            <li>Support *.py files</li>
+            <li>Does not support *.ipynb files</li>
+        </div>
+        <div class = "subtitle">Schedule</div>
+        <div class = "block">
+            <li><span>Manual</span>, manually click Run to implement the script</li>
+            <li><span>Recurring</span>, run the job in a recurring pattern defined with a cron expression</li>
+            <p style = "text-align:center;"><img src = "img/Cloudera_6.png" width = "40%"></p>
+            <li><span>Dependent</span>, build a pipeline of jobs
+                <ul>
+                    <li>The first job can be manual or recurring</li>
+                    <li>The depedent job depends on the completion of its parent job</li>
+                    <li>Each dependent job has one parent job</li>
+                </ul>
+            </li>
+        </div>
+        <div class = "subtitle">Cron Expression</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# cron expression
+[minute] [hour] [day-of-month] [month] [day-of-week] command
+
+# *, all
+
+# ?, any, neglect the field value
+
+# -, range
+
+# , specifies multiple values
+
+# / increments
+
+# L, last
+
+# W, weekday
+
+# #, N-th occurrence of a weekday of the month
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+0 12 * * * # at 12:00 every day
+
+0/15 * * * * # every 10 minutes
+
+0/15 13,18 * * * # 13:00, 13:15, 13:30, 13:45, 18:00, 18:15, 18:30, 18:45
+
+0-5 13 * * * # every minute starting at 1 p.m. and ending at 1:05 p.m., every day
+
+15,45 13 * 6 Tue # 13:15 and 13:45 every Tuesday in June
+
+30 9 * * MON-FRI # 9:30 every Monday, Tuesday, Wednesdday, Thursday, and Friday
+
+30 9 15 * * # 9:30 on the 15th of every month
+
+0 18 L * * # 18:00 on the last day of every month
+
+0 18 L-3 * * # 18:00 on the third day to last dday of every month
+
+30 10 * * 5L # 10:30 on last Thursday of every month
+
+0 10 * * 2#3 # 10:00 on third Monday of every month
+		</pre>
+		</div>
+        
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li><a href = "https://www.baeldung.com/cron-expressions">A Guide To Cron Expressions</a></li>
+        </div>
+    </body>
+</html>
