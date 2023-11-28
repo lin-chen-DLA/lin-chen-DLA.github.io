@@ -28,11 +28,16 @@
 
         <div class = "subtitle">Development</div>
         <div class = "block">
-            <li>Use Workbench</li>
+            <ol>
+                <li>Start a Workbench</li>
+                <li>Write the code under /home/cdsw</li>
+                <li>Click "Run"</li>
+                <li>Click the nine dots logo on the top-right, then select Dash app</li>
+            </ol>
         </div>
         <div class = "subtitle">Source Code</div>
         <div class = "block">
-			<p style = "text-align:center;"><img src = "img/Cloudera_7.png" width = "30%"></p>
+			<p style = "text-align:center;"><img src = "img/Cloudera_7.png" width = "40%"></p>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
@@ -122,7 +127,7 @@ def change_item(value):
         return get_row_plot(data)
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(port=8080, debug=True)
 		</pre>
 		</div>
 		<div class = "block">
