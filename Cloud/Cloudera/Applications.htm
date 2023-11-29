@@ -29,10 +29,18 @@
         <div class = "subtitle">Development</div>
         <div class = "block">
             <ol>
-                <li>Start a Workbench</li>
+                <li>Start a Workbench under the project</li>
                 <li>Write the code under /home/cdsw</li>
-                <li>Click "Run"</li>
+                <li>Select "app.py" and click "Run"</li>
                 <li>Click the nine dots logo on the top-right, then select Dash app</li>
+            </ol>
+        </div>
+        <div class = "subtitle">Deployment</div>
+        <div class = "block">
+            <ol>
+                <li>Start a new Application under Applications</li>
+                <li>Add the app name, subdomain, select "app.py", then click "Create Application"</li>
+                <li>Click the three-dot logo of the app and select "Application Details", select "Logs" to monitor the deployment</li>
             </ol>
         </div>
         <div class = "subtitle">Source Code</div>
@@ -42,6 +50,7 @@
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # app.py
+import os
 import dash
 import pandas as pd
 from dash import html
@@ -52,7 +61,8 @@ from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
 import plotly.express as px
 
-app = dash.Dash()
+app = dash.Dash(__name__)
+server = app.server
 
 def get_data():
     df = pd.read_csv('Training.csv') # https://www.kaggle.com/datasets/camnugent/california-housing-prices
@@ -127,12 +137,21 @@ def change_item(value):
         return get_row_plot(data)
 
 if __name__ == '__main__':
-    app.run_server(port=8080, debug=True)
+    app.run_server(host = '127.0.0.1', port=int(os.environ['CDSW_READONLY_PORT']), debug=True)
 		</pre>
 		</div>
+        <div class = "block">
+        <pre class = "prettyprint linenums">
+# requirements.txt
+dash
+dash-=bootstrap-components
+numpy
+pandas
+        </pre>
+        </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# my.style.css
+# style.css
 .title {color:silver; font-weight:bold; font-size:28px; padding-top:10px; padding-bottom:10px}
 		</pre>
 		</div>
