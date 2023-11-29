@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Cloudera</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+		<div class = "title">
+			Models
+		</div>
+        
+        <div class = "subtitle">Model Deployment</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Cloudera_11.png" width = "40%"></p>
+            <ol>
+                <li>Start a new model under Models</li>
+                <li>Add model name, model description</li>
+                <li>Select the script file containing the processing function</li>
+                <li>Add the processing function name</li>
+                <li>Click "Deploy Model"</li>
+                <li>Monitor building process under "Builds" within the model</li>
+            </ol>
+        </div>
+        <div class = "subtitle">Source Code</div>
+        <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Cloudera_10.png" width = "25%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# model.py
+import pandas as pd
+import joblib
+from sklearn.base import BaseEstimator, TransformerMixin
+
+class AddAttributes(BaseEstimator, TransformerMixin):
+    def __init__(self): # no *args or **kargs
+        pass
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+    def transform(self, X):
+        temp = X.copy()
+        temp["rooms_per_household"] = temp["total_rooms"]/temp["households"]
+        temp["bedrooms_per_room"] = temp["total_bedrooms"]/temp["total_rooms"]
+        temp["population_per_household"]=temp["population"]/temp["households"]
+        return temp
+
+def predict(data):
+    data_test = pd.read_json(data, orient='table')
+    model = joblib.load('./model.pkl')
+    s = pd.Series(model.predict(data_test))
+
+    return s.to_json(orient='table')
+		</pre>
+		</div>
+        <div class = "block">
+        <pre class = "prettyprint linenums">
+# requirements.txt
+numpy
+pandas
+scikit-learn
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# cdsw-build.sh
+pip install -r requirements.txt
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# model.pkl
+		</pre>
+		</div>
+        
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+        	<li><a href = "https://docs.cloudera.com/cdsw/1.10.4/experiments/topics/cdsw-experiments.html">CDSW Experiments</a></li>
+        	<li><a href = "https://github.com/cloudera/cdsw-training/blob/master/experiments/cdsw-build.sh">Sample at Github</a></li>
+        </div>
+    </body>
+</html>
