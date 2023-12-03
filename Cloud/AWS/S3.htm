@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Amazon AWS</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Amazon S3
+		</div>
+
+		<div class = "subtitle">Introduction</div>
+		<div class = "block">
+			<li>S3 bucket are <span>global unique</span>, after a bucket is created, the name of that bucket cannot be used by another AWS account in any AWS Region until the bucket is deleted</li>
+			<pre class = "prettyprint linenums">
+# Bucket, A top-level Amazon S3 folder
+# Prefix, an S3 folder in a bucket.
+# Object, item hosted in an Amazon S3 bucket
+s3://[bucket_name][prefix_name][object_name]
+			</pre>
+		</div>
+		<div class = "subtitle">Configuration</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/S3_1.png" width = "20%"></p>
+1. In bucket permission, add policy to give a user permissions
+<pre class = "prettyprint linenums">
+{
+    "Version": "2012-10-17",
+    "Id": "Policy1701451962444",
+    "Statement": [
+        {
+            "Sid": "Stmt1701451960851",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "user_arn" # add users
+            },
+            "Action": "s3:*", # add allowed operations
+            "Resource": "bucket_arn" # specify S3 bucket
+        }
+    ]
+}
+</pre>        
+2. aws configure on local, create <span>.aws</span> in home directory which contains <span>config</span> and <span>credentials</span>
+<pre class = "prettyprint linenums">
+# config
+[default]
+</pre>
+<pre class = "prettyprint linenums">
+# credentials
+[default]
+aws_access_key_id=[user_aws_access_key_id]
+aws_secret_access_key=[user_aws_secret_access_key]
+
+</pre>
+		</div>
+		<div class = "subtitle">CLI</div>
+		<div class = "block">
+			<li><a href = "https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">CLI Installation</a></li>
+		</div>
+		<div class = "block">
+			<li>cp</li>
+				<pre class = "prettyprint linenums">
+# # copy a local file to S3
+aws s3 cp local_file_name s3://bucket_name
+
+# copy a file in a bucket to local
+aws s3 cp s3://bucket_name/file_name .
+
+# copy a local folder to a bucket
+aws s3 cp local_folder_name s3://bucket_name/folder_name --recursive
+
+# copy a folder in a bucket to local
+aws s3 cp s3://bucket_name/folder_name local_folder_name --recursive
+				</pre>
+			<li>ls</li>
+				<pre class = "prettyprint linenums">
+# list user owned buckets</li>
+aws s3 ls
+
+# list all prefixes and objects in a bucket
+aws s3 ls s3://bucket_name
+
+# list prefixes and objects in a prefix
+aws s3 ls s3://bucket_name/prefix_name/
+
+# recursively listing prefixes and objects in a bucket
+aws s3 ls s3://bucket_name --recursive --human-readable
+				</pre>
+			<li>mb</li>
+					<pre class = "prettyprint linenums">
+# create a bucket
+# aws s3 s3://[bucket_name] --region [region_name]
+aws s3 mb s3://usdla-lin-chen-2 --region us-east-1
+					</pre>
+			<li>mv</li>
+<pre class = "prettyprint linenums">
+# move a file from the local to a bucket
+aws s3 mv file_name s3://bucket_name
+
+# move a folder to a bucket
+aws s3 mv folder_name s3://bucket/folder_name --recursive
+
+# move a file from one bucket to another
+aws s3 mv s3://bucket_dest/file_name s3://bucket_dest
+
+# move a folder from one bucket to another
+ aws s3 mv s3://bucket_src/folder_name/ s3://bucket_dest/folder_name/ --recursive
+
+ # move a file from a bucket to local
+ aws s3 mv s3://bucket_name/file_name ./
+
+ # move a folder from a bucket to local
+ aws s3 mv s3://bucket_name/folder_name ./folder_name --recursive
+</pre>
+			<li>presign</li>
+<pre class = "prettyprint linenums">
+# generate a pre-signed URL for a file on S3
+# default is one hour lifetime
+aws s3 presign s3://bucket_name/file_name --expires-in seconds
+
+# download object
+curl -o "file_name" "presigned-url"
+				</pre>
+			</li>
+			<li>rm</li>
+			<pre class = "prettyprint linenums">
+# delete a file in a bucket
+aws s3 rm s3://bucket_name/file_name
+
+# delete a folder in a bucket
+aws s3 rm s3://bucket_name/folder_name --recursive
+				</pre>
+			<li>rb</li>
+			<pre class = "prettyprint linenums">
+# remove a bucket, the bucket must be empty in order to remove
+aws s3 rb s3://bucket_name 
+				</pre>
+			<li>sync</li>
+			<pre class = "prettyprint linenums">
+# only copies over files that are new and updated from local to a bucket
+aws s3 sync folder_name s3://bucket_name/folder_name
+				</pre>
+			</div>
+			<div class = "subtitle">Python Boto3</div>
+			<div class = "block">
+			<pre class = "prettyprint linenums">
+pip install boto3
+			</pre>
+			</div>
+		<div class = "block">
+			<li>Session
+				<ul>
+					<li>Stores configuration information</li>
+					<li>Allows to create service clients and resources</li>
+				</ul>
+			</li>
+			<pre class = "prettyprint linenums">
+import boto3
+
+session = boto3.Session(aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+s3 = session.client('s3') # botocore.client.S3
+
+session = boto3.Session(aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+s3 = session.resource('s3') # boto3.resources.factory.s3.ServiceResource
+			</pre>
+			<li>Resource
+				<ul>
+					<li>High-level, object-oriented API</li>
+				</ul>
+			</li>
+			<pre class = "prettyprint linenums">
+import boto3
+s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+			</pre>
+			<li>Client
+				<ul>
+					<li>Low-level AWS service access</li>
+					<li>Maps 1:1 with the AWS service API</li>
+				</ul>
+			</li>
+			<pre class = "prettyprint linenums">
+import boto3
+s3 = boto3.resource('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+			</pre>
+		</div>
+		<div class = "block">
+			<li>List buckets</li>
+				<pre class = "prettyprint linenums">
+# client
+s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+for bucket in s3.list_buckets()['Buckets']:
+    print(bucket['Name'])
+
+# resource
+s3 = boto3.resource('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+
+for bucket in s3.buckets.all():
+    print(bucket.name)
+				</pre>
+				<li>List objects in a bucket
+				<pre class = "prettyprint linenums">
+# client
+client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+objects = client.list_objects_v2(Bucket='usdla-lin-chen')
+
+for object in objects['Contents']:
+    print(object['Key'])
+
+# resource
+s3 = boto3.resource('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+bucket = s3.Bucket('usdla-lin-chen')
+for object in bucket.objects.all():
+    print(object.key)
+				</pre>
+				<li>List objects in a directory
+				<pre class = "prettyprint linenums">
+# client
+client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+objects = client.list_objects_v2(Bucket='usdla-lin-chen', Prefix = 'temp3')
+for object in objects['Contents']:
+    print(object['Key'])
+
+# resource
+s3 = boto3.resource('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+bucket = s3.Bucket('usdla-lin-chen')
+for object in bucket.objects.filter(Prefix = 'temp3'):
+    print(object.key)
+				</pre>
+				<li>Download a file
+				<pre class = "prettyprint linenums">
+# client
+client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+client.download_file(Bucket = 'usdla-lin-chen', Key = 'weather_1.csv', Filename = 'weahter_1.csv')
+
+# resource
+s3 = boto3.resource('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+bucket = s3.Bucket('usdla-lin-chen')
+bucket.download_file(Key = 'weather_1.csv', Filename = 'weahter_1_local.csv')
+				</pre>
+				<li>Download a folder
+				<pre class = "prettyprint linenums">
+# client
+client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+objects = client.list_objects_v2(Bucket='usdla-lin-chen', Prefix = 'temp3')
+
+import os
+os.makedirs('temp3')
+for object in objects['Contents']:
+    client.download_file(Bucket = 'usdla-lin-chen', Key = object['Key'], Filename = object['Key'])
+
+# resource
+s3 = boto3.resource('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+bucket = s3.Bucket('usdla-lin-chen')
+
+import os
+os.makedirs('temp3')
+for object in bucket.objects.filter(Prefix = 'temp3'):
+    bucket.download_file(Key = object.key, Filename = object.key)
+				</pre>
+				<li>Upload a file
+				<pre class = "prettyprint linenums">
+# client
+client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+client.upload_file(Bucket = 'usdla-lin-chen', Key = 'aapl.csv', Filename = 'aapl.csv')
+
+# resource
+s3 = boto3.resource('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+bucket = s3.Bucket('usdla-lin-chen')
+bucket.upload_file(Key = 'aapl.csv', Filename = 'aapl.csv')
+				</pre>
+				<li>Delete a file
+				<pre class = "prettyprint linenums">
+# client
+client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+client.delete_object(Bucket = 'usdla-lin-chen', Key = 'aapl.csv')
+
+# resource
+s3 = boto3.resource('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+bucket = s3.Bucket('usdla-lin-chen')
+bucket.delete_objects(Delete = {'Objects':[{'Key':'aapl.csv'}]})
+				</pre>
+			</div>
+			<div class = "subtitle">Website</div>
+			<div class = "block">
+				<li>1. Create a bucket and copy the code to the bucket</li>
+				<li>2. Under <span>Properties</span>, Enable static website hosting of <span>Static website hosting</span>; choose <span>Host a static website</span> as the hosting type; add <span>Index document</span>, such as <span>index.htm</span></li>
+				<li>3. Under <span>Permission</span>, enable public access of <span>Block public access</span>; add bucket policy</li>
+				<pre class = "prettyprint linenums">
+{
+    "Version": "2012-10-17",
+    "Id": "Policy1701463544586",
+    "Statement": [
+        {
+            "Sid": "Stmt1701463542093",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "bucket_arn/*"
+        }
+    ]
+}
+				</pre>
+			</div>
+			<div class = "subtitle">Access Point</div>
+			<div class = "block">
+				<p style = "text-align:center;"><img src = "img/S3_2.png" width = "40%"></p>
+					<li>Create an access point</li>
+						<pre class = "prettyprint linenums">
+# aws s3control create-access-point --name [access_point_name] --account-id [123456789012] --bucket [bucket_name]
+aws s3control create-access-point --name ap_name --region region_name --account-id account_digitial_id --bucket bucket_name_not_arn
+</pre>
+					<li>Access an access point</li>
+					<pre class = "prettyprint linenums">
+# aws s3 ls s3://[access_point_arn]
+# aws s3 ls s3://[alias]
+</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html">Boto3 S3 API</a></li>
+			<li><a href = "https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html">Bucket policy examples</a></li>
+			<li><a href = "https://docs.aws.amazon.com/AmazonS3/latest/userguide/EnableWebsiteHosting.html">Enabling website hosting</a></li>
+			<li><a href = "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html">User Guide</a></li>
+			<li><a href = "https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html">Use high-level (s3) commands with the AWS CLI</a></li>
+			<li><a href = "https://docs.aws.amazon.com/cli/latest/reference/s3/">S3 CLI</a></li>
+		</div>
+	</body>
+</html>

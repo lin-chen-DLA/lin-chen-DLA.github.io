@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Amazon AWS</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Amazon IAM
+		</div>
+		
+		<div class = "subtitle">What is Identity and Access Management (IAM)</div>
+		<div class = "block">
+			<li>Safeguards accesses to AWS services and resources and to create and manage users and groups and user permissions to grant or deny access to AWS services</li>
+		</div>
+		<div class = "subtitle">Working of IAM</div>
+		<div class = "block">
+			<li>Principal
+				<ul>
+					<li>An action on an AWS resource can be performed by a principal</li>
+					<li>A user or a role can be a principal</li>
+				</ul>
+			</li>
+			<li>Authentication
+				<ul>
+					<li>A process of confirming identity of the principal trying to access an AWS product</li>
+					<li>To authenticate from console, need credentials or required keys</li>
+				</ul>
+			</li>
+			<li>Request
+				<ul>
+					<li>When a principal attemps to access the AWS console, API or CLI, send a request to AWS</li>
+				</ul>
+			</li>
+			<li>Authorizations
+				<ul>
+					<li>Here IAM uses information from the request context to check for matching policies and determine whether to allow or deny the request</li>
+				</ul>
+			</li>
+			<li>Actions
+				<ul>
+					<li>After authentication and authorization of the request, AWS approves the action</li>
+					<li>Using this, either edit, delete, or create a resource</li>
+				</ul>
+			</li>
+			<li>Resources
+				<ul>
+					<li>A set of actions can be performed in a related resource of the AWS account</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Components of IAM</div>
+		<div class = "block">
+			<li><span>Users</span>
+				<ul>
+					<li>IAM users are AWS entities that represent the person or application that interacts with AWS</li>
+					<li>AWS users have a name and credentials</li>
+					<li>The root user of an AWS account is not the same as an IAM user with administrator access</li>
+				</ul>
+			<li><span>Groups</span>
+				<ul>
+					<li>A set of IAM users is referred to as an IAM user group</li>
+					<li>Allow specify permissions for many users</li>
+				</ul>
+			</li>
+			<li><span>Roles</span>
+				<ul>
+					<li>Collection of policies</li>
+					<li>There are no long-term credentials connected with a role. When given a role, the role has a temporary security credentials for the duration of your role session</li>
+				</ul>
+			</li>
+			<li><span>Policies</span>
+				<ul>
+					<li>Created and linked to IAM identities or AWS resources</li>
+					<li>Permission to resources</li>
+					<li>The policy permissions decide whether the request is approved or rejected</li>
+					<li>Types
+						<ul>
+							<li>Customer managed</li>
+							<li>AWS managed</li>
+							<li>AWS managed - job function</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.youtube.com/watch?v=y8cbKJAo3B4">AWS IAM Overview in 7 minutes</a></li>
+			<li><a href = "https://www.youtube.com/watch?v=o0p04B7-NFY&t=48s">ASW IAM Tutorial</a></li>
+		</div>
+	</body>
+</html>
