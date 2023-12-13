@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>PyArrow</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Building</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14259,587 +14259,52 @@ a.anchor-link {
 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="PyArrow"><center>PyArrow</center><a class="anchor-link" href="#PyArrow">&#182;</a></h2>
+<h4 id="Model-Building"><center>Model Building</center><a class="anchor-link" href="#Model-Building">&#182;</a></h4>
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Installation">Installation<a class="anchor-link" href="#Installation">&#182;</a></h4>
+<h4 id="Create-Model">Create Model<a class="anchor-link" href="#Create-Model">&#182;</a></h4>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyarrow</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Why-Arrow">Why Arrow<a class="anchor-link" href="#Why-Arrow">&#182;</a></h4><ul>
-<li>A framework for defining language-independent <font color = "red">in-memory</font> columnar data</li>
-<li>Provides zero-copy reads by which the CPU does not copy data from one memory area to a second one and reduces memory requirements and CPU cycles</li>
-<li>Speeds up the transfer of data by eliminating unnecessary input/output communication between different datafram types, such as between Spark and Pandas</li>
-</ul>
-<p><img src = "img/PyArrow_1.png"></p>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Data-Types-and-In-Memory-Data-Model">Data Types and In-Memory Data Model<a class="anchor-link" href="#Data-Types-and-In-Memory-Data-Model">&#182;</a></h4><ul>
-<li><strong>Type</strong>, define logical data type</li>
-<li><strong>Scalar</strong>, element in an arrow data structure</li>
-<li><strong>Schema</strong>, define column types</li>
-<li><strong>Array</strong>, contiguous columnar data structure</li>
-<li><strong>Record Batche</strong>, a collection of Array objects with a particular Schema</li>
-<li><strong>Table</strong>, a logical table data structure in which each column consists of one or more array objects of the same type</li>
-</ul>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Scalar">Scalar<a class="anchor-link" href="#Scalar">&#182;</a></h4>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># int scalar</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># &lt;pyarrow.Int64Scalar: 1&gt;</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">int32</span><span class="p">())</span> <span class="c1"># &lt;pyarrow.Int32Scalar: 1&gt;</span>
-
-<span class="c1"># double scalar</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="mf">3.14</span><span class="p">)</span> <span class="c1"># &lt;pyarrow.DoubleScalar: 3.14&gt;</span>
-
-<span class="c1"># string scalar</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="c1"># &lt;pyarrow.StringScalar: &#39;string&#39;&gt;</span>
-
-<span class="c1"># boolean scalar</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># &lt;pyarrow.BooleanScalar: True&gt;</span>
-
-<span class="c1"># list scalar</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span> <span class="c1"># &lt;pyarrow.ListScalar: [1, 2]&gt;</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]))</span> <span class="c1"># &lt;pyarrow.ListScalar: [1, 2, 3, 4]&gt;</span>
-
-<span class="c1"># struct scalar</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;Lin&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span><span class="mi">44</span><span class="p">})</span> <span class="c1"># &lt;pyarrow.StructScalar: {&#39;age&#39;: 44, &#39;name&#39;: &#39;Lin&#39;}&gt;</span>
-
-<span class="c1"># struct is a collection of named fields</span>
-<span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">pa</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">string</span><span class="p">(),</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Describing the column&quot;</span><span class="p">}),</span>
-    <span class="n">pa</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">int32</span><span class="p">())</span>
-<span class="p">]</span>
-
-<span class="nb">type</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">struct</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
-<span class="c1"># type = pa.struct([(&#39;name&#39;, pa.string()), (&#39;age&#39;, pa.int32())])</span>
-
-<span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;Lin&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span><span class="mi">44</span><span class="p">},</span> <span class="nb">type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">)</span> <span class="c1"># &lt;pyarrow.StructScalar: [(&#39;name&#39;, &#39;Lin&#39;), (&#39;age&#39;, 44)]&gt;</span>
-
-<span class="c1"># timestamp scalar</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1"># datetime(2010, 1, 1) # &lt;pyarrow.TimestampScalar: datetime.datetime(2010, 1, 1, 0, 0)&gt;</span>
-
-<span class="c1"># null scalar</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="c1"># &lt;pyarrow.NullScalar: None&gt;</span>
-
-<span class="c1"># list scalar with defined type and size</span>
-<span class="nb">type</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">list_</span><span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">string</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># define a type containing two strings</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">([</span><span class="s1">&#39;Lin&#39;</span><span class="p">,</span> <span class="s1">&#39;Chen&#39;</span><span class="p">],</span> <span class="nb">type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">)</span> <span class="c1"># &lt;pyarrow.FixedSizeListScalar: [&#39;Lin&#39;, &#39;Chen&#39;]&gt;</span>
-
-<span class="c1"># map scalar</span>
-<span class="nb">type</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">map_</span><span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">string</span><span class="p">(),</span> <span class="n">pa</span><span class="o">.</span><span class="n">int64</span><span class="p">(),</span> <span class="n">keys_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">({</span><span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="mi">44</span><span class="p">},</span> <span class="nb">type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">)</span><span class="c1"># &lt;pyarrow.MapScalar: [(&#39;Age&#39;, 44)]&gt;</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># as_py</span>
-<span class="n">s</span><span class="o">.</span><span class="n">as_py</span><span class="p">()</span> <span class="c1"># int, 1</span>
-
-<span class="c1"># type</span>
-<span class="n">s</span><span class="o">.</span><span class="n">type</span> <span class="c1"># DataType(int64)</span>
-<span class="n">s</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">to_pandas_dtype</span> <span class="c1"># convert to pandas dtyp</span>
-
-<span class="c1"># equals</span>
-<span class="n">s</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># True</span>
-
-<span class="c1"># cast</span>
-<span class="n">s</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s1">&#39;double&#39;</span><span class="p">)</span> <span class="c1"># &lt;pyarrow.DoubleScalar: 1.0&gt;</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Schema">Schema<a class="anchor-link" href="#Schema">&#182;</a></h4>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># define a schema</span>
-<span class="n">sc</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">schema</span><span class="p">([</span>
-    <span class="p">(</span><span class="s1">&#39;column_1&#39;</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">int32</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s1">&#39;column_2&#39;</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">string</span><span class="p">()),</span>
-    <span class="n">pa</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;column_3&#39;</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">string</span><span class="p">())</span>
-<span class="p">])</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Array">Array<a class="anchor-link" href="#Array">&#182;</a></h4><ul>
-<li>Elements in an array have the same data type</li>
-<li>Immutable, can not change elements</li>
-</ul>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create from list</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span> <span class="c1"># &lt;pyarrow.lib.Int64Array object at 0x7feba9b047c0&gt;</span>
-<span class="n">array</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># &lt;pyarrow.Int64Scalar: 2&gt;</span>
-
-<span class="c1"># create from numpy</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
-
-<span class="c1"># create from pandas series</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]))</span>
-
-<span class="c1"># create null array</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">nulls</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># &lt;pyarrow.lib.NullArray object at 0x7feba9b181a0&gt;</span>
-<span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># &lt;pyarrow.NullScalar: None&gt;</span>
-
-<span class="c1"># create array of lists</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([[],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
-
-<span class="c1"># array of structs</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([{</span><span class="s1">&#39;brand&#39;</span><span class="p">:</span> <span class="s1">&#39;Subaru&#39;</span><span class="p">,</span> <span class="s1">&#39;cylinder&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;brand&#39;</span><span class="p">:</span> <span class="s1">&#39;Honda&#39;</span><span class="p">,</span> <span class="s1">&#39;cylinder&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}])</span>
-
-<span class="c1"># create array of maps</span>
-<span class="nb">type</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">map_</span><span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">string</span><span class="p">(),</span> <span class="n">pa</span><span class="o">.</span><span class="n">int64</span><span class="p">(),</span> <span class="n">keys_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([{</span><span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="mi">44</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;Cylinder&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">}],</span> <span class="nb">type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">)</span>
-
-<span class="c1"># create sparse union array</span>
-<span class="n">row_0</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<span class="n">row_1</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
-<span class="n">row_2</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">])</span>
-
-<span class="c1"># first elment is the first element in row 0</span>
-<span class="c1"># second element is the second element in row 2</span>
-<span class="c1"># third element is the third element in row 1</span>
-<span class="n">types</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="n">pa</span><span class="o">.</span><span class="n">int8</span><span class="p">())</span>
-
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">UnionArray</span><span class="o">.</span><span class="n">from_sparse</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="p">[</span><span class="n">row_0</span><span class="p">,</span> <span class="n">row_1</span><span class="p">,</span> <span class="n">row_2</span><span class="p">])</span>
-<span class="n">array</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1"># [1, 200, 30]</span>
-
-<span class="c1"># create dense union array</span>
-<span class="n">row_0</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<span class="n">row_1</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
-<span class="n">row_2</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">])</span>
-
-<span class="c1"># each elment is the offset-th elment in row_types_index</span>
-<span class="c1"># first element is the third element in row 0</span>
-<span class="n">types</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="n">pa</span><span class="o">.</span><span class="n">int8</span><span class="p">())</span>
-<span class="n">offsets</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="n">pa</span><span class="o">.</span><span class="n">int32</span><span class="p">())</span>
-
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">UnionArray</span><span class="o">.</span><span class="n">from_dense</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="n">offsets</span><span class="p">,</span> <span class="p">[</span><span class="n">row_0</span><span class="p">,</span> <span class="n">row_1</span><span class="p">,</span> <span class="n">row_2</span><span class="p">])</span>
-<span class="n">array</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1"># 3, 10, 20, 200, 300]</span>
-
-<span class="c1"># create dictionary array</span>
-<span class="n">indices</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-
-<span class="n">dictionary</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span><span class="p">])</span>
-
-<span class="n">array</span> <span class="o">=</span> <span class="n">dict_array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">DictionaryArray</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)</span>
-<span class="n">array</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1"># [&#39;foo&#39;, &#39;bar&#39;, &#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;, &#39;foo&#39;, None, &#39;baz&#39;]</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
-
-<span class="c1"># type</span>
-<span class="n">array</span><span class="o">.</span><span class="n">type</span> <span class="c1"># element type, DataType(int64)</span>
-
-<span class="c1"># cast, convert to other data type</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span> <span class="c1"># &lt;pyarrow.lib.Int32Array object at 0x7f976e4f37c0&gt;</span>
-
-<span class="c1"># to_numpy</span>
-<span class="n">array_view</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span> <span class="c1"># numpy.ndarray, read-only view</span>
-
-<span class="c1"># to_pandas</span>
-<span class="n">array_view</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span> <span class="c1"># pandas series, read-only view</span>
-
-<span class="c1"># to_string</span>
-<span class="n">array</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span> <span class="c1"># str</span>
-
-<span class="c1"># tolist</span>
-<span class="n">array_copy</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1"># copy of array, mutable</span>
-
-<span class="c1"># drop_null</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<span class="n">array</span><span class="o">.</span><span class="n">drop_null</span><span class="p">()</span>
-
-<span class="c1"># equals</span>
-<span class="n">array1</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
-<span class="n">array2</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
-
-<span class="n">array1</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">array2</span><span class="p">)</span>
-
-<span class="c1"># filter</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">mask</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
-<span class="n">array</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="c1"># 0, 2</span>
-
-<span class="c1"># from_pandas</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]))</span>
-
-<span class="c1"># index, find the index of a value</span>
-<span class="n">array</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># &lt;pyarrow.Int64Scalar: 0&gt;</span>
-
-<span class="c1"># is_nan, return BooleanArray indicating the NaN values</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
-<span class="n">array</span><span class="o">.</span><span class="n">is_nan</span><span class="p">()</span> <span class="c1"># [false, false, null, false, null]</span>
-
-<span class="c1"># is _null</span>
-<span class="n">array</span><span class="o">.</span><span class="n">is_null</span><span class="p">()</span> <span class="c1"># [false, false, true, false, true]</span>
-
-<span class="c1"># is_valid</span>
-<span class="n">array</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="c1"># [false, false, true, false, true]</span>
-
-<span class="c1"># slice</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
-<span class="n">array</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># offset, end</span>
-
-<span class="c1"># sum</span>
-<span class="n">array</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="c1"># &lt;pyarrow.Int64Scalar: 15&gt;</span>
-
-<span class="c1"># sort</span>
-<span class="n">array</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">order</span> <span class="o">=</span> <span class="s1">&#39;descending&#39;</span><span class="p">)</span>
-
-<span class="c1"># take, select an element by indices</span>
-<span class="n">array</span><span class="o">.</span><span class="n">take</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-
-<span class="c1"># unique, return distinct elements in array</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="n">array</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span> <span class="c1"># [1, 2]</span>
-
-<span class="c1"># value_counts, return counts of unique elements in array</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
-<span class="n">struct</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
-<span class="n">struct</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># {&#39;values&#39;: 1, &#39;counts&#39;: 2}</span>
-
-<span class="c1"># view</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">uint32</span><span class="p">())</span>
-<span class="n">array_view</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">int32</span><span class="p">())</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Record-Batch">Record Batch<a class="anchor-link" href="#Record-Batch">&#182;</a></h4><ul>
-<li>A collection of equal-length array instances</li>
-</ul>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create from list of array</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span>
-    <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]),</span>
-    <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">])</span>
-<span class="p">]</span>
-
-<span class="n">batch</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">RecordBatch</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;column_1&#39;</span><span class="p">,</span> <span class="s1">&#39;columns_2&#39;</span><span class="p">,</span> <span class="s1">&#39;column_3&#39;</span><span class="p">])</span>
-<span class="n">pa</span><span class="o">.</span><span class="n">record_batch</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;column_1&#39;</span><span class="p">,</span> <span class="s1">&#39;column_2&#39;</span><span class="p">,</span> <span class="s1">&#39;column_3&#39;</span><span class="p">])</span>
-
-<span class="c1"># create from pandas dataframe</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span> <span class="c1"># columen 0</span>
-                   <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;january&#39;</span><span class="p">,</span> <span class="s1">&#39;february&#39;</span><span class="p">,</span> <span class="s1">&#39;march&#39;</span><span class="p">],</span> <span class="c1"># column 1</span>
-                   <span class="s1">&#39;three&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]},</span> <span class="n">index</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="s1">&#39;abc&#39;</span><span class="p">))</span> <span class="c1"># column 2</span>
-                  
-<span class="n">batch</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">RecordBatch</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-
-<span class="c1"># create from dict</span>
-<span class="n">batch</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">RecordBatch</span><span class="o">.</span><span class="n">from_pydict</span><span class="p">({</span><span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span> <span class="c1"># columen 0</span>
-                   <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;january&#39;</span><span class="p">,</span> <span class="s1">&#39;february&#39;</span><span class="p">,</span> <span class="s1">&#39;march&#39;</span><span class="p">],</span> <span class="c1"># column 1</span>
-                   <span class="s1">&#39;three&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]})</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">batch</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">RecordBatch</span><span class="o">.</span><span class="n">from_pydict</span><span class="p">({</span><span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span> <span class="c1"># columen 0</span>
-                   <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;january&#39;</span><span class="p">,</span> <span class="s1">&#39;february&#39;</span><span class="p">,</span> <span class="s1">&#39;march&#39;</span><span class="p">],</span> <span class="c1"># column 1</span>
-                   <span class="s1">&#39;three&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]})</span>
-
-<span class="c1"># column, select a column by index</span>
-<span class="n">batch</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># columns, list of array</span>
-<span class="n">batch</span><span class="o">.</span><span class="n">columns</span>
-
-<span class="c1"># num_columns</span>
-<span class="n">batch</span><span class="o">.</span><span class="n">num_columns</span> <span class="c1"># 3</span>
-
-<span class="c1"># num_rows</span>
-<span class="n">batch</span><span class="o">.</span><span class="n">num_rows</span> <span class="c1"># 3</span>
-
-<span class="c1"># schema</span>
-<span class="n">batch</span><span class="o">.</span><span class="n">schema</span>
-
-<span class="c1"># select, select columns with indices</span>
-<span class="n">batch</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-
-<span class="c1"># slice, select rows with slicing</span>
-<span class="n">batch</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># offset, length, pyarrow.RecordBatch</span>
-
-<span class="c1"># sort_by</span>
-<span class="n">batch</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="s1">&#39;two&#39;</span><span class="p">)</span> <span class="c1"># sort by one column</span>
-<span class="n">batch</span><span class="o">.</span><span class="n">sort_by</span><span class="p">([(</span><span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;ascending&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;descending&#39;</span><span class="p">)])</span> <span class="c1"># sort by multiple columns</span>
-
-<span class="c1"># take, select rows with indices</span>
-<span class="n">batch</span><span class="o">.</span><span class="n">take</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-
-<span class="c1"># to_pandas</span>
-<span class="n">batch</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span> <span class="c1"># pandas dataframe</span>
-
-<span class="c1"># to_pydict</span>
-<span class="n">batch</span><span class="o">.</span><span class="n">to_pydict</span><span class="p">()</span> <span class="c1"># dict</span>
-
-<span class="c1"># to_pylist</span>
-<span class="n">batch</span><span class="o">.</span><span class="n">to_pylist</span><span class="p">()</span> <span class="c1"># list of dict</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Table">Table<a class="anchor-link" href="#Table">&#182;</a></h4>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create from arrays</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span>
-    <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]),</span>
-    <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">])</span>
-<span class="p">]</span>
-
-<span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;column_1&#39;</span><span class="p">,</span> <span class="s1">&#39;column_2&#39;</span><span class="p">,</span> <span class="s1">&#39;column_3&#39;</span><span class="p">])</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;column_1&#39;</span><span class="p">,</span> <span class="s1">&#39;column_2&#39;</span><span class="p">,</span> <span class="s1">&#39;column_3&#39;</span><span class="p">])</span>
-
-<span class="c1"># create from batch</span>
-<span class="n">batch</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">RecordBatch</span><span class="o">.</span><span class="n">from_pydict</span><span class="p">({</span><span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span> <span class="c1"># columen 0</span>
-                   <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;january&#39;</span><span class="p">,</span> <span class="s1">&#39;february&#39;</span><span class="p">,</span> <span class="s1">&#39;march&#39;</span><span class="p">],</span> <span class="c1"># column 1</span>
-                   <span class="s1">&#39;three&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]})</span>
-
-<span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_batches</span><span class="p">([</span><span class="n">batch</span><span class="p">])</span>
-
-<span class="c1"># create from pandas dataframe</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span> <span class="c1"># columen 0</span>
-                   <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;january&#39;</span><span class="p">,</span> <span class="s1">&#39;february&#39;</span><span class="p">,</span> <span class="s1">&#39;march&#39;</span><span class="p">],</span> <span class="c1"># column 1</span>
-                   <span class="s1">&#39;three&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]},</span> <span class="n">index</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="s1">&#39;abc&#39;</span><span class="p">))</span> <span class="c1"># column 2</span>
-
-<span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-
-<span class="c1"># create from dict</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_pydict</span><span class="p">({</span><span class="s1">&#39;one&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span> <span class="c1"># columen 0</span>
-                   <span class="s1">&#39;two&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;january&#39;</span><span class="p">,</span> <span class="s1">&#39;february&#39;</span><span class="p">,</span> <span class="s1">&#39;march&#39;</span><span class="p">],</span> <span class="c1"># column 1</span>
-                   <span class="s1">&#39;three&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]})</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span>
-    <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]),</span>
-    <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">])</span>
-<span class="p">]</span>
-
-<span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;column_1&#39;</span><span class="p">,</span> <span class="s1">&#39;column_2&#39;</span><span class="p">,</span> <span class="s1">&#39;column_3&#39;</span><span class="p">])</span>
-
-<span class="c1"># column</span>
-<span class="n">table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># drop, drop one or more columns by column names</span>
-<span class="n">table</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;column_1&#39;</span><span class="p">])</span>
-
-<span class="c1"># drop_columns, drop one or more columns by column names</span>
-<span class="n">table</span><span class="o">.</span><span class="n">drop_columns</span><span class="p">([</span><span class="s1">&#39;column_1&#39;</span><span class="p">])</span>
-
-<span class="c1"># filter</span>
-<span class="n">table</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">mask</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span> <span class="c1"># select 1st and 3rd rows</span>
-
-<span class="kn">import</span> <span class="nn">pyarrow.compute</span> <span class="k">as</span> <span class="nn">pc</span>
-<span class="n">expr</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s2">&quot;column_2&quot;</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">20</span>
-<span class="n">table</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
-
-<span class="c1"># groupby</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_pydict</span><span class="p">({</span><span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2022</span><span class="p">,</span> <span class="mi">2021</span><span class="p">,</span> <span class="mi">2022</span><span class="p">,</span> <span class="mi">2019</span><span class="p">,</span> <span class="mi">2021</span><span class="p">],</span>
-                   <span class="s1">&#39;n_legs&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
-                   <span class="s1">&#39;animal&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Flamingo&quot;</span><span class="p">,</span> <span class="s2">&quot;Parrot&quot;</span><span class="p">,</span> <span class="s2">&quot;Dog&quot;</span><span class="p">,</span> <span class="s2">&quot;Horse&quot;</span><span class="p">,</span>
-                   <span class="s2">&quot;Brittle stars&quot;</span><span class="p">,</span> <span class="s2">&quot;Centipede&quot;</span><span class="p">]})</span>
-
-<span class="n">table</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([(</span><span class="s1">&#39;n_legs&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">)])</span> <span class="c1"># pyarrow.Table</span>
-
-<span class="c1"># itercolumns</span>
-<span class="c1"># for column in table.itercolumns():</span>
-<span class="c1">#     print(column)</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+
+<span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Store parameters</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
     
-<span class="c1"># join</span>
-<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-                    <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2022</span><span class="p">,</span> <span class="mi">2019</span><span class="p">]})</span>
-<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-                    <span class="s1">&#39;n_legs&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
-                    <span class="s1">&#39;animal&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Brittle stars&quot;</span><span class="p">,</span> <span class="s2">&quot;Centipede&quot;</span><span class="p">]})</span>
-
-<span class="n">table_1</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">df1</span><span class="p">)</span>
-<span class="n">table_2</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
-<span class="n">table_1</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">table_2</span><span class="p">,</span> <span class="n">keys</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">right_keys</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">join_type</span> <span class="o">=</span> <span class="s1">&#39;inner&#39;</span><span class="p">)</span>
-
-<span class="c1"># num_columns</span>
-<span class="n">table</span><span class="o">.</span><span class="n">num_columns</span> <span class="c1"># 3</span>
-
-<span class="c1"># num_rows</span>
-<span class="n">table</span><span class="o">.</span><span class="n">num_rows</span> <span class="c1"># 6</span>
-
-<span class="c1"># remove_column</span>
-<span class="n">table_remove</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">remove_column</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="c1"># select, select columns by indices</span>
-<span class="n">table</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-
-<span class="c1"># set_column, replace or insert a column</span>
-<span class="n">column</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">]</span>
-<span class="n">column_name</span> <span class="o">=</span> <span class="s1">&#39;Column_name&#39;</span>
-
-<span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="p">[</span><span class="n">column</span><span class="p">])</span>
-
-<span class="c1"># shape</span>
-<span class="n">table</span><span class="o">.</span><span class="n">shape</span>
-
-<span class="c1"># slice, select rows</span>
-<span class="n">table</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-
-<span class="n">table</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># select first two rows</span>
-
-<span class="c1"># sort_by</span>
-<span class="n">table</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">)</span> <span class="c1"># sort by one column</span>
-<span class="n">table</span><span class="o">.</span><span class="n">sort_by</span><span class="p">([(</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;ascending&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;n_legs&#39;</span><span class="p">,</span> <span class="s1">&#39;descending&#39;</span><span class="p">)])</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span> <span class="c1"># sort by multiple columns</span>
-
-<span class="c1"># take, select rows by indices</span>
-<span class="n">table</span><span class="o">.</span><span class="n">take</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-
-<span class="c1"># to_batches</span>
-<span class="n">batch</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">to_batches</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="c1"># to_pandas</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
-
-<span class="c1"># to_pydict</span>
-<span class="n">table</span><span class="o">.</span><span class="n">to_pydict</span><span class="p">()</span>
-
-<span class="c1"># to_pylist, list of dict</span>
-<span class="n">table</span><span class="o">.</span><span class="n">to_pylist</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Estimate parameters in the model with training data</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            X, array-like of shape (n_samples, n_features)</span>
+<span class="sd">            y, array-like of shape (n_samples,)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1"># classes for classification, [False, True]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="o">.</span><span class="n">classes_</span>
+        
+        <span class="k">return</span> <span class="bp">self</span>  <span class="c1"># nothing else to do</span>
+    
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Overwrite predict for supervised learning or some unsupervised problems</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
+    
+    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Overwrite predict_proba for classification problems</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c1"># return probabilities of each classes for each record</span>
 </pre></div>
 
      </div>
@@ -14850,10 +14315,7 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Dataset">Dataset<a class="anchor-link" href="#Dataset">&#182;</a></h4><ul>
-<li>A unified interface that supports different sources and file formats and different file systems</li>
-</ul>
-
+<h4 id="Use-Model">Use Model<a class="anchor-link" href="#Use-Model">&#182;</a></h4>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
@@ -14861,48 +14323,30 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create a dataset</span>
-<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-                    <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2022</span><span class="p">,</span> <span class="mi">2019</span><span class="p">]})</span>
-<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-                    <span class="s1">&#39;n_legs&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
-                    <span class="s1">&#39;animal&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Brittle stars&quot;</span><span class="p">,</span> <span class="s2">&quot;Centipede&quot;</span><span class="p">]})</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># load MNIST data</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">()</span>
 
-<span class="n">df1</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data/table1.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">df2</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data/table2.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
+<span class="n">data_X</span><span class="p">,</span> <span class="n">data_Y</span> <span class="o">=</span> <span class="n">mnist</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">mnist</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span>
 
-     </div>
-</div>
-</div>
-</div>
+<span class="c1"># split data to training data and test data</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="n">train_X</span><span class="p">,</span> <span class="n">test_X</span><span class="p">,</span> <span class="n">train_Y</span><span class="p">,</span> <span class="n">test_Y</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data_X</span><span class="p">,</span> <span class="n">data_Y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span> <span class="o">=</span> <span class="n">data_Y</span><span class="p">)</span>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pyarrow.dataset</span> <span class="k">as</span> <span class="nn">ds</span>
+<span class="n">train_Y_5</span> <span class="o">=</span> <span class="p">(</span><span class="n">train_Y</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">test_Y_5</span> <span class="o">=</span> <span class="p">(</span><span class="n">test_Y</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span>
 
-<span class="c1"># read dataset</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;./data/&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span>
-<span class="n">dataset</span><span class="o">.</span><span class="n">to_table</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
-</pre></div>
+<span class="c1"># create</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span>
 
-     </div>
-</div>
-</div>
-</div>
+<span class="c1"># fit</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_X</span><span class="p">,</span> <span class="n">train_Y_5</span><span class="p">)</span>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># filter</span>
-<span class="n">dataset</span><span class="o">.</span><span class="n">to_table</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="c1"># predict_proba</span>
+<span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">test_X</span><span class="p">)</span> <span class="c1"># n*2 array for False and True</span>
+
+<span class="c1"># predict</span>
+<span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_X</span><span class="p">)</span> <span class="c1"># n*1 array</span>
 </pre></div>
 
      </div>
@@ -14913,15 +14357,17 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Compute-Function">Compute Function<a class="anchor-link" href="#Compute-Function">&#182;</a></h4>
+<h4 id="Cross-Validation">Cross Validation<a class="anchor-link" href="#Cross-Validation">&#182;</a></h4>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[42]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pyarrow.compute</span> <span class="k">as</span> <span class="nn">pc</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_predict</span>
+
+<span class="n">cross_val_predict</span><span class="p">(</span><span class="n">MyModel</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="mi">100</span><span class="p">),</span> <span class="n">train_X</span><span class="p">,</span> <span class="n">train_Y_5</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;predict&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14929,112 +14375,45 @@ a.anchor-link {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Aggregations</span>
+<div class="jp-Cell-outputWrapper">
 
-<span class="n">array</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 
-<span class="c1"># count</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="c1"># 4</span>
+<div class="jp-OutputArea jp-Cell-outputArea">
 
-<span class="c1"># sum</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="c1"># 7</span>
-</pre></div>
+<div class="jp-OutputArea-child">
 
-     </div>
-</div>
-</div>
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[42]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>array([False, False,  True, ..., False, False, False])</pre>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Arithmetic Functions</span>
-
-<span class="c1"># multiply</span>
-<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="mf">7.8</span><span class="p">),</span> <span class="n">pa</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="mf">9.3</span><span class="p">)</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1"># scalar, scalar * scalar</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="c1"># array, array * x</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span> <span class="c1"># array, array * array</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Selections</span>
-
-<span class="c1"># array_take, select by indices</span>
-<span class="n">array_select</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">array_take</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
-<span class="n">array_select</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">array_take</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-
-<span class="c1"># take</span>
-<span class="c1"># select elements from array by indices</span>
-<span class="n">array_select</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-
-<span class="c1"># select rows from table by indices</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">table</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="s1">&#39;y&#39;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]})</span>
-<span class="n">table_select</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Sorts and Partitions</span>
-
-<span class="c1"># sort_indices</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">table</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="s1">&#39;y&#39;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]})</span>
-<span class="n">indices</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">sort_indices</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;descending&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;ascending&#39;</span><span class="p">)])</span>
-<span class="n">table</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
 </div>
 
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="IO">IO<a class="anchor-link" href="#IO">&#182;</a></h4>
+<h4 id="Grid-Search">Grid Search<a class="anchor-link" href="#Grid-Search">&#182;</a></h4>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[50]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># stream</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
 
-<span class="k">with</span> <span class="n">pa</span><span class="o">.</span><span class="n">output_stream</span><span class="p">(</span><span class="s1">&#39;example.dat&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
-    <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;some data&#39;</span><span class="p">)</span>
-
-<span class="n">stream</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">input_stream</span><span class="p">(</span><span class="s1">&#39;example.dat&#39;</span><span class="p">)</span>
-<span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="c1"># b&#39;some data&#39;</span>
-<span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="c1"># b&#39;&#39;</span>
+<span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">]}</span>
+<span class="n">grid_search</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">MyModel</span><span class="p">(),</span> <span class="n">param_grid</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;f1_macro&#39;</span><span class="p">)</span>
+<span class="n">grid_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_X</span><span class="p">,</span> <span class="n">train_Y</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15042,20 +14421,39 @@ a.anchor-link {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[50]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<style>#sk-container-id-3 {color: black;}#sk-container-id-3 pre{padding: 0;}#sk-container-id-3 div.sk-toggleable {background-color: white;}#sk-container-id-3 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-3 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-3 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-3 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-3 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-3 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-3 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-3 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-3 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-3 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-3 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-3 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-3 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-3 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-3 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-3 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-3 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-3 div.sk-item {position: relative;z-index: 1;}#sk-container-id-3 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-3 div.sk-item::before, #sk-container-id-3 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-3 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-3 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-3 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-3 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-3 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-3 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-3 div.sk-label-container {text-align: center;}#sk-container-id-3 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-3 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GridSearchCV(cv=5, estimator=MyModel(), param_grid={&#x27;n&#x27;: [100, 200]},
+             scoring=&#x27;f1_macro&#x27;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-5" type="checkbox" ><label for="sk-estimator-id-5" class="sk-toggleable__label sk-toggleable__label-arrow">GridSearchCV</label><div class="sk-toggleable__content"><pre>GridSearchCV(cv=5, estimator=MyModel(), param_grid={&#x27;n&#x27;: [100, 200]},
+             scoring=&#x27;f1_macro&#x27;)</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-6" type="checkbox" ><label for="sk-estimator-id-6" class="sk-toggleable__label sk-toggleable__label-arrow">estimator: MyModel</label><div class="sk-toggleable__content"><pre>MyModel()</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-7" type="checkbox" ><label for="sk-estimator-id-7" class="sk-toggleable__label sk-toggleable__label-arrow">MyModel</label><div class="sk-toggleable__content"><pre>MyModel()</pre></div></div></div></div></div></div></div></div></div></div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[49]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># csv</span>
-<span class="kn">from</span> <span class="nn">pyarrow</span> <span class="kn">import</span> <span class="n">csv</span>
-
-<span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">table</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="s1">&#39;y&#39;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]})</span>
-<span class="n">csv</span><span class="o">.</span><span class="n">write_csv</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="s1">&#39;data.csv&#39;</span><span class="p">)</span>
-
-<span class="n">table2</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">)</span>
-<span class="n">table2</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># grid search results</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">grid_search</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">))</span>
 </pre></div>
 
      </div>
@@ -15063,22 +14461,145 @@ a.anchor-link {
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean_fit_time</th>
+      <th>std_fit_time</th>
+      <th>mean_score_time</th>
+      <th>std_score_time</th>
+      <th>param_n</th>
+      <th>params</th>
+      <th>split0_test_score</th>
+      <th>split1_test_score</th>
+      <th>split2_test_score</th>
+      <th>split3_test_score</th>
+      <th>split4_test_score</th>
+      <th>mean_test_score</th>
+      <th>std_test_score</th>
+      <th>rank_test_score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.216304</td>
+      <td>0.010379</td>
+      <td>0.010783</td>
+      <td>0.001634</td>
+      <td>100</td>
+      <td>{'n': 100}</td>
+      <td>0.982686</td>
+      <td>0.972278</td>
+      <td>0.964939</td>
+      <td>0.968665</td>
+      <td>0.949953</td>
+      <td>0.967704</td>
+      <td>0.010668</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.428185</td>
+      <td>0.019293</td>
+      <td>0.018019</td>
+      <td>0.001836</td>
+      <td>200</td>
+      <td>{'n': 200}</td>
+      <td>0.989589</td>
+      <td>0.972210</td>
+      <td>0.975535</td>
+      <td>0.975512</td>
+      <td>0.968351</td>
+      <td>0.976239</td>
+      <td>0.007179</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[51]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># best hyperparameters</span>
+<span class="n">grid_search</span><span class="o">.</span><span class="n">best_params_</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[51]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>{&#39;n&#39;: 100}</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># parquet</span>
-<span class="kn">import</span> <span class="nn">pyarrow.parquet</span> <span class="k">as</span> <span class="nn">pq</span>
-
-<span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">table</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="s1">&#39;y&#39;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]})</span>
-
-<span class="n">pq</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="s1">&#39;example.parquet&#39;</span><span class="p">)</span>
-
-<span class="c1"># read parquet</span>
-<span class="n">table2</span> <span class="o">=</span> <span class="n">pq</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s1">&#39;example.parquet&#39;</span><span class="p">)</span>
-<span class="n">table2</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># best model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">best_estimator_</span>
 </pre></div>
 
      </div>
@@ -15090,10 +14611,7 @@ a.anchor-link {
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="Reference">Reference<a class="anchor-link" href="#Reference">&#182;</a></h4><ul>
-<li><a href = "https://arrow.apache.org/docs/python/index.html">User Guide</a></li>
-<li><a href = "https://arrow.apache.org/docs/python/api.html">API</a></li>
-<li><a href = "https://arrow.apache.org/cookbook/py/">Apache Arrow Python Cookbook</a></li>
-<li><a href = "https://arrow.apache.org/docs/">Documentation</a></li>
+<li><a href = "https://scikit-learn.org/stable/developers/develop.html">Developing scikit-learn estimators</a></li>
 </ul>
 
 </div>
