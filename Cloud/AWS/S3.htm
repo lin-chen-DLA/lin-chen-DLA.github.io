@@ -144,8 +144,13 @@ aws s3 rb s3://bucket_name
 				</pre>
 			<li>sync</li>
 			<pre class = "prettyprint linenums">
-# only copies over files that are new and updated from local to a bucket
+# only copies over files that are new and updated
+
+# copy from local to a bucket
 aws s3 sync folder_name s3://bucket_name/folder_name
+
+# copy from bucket to a local
+aws s3 sync s3://bucket_name/folder_name folder_name
 				</pre>
 			</div>
 			<div class = "subtitle">Python Boto3</div>
@@ -324,6 +329,7 @@ aws s3control create-access-point --name ap_name --region region_name --account-
 		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+			<li><a href = "https://demo.filestash.app/login">Web-based Access</a></li>
 			<li><a href = "https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html">Boto3 S3 API</a></li>
 			<li><a href = "https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html">Bucket policy examples</a></li>
 			<li><a href = "https://docs.aws.amazon.com/AmazonS3/latest/userguide/EnableWebsiteHosting.html">Enabling website hosting</a></li>
