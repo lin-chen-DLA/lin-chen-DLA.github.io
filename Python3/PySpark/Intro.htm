@@ -4,17 +4,20 @@
 
 	<head>
 
-		<title>Database</title>
+		<title>Python</title>
+
 		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
 		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
 		<style>
+
 			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
 
 			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
 
 			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
-
-            span {color: red; font-weight: bold;}
+			span {color: red; font-weight: bold;}
 		</style>
 
 	</head>
@@ -25,11 +28,28 @@
 			Introduction
 		</div>
 
-		<div class = "subtitle">Data Types</div>
+		<div class = "subtitle">Installation</div>
 		<div class = "block">
-        </div>
+			<li>Install Java SE</li>
+            <li><a href = "https://spark.apache.org/downloads.html">Download</a> Spark</li>
+            <li>Uncompress spark and set up environment variables</li>
+<pre class = "prettyprint linenums">
+# .bash_profile
+export SPARK_HOME="path/spark-3.5.0-bin-hadoop3"
+export PATH="$SPARK_HOME/bin:$PATH"
+</pre>
+<li>Test PySpark</li>
+<pre class = "prettyprint linenums">
+# enable .bash_profile
+source .bash_profile
+
+# start pyspark interactive environment
+pyspark
+</pre>
+</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
-        </div>
-    </body>
+            <li><a href = "https://spark.apache.org/docs/latest/api/python/index.html">PySpark Overview</a></li>
+		</div>
+	</body>
 </html>
