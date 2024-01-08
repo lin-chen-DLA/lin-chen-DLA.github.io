@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Cloudera</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+		<div class = "title">
+			HDFS
+		</div>
+		<div class = "subtitle">What is DFS</div>
+		<div class = "block">
+			<li>Hadoop Distributed File System (HDFS) is a file system for storing huge dataset in commodity hardware</li>
+		</div>
+		<div class = "subtitle">Architecture</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/HDFS_1.png" width = "45%"></p>
+		</div>
+		<div class = "subtitle">Terms</div>
+		<div class = "block">
+			<li><span>Namenode</span>
+				<ul>
+					<li>Keeps track of the file system hierarchy and metadata</li>
+				</ul>
+			</li>
+			<li><span>Datanode</span>
+				<ul>
+					<li>Keeps actual data</li>
+				</ul>
+			</li>
+			<li><span>Rack</span>
+				<ul>
+					<li>A rack refers to a physical grouping of machines, containing 30-40 datanodes</li>
+				</ul>
+			</li>
+			<li><span>Block</span>
+				<ul>
+					<li>HDFS divides files into fixed-size blocks</li>
+					<li>Default size is 128M</li>
+					<li>Each block has three copies by default. Two in one rack and one in a different rack</li>
+				</ul>
+			</li>
+		</div>
+
+        <div class = "subtitle">Commands</div>
+        <div class = "block">
+        	<pre class = "prettyprint linenums">
+# hdfs dfs -ls  [hdfs_path]
+hdfs dfs -ls /
+
+# hdfs dfs -mkdir [hdfs_directory_name]
+hdfs dfs -ls temp
+
+# hdfs dfs -touchz [hdfs_file_path]
+hdfs dfs -touch temp/hello.txt
+
+# hdfs dfs -put [local_path] [hdfs_path]
+# hdfs dfs -copyFromLocal [local_path] [hdfs_path]
+hdfs dfs -put temp /public
+hdfs dfs -copyFromLocal temp /public
+
+# hdfs dfs -moveFromLocal [local_path] [hdfs_path]
+hdfs dfs -moveFromLocal temp /public
+
+# hdfs dfs -get [hdfs_path] [local_path]
+# hdfs dfs -copyToLocal [hdfs_path] [local_path]
+hdfs dfs -get /public/temp .
+hdfs dfs -copyToLocal /public/temp .
+
+# hdfs dfs -cat [hdfs_file_path]
+hdfs dfs -cat /public/temp/hello.txt
+
+# hdfs dfs -cp [hdfs_path_src] [hdfs_path_dest]
+hdfs dfs -cp /public/temp/hello.txt /public/temp/world.txt
+
+# hdfs dfs -mv [hdfs_path_src] [hdfs_path_dest]
+hdfs dfs -mv /public/temp /public/temp_2
+
+# hdfs dfs -du [hdfs_path]
+hdfs dfs -du -h /public # list size of files and directories under the directory
+hdfs dfs -du -s /public # list the total size of the directory
+
+# hdfs dfs -rm [hdfs_file_path]
+# removed files and directories will be moved to /user/username/.Trash, can be moved back with mv
+hdfs dfs -rm /public/temp/hello.txt # remove a file
+hdfs dfs -rm -r /public/temp # remove a folder
+hdfs dfs -rm -skipTrash /public/temp/hello.txt # remove a file without moving it to trash
+        	</pre>
+		</div>
+        <div class = "subtitle">Python Subprocess</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import subprocess
+
+# ls
+hdfs_command = ['hdfs', 'dfs', '-ls', '/']
+result = subprocess.run(hdfs_command, stdout = subprocess.PIPE, text = True)
+print(result.stdout)
+
+# mkdir
+hdfs_command = ['hdfs', 'dfs', '-mkdir', '/temp']
+result = subprocess.run(hdfs_command, stdout = subprocess.PIPE, text = True)
+print(result)
+		</pre>
+		</div>
+        
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+        	<li><a href = "https://www.geeksforgeeks.org/hdfs-commands/">Geeksforgeeks</a></li>
+        </div>
+    </body>
+</html>
