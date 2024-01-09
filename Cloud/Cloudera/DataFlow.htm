@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Cloudera</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+		<div class = "title">
+			Data Flow
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Cloudera_12.png" width = "45%"></p>
+		</div>
+
+        <div class = "subtitle">Local</div>
+        <div class = "block">
+        	<pre class = "prettyprint linenums">
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("example").getOrCreate()
+
+# load data from local
+df = spark.read \
+	.option('header', 'true') \
+	.option('inferSchema', value=True) \
+	.csv('file:///local_absolute_path/tips.csv')
+
+# save data to local
+df.write.csv('file:///local_absolute_path', header=True, mode='overwrite')
+
+# load data from the saved data by PySpark
+df = spark.read \
+	.option('header', 'true') \
+	.option('inferSchema', value=True) \
+	.csv('file:///local_absolute_path')
+        	</pre>
+		</div>
+        <div class = "subtitle">HDFS</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# save data to hdfs
+df.write.csv('hdfs_path', header=True, mode='oweverwrite')
+
+# load data from hdfs
+df = spark.read \
+	.option('header', 'true') \
+	.option('inferSchema', value=True) \
+	.csv('hdfs_path')
+		</pre>
+		</div>
+		<div class = "subtitle">Hive</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# save data as a Hive table
+df.write.format('csv') \
+	.option('header', 'true') \
+	.option('overwriteSchema', 'True') \
+	.mode('overwrite') \
+	.saveAsTable('database_name.table_name')
+
+# load data with an sql extraction
+df = spark.sql('select * from database_name.table_name')
+		</pre>
+	</div>
+			<div class = "block">
+		<pre class = "prettyprint linenums">
+# save data as a Hive table when the table is exist and is in write locks
+df.write.format('csv') \
+	.option('header', 'true') \
+	.option('overwriteSchema', 'True') \
+	.mode('overwrite') \
+	.saveAsTable('database_name.temp_table_name')
+
+spark.sql('insert overwrite table database_name.table_name select * from database_name.temp_table_name')
+		</pre>
+	</div>
+	<div class = "subtitle">View</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create a local view
+df.createOrReplaceTempView('Tips')
+
+# create a global view
+df.createOrReplaceGlobalTempView('Tips')
+
+# display views
+spark.catalog.listTables('global_temp')
+
+# load data from local view
+df = spark.sql('select * from Tips')
+
+# load data from global view
+df = spark.sql('select * from global_temp.Tips')
+		</pre>
+	</div>
+	<div class = "subtitle">MySQL</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from pyspark.sql import SparkSession
+
+# Create SparkSession
+spark = SparkSession.builder \
+           .appName('MySQL') \
+           .config("spark.jars", "path/mysql-connector-j-8.1.0.jar") \
+           .getOrCreate()
+
+mysql_url = "jdbc:mysql://localhost:3306/database_name"
+mysql_properties = {
+    "user": "root",
+    "password": "root",
+    "driver": "com.mysql.cj.jdbc.Driver"
+}
+
+# write the DataFrame to MySQL
+df.write \
+  .format("jdbc") \
+  .option("driver","com.mysql.cj.jdbc.Driver") \
+  .option("url", mysql_url) \
+  .option("dbtable", "table_name") \
+  .option("user", "root") \
+  .option("password", "root") \
+  .save()
+
+# read data from MySQL into a PySpark DataFrame
+select_query = "(SELECT * FROM Department) AS my_select"
+
+df = spark.read \
+    .format("jdbc") \
+    .option("url", mysql_url) \
+    .option("dbtable", select_query) \
+    .option("user", mysql_properties["user"]) \
+    .option("password", mysql_properties["password"]) \
+    .option("driver", mysql_properties["driver"]) \
+    .load()
+		</pre>
+	</div>
+	<div class = "subtitle">SAP HANA</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from pyspark.sql import SparkSession
+
+# Create SparkSession
+spark = SparkSession.builder \
+           .appName('HANA') \
+           .master('local[*]') \
+           .config("spark.jars", "path/ngdbc.jar") \
+           .getOrCreate()
+
+# get server, port, user, password
+
+# read data from HANA into a PySpark DataFrame
+hana_url = f'jdbc:sap://{server}:{port}'
+table = '"schema_name"."table_name"'
+query = """select * from {table}""".format(table=table)
+
+df = spark.read \
+	.format("jdbc") \
+	.option('url', hana_url) \
+	.option('user', user) \
+	.option('password', password) \
+	.option('query', query) \
+	.option('driver', 'com.sap.db.jdbc.Driver') \
+	.load()
+
+# write a PySpark DataFrame to HANA
+df.write \
+	.format("jdbc") \
+	.option("url", hana_url) \
+	.option("user", user) \
+	.option('password', password) \
+	.option('dbtable', table) \
+	.option('driver', 'com.sap.db.jdbc.Driver') \
+	.save()
+       </pre>
+   </div>
+   <div class = "block">
+			<p style = "text-align:center;"><img src = "img/Cloudera_13.png" width = "45%"></p>
+		</div>
+		<div class = "subtitle">Local</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import pandas as pd
+
+# load data from local
+df = pd.read_csv('path/temp.csv')
+
+# save data to local
+df.to_csv('path/temp.csv', index = False)
+		</pre>
+	</div>
+	<div class = "subtitle">HDFS</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import pandas as pd
+import subprocess
+
+# save data to HDFS
+df.to_csv('temp.csv', index = False)
+hdfs_command = ['hdfs', 'dfs', '-put', 'temp.csv', 'hdfs_path']
+subprocess.run(hdfs_command, stdout = subprocess.PIPE, text = True)
+
+# load data from HDFS
+hdfs_command = ['hdfs', 'dfs', '-get', 'hdfs_path', 'local_path']
+subprocess.run(hdfs_command, stdout = subprocess.PIPE, text = True)
+df.read_csv('temp.csv')
+		</pre>
+	</div>
+	<div class = "subtitle">Hive</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("example") \
+    .getOrCreate()
+
+# save data to Hive
+df_sp = spark.createDataFrame(df)
+df.write.format('csv') \
+	.option('header', 'true') \
+	.option('overwriteSchema', 'True') \
+	.mode('overwrite') \
+	.saveAsTable('database_name.table_name')
+
+# load data from Hive
+df_sp = spark.sql('select * from database_name.table_name')
+df = df_sp.toPandas()
+		</pre>
+	</div>
+		<div class = "subtitle">MySQL</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import pandas as pd
+from sqlalchemy import create_engine
+ 
+hostname = '127.0.0.1'
+port = 3306
+username = 'root'
+password = 'root'
+database_name = 'database_name'
+
+engine = create_engine(f"mysql+mysqlconnector://{username}:{password}@{hostname}:{port}/{database_name}")
+
+# save data to MySQL
+df.to_sql(name='Housing', index=False, con=engine)
+
+# load data from MySQL
+df = pd.read_sql('select * from Housing', con = engine)
+		</pre>
+	</div>
+	<div class = "subtitle">SAP HANA</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import pandas as pd
+from hdbcli import dbapi
+
+conn = dbapi.connect(address=server, port=port, user=user, password=password)
+
+table = '"schema_name"."table_name"'
+query = """select * from {table}""".format(table=table)
+
+# load data from HANA
+df = pd.read_sql_query(query, conn)
+		</pre>
+	</div>
+        
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+        	<li><a href = "https://www.geeksforgeeks.org/hdfs-commands/">Geeksforgeeks</a></li>
+        </div>
+    </body>
+</html>

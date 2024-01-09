@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Cloudera</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+		<div class = "title">
+			HIVE
+		</div>
+
+        <div class = "subtitle">Database</div>
+        <div class = "block">
+        	<pre class = "prettyprint linenums">
+ import pandas as pd
+ from pyspark.sql import SparkSession
+
+ spark = SparkSession.builder.appName('local').master('local[2]').getOrCreate()
+        	</pre>
+		</div>
+		<div class = "block">
+        	<pre class = "prettyprint linenums">
+# list databases
+spark.sql('show databases').toPandas()
+        	</pre>
+        </div>
+        <div class = "block">
+        	<pre class = "prettyprint linenums">
+# show databases
+databases = spark.sql('show databases').toPandas()
+        	</pre>
+        </div>
+        <div class = "block">
+        	<pre class = "prettyprint linenums">
+# describe database
+spark.sql('describe database database_name').show()
+        	</pre>
+        </div>
+        <div class = "subtitle">Table</div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# list tables in a database
+tables = spark.sql('show tables in database_name').toPandas()
+		</pre>
+	</div>
+	<div class = "block">
+		<pre class = "prettyprint linenums">
+# describe table
+spark.sql('describe database_name.table_name').show()
+		</pre>
+	</div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# query
+query = 'select * from database_name.table_name'
+df = spark.sql(query)
+		</pre>
+	</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create table
+df.write.format('csv') \
+	.option('header', 'true') \
+	.option('overwriteSchema', 'True') \
+	.mode('overwrite') \
+	.saveAsTable('database_name.table_name')
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# drop table
+spark.sql('drop table database_name.table_name')
+		</pre>
+	</div>
+        
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+        	<li><a href = "https://sparkbyexamples.com/apache-hive/hive-ddl-commands-with-examples/?expand_article=1">SparkByExamples</a></li>
+        </div>
+    </body>
+</html>
