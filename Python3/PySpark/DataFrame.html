@@ -7693,7 +7693,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [89]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [127]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
@@ -7716,8 +7716,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>24/01/16 13:17:43 WARN SparkSession: Using an existing Spark session; only runtime SQL configurations will take effect.
-                                                                                </pre>
+<pre>                                                                                </pre>
 </div>
 </div>
 </div>
@@ -8122,23 +8121,79 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">lit</span>
 <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"Country"</span><span class="p">,</span> <span class="n">lit</span><span class="p">(</span><span class="s2">"USA"</span><span class="p">))</span>
 
+<span class="c1"># apply function to columns</span>
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="c1"># value, Column</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">10</span> <span class="c1"># col arithmetic operations</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">value_1</span><span class="p">,</span> <span class="n">value_2</span><span class="p">):</span>
+    <span class="c1"># value_1, Column</span>
+    <span class="c1"># value_2, Column</span>
+    <span class="k">return</span> <span class="n">value_1</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">value_2</span> <span class="c1"># col arithmetic operations</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">median_income</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
 <span class="c1"># with user-defined function</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udf</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">FloatType</span>
 
 <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Apply function to each value of the column</span>
-<span class="sd">    """</span>
+    <span class="c1"># value, float</span>
     <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">10</span>
 
-<span class="n">func_udf</span> <span class="o">=</span> <span class="n">udf</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">FloatType</span><span class="p">())</span>
+<span class="n">func_udf</span> <span class="o">=</span> <span class="n">udf</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">FloatType</span><span class="p">())</span> <span class="c1"># function_name, returnType</span>
 
-<span class="c1"># use udf with withColumn</span>
 <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func_udf</span><span class="p">(</span><span class="s2">"population"</span><span class="p">))</span>
-<span class="c1"># use udf with select</span>
+<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func_udf</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="p">))</span>
 <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">'housing_median_age'</span><span class="p">),</span> <span class="n">col</span><span class="p">(</span><span class="s1">'median_income'</span><span class="p">),</span> <span class="n">func_udf</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">'population'</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">'P'</span><span class="p">))</span>
 
-<span class="c1"># transform</span>
+<span class="nd">@udf</span><span class="p">(</span><span class="n">FloatType</span><span class="p">())</span>
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="c1"># value, float</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">10</span>
+
+<span class="c1"># use udf with withColumn</span>
+<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nd">@udf</span><span class="p">(</span><span class="n">FloatType</span><span class="p">())</span>
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">value_1</span><span class="p">,</span> <span class="n">value_2</span><span class="p">):</span>
+    <span class="c1"># value_1, float</span>
+    <span class="c1"># value_2, str</span>
+    <span class="k">return</span> <span class="n">value_1</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="n">value_2</span>
+
+<span class="c1"># use udf with withColumn</span>
+<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ocean_proximity</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># use pandas_udf with withColumn</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">pandas_udf</span>
+
+<span class="k">def</span> <span class="nf">func_apply</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">*</span><span class="mi">100</span>
+    
+<span class="nd">@pandas_udf</span><span class="p">(</span><span class="n">FloatType</span><span class="p">(),</span> <span class="n">PandasUDFType</span><span class="o">.</span><span class="n">SCALAR</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="c1"># value, pandas Series</span>
+    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">func_apply</span><span class="p">)</span>
+
+<span class="c1"># use udf with withColumn</span>
+<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="s2">"population"</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b40a183a-c07a-467c-917e-3fd1d19d3847">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># transform</span>
 <span class="c1"># equals to apply function of Pandas DataFrame</span>
 <span class="k">def</span> <span class="nf">func_transform</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Apply function to the DataFrame</span>
