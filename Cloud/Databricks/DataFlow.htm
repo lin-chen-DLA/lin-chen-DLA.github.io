@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			dbutils
+		</div>
+
+		<div class = "subtitle">Help</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+dbutils.help() # list packages
+dbutils.fs.help() # list commands in fs package
+dbutils.fs.help("ls") # help information of command ls
+		</pre>
+		</div>
+		<div class = "subtitle">fs</div>
+		<div class = "block">
+			<li>dbfs:/, a distributed file system mounted into a Databricks workspace and available on Databricks clusters</li>
+			<li>file:/, a virtual directory</li>
+			<li>s3://, S3 directory</li>
+		<pre class = "prettyprint linenums">
+# ls
+%fs ls s3://url
+display(dbutils.fs.ls('s3://url'))
+
+%fs ls dbfs:/ # %fs ls .
+%fs ls file:/
+%fs ls s3://url
+		</pre>
+		</div>
+			<div class = "block">
+		<pre class = "prettyprint linenums">
+# mkdirs
+%fs mkdirs file:/url
+dbutils.fs.mkdirs('file:/url')
+
+%fs mkdirs s3://url
+dbutils.fs.mkdirs('s3://url')
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# mv
+dbutils.fs.mv('file:/url_from', 'file:/url_to', recurse=True)
+dbutils.fs.mv('s3://url_from', 's3://url_to', recurse=True)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# put
+dbutils.fs.put('file:/url/hello.txt', 'Hello World!', True)
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# head
+%fs head file:/url/hello.txt
+dbutils.fs.head('file:/url/hello.txt')
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# rm
+dbutils.fs.rm('file:/url/temp', True)
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.databricks.com/en/dev-tools/databricks-utils.html#">Databricks</a></li>
+		</div>
+	</body>
+</html>
