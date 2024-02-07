@@ -15,14 +15,13 @@
 		<div class = "title">
 			dbutils
 		</div>
-
-		<div class = "subtitle">Help</div>
+		
+		<div class = "subtitle">File System</div>
 		<div class = "block">
-		<pre class = "prettyprint linenums">
-dbutils.help() # list packages
-dbutils.fs.help() # list commands in fs package
-dbutils.fs.help("ls") # help information of command ls
-		</pre>
+			<pre class = "prettyprint linenums">
+# ls
+%fs ls file:/
+			</pre>
 		</div>
 		<div class = "subtitle">fs</div>
 		<div class = "block">
@@ -73,6 +72,14 @@ dbutils.fs.head('file:/url/hello.txt')
 		<pre class = "prettyprint linenums">
 # rm
 dbutils.fs.rm('file:/url/temp', True)
+		</pre>
+		</div>
+		<div class = "subtitle">Help</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+dbutils.help() # list packages
+dbutils.fs.help() # list commands in fs package
+dbutils.fs.help("ls") # help information of command ls
 		</pre>
 		</div>
 		<div class = "subtitle">Reference</div>
