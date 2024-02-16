@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Database</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
+            span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class = "title">
+			SAP HANA Studio
+		</div>
+		<div class = "block">
+<li>Database Administration
+	<ul>
+		<li>SAP HANA databases administration</li>
+	</ul>
+</li>
+<li>Database Development
+	<ul>
+		<li>Create, modify, and manage database objects such as tables, views</li>
+	</ul>
+</li>
+		</div>
+
+		<div class = "subtitle">Connect HANA</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+Host Name
+# server URL
+
+Instance Number
+# 00 or 01, a landscape typically consists of multiple SAP HANA systems
+# each serving different purposes such as development, testing, or production
+			</pre>
+        </div>
+        <div class = "subtitle">SQL</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# show databases
+select * from sys.m_databases
+
+# show schemas
+select * from sys.schemas
+
+# show tables in a schema
+select * from sys.m_tables where schema_name = 'schema_name'
+
+# show views in a schema
+select * from sys.views where schema_name = 'schema_name'
+
+# query table
+select * from "schema_name"."table_name"
+
+# change password
+alter user user_name password "user_password"
+			</pre>
+		</div>
+		<div class = "subtitle">Import/Export</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Import
+File -&gt; Import -&gt; SAP HANA Conttent -&gt; Data from Local File -&gt; 
+select target system -&gt; select data, select schema, input table name -&gt;
+update column names -&gt; Finish
+
+# Export
+Right click Tables of a schema -&gt; Export -&gt; search target table -&gt; Next -&gt;
+select table format -&gt; setup export location -&gt; Finish
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://www.youtube.com/watch?v=vGPgfitjwA0">Youtube</a></li>
+			<li><a href = "https://help.sap.com/docs/SAP_HANA_PLATFORM/52715f71adba4aaeb480d946c742d1f6/ade083aeded84e289d1710a1cf131499.html">SAP HANA Developer Guide</a></li>
+        </div>
+    </body>
+</html>
