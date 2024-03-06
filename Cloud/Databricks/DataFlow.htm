@@ -13,7 +13,7 @@
 	</head>
 	<body>
 		<div class = "title">
-			dbutils
+			Dataflow
 		</div>
 
 		<div class = "subtitle">Storage Space</div>
@@ -21,6 +21,9 @@
 			<li>dbfs:/, a distributed file system mounted into a Databricks workspace and available on Databricks clusters</li>
 			<li>file:/, a virtual directory</li>
 			<li>s3://, S3 directory</li>
+		</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Databricks_2.png" width = "50%"></p>
 		</div>
 		
 		<div class = "subtitle">File System</div>
@@ -47,6 +50,8 @@ df.write.csv()
 		<div class = "subtitle">DBFS</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
+# ls
+%fs ls dbfs:/
 			</pre>
 		</div>
 		<div class = "subtitle">Hive</div>
@@ -55,9 +60,53 @@ df.write.csv()
 # database
 %sql show databases
 spark.sql('show databases').toPandas()
+
+# table
+%sql show tables in database_name
+spark.sql('show tables in database_name').toPandas()
+spark.catalog.listTables('database_name')
+
+# read
+%sql select * from database_name.table_name
+df = spark.sql('select * from database_name.table_name')
+
+# write
+df.write.format('parquet').option('header', 'true').mode('overwrite').saveAsTable('database_name.table_name')
+
+# remove
+%sql drop table if exists database_name.table_name
+spark.sql('drop table if exists database_name.table_name')
 			</pre>
 		</div>
-		<div class = "subtitle">fs</div>
+		<div class = "subtitle">View</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# create temporary view
+df.createOrReplaceTempView('view_name')
+
+# create global temporary view
+df.createOrReplaceGlobalTempView('view_name')
+
+# read view
+df_view = spark.sql('select * from view_name')
+
+# read global view
+df_view = spark.sql('select * from global_temp.view_name')
+
+# list views
+spark.catalog.listTables()
+
+# list views and global views
+spark.catalog.listTables('global_temp')
+
+# remove view
+spark.catalog.listTables('view_name')
+
+# remove global view
+spark.catalog.listTables('global_temp.view_name')
+			</pre>
+		</div>
+		<div class = "subtitle">dbutils.fs</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # ls
