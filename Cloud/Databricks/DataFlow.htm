@@ -15,6 +15,13 @@
 		<div class = "title">
 			dbutils
 		</div>
+
+		<div class = "subtitle">Storage Space</div>
+		<div class = "block">
+			<li>dbfs:/, a distributed file system mounted into a Databricks workspace and available on Databricks clusters</li>
+			<li>file:/, a virtual directory</li>
+			<li>s3://, S3 directory</li>
+		</div>
 		
 		<div class = "subtitle">File System</div>
 		<div class = "block">
@@ -23,11 +30,35 @@
 %fs ls file:/
 			</pre>
 		</div>
+		<div class = "subtitle">S3</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# ls
+%fs ls s3://path
+display(dbutils.fs.ls('s3://path'))
+
+# load data from S3
+df = spark.read.csv('s3://path', header=True, inferSchema=True) # pyspark.sql.dataframe.DataFrame
+
+# write data to S3
+df.write.csv()
+			</pre>
+		</div>
+		<div class = "subtitle">DBFS</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+			</pre>
+		</div>
+		<div class = "subtitle">Hive</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# database
+%sql show databases
+spark.sql('show databases').toPandas()
+			</pre>
+		</div>
 		<div class = "subtitle">fs</div>
 		<div class = "block">
-			<li>dbfs:/, a distributed file system mounted into a Databricks workspace and available on Databricks clusters</li>
-			<li>file:/, a virtual directory</li>
-			<li>s3://, S3 directory</li>
 		<pre class = "prettyprint linenums">
 # ls
 %fs ls s3://url

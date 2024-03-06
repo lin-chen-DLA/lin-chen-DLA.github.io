@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Dashboard
+		</div>
+
+		<div class = "subtitle">Architecture</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Databricks_1.png" width = "50%"></p>
+		</div>
+		<div class = "subtitle">Create</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# text
+import IPython.display
+IPython.display.HTML('&lt;span style = "color:blue"&gt;Dashboard Title&lt;/span&gt;')
+
+# Click "Show in Dashboard Menu" on the top-right of the cell
+# Check existing dashboards or add to a new dashboard
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# table
+df.head(4) # output table head
+
+# Click "Show in Dashboard Menu" on the top-right of the cell
+# Check existing dashboards or add to a new dashboard
+			</pre>
+		</div>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# plot
+import plotly.express as px
+fig = px.pie(df, values='median_house_value', names='ocean_proximity')
+fig.update_layout(showlegend=False)
+fig
+
+# Click "Show in Dashboard Menu" on the top-right of the cell
+# Check existing dashboards or add to a new dashboard
+			</pre>
+		</div>
+		<div class = "subtitle">Access</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Click "View" of the notebook
+# Select a dashboard near the bottom of the pop up menu
+			</pre>
+		</div>
+		<div class = "subtitle">Publish</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Click "Present Dashboard" in a dashboard page
+			</pre>
+		</div>
+	</body>
+</html>
