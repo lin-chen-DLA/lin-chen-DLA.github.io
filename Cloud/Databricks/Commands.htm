@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Commands
+		</div>
+
+		<div class = "subtitle">Object?</div>
+		<div class = "block">
+			<li>Print the details about an object</li>
+			<pre class = "prettyprint linenums">
+from IPython.display import HTML
+HTML?
+			</pre>
+		</div>
+		<div class = "subtitle">%quickref</div>
+		<div class = "block">
+			<li>Get the ipython reference</li>
+			<pre class = "prettyprint linenums">
+%quickref
+			</pre>
+		</div>
+		<div class = "subtitle">%lsmagic</div>
+		<div class = "block">
+			<li>List currently available magic commands</li>
+			<pre class = "prettyprint linenums">
+%lsmagic
+			</pre>
+		</div>
+		<div class = "subtitle">%md</div>
+		<div class = "block">
+			<li>Render the cell as Mardown text block</li>
+			<pre class = "prettyprint linenums">
+%md
+* Item 1
+* Item 2
+			</pre>
+		</div>
+		<div class = "subtitle">%python</div>
+		<div class = "block">
+			<li>Python script</li>
+			<pre class = "prettyprint linenums">
+%python
+print('Hello World!')
+			</pre>
+		</div>
+		<div class = "subtitle">%sql</div>
+		<div class = "block">
+			<li>Sql operations on hive</li>
+			<pre class = "prettyprint linenums">
+%sql
+show databases
+			</pre>
+		</div>
+		<div class = "subtitle">%sh</div>
+		<div class = "block">
+			<li>Sh script</li>
+			<pre class = "prettyprint linenums">
+%sh ls
+			</pre>
+		</div>
+		<div class = "subtitle">%%html</div>
+		<div class = "block">
+			<li>Render the cell as a block of HTML</li>
+			<pre class = "prettyprint linenums">
+%%html
+&lt;span style = "color:blue"&gt;Hello World&lt;/span&gt;
+			</pre>
+		</div>
+		<div class = "subtitle">Latex</div>
+		<div class = "block">
+			<li>Display Latex</li>
+			<pre class = "prettyprint linenums">
+%md
+$$e^{i\pi}+1=0$$
+			</pre>
+		</div>
+		<div class = "subtitle">%timeit</div>
+		<div class = "block">
+			<li>Profiler</li>
+			<pre class = "prettyprint linenums">
+%timeit
+spark.sql('show databases')
+			</pre>
+		</div>
+		<div class = "subtitle">%env</div>
+		<div class = "block">
+			<li>List the environment variables</li>
+			<pre class = "prettyprint linenums">
+%env
+			</pre>
+		</div>
+		<div class = "subtitle">%history</div>
+		<div class = "block">
+			<li>Print input history</li>
+			<pre class = "prettyprint linenums">
+%history
+			</pre>
+		</div>
+		<div class = "subtitle">%run</div>
+		<div class = "block">
+			<li>Run a notebook in the current notebook</li>
+			<pre class = "prettyprint linenums">
+# relative path
+%run ./notebook_name
+
+# absolate path
+%run /Users/user_number/path/notebook_name
+			</pre>
+		</div>
+		<div class = "subtitle">%who</div>
+		<div class = "block">
+			<li>Print interactive variables</li>
+			<pre class = "prettyprint linenums">
+%who
+			</pre>
+		</div>
+	</body>
+</html>
