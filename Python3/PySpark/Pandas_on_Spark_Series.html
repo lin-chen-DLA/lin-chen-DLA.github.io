@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>DataFrame</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Pandas_on_Spark_Series</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7476,96 +7476,17 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=be3a9e7e-6549-4046-bea8-6df0fe723b75">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2941083d-b11e-43ed-a833-78c5980e591f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="DataFrame"><center>DataFrame</center><a class="anchor-link" href="#DataFrame">¶</a></h2>
+<h2 id="Pandas-on-Spark-Series"><center>Pandas on Spark Series</center><a class="anchor-link" href="#Pandas-on-Spark-Series">¶</a></h2>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=73124722-2f03-4593-8565-34ef1d84978f">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<ul>
-<li>Immutable</li>
-<li>In-memory</li>
-<li>Resilient</li>
-<li>Distributed</li>
-<li>Data is organized into named columns</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=07afb294-9c60-4d54-96d0-1826eb10a88f">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Session"><font color="blue"><strong>Session</strong></font><a class="anchor-link" href="#Session">¶</a></h4><ul>
-<li>Each Spark application typically corresponds to a single Spark session</li>
-<li>There is no strict limit on the number of Spark sessions can be created</li>
-</ul>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f8470c61-139b-4589-ba24-a660c3ad9553">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
-
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"example"</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
-
-<span class="c1"># active, returns the active SparkSession for the current thread</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">active</span><span class="p">()</span>
-
-<span class="c1"># getActiveSession, returns the active SparkSession for the current thread, returned by the builder</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">getActiveSession</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>Setting default log level to "WARN".
-To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-24/03/13 13:20:47 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7650a1e1-9b9c-4ed0-9534-c408dbf2213a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Create-DataFrame"><font color="blue"><strong>Create DataFrame</strong></font><a class="anchor-link" href="#Create-DataFrame">¶</a></h4>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=c48e8a55-13d1-47be-98cd-c72641df60a5">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a3de8f00-7b8b-4146-b1c8-8f92e451a3e7">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7573,148 +7494,70 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pyspark.pandas</span> <span class="k">as</span> <span class="nn">ps</span>
 
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
-    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"example"</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
-
-<span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Alice"</span><span class="p">,</span> <span class="s2">"age"</span><span class="p">:</span> <span class="mi">25</span><span class="p">},</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Bob"</span><span class="p">,</span> <span class="s2">"age"</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Charlie"</span><span class="p">,</span> <span class="s2">"age"</span><span class="p">:</span> <span class="mi">22</span><span class="p">}]</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=31afa54f-9825-4965-b26a-982e83e83402">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e726d074-f006-4d6b-ab44-ac0b36420fd2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Create-Series"><font color="blue"><strong>Create Series</strong></font><a class="anchor-link" href="#Create-Series">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ff9531a4-2531-4565-bcc8-e4a5cddc028b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [140]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># create from a scalar</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'float32'</span><span class="p">)</span>
 
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
-    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"example"</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="c1"># create from a list</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="p">(</span><span class="s1">'Bob'</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="s1">'Charlie'</span><span class="p">,</span> <span class="mi">22</span><span class="p">)]</span>
-<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'age'</span><span class="p">]</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>24/01/03 20:19:19 WARN SparkSession: Using an existing Spark session; only runtime SQL configurations will take effect.
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7ac217cd-aca1-4d67-b99e-7cc1ee908905">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">Row</span>
+<span class="c1"># create from numpy array</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
 
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
-    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"example"</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="c1"># create from dict</span>
+<span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'a'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
-<span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">Row</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">170</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">75</span><span class="p">),</span> <span class="n">Row</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">90</span><span class="p">)]</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e7d91a45-5ae6-4b9d-9324-8669444eb8fd">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [88]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StructType</span><span class="p">,</span><span class="n">StructField</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">IntegerType</span>
+<span class="c1"># create with indices</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">],</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">'Name'</span><span class="p">)</span>
 
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
-    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"example"</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="c1"># get from DataFrame</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'apples'</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+    <span class="s1">'oranges'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="p">}</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">'Alice'</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="p">(</span><span class="s1">'Bob'</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="s1">'Charlie'</span><span class="p">,</span> <span class="mi">22</span><span class="p">)]</span>
+<span class="n">psdf</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
-<span class="c1"># column name(String), column type (DataType), nullable column (Boolean)</span>
-<span class="n">schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
-    <span class="n">StructField</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span><span class="n">StringType</span><span class="p">(),</span><span class="kc">True</span><span class="p">),</span>
-    <span class="n">StructField</span><span class="p">(</span><span class="s1">'age'</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">)])</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span> <span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=9134010e-6e1a-4b3d-876d-daa29cb855c6">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [63]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
-
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"HousePriceSolution"</span><span class="p">)</span><span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">"local[*]"</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"header"</span><span class="p">,</span><span class="s2">"true"</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"inferSchema"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">"data/Training_1.csv"</span><span class="p">)</span> <span class="c1"># https://www.kaggle.com/datasets/camnugent/california-housing-prices</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f0dac1a0-6ae4-474d-bb59-94dcc9a42fe7">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [40]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
-
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"HousePriceSolution"</span><span class="p">)</span><span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">"local[*]"</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"header"</span><span class="p">,</span><span class="s2">"true"</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"inferSchema"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">csv</span><span class="p">([</span><span class="s1">'data/Training_1.csv'</span><span class="p">,</span> <span class="s1">'data/Training_2.csv'</span><span class="p">])</span> <span class="c1"># https://www.kaggle.com/datasets/camnugent/california-housing-prices</span>
+<span class="c1"># row</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">psdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># series</span>
+<span class="c1"># column</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">psdf</span><span class="p">[</span><span class="s1">'apples'</span><span class="p">]</span> <span class="c1"># series</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=67eec8dc-db15-4aaf-906f-b244bebc1c60">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0c487e0d-2858-4eb0-9c28-8af09d7b898a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7724,44 +7567,53 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=d3230f86-e574-49ca-b535-f25d4e1c5d31">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=09d13c67-c694-4dd6-9de9-c13eae358a59">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># printSchema</span>
-<span class="n">df</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
 
-<span class="c1"># columns</span>
-<span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="c1"># dtype, dtypes</span>
+<span class="n">s</span><span class="o">.</span><span class="n">dtypes</span> <span class="c1"># int64</span>
 
-<span class="c1"># dtypes</span>
-<span class="n">df</span><span class="o">.</span><span class="n">dtypes</span>
+<span class="c1"># hasnans</span>
+<span class="c1"># np.nan, None are nan</span>
+<span class="n">s</span><span class="o">.</span><span class="n">hasnans</span>
 
-<span class="c1"># count, # of rows</span>
-<span class="n">df</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="c1"># index</span>
+<span class="n">s</span><span class="o">.</span><span class="n">index</span>
 
-<span class="c1"># # of columns</span>
-<span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="c1"># shape</span>
+<span class="n">s</span><span class="o">.</span><span class="n">shape</span> <span class="c1"># (4, )</span>
 
-<span class="c1"># describe</span>
-<span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="c1"># size</span>
+<span class="n">s</span><span class="o">.</span><span class="n">size</span> <span class="c1"># 4</span>
 
-<span class="c1"># summary</span>
-<span class="n">df</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
-
-<span class="c1"># explain, prints the logical and physical plans</span>
-<span class="n">df</span><span class="o">.</span><span class="n">explain</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># values</span>
+<span class="n">s</span><span class="o">.</span><span class="n">values</span> <span class="c1"># numpy.ndarray</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0df31d2b-83d0-43a6-92bc-478959483a1d">
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>array([10., nan, 30., 40.])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6d244d29-7f94-4507-905c-a2c59b5f6a6c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7771,7 +7623,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=75446e3e-26ad-408a-959b-b44e968d93b0">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b61f3bc4-1139-42c4-8ff3-fd4cef976ae9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7779,68 +7631,150 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># access element</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
 
-<span class="c1"># select all columns</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span>
+<span class="c1"># access with index value</span>
+<span class="n">s</span><span class="p">[</span><span class="s1">'a'</span><span class="p">]</span> 
+<span class="n">s</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s1">'a'</span><span class="p">]</span>
+<span class="n">s</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'a'</span><span class="p">]</span>
+<span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span>
 
-<span class="c1"># select columns by column names</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s1">'housing_median_age'</span><span class="p">,</span> <span class="s1">'median_income'</span><span class="p">])</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'housing_median_age'</span><span class="p">,</span> <span class="s1">'median_income'</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">housing_median_age</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">median_income</span><span class="p">])</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">housing_median_age</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">median_income</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">col</span><span class="p">(</span><span class="s1">'housing_median_age'</span><span class="p">),</span> <span class="n">col</span><span class="p">(</span><span class="s1">'median_income'</span><span class="p">)])</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">'housing_median_age'</span><span class="p">),</span> <span class="n">col</span><span class="p">(</span><span class="s1">'median_income'</span><span class="p">))</span>
+<span class="c1"># access with integer index</span>
+<span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">s</span><span class="o">.</span><span class="n">iat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">s</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">take</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="c1"># [10, 20]</span>
 
-<span class="c1"># select columns by indices</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+<span class="c1"># items</span>
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    
+<span class="c1"># keys</span>
+<span class="n">s</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="c1"># pyspark.pandas.indexes.base.Index</span>
 
-<span class="c1"># select rows using the given condition</span>
-<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">population</span> <span class="o">&gt;=</span> <span class="mi">1000</span><span class="p">]</span>
-<span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span> <span class="o">&gt;=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span>  <span class="o">&lt;</span> <span class="mi">2000</span><span class="p">)]</span>
+<span class="c1"># pop</span>
+<span class="n">s</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'b'</span><span class="p">)</span> <span class="c1"># return 20 and remove 20 from the series</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b22d3c9f-f694-4140-8ead-69b049966ffa">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># slicing</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
 
-<span class="c1"># filter, where</span>
-<span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ocean_proximity</span> <span class="o">==</span> <span class="s1">'NEAR BAY'</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'ocean_proximity'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'NEAR BAY'</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">'ocean_proximity'</span><span class="p">)</span> <span class="o">==</span> <span class="s1">'NEAR BAY'</span><span class="p">)</span>
+<span class="c1"># loc</span>
+<span class="c1"># select by index values</span>
+<span class="n">s</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">]]</span>
 
-<span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">))</span>
+<span class="c1"># iloc</span>
+<span class="c1"># select by integer index</span>
+<span class="n">s</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># [10, 20]</span>
+<span class="n">s</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="c1"># [20, 30, 40]</span>
+<span class="n">s</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># [10, 20, 30]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b734ec70-7f04-4035-aa5b-51a0f0426a89">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># select</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
 
-<span class="c1"># and, &amp;</span>
-<span class="c1"># or, |</span>
-<span class="c1"># not, ~</span>
-<span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">((</span><span class="n">col</span><span class="p">(</span><span class="s1">'population'</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">'population'</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2000</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="n">s</span><span class="p">[</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">]</span> <span class="c1"># [30, 40]</span>
+<span class="n">s</span><span class="p">[(</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">)]</span> <span class="c1"># [20, 30]</span>
 
-<span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ocean_proximity</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'INLAND'</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ocean_proximity</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'LAND'</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ocean_proximity</span><span class="o">.</span><span class="n">ilike</span><span class="p">(</span><span class="s1">'%LAND'</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c1"># case sensitive</span>
-<span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ocean_proximity</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s1">'%LAND'</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c1"># case insensitive</span>
-
-<span class="c1"># first, get the first row</span>
-<span class="n">df</span><span class="o">.</span><span class="n">first</span><span class="p">()</span> <span class="c1"># Row</span>
+<span class="c1"># ge, gt, eq, le, lt</span>
+<span class="c1"># element-wise comparison</span>
+<span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">ge</span><span class="p">(</span><span class="mi">20</span><span class="p">)]</span> <span class="c1"># [20, 30, 40]</span>
 
 <span class="c1"># head</span>
-<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># list of Row</span>
+<span class="n">s</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># [10, 20], get the first two elements</span>
 
-<span class="c1"># take, returns the first num rows</span>
-<span class="n">df</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># list of Row</span>
+<span class="c1"># tail</span>
+<span class="n">s</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># [30, 40}, get the last two elements</span>
 
-<span class="c1"># limit, limits the result count to the number specified</span>
-<span class="n">df</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># DataFrame</span>
+<span class="c1"># enable operation involving multiple pandas-on-Spark Series or DataFrames</span>
+<span class="n">ps</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">ops_on_diff_frames</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="c1"># offset, skip the first n rows</span>
-<span class="n">df</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># DataFrame</span>
+<span class="c1"># check if two series equal</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
+<span class="n">s</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span> <span class="c1"># True</span>
+
+<span class="c1"># idxmax</span>
+<span class="c1"># get the index of the maximum value</span>
+<span class="n">s</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()</span>
+
+<span class="c1"># idxmin</span>
+<span class="n">s</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()</span>
+
+<span class="c1"># isin</span>
+<span class="c1"># element-wise check if elements are in a sequence</span>
+<span class="n">s</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span> <span class="c1"># [True, True, True, False]</span>
 
 <span class="c1"># sample</span>
-<span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">withReplacement</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># DataFrame</span>
+<span class="c1"># random sample of elements</span>
+<span class="n">s</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="c1"># sample with replacement</span>
+
+<span class="c1"># truncate</span>
+<span class="n">s</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="n">before</span> <span class="o">=</span> <span class="s1">'b'</span><span class="p">,</span> <span class="n">after</span> <span class="o">=</span> <span class="s1">'c'</span><span class="p">)</span> <span class="c1"># [20, 30]</span>
+
+<span class="c1"># where</span>
+<span class="c1"># replace values where the condition is False</span>
+<span class="n">s</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">)</span> <span class="c1"># [NaN, NaN, 30, 40]</span>
+<span class="n">s</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">,</span> <span class="n">other</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># [-1, -1, 30, 40]</span>
+
+<span class="c1"># mask</span>
+<span class="c1"># replace values where the condition is True</span>
+<span class="n">s</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">,</span> <span class="n">other</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># [10, 20, -1, -1]</span>
+
+<span class="c1"># filter</span>
+<span class="n">s</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">])</span> <span class="c1"># [10, 20]</span>
+<span class="n">s</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span> <span class="o">=</span> <span class="s1">'[abcd]$'</span><span class="p">)</span> <span class="c1"># regular expression, [10, 20, 30, 40]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=df844123-02c4-452e-9a8d-bedd6842bce4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># drop</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
+
+<span class="c1"># drop</span>
+<span class="c1"># drop by index</span>
+<span class="n">s</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)</span> <span class="c1"># [20, 30, 40]</span>
+<span class="n">s</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">])</span> <span class="c1"># [30, 40]</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=77da6acd-e5ff-4421-91ff-546a32a6d306">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0e214f8d-dac3-4a08-b000-afa63c5c9579">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7850,7 +7784,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=74b3e726-6b17-44a7-be25-322b46373623">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=68de6ac3-71d8-4af4-b27f-1dbb25468bfc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7858,122 +7792,28 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># show, prints the first n rows</span>
-<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Arithmetic</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
 
-<span class="c1"># collect</span>
-<span class="n">df</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+<span class="c1"># # +, -, *, /</span>
+<span class="n">s</span><span class="o">*</span><span class="mi">10</span> <span class="c1"># [100, 200, 300, 400]</span>
+<span class="n">s</span> <span class="o">*</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span> <span class="c1"># by index</span>
 
-<span class="c1"># sort</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">median_house_value</span><span class="o">.</span><span class="n">asc</span><span class="p">())</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">median_house_value</span><span class="o">.</span><span class="n">asc</span><span class="p">(),</span> <span class="n">df</span><span class="o">.</span><span class="n">median_income</span><span class="o">.</span><span class="n">desc</span><span class="p">()])</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># add, sub, mul, div, mod, pow</span>
+<span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># [20, 30, 40, 50]</span>
+<span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">]))</span> <span class="c1"># by index</span>
 
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">median_house_value</span><span class="o">.</span><span class="n">asc</span><span class="p">())</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">"median_house_value"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># prod</span>
+<span class="n">s</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span> <span class="c1"># 240000</span>
 
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">median_house_value</span><span class="o">.</span><span class="n">asc</span><span class="p">(),</span> <span class="n">df</span><span class="o">.</span><span class="n">median_income</span><span class="o">.</span><span class="n">desc</span><span class="p">()])</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">([</span><span class="s2">"median_house_value"</span><span class="p">,</span> <span class="s2">"median_income"</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="c1"># withColumnRenamed</span>
-<span class="n">df</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s1">'population'</span><span class="p">,</span> <span class="s1">'P'</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="n">df</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s1">'population'</span><span class="p">,</span> <span class="s1">'P'</span><span class="p">)</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s1">'housing_median_age'</span><span class="p">,</span> <span class="s1">'age'</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="c1"># cache, persists DataFrame</span>
-<span class="n">df</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span> <span class="c1"># cache DataFrame</span>
-
-<span class="c1"># drop columns</span>
-<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'median_house_value'</span><span class="p">,</span> <span class="s1">'median_income'</span><span class="p">)</span>
+<span class="c1"># dot</span>
+<span class="n">s</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">]))</span> <span class="c1"># aligned by index</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e04fce90-1562-4015-a291-22925749c8a5">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [108]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># column operations</span>
-
-<span class="c1"># arithmetic operations, +, -, *, /, %</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">total_rooms</span><span class="p">,</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="o">/</span><span class="n">df</span><span class="o">.</span><span class="n">total_rooms</span><span class="p">))</span>
-
-<span class="c1"># alias</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">'P'</span><span class="p">),</span> <span class="n">df</span><span class="o">.</span><span class="n">total_rooms</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">'R'</span><span class="p">))</span>
-
-<span class="c1"># cast, astype</span>
-<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population"</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">"string"</span><span class="p">))</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">total_rooms</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">"string"</span><span class="p">))</span>
-
-<span class="c1"># when, otherwise</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">when</span>
-<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"total_rooms"</span><span class="p">,</span>
-                  <span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"total_rooms"</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">,</span> <span class="s2">"Low"</span><span class="p">)</span>
-                  <span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="s2">"High"</span><span class="p">))</span> <span class="c1"># DataFrame</span>
-
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">when</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'total_rooms'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">,</span> <span class="s1">'Low'</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="s1">'High'</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">'Room_Type'</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c1"># DataFrame with one column</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[108]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>pyspark.sql.column.Column</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f183db4e-9bd2-4540-a6a2-89ddb387e61d">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [155]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># cube &amp; groupby, aggregation</span>
-<span class="n">group_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ocean_proximity</span><span class="p">)</span> <span class="c1"># GroupedData</span>
-<span class="c1"># group_data = df.cube(df.ocean_proximity)</span>
-
-<span class="n">group_data</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">"median_house_value"</span><span class="p">:</span> <span class="s2">"sum"</span><span class="p">})</span> <span class="c1"># DataFrame</span>
-<span class="n">group_data</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">'median_house_value'</span><span class="p">)</span>
-<span class="n">group_data</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s1">'median_house_value'</span><span class="p">,</span> <span class="s1">'median_income'</span><span class="p">)</span>
-<span class="n">group_data</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">"median_house_value"</span><span class="p">:</span> <span class="s2">"sum"</span><span class="p">,</span> <span class="s1">'median_income'</span><span class="p">:</span> <span class="s1">'avg'</span><span class="p">})</span>
-
-<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">ocean_proximity</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">total_rooms</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">"median_house_value"</span><span class="p">:</span> <span class="s2">"sum"</span><span class="p">})</span>
-
-<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="nb">sum</span><span class="p">,</span><span class="n">avg</span><span class="p">,</span><span class="nb">max</span>
-<span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ocean_proximity</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="s2">"median_house_value"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"sum_value"</span><span class="p">),</span> \
-         <span class="n">avg</span><span class="p">(</span><span class="s2">"median_income"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"median_income"</span><span class="p">)</span>
-     <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[155]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>pyspark.sql.dataframe.DataFrame</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2dc7d5f2-2ce2-461d-b457-1d5999d85cc8">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=443d7768-fef4-4178-bfb9-50183bb39ee2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7981,37 +7821,23 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># join</span>
-<span class="n">df_department</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"header"</span><span class="p">,</span><span class="s2">"true"</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"inferSchema"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">"SQL/Department.csv"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Bitwise operation</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
 
-<span class="n">df_employee</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"header"</span><span class="p">,</span><span class="s2">"true"</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"inferSchema"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">"SQL/Employee.csv"</span><span class="p">)</span>
+<span class="c1"># and</span>
+<span class="p">(</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">)</span>
 
-<span class="c1"># crossjoin</span>
-<span class="n">df_department</span><span class="o">.</span><span class="n">crossJoin</span><span class="p">(</span><span class="n">df_employee</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span>
+<span class="c1"># or</span>
+<span class="p">(</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">)</span>
 
-<span class="c1"># inner join</span>
-<span class="n">df_department</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">df_employee</span><span class="p">,</span> <span class="n">df_department</span><span class="o">.</span><span class="n">Mgr_ssn</span> <span class="o">==</span> <span class="n">df_employee</span><span class="o">.</span><span class="n">Super_ssn</span><span class="p">,</span> <span class="s1">'inner'</span><span class="p">)</span>
-
-<span class="c1"># left join</span>
-<span class="n">df_department</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">df_employee</span><span class="p">,</span> <span class="n">df_department</span><span class="o">.</span><span class="n">Mgr_ssn</span> <span class="o">==</span> <span class="n">df_employee</span><span class="o">.</span><span class="n">Super_ssn</span><span class="p">,</span> <span class="s1">'left'</span><span class="p">)</span>
-
-<span class="c1"># right join</span>
-<span class="n">df_department</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">df_employee</span><span class="p">,</span> <span class="n">df_department</span><span class="o">.</span><span class="n">Mgr_ssn</span> <span class="o">==</span> <span class="n">df_employee</span><span class="o">.</span><span class="n">Super_ssn</span><span class="p">,</span> <span class="s1">'right'</span><span class="p">)</span>
-
-<span class="c1"># out join</span>
-<span class="n">df_department</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">df_employee</span><span class="p">,</span> <span class="n">df_department</span><span class="o">.</span><span class="n">Mgr_ssn</span> <span class="o">==</span> <span class="n">df_employee</span><span class="o">.</span><span class="n">Super_ssn</span><span class="p">,</span> <span class="s1">'outer'</span><span class="p">)</span>
+<span class="c1"># not</span>
+<span class="o">~</span><span class="p">(</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6a42f034-3b3a-4ee5-86e7-719717bf1677">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a002e1f5-1ade-445c-a104-fba7995a1762">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8019,61 +7845,43 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># set</span>
-<span class="n">df1</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">([(</span><span class="s2">"a"</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">"a"</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">"b"</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s2">"c"</span><span class="p">,</span> <span class="mi">4</span><span class="p">)],</span> <span class="p">[</span><span class="s2">"C1"</span><span class="p">,</span> <span class="s2">"C2"</span><span class="p">])</span>
-<span class="n">df2</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">([(</span><span class="s2">"a"</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">"a"</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">"b"</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s2">"d"</span><span class="p">,</span> <span class="mi">5</span><span class="p">)],</span> <span class="p">[</span><span class="s2">"C1"</span><span class="p">,</span> <span class="s2">"C2"</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Apply, transform, map</span>
+<span class="c1"># apply the func on each element</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
 
-<span class="c1"># intersect</span>
-<span class="n">df1</span><span class="o">.</span><span class="n">intersect</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+<span class="c1"># use pre-defined function</span>
+<span class="n">s</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
 
-<span class="c1"># union</span>
-<span class="n">df1</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+<span class="c1"># use self-defined function</span>
+<span class="k">def</span> <span class="nf">apply_func</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">e</span><span class="o">*</span><span class="mi">2</span>
 
-<span class="c1"># exceptAll, substract</span>
-<span class="n">df1</span><span class="o">.</span><span class="n">exceptAll</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b51a31ba-a9d6-4c66-934a-42c5adfcf844">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [61]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># mapInPandas, apply a Python function to each partition of a DataFrame using the Pandas library.</span>
-<span class="c1"># define a function to apply to each partition</span>
-<span class="k">def</span> <span class="nf">process_partition</span><span class="p">(</span><span class="n">iterator</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">pdf</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
-        <span class="c1"># pdf, Pandas DataFrame</span>
-        <span class="n">pdf</span><span class="p">[</span><span class="s2">"ocean_proximity"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdf</span><span class="p">[</span><span class="s2">"ocean_proximity"</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="c1"># operation on Pandas Series</span>
-        <span class="k">yield</span> <span class="n">pdf</span>
+<span class="n">s</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">apply_func</span><span class="p">)</span> <span class="c1"># series</span>
 
-<span class="c1"># Apply the function using mapInPandas</span>
-<span class="n">result_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mapInPandas</span><span class="p">(</span><span class="n">process_partition</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span> <span class="c1"># DataFrame</span>
+<span class="c1"># anonymous function</span>
+<span class="n">s</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># series</span>
 
-<span class="c1"># use apply function in Pandas</span>
-<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Define an apply function</span>
-<span class="sd">    """</span>
-    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+<span class="c1"># arguments</span>
+<span class="k">def</span> <span class="nf">apply_func</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">e</span><span class="o">*</span><span class="n">arg1</span><span class="o">+</span><span class="n">arg2</span>
+
+<span class="n">s</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">apply_func</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1"># arg1 = 10, arg2 = 1</span>
+<span class="n">s</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">apply_func</span><span class="p">,</span> <span class="n">arg1</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">arg2</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># arg1 = 10, arg2 = 1</span>
+<span class="n">s</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">apply_func</span><span class="p">,</span> <span class="n">arg1</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">arg2</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># arg1 = 10, arg2 = 1</span>
+
+<span class="c1"># keyword arguments</span>
+<span class="n">s</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'float64'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">apply_func</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">e</span> <span class="o">*</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">'arg1'</span><span class="p">]</span> <span class="o">+</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">'arg2'</span><span class="p">]</span>
     
-<span class="k">def</span> <span class="nf">process_partition</span><span class="p">(</span><span class="n">iterator</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">pdf</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
-        <span class="n">pdf</span><span class="p">[</span><span class="s2">"ocean_proximity"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdf</span><span class="p">[</span><span class="s2">"ocean_proximity"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="c1"># operation on Pandas Series</span>
-        <span class="k">yield</span> <span class="n">pdf</span>
-
-<span class="c1"># Apply the function using mapInPandas</span>
-<span class="n">result_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mapInPandas</span><span class="p">(</span><span class="n">process_partition</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span> <span class="c1"># DataFrame</span>
+<span class="n">s</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">apply_func</span><span class="p">,</span> <span class="n">arg1</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">arg2</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=fba1c235-cd6d-4940-8df6-79f6957bd70d">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=469b28ce-2412-47bb-a730-e3fa3339814b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8081,97 +7889,23 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># withColumn</span>
-<span class="c1"># equals to apply function of Pandas Series</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Pipe</span>
+<span class="c1"># create a pipe of functions</span>
+<span class="c1"># apply functions to series</span>
+<span class="k">def</span> <span class="nf">func_1</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="c1"># series</span>
+    <span class="k">return</span> <span class="n">s</span> <span class="o">*</span> <span class="n">arg</span>
 
-<span class="c1"># without replacement column</span>
-<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">func_2</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">s</span> <span class="o">+</span> <span class="n">arg</span>
 
-<span class="c1"># with replacement column</span>
-<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population"</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
-
-<span class="c1"># add a constant column</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">lit</span>
-<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"Country"</span><span class="p">,</span> <span class="n">lit</span><span class="p">(</span><span class="s2">"USA"</span><span class="p">))</span>
-
-<span class="c1"># apply function to columns</span>
-<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="c1"># value, Column</span>
-    <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">10</span> <span class="c1"># col arithmetic operations</span>
-
-<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">value_1</span><span class="p">,</span> <span class="n">value_2</span><span class="p">):</span>
-    <span class="c1"># value_1, Column</span>
-    <span class="c1"># value_2, Column</span>
-    <span class="k">return</span> <span class="n">value_1</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">value_2</span> <span class="c1"># col arithmetic operations</span>
-
-<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">median_income</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="c1"># with user-defined function, apply function to each value in a column</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udf</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">FloatType</span>
-
-<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="c1"># value, float</span>
-    <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">10</span>
-
-<span class="n">func_udf</span> <span class="o">=</span> <span class="n">udf</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">FloatType</span><span class="p">())</span> <span class="c1"># function_name, returnType</span>
-
-<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func_udf</span><span class="p">(</span><span class="s2">"population"</span><span class="p">))</span>
-<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func_udf</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="p">))</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">'housing_median_age'</span><span class="p">),</span> <span class="n">col</span><span class="p">(</span><span class="s1">'median_income'</span><span class="p">),</span> <span class="n">func_udf</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">'population'</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">'P'</span><span class="p">))</span>
-
-<span class="nd">@udf</span><span class="p">(</span><span class="n">FloatType</span><span class="p">())</span>
-<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="c1"># value, float</span>
-    <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">10</span>
-
-<span class="c1"># use udf with withColumn</span>
-<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="nd">@udf</span><span class="p">(</span><span class="n">FloatType</span><span class="p">())</span>
-<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">value_1</span><span class="p">,</span> <span class="n">value_2</span><span class="p">):</span>
-    <span class="c1"># value_1, float</span>
-    <span class="c1"># value_2, str</span>
-    <span class="k">return</span> <span class="n">value_1</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="n">value_2</span>
-
-<span class="c1"># use udf with withColumn</span>
-<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">ocean_proximity</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="c1"># use pandas_udf with withColumn</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">pandas_udf</span><span class="p">,</span> <span class="n">PandasUDFType</span>
-
-<span class="k">def</span> <span class="nf">func_apply</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">s</span><span class="o">*</span><span class="mi">100</span>
-    
-<span class="nd">@pandas_udf</span><span class="p">(</span><span class="n">FloatType</span><span class="p">(),</span> <span class="n">PandasUDFType</span><span class="o">.</span><span class="n">SCALAR</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="c1"># value, pandas Series</span>
-    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">func_apply</span><span class="p">)</span>
-
-<span class="c1"># use udf with withColumn</span>
-<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="s2">"population"</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">pandas_udf</span><span class="p">,</span> <span class="n">PandasUDFType</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">FloatType</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span>
-
-<span class="n">schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span><span class="n">StructField</span><span class="p">(</span><span class="s1">'median_income'</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span> <span class="n">StructField</span><span class="p">(</span><span class="s1">'new_value'</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">)])</span>
-<span class="nd">@pandas_udf</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">PandasUDFType</span><span class="o">.</span><span class="n">GROUPED_MAP</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">custom_operation</span><span class="p">(</span><span class="n">pdf</span><span class="p">):</span>
-    <span class="c1"># pdf, pandas DataFrame</span>
-    <span class="n">pdf</span><span class="p">[</span><span class="s2">"new_value"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdf</span><span class="p">[</span><span class="s2">"median_income"</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
-    <span class="k">return</span> <span class="n">pdf</span><span class="p">[[</span><span class="s1">'median_income'</span><span class="p">,</span> <span class="s1">'new_value'</span><span class="p">]]</span>
-    
-<span class="c1">#df.groupby().apply(custom_operation).show() # one group</span>
-<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'ocean_proximity'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">custom_operation</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c1"># four groups</span>
+<span class="n">s</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">func_1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">func_2</span><span class="p">,</span> <span class="n">arg</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># [101, 201, 301, 401</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b40a183a-c07a-467c-917e-3fd1d19d3847">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=01ca3abc-b9b4-4270-9339-cc43b6e282d1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8179,78 +7913,118 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># transform</span>
-<span class="c1"># equals to apply function of Pandas DataFrame</span>
-<span class="k">def</span> <span class="nf">func_transform</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Apply function to the DataFrame</span>
-<span class="sd">    """</span>
-    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"population2"</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">population</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Aggreation</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
 
-<span class="n">df</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">func_transform</span><span class="p">)</span>
+<span class="c1"># agg, aggregate</span>
+<span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s1">'min'</span><span class="p">)</span> <span class="c1"># 10, int</span>
+<span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">'min'</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">,</span> <span class="s1">'count'</span><span class="p">])</span> <span class="c1"># [10, 40], series</span>
 
-<span class="c1"># select</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">lower</span>
-<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s1">'housing_median_age'</span><span class="p">,</span> <span class="s1">'median_income'</span><span class="p">,</span> <span class="n">lower</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ocean_proximity</span><span class="p">)])</span>
+<span class="c1"># groupby</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">])</span>
+
+<span class="c1"># group by values</span>
+<span class="n">s</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># rolling</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
+<span class="n">s</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="c1"># [NaN, 30, 50, 70]</span>
+
+<span class="c1"># expanding</span>
+<span class="n">s</span><span class="o">.</span><span class="n">expanding</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="c1"># [10, 30, 60, 100]</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6b56f00e-5291-4167-af02-4318a2ad83a0">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="IO"><font color="blue"><strong>IO</strong></font><a class="anchor-link" href="#IO">¶</a></h4>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=80565126-5e57-4eaa-8c64-f72e937796a2">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=63909d84-a0f7-4e73-8757-5e3ad1dcc6e9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [240]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># write csv</span>
-<span class="n">output_path</span> <span class="o">=</span> <span class="s2">"temp_directory"</span>
-<span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"overwrite"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Stats</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
+
+<span class="c1"># abs</span>
+<span class="n">s</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="c1"># [10, 20, 30, 40]</span>
+
+<span class="c1"># all</span>
+<span class="c1"># return whether all elements are True</span>
+<span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="c1"># True</span>
+
+<span class="c1"># any</span>
+<span class="c1"># return whether any element is True</span>
+<span class="p">(</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="c1"># True</span>
+
+<span class="c1"># between</span>
+<span class="n">s</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span> <span class="c1"># series, [True, False, False, False]</span>
+
+<span class="c1"># clip</span>
+<span class="n">s</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span> <span class="c1"># [10, 10, 10, 40]</span>
+
+<span class="c1"># describe, count/mean/std/min/25%/50%/75%/max</span>
+<span class="n">s</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+
+<span class="c1"># diff</span>
+<span class="n">s</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span> <span class="c1"># [NaN, -30, -10, 70]</span>
+
+<span class="c1"># mean</span>
+<span class="n">s</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># mode</span>
+<span class="c1"># return the values that appears most often</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
+<span class="n">s</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span> <span class="c1"># series</span>
+
+<span class="c1"># largest</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
+<span class="n">s</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># [30, 20]</span>
+
+<span class="c1"># quantile</span>
+<span class="n">s</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">.5</span><span class="p">)</span> <span class="c1"># float</span>
+<span class="n">s</span><span class="o">.</span><span class="n">quantile</span><span class="p">([</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">])</span> <span class="c1"># series</span>
+
+<span class="c1"># rank</span>
+<span class="n">s</span><span class="o">.</span><span class="n">rank</span><span class="p">()</span>
+
+<span class="c1"># unique</span>
+<span class="n">s</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span> <span class="c1"># numpy.ndarray</span>
+
+<span class="c1"># value_counts</span>
+<span class="n">s</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="c1"># series</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5a5d0782-f5fe-403a-802b-ff4f1735228a">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c128d007-23d9-4c3f-9374-13f7805f818f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [241]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [145]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># read csv</span>
-<span class="n">df_2</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"header"</span><span class="p">,</span><span class="s2">"true"</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"inferSchema"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s1">'temp_directory'</span><span class="p">)</span> 
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f6f8038e-a288-4aaf-900c-328ec870591e">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [245]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># inputFiles, returns the files that compose the DataFrame</span>
-<span class="n">df_2</span><span class="o">.</span><span class="n">inputFiles</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Conversion</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">])</span>
+
+<span class="c1"># to_list</span>
+<span class="n">s</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span> <span class="c1"># list</span>
+
+<span class="c1"># to_frame</span>
+<span class="n">s</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span> <span class="c1"># DataFrame</span>
+
+<span class="c1"># to_dict</span>
+<span class="n">s</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="c1"># dict</span>
+
+<span class="c1"># to_json</span>
+<span class="n">s</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+
+<span class="c1"># to_pandas</span>
+<span class="n">s</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span> <span class="c1"># pandas.core.series.Series</span>
 </pre></div>
 </div>
 </div>
@@ -8261,399 +8035,23 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[245]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[145]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>['file:///Users/lchen/Documents/Skills/Spark/temp_directory/part-00001-b754b085-9422-4b6d-896c-a322f2df8e48-c000.csv',
- 'file:///Users/lchen/Documents/Skills/Spark/temp_directory/part-00000-b754b085-9422-4b6d-896c-a322f2df8e48-c000.csv']</pre>
+<pre>pandas.core.series.Series</pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bd83a874-f73a-4a29-be08-35be5d899191">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=729de364-13b6-498b-bac2-0c8dfcc24ea7">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="SQL-Operations"><font color="blue"><strong>SQL Operations</strong></font><a class="anchor-link" href="#SQL-Operations">¶</a></h4><ul>
-<li><strong>local view</strong><ul>
-<li>specific to a single Spark session</li>
-<li>have a limited lifetime that is tied to the Spark session that created them</li>
-</ul>
-</li>
-<li><strong>global view</strong><ul>
-<li>shared across all Spark sessions within the same Spark application</li>
-<li>the lifetime of a global temporary view is tied to the lifetime of the Spark application that created it</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4b56b0da-a243-4b2b-b2c9-acd551d003ed">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [71]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
-
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
-    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"example"</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
-
-<span class="c1"># create DataFrame</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"Alice"</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Bob"</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Charlie"</span><span class="p">,</span> <span class="mi">22</span><span class="p">)]</span>
-<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"age"</span><span class="p">]</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span>
-
-<span class="n">df_department</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"header"</span><span class="p">,</span><span class="s2">"true"</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"inferSchema"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">"SQL/Department.csv"</span><span class="p">)</span>
-
-<span class="n">df_employee</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"header"</span><span class="p">,</span><span class="s2">"true"</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"inferSchema"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">"SQL/Employee.csv"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>24/01/16 12:52:36 WARN SparkSession: Using an existing Spark session; only runtime SQL configurations will take effect.
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=57a35257-2ca1-4bcd-9b80-44c76029f799">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [72]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># create local view</span>
-<span class="n">df</span><span class="o">.</span><span class="n">createTempView</span><span class="p">(</span><span class="s2">"Employee"</span><span class="p">)</span>
-
-<span class="c1"># create or replace local view</span>
-<span class="n">df</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">"Employee"</span><span class="p">)</span>
-
-<span class="c1"># create global view</span>
-<span class="n">df</span><span class="o">.</span><span class="n">createGlobalTempView</span><span class="p">(</span><span class="s2">"Employee"</span><span class="p">)</span>
-
-<span class="c1"># create or replace global view</span>
-<span class="n">df</span><span class="o">.</span><span class="n">createOrReplaceGlobalTempView</span><span class="p">(</span><span class="s2">"Employee"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=53d30664-345a-4a37-b5d3-a1b76ec92182">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [73]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># list global temp view</span>
-<span class="n">spark</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">listTables</span><span class="p">(</span><span class="s2">"global_temp"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[73]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>[Table(name='Employee', catalog=None, namespace=['global_temp'], description=None, tableType='TEMPORARY', isTemporary=True),
- Table(name='Employee', catalog=None, namespace=[], description=None, tableType='TEMPORARY', isTemporary=True)]</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=603f5e0e-7517-43ce-bf0e-5cf17e2f7e69">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [76]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># sql operation on local view</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">'select * from Employee'</span><span class="p">)</span>
-
-<span class="c1"># sql operation on global view</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">'select * from global_temp.Employee'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f766ea51-64a5-4e1f-9445-ef15bc40e77a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [76]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># join</span>
-<span class="n">df_department</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">"department"</span><span class="p">)</span>
-<span class="n">df_employee</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">"employee"</span><span class="p">)</span>
-
-<span class="n">result</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">'select * from department d, employee e where d.Mgr_ssn == e.Super_ssn'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5460d684-fbc4-45e1-90ad-43f003cbb9ff">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [79]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># get DataFrame from a view</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">'Employee'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=307fe46c-0c95-4132-945a-ab10f4a93d75">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># use udf on SQL</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udf</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StringType</span>
-
-<span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-
-<span class="n">spark</span><span class="o">.</span><span class="n">udf</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"func_convert"</span><span class="p">,</span> <span class="n">convert</span><span class="p">,</span> <span class="n">StringType</span><span class="p">())</span>
-
-<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">"select Dnumber, func_convert(Dname) as Name from department"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=89d68cba-1cdf-414f-98e0-e8a472cce265">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [70]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># stop session, the local temporary view is automatically removed</span>
-<span class="n">spark</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3780b543-f449-4b24-b3e9-bd61de2f4ccf">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="MySQL"><font color="blue"><strong>MySQL</strong></font><a class="anchor-link" href="#MySQL">¶</a></h4><ul>
-<li>Download MySQL JDBC driver at <a href="https://dev.mysql.com/downloads/connector/j/">https://dev.mysql.com/downloads/connector/j/</a></li>
-<li>Start a PySpark session and configure it to use the MySQL JDBC driver</li>
-<li>Spark uses multiple connections to fetch different partitions of the data in parallel</li>
-<li>By default, Spark will make an attempt to determine the number of partitions automatically</li>
-</ul>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=dbdf4189-2d19-4028-a50c-cc4ec8283fd8">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
-
-<span class="c1"># Create SparkSession</span>
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
-           <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s1">'MySQL'</span><span class="p">)</span> \
-           <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">"spark.jars"</span><span class="p">,</span> <span class="s2">"./mysql-connector-j-8.1.0.jar"</span><span class="p">)</span> \
-           <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b80494a5-8346-4d49-8f87-e0472bf66a81">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># load a table</span>
-<span class="n">mysql_url</span> <span class="o">=</span> <span class="s2">"jdbc:mysql://localhost:3306/University"</span>
-<span class="n">mysql_properties</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"user"</span><span class="p">:</span> <span class="s2">"root"</span><span class="p">,</span>
-    <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"root"</span><span class="p">,</span>
-    <span class="s2">"driver"</span><span class="p">:</span> <span class="s2">"com.mysql.cj.jdbc.Driver"</span>
-<span class="p">}</span>
-
-<span class="c1"># Define the table name</span>
-<span class="n">table_name</span> <span class="o">=</span> <span class="s2">"Department"</span>
-
-<span class="c1"># Read data from MySQL into a PySpark DataFrame</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span> \
-    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">"jdbc"</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"url"</span><span class="p">,</span> <span class="n">mysql_url</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"dbtable"</span><span class="p">,</span> <span class="n">table_name</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"user"</span><span class="p">,</span> <span class="n">mysql_properties</span><span class="p">[</span><span class="s2">"user"</span><span class="p">])</span> \
-    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"password"</span><span class="p">,</span> <span class="n">mysql_properties</span><span class="p">[</span><span class="s2">"password"</span><span class="p">])</span> \
-    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"driver"</span><span class="p">,</span> <span class="n">mysql_properties</span><span class="p">[</span><span class="s2">"driver"</span><span class="p">])</span> \
-    <span class="o">.</span><span class="n">load</span><span class="p">()</span>
-
-<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>+--------------+-------+---------+--------------+
-|         Dname|Dnumber|  Mgr_ssn|Mgr_start_date|
-+--------------+-------+---------+--------------+
-|  Headquarters|      1|888665555|    1981-06-19|
-|Administration|      4|987654321|    1995-01-01|
-|      Research|      5|333445555|    1988-05-22|
-+--------------+-------+---------+--------------+
-
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a17a4e44-1fbf-4792-bf0c-b4f4f5f2a483">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># load a table generated with select statement</span>
-<span class="n">mysql_url</span> <span class="o">=</span> <span class="s2">"jdbc:mysql://localhost:3306/University"</span>
-<span class="n">mysql_properties</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"user"</span><span class="p">:</span> <span class="s2">"root"</span><span class="p">,</span>
-    <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"root"</span><span class="p">,</span>
-    <span class="s2">"driver"</span><span class="p">:</span> <span class="s2">"com.mysql.cj.jdbc.Driver"</span>
-<span class="p">}</span>
-
-<span class="n">select_query</span> <span class="o">=</span> <span class="s2">"(SELECT * FROM Department) AS my_select"</span>
-
-<span class="c1"># Read data from MySQL into a PySpark DataFrame</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span> \
-    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">"jdbc"</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"url"</span><span class="p">,</span> <span class="n">mysql_url</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"dbtable"</span><span class="p">,</span> <span class="n">select_query</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"user"</span><span class="p">,</span> <span class="n">mysql_properties</span><span class="p">[</span><span class="s2">"user"</span><span class="p">])</span> \
-    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"password"</span><span class="p">,</span> <span class="n">mysql_properties</span><span class="p">[</span><span class="s2">"password"</span><span class="p">])</span> \
-    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"driver"</span><span class="p">,</span> <span class="n">mysql_properties</span><span class="p">[</span><span class="s2">"driver"</span><span class="p">])</span> \
-    <span class="o">.</span><span class="n">load</span><span class="p">()</span>
-
-<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e7bd119f-6fa0-4009-a008-a49551058015">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [40]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create DataFrame </span>
-<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">,</span><span class="s2">"age"</span><span class="p">,</span><span class="s2">"gender"</span><span class="p">]</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"James"</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="s2">"M"</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"Ann"</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="s2">"F"</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">"Jeff"</span><span class="p">,</span><span class="mi">41</span><span class="p">,</span><span class="s2">"M"</span><span class="p">),(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">"Jennifer"</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="s2">"F"</span><span class="p">)]</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">parallelize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">toDF</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
-
-<span class="c1"># write the DataFrame to MySQL</span>
-<span class="n">df</span><span class="o">.</span><span class="n">write</span> \
-  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">"jdbc"</span><span class="p">)</span> \
-  <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"driver"</span><span class="p">,</span><span class="s2">"com.mysql.cj.jdbc.Driver"</span><span class="p">)</span> \
-  <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"url"</span><span class="p">,</span> <span class="s2">"jdbc:mysql://localhost:3306/University"</span><span class="p">)</span> \
-  <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"dbtable"</span><span class="p">,</span> <span class="s2">"temp"</span><span class="p">)</span> \
-  <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"user"</span><span class="p">,</span> <span class="s2">"root"</span><span class="p">)</span> \
-  <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"password"</span><span class="p">,</span> <span class="s2">"root"</span><span class="p">)</span> \
-  <span class="o">.</span><span class="n">save</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>                                                                                </pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=942c538a-f6da-4c96-a312-dfc50e8093d9">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Reference">Reference<a class="anchor-link" href="#Reference">¶</a></h4><ul>
-<li><a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/dataframe.html#">DataFrame API</a></li>
-<li><a href="https://sparkbyexamples.com/pyspark/pyspark-read-and-write-mysql-database-table/">PySpark Read and Write MySQL Database Table</a></li>
+<h4 id="Reference"><font color="blue"><strong>Reference</strong></font><a class="anchor-link" href="#Reference">¶</a></h4><ul>
+<li><a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.pandas/index.html">PySpark Pandas API</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/python/user_guide/pandas_on_spark/index.html">Documentation</a></li>
 </ul>
 </div>
 </div>
