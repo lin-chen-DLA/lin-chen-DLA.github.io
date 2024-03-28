@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Holiday</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>1_Basics</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7476,490 +7476,64 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=71b2e6d7">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7b95b2a8-f9cc-4b0f-a759-1c343dc1cdc9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Holidy"><center>Holidy</center><a class="anchor-link" href="#Holidy">¶</a></h2>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e3562c39">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-</pre></div>
+<h2 id="Introduction"><center>Introduction</center><a class="anchor-link" href="#Introduction">¶</a></h2>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3bc141d3-f0a4-4f2c-87eb-537514a7cb5b">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cf2cab6a-3f0f-4925-8657-ad7bf3c3608c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Create-Holidays">Create Holidays<a class="anchor-link" href="#Create-Holidays">¶</a></h4>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=dbaf1246-82eb-4c3c-b97d-940ef45834ab">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [54]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pandas.tseries.holiday</span> <span class="kn">import</span> <span class="n">AbstractHolidayCalendar</span>
-
-<span class="n">rules</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">Holiday</span><span class="p">(</span><span class="s1">'My Holiday 1'</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="mi">5</span><span class="p">),</span>
-        <span class="n">Holiday</span><span class="p">(</span><span class="s1">'My Holiday 2'</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="mi">6</span><span class="p">)</span>
-    <span class="p">]</span>
-
-<span class="n">holidays</span> <span class="o">=</span> <span class="n">AbstractHolidayCalendar</span><span class="p">(</span><span class="n">rules</span><span class="o">=</span><span class="n">rules</span><span class="p">)</span>
-
-<span class="n">holidays</span><span class="o">.</span><span class="n">holidays</span><span class="p">()</span> <span class="c1"># 462 days, list holidays from 1970 to 2200</span>
-
-<span class="n">holidays</span><span class="o">.</span><span class="n">holidays</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">))</span> <span class="c1"># 2 days, holidays in 2024</span>
-
-<span class="n">holidays</span><span class="o">.</span><span class="n">start_date</span> <span class="c1"># Timestamp, 1970-01-01 00:00:00</span>
-<span class="n">holidays</span><span class="o">.</span><span class="n">end_date</span> <span class="c1"># Timestamp, 2200-12-31 00:00:0</span>
-
-<span class="n">holidays</span><span class="o">.</span><span class="n">rules</span> <span class="c1"># rules</span>
-</pre></div>
+<h4 id="Time-Series-Data"><strong>Time-Series Data</strong><a class="anchor-link" href="#Time-Series-Data">¶</a></h4><center><img alt="No description has been provided for this image" src="img/Time_series_1.png"/></center>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[54]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>[Holiday: My Holiday 1 (month=7, day=5, ),
- Holiday: My Holiday 2 (month=7, day=6, )]</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=eb48518b-8dbf-41b7-b58d-10e8ad10308a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [63]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pandas.tseries.holiday</span> <span class="kn">import</span> <span class="n">Holiday</span>
-
-<span class="k">class</span> <span class="nc">myHoliday</span><span class="p">(</span><span class="n">AbstractHolidayCalendar</span><span class="p">):</span>
-    <span class="n">rules</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">Holiday</span><span class="p">(</span><span class="s1">'My Holiday'</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="mi">5</span><span class="p">),</span>
-        <span class="n">Holiday</span><span class="p">(</span><span class="s1">'My Holiday'</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="mi">6</span><span class="p">)</span>
-    <span class="p">]</span>
-
-<span class="n">myHoliday</span><span class="p">()</span><span class="o">.</span><span class="n">holidays</span><span class="p">()</span> <span class="c1"># 462 days from 1970 to 2200</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[63]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>DatetimeIndex(['1970-07-05', '1970-07-06', '1971-07-05', '1971-07-06',
-               '1972-07-05', '1972-07-06', '1973-07-05', '1973-07-06',
-               '1974-07-05', '1974-07-06',
-               ...
-               '2196-07-05', '2196-07-06', '2197-07-05', '2197-07-06',
-               '2198-07-05', '2198-07-06', '2199-07-05', '2199-07-06',
-               '2200-07-05', '2200-07-06'],
-              dtype='datetime64[ns]', length=462, freq=None)</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=347c1e6b-b320-4260-8081-629dbbd8ce8b">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [64]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">my_business</span> <span class="o">=</span> <span class="n">CustomBusinessDay</span><span class="p">(</span><span class="n">calendar</span> <span class="o">=</span> <span class="n">myHoliday</span><span class="p">())</span>
-<span class="n">rng</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">'2023-07-01'</span><span class="p">,</span> <span class="s1">'2023-07-10'</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="n">my_business</span><span class="p">)</span>
-<span class="n">rng</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[64]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>DatetimeIndex(['2023-07-03', '2023-07-04', '2023-07-07', '2023-07-10'], dtype='datetime64[ns]', freq='C')</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4d63904f-669e-4221-805a-364b7bbd5e63">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fd268931-4bc1-443e-a12d-7da243602d70">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Merge-Holidays">Merge Holidays<a class="anchor-link" href="#Merge-Holidays">¶</a></h4>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b26f11e2-9320-4da9-a011-b38f53bdff32">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [59]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pandas.tseries.holiday</span> <span class="kn">import</span> <span class="n">USFederalHolidayCalendar</span>
-
-<span class="n">rules</span> <span class="o">=</span> <span class="n">holidays</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">USFederalHolidayCalendar</span><span class="p">())</span> <span class="c1"># merge rules</span>
-<span class="n">holidays</span> <span class="o">=</span> <span class="n">AbstractHolidayCalendar</span><span class="p">(</span><span class="n">rules</span><span class="o">=</span><span class="n">rules</span><span class="p">)</span>
-
-<span class="n">holidays</span><span class="o">.</span><span class="n">rules</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[59]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>[Holiday: New Year's Day (month=1, day=1, observance=&lt;function nearest_workday at 0x11a8c9da0&gt;),
- Holiday: Birthday of Martin Luther King, Jr. (month=1, day=1, offset=&lt;DateOffset: weekday=MO(+3)&gt;),
- Holiday: Washington’s Birthday (month=2, day=1, offset=&lt;DateOffset: weekday=MO(+3)&gt;),
- Holiday: Memorial Day (month=5, day=31, offset=&lt;DateOffset: weekday=MO(-1)&gt;),
- Holiday: Juneteenth National Independence Day (month=6, day=19, observance=&lt;function nearest_workday at 0x11a8c9da0&gt;),
- Holiday: Independence Day (month=7, day=4, observance=&lt;function nearest_workday at 0x11a8c9da0&gt;),
- Holiday: Labor Day (month=9, day=1, offset=&lt;DateOffset: weekday=MO(+1)&gt;),
- Holiday: Columbus Day (month=10, day=1, offset=&lt;DateOffset: weekday=MO(+2)&gt;),
- Holiday: Veterans Day (month=11, day=11, observance=&lt;function nearest_workday at 0x11a8c9da0&gt;),
- Holiday: Thanksgiving Day (month=11, day=1, offset=&lt;DateOffset: weekday=TH(+4)&gt;),
- Holiday: Christmas Day (month=12, day=25, observance=&lt;function nearest_workday at 0x11a8c9da0&gt;),
- Holiday: My Holiday 1 (month=7, day=5, ),
- Holiday: My Holiday 2 (month=7, day=6, )]</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=141fbd91">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Remove-Holiday">Remove Holiday<a class="anchor-link" href="#Remove-Holiday">¶</a></h4>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c8af34f5-9152-4000-be1c-db9fbdc22fbe">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [69]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'aapl.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'Date'</span><span class="p">],</span> <span class="n">index_col</span> <span class="o">=</span> <span class="s2">"Date"</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[69]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Open</th>
-<th>High</th>
-<th>Low</th>
-<th>Close</th>
-<th>Volume</th>
-<th>Adj Close</th>
-</tr>
-<tr>
-<th>Date</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>2008-10-14</th>
-<td>116.26</td>
-<td>116.40</td>
-<td>103.14</td>
-<td>104.08</td>
-<td>70749800</td>
-<td>104.08</td>
-</tr>
-<tr>
-<th>2008-10-13</th>
-<td>104.55</td>
-<td>110.53</td>
-<td>101.02</td>
-<td>110.26</td>
-<td>54967000</td>
-<td>110.26</td>
-</tr>
-<tr>
-<th>2008-10-10</th>
-<td>85.70</td>
-<td>100.00</td>
-<td>85.00</td>
-<td>96.80</td>
-<td>79260700</td>
-<td>96.80</td>
-</tr>
-<tr>
-<th>2008-10-09</th>
-<td>93.35</td>
-<td>95.80</td>
-<td>86.60</td>
-<td>88.74</td>
-<td>57763700</td>
-<td>88.74</td>
-</tr>
-<tr>
-<th>2008-10-08</th>
-<td>85.91</td>
-<td>96.33</td>
-<td>85.68</td>
-<td>89.79</td>
-<td>78847900</td>
-<td>89.79</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=988f51e2">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [71]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pandas.tseries.offsets</span> <span class="kn">import</span> <span class="n">CustomBusinessDay</span>
-
-<span class="n">us_business</span> <span class="o">=</span> <span class="n">CustomBusinessDay</span><span class="p">(</span><span class="n">calendar</span> <span class="o">=</span> <span class="n">USFederalHolidayCalendar</span><span class="p">())</span>
-<span class="n">rng</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">'2001-07-01'</span><span class="p">,</span> <span class="s1">'2001-07-10'</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="n">us_business</span><span class="p">)</span>
-<span class="n">rng</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[71]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>DatetimeIndex(['2001-07-02', '2001-07-03', '2001-07-05', '2001-07-06',
-               '2001-07-09', '2001-07-10'],
-              dtype='datetime64[ns]', freq='C')</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=9309b89d">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [73]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">rng</span><span class="p">)]</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[73]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>Open</th>
-<th>High</th>
-<th>Low</th>
-<th>Close</th>
-<th>Volume</th>
-<th>Adj Close</th>
-</tr>
-<tr>
-<th>Date</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>2001-07-10</th>
-<td>22.95</td>
-<td>23.07</td>
-<td>20.84</td>
-<td>21.14</td>
-<td>14116800</td>
-<td>10.57</td>
-</tr>
-<tr>
-<th>2001-07-09</th>
-<td>22.09</td>
-<td>23.00</td>
-<td>21.68</td>
-<td>22.70</td>
-<td>12052400</td>
-<td>11.35</td>
-</tr>
-<tr>
-<th>2001-07-06</th>
-<td>22.76</td>
-<td>22.96</td>
-<td>21.72</td>
-<td>22.03</td>
-<td>10818600</td>
-<td>11.02</td>
-</tr>
-<tr>
-<th>2001-07-05</th>
-<td>23.60</td>
-<td>23.77</td>
-<td>23.01</td>
-<td>23.19</td>
-<td>5439000</td>
-<td>11.60</td>
-</tr>
-<tr>
-<th>2001-07-03</th>
-<td>23.51</td>
-<td>24.18</td>
-<td>23.50</td>
-<td>23.84</td>
-<td>4019400</td>
-<td>11.92</td>
-</tr>
-<tr>
-<th>2001-07-02</th>
-<td>23.64</td>
-<td>24.23</td>
-<td>23.14</td>
-<td>23.90</td>
-<td>8216000</td>
-<td>11.95</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=aa1ce375">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Reference">Reference<a class="anchor-link" href="#Reference">¶</a></h4><ul>
-<li><a href="https://github.com/pandas-dev/pandas/blob/main/pandas/tseries/holiday.py">Holiday Source Code</a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html">Time series / date functionality</a></li>
+<h4 id="Time-Series-Models"><strong>Time-Series Models</strong><a class="anchor-link" href="#Time-Series-Models">¶</a></h4><ul>
+<li>Use traditional time-series models, such as Exponential Smoothing, ARIMA, etc.</li>
+<li>Use machine learning regression models, such as lienar regression, random forest, etc.</li>
 </ul>
+<p>$$ y_{t+1} = model(y_{1}, y_{2}, ..., y_{t-1}, y_{t})$$</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=683b3aa3-1e6c-4aff-9139-aa87defd5afb">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Explanatory-Models">Explanatory Models<a class="anchor-link" href="#Explanatory-Models">¶</a></h4><ul>
+<li>Use regression models
+$$y^{predict}_{t} = model(x_{t, 1}, x_{t, 2}, x_{t, 3})$$</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ed42209f-0a54-4c05-9c8e-3770048e80c7">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Mixed-Models">Mixed Models<a class="anchor-link" href="#Mixed-Models">¶</a></h4><p>$$y^{predict}_{t} = model(y_{t-1}, x_{t, 1}, x_{t, 2}, x{t, 3})$$</p>
 </div>
 </div>
 </div>

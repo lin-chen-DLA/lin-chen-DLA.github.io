@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Intro</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Timestamp</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7476,89 +7476,259 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=known-demonstration">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8cc02d15-ae86-4e57-ac10-f3ed21657ae2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Introduction"><center>Introduction</center><a class="anchor-link" href="#Introduction">¶</a></h2>
+<h2 id="Pandas-Timestamp"><center>Pandas Timestamp</center><a class="anchor-link" href="#Pandas-Timestamp">¶</a></h2>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=local-bottom">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=c393a104-c58c-462b-80ae-d0e3657a101d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=southeast-average">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a6e72d26-393d-4c82-b882-7606e39e0d17">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Data-Types">Data Types<a class="anchor-link" href="#Data-Types">¶</a></h4>
+<h4 id="Timestamp"><font color="blue"><strong>Timestamp</strong></font><a class="anchor-link" href="#Timestamp">¶</a></h4><ul>
+<li>A specific date and time with timezone support</li>
+</ul>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=modified-guess">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a6c4fdad-3fc4-413c-95af-57973b7603bf">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Create-Timestamp">Create Timestamp<a class="anchor-link" href="#Create-Timestamp">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2aafd2e6-ce04-4217-9562-b7eb830c9d3d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [94]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [104]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># object, string, timedelta, or mixed</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">])</span> <span class="c1"># string</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s2">"1 day"</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">BDay</span><span class="p">()])</span> <span class="c1"># timedelta</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">{</span><span class="s1">'name'</span><span class="p">:</span><span class="s1">'Lin'</span><span class="p">}])</span> <span class="c1"># mixed</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">'2023-01-01'</span><span class="p">)</span> <span class="c1"># Timestamp</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s2">"2024-01-01"</span><span class="p">)</span> <span class="c1"># Timestamp</span>
+
+<span class="c1"># create a timestamp with a specific format</span>
+<span class="c1"># https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s2">"2010/11/12"</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"%Y/%m/</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># create a timestamp from datetime</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">17</span><span class="p">))</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">17</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=joined-indiana">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[104]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>Timestamp('2014-01-17 00:00:00')</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=40f3e759-8a52-4b15-ae63-0475a01f5469">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [71]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [225]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># int</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s1">'int64'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># operations</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">'2023-01-01 10:12:43'</span><span class="p">)</span> <span class="c1"># Timestamp</span>
+
+<span class="n">ts</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="c1"># datetime.date</span>
+
+<span class="n">ts</span><span class="o">.</span><span class="n">day_name</span><span class="p">()</span> <span class="c1"># Sunday</span>
+
+<span class="n">ts</span><span class="o">.</span><span class="n">days_in_month</span> <span class="c1"># 31</span>
+
+<span class="n">ts</span><span class="o">.</span><span class="n">min</span> <span class="c1"># 1677-09-21 00:12:43.145224193</span>
+
+<span class="n">ts</span><span class="o">.</span><span class="n">max</span> <span class="c1"># 2262-04-11 23:47:16.854775807</span>
+
+<span class="n">ts</span><span class="o">.</span><span class="n">year</span> <span class="c1"># 2023</span>
+
+<span class="n">ts</span><span class="o">.</span><span class="n">month</span> <span class="c1"># 1</span>
+
+<span class="n">ts</span><span class="o">.</span><span class="n">day</span> <span class="c1"># 1</span>
+
+<span class="n">ts</span><span class="o">.</span><span class="n">hour</span> <span class="c1"># 10</span>
+
+<span class="n">ts</span><span class="o">.</span><span class="n">minute</span> <span class="c1"># 12</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=advance-breach">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[225]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>12</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=62a7fbf3-735f-4a42-bdf5-501e8b7d124d">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Timedelta"><font color="blue"><strong>Timedelta</strong></font><a class="anchor-link" href="#Timedelta">¶</a></h4><ul>
+<li>An absolute time duration</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d9ae2221-4cc3-422d-91f3-0a157976baed">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [73]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [308]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># float</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s1">'float64'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># create Timedelta</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s2">"1 days"</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s2">"-1 days 2 min 3us"</span><span class="p">)</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="s2">"1 days 06:05:01.00003"</span><span class="p">)</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">'2023-01-01 10:12:43'</span><span class="p">)</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">'2023-01-01 09:12:43'</span><span class="p">)</span> <span class="c1"># Timedelta('0 days 01:00:00')</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=realistic-intersection">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[308]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>Timedelta('0 days 01:00:00')</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6217b446-f889-46c0-867a-55d1edcccf2a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [317]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># attributes</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">days</span> <span class="c1"># 1</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">seconds</span> <span class="c1"># 1</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">components</span> <span class="c1"># Components(days=1, hours=0, minutes=0, seconds=1, milliseconds=0, microseconds=0, nanoseconds=0)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[317]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>Components(days=1, hours=0, minutes=0, seconds=1, milliseconds=0, microseconds=0, nanoseconds=0)</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=340915b4-d9fd-4230-8df4-a61fcd5ca15e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [307]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">'2023-01-01 10:12:43'</span><span class="p">)</span> <span class="c1"># Timestamp</span>
+
+<span class="n">ts</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># add one day， '2023-01-02 10:12:43'</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[307]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>Timestamp('2023-01-02 10:12:43')</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=eb385de7-3b09-4734-98c9-eeb42c61cbc9">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="DateOffset"><font color="blue"><strong>DateOffset</strong></font><a class="anchor-link" href="#DateOffset">¶</a></h4><ul>
+<li>Represents a duration of time but follows specific calendar duration rules</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c1911310-e19f-4e81-b60c-5bf6cb2033e0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7566,61 +7736,398 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [76]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># boolean</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s1">'bool'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># create DateOffset</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">'2023-01-01 10:12:43'</span><span class="p">)</span> <span class="c1"># Timestamp</span>
+
+<span class="n">ts</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">DateOffset</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 2023-01-02 10:12:43</span>
+
+<span class="n">ts</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">BDay</span><span class="p">()</span> <span class="c1"># two business days, 2023-01-03 10:12:43</span>
+
+<span class="n">ts</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">SemiMonthEnd</span><span class="p">()</span> <span class="c1"># 15th (or other day_of_month) and calendar month end, 2023-01-15 10:12:43</span>
+
+<span class="n">ts</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">Week</span><span class="p">()</span> <span class="c1"># one week, 2023-01-08 10:12:43</span>
+<span class="n">ts</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">Week</span><span class="p">(</span><span class="n">weekday</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># Friday, 2023-01-06 10:12:43</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=chinese-uniform">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[76]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>Timestamp('2023-01-08 10:12:43')</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=86872b6c-1f6d-41f0-aa95-2214177ce38b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [84]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [65]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># datetime</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s2">"2018-01-05"</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">'2018-01-06 00:00:00'</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'datetime64[ns]'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># operation</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">'2023-01-01 10:12:43'</span><span class="p">)</span> <span class="c1"># Timestamp</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">BusinessHour</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s2">"09:00"</span><span class="p">)</span><span class="o">.</span><span class="n">rollforward</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span> <span class="c1"># Timestamp, 2023-01-02 09:00:00</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">BusinessHour</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">'09:00'</span><span class="p">)</span><span class="o">.</span><span class="n">rollback</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span> <span class="c1"># Timestamp, 2022-12-30 17:00:00</span>
+
+<span class="n">ts</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span> <span class="c1"># reset time to midnight, 2023-01-01 00:00:00</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=oriented-travel">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[65]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>Timestamp('2023-01-01 00:00:00')</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e2b707f1-1537-4573-842c-09074c2d1abc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [88]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [107]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># period</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">Period</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="s1">'2014'</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">Period</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="s1">'2015'</span><span class="p">)],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s1">'period[A-DEC]'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># custom business day</span>
+<span class="n">holidays</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"2012-05-01"</span><span class="p">,</span>
+    <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="s2">"2014-05-01"</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">bday</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">CustomBusinessDay</span><span class="p">(</span><span class="n">holidays</span><span class="o">=</span><span class="n">holidays</span><span class="p">)</span>
+
+<span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">'2013, 4, 30'</span><span class="p">)</span>
+<span class="n">ts</span> <span class="o">+</span> <span class="n">bday</span> <span class="c1"># 2013-05-02 00:00:00</span>
+
+<span class="kn">from</span> <span class="nn">pandas.tseries.holiday</span> <span class="kn">import</span> <span class="n">USFederalHolidayCalendar</span>
+<span class="n">bday_us</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">CustomBusinessDay</span><span class="p">(</span><span class="n">calendar</span><span class="o">=</span><span class="n">USFederalHolidayCalendar</span><span class="p">())</span>
+
+<span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">17</span><span class="p">))</span> <span class="c1"># Friday</span>
+<span class="n">ts</span> <span class="o">+</span> <span class="n">bday_us</span> <span class="c1"># Tuesday, Monday is skipped because it's a holiday, 2014-01-21 00:00:00</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=injured-arizona">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[107]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>Timestamp('2014-01-21 00:00:00')</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a4784c3e-5d8b-44f1-a403-112910499dec">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="DatetimeIndex"><font color="blue"><strong>DatetimeIndex</strong></font><a class="anchor-link" href="#DatetimeIndex">¶</a></h4><ul>
+<li>Array-like timestamps</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f5dfcaed-96a2-4a98-912e-7fc814040e9a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Create-with-DatetimeIndex">Create with DatetimeIndex<a class="anchor-link" href="#Create-with-DatetimeIndex">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1c1c0aa8-4b79-48fc-ab91-d19ff47ce211">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [227]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># category</span>
-<span class="c1"># takes on a finite number of possible values</span>
-<span class="n">raw_cat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">([</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'A'</span><span class="p">],</span> <span class="n">categories</span><span class="o">=</span><span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">],</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">raw_cat</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">([</span><span class="s2">"2018-01-01"</span><span class="p">,</span> <span class="s2">"2018-01-03"</span><span class="p">,</span> <span class="s2">"2018-01-05"</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=decreased-counter">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[227]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2018-01-01', '2018-01-03', '2018-01-05'], dtype='datetime64[ns]', freq=None)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=201075b4-adea-4219-90bd-99c9e645a261">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Create-with-to_datetime">Create with to_datetime<a class="anchor-link" href="#Create-with-to_datetime">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c09276e1-5f4d-4418-9c95-1ef42e53e41c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="n">pdi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">"2023-01-01"</span><span class="p">,</span> <span class="s2">"1/1/2018"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="s2">"2018-01-01"</span><span class="p">),</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span> <span class="c1"># DatetimeIndex</span>
+
+<span class="n">pdi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Timestamp</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>Timestamp('2023-01-01 00:00:00')</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=cd84dbb6-6a42-4ecd-b566-62b868c6d658">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># create datetimeIndex from mutliple columns</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">"year"</span><span class="p">:</span> <span class="p">[</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">2016</span><span class="p">],</span> <span class="s2">"month"</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">"day"</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="s2">"hour"</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span> <span class="c1"># DateFrame</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="c1"># Series</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">"year"</span><span class="p">,</span> <span class="s2">"month"</span><span class="p">,</span> <span class="s2">"day"</span><span class="p">]])</span> <span class="c1"># Series</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="c1"># DatetimeIndex</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2015-02-04', '2016-03-05'], dtype='datetime64[ns]', freq=None)</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f3b69be3-385a-4691-8097-6c46eee5b52e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># convert epoch to Timestamp</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+    <span class="p">[</span><span class="mi">1349720105</span><span class="p">,</span> <span class="mi">1349806505</span><span class="p">,</span> <span class="mi">1349892905</span><span class="p">,</span> <span class="mi">1349979305</span><span class="p">,</span> <span class="mi">1350065705</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"s"</span><span class="p">)</span>
+
+<span class="c1"># convert Timestamp to epoch</span>
+<span class="c1"># frequency, https://pandas.pydata.org/docs/user_guide/timeseries.html#timeseries-offset-aliases</span>
+<span class="n">stamps</span> <span class="o">=</span> <span class="n">pdi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">([</span><span class="s2">"2023-01-01"</span><span class="p">,</span> <span class="s2">"1/1/2018"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="s2">"2018-01-01"</span><span class="p">),</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+<span class="p">(</span><span class="n">stamps</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s2">"1970-01-01"</span><span class="p">))</span> <span class="o">//</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s2">"1s"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>Int64Index([1672531200, 1514764800, 1514764800, 1514764800], dtype='int64')</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=89862c35-1583-4e25-ba7d-fee3a2c3f971">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># convert int to DatetimeIndex</span>
+<span class="c1"># by default, origin is 1970-01-01 00:00:00</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"D"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s2">"1960-01-01"</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['1960-01-02', '1960-01-03', '1960-01-04'], dtype='datetime64[ns]', freq=None)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5eafe92a-50d4-40fc-81b2-89fa6f7ca866">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Create-with-date_range">Create with date_range<a class="anchor-link" href="#Create-with-date_range">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=fbf217f5-1623-4ffc-8234-245a14986562">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [110]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># create a sequence of timestamps without a time zone</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">"2023-04-20"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">"H"</span><span class="p">)</span> <span class="c1"># DatetimeIndex</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="s1">'2001-04'</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s1">'2002-04'</span><span class="p">)</span> <span class="c1"># 366 days</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[110]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2001-04-01', '2001-04-02', '2001-04-03', '2001-04-04',
+               '2001-04-05', '2001-04-06', '2001-04-07', '2001-04-08',
+               '2001-04-09', '2001-04-10',
+               ...
+               '2002-03-23', '2002-03-24', '2002-03-25', '2002-03-26',
+               '2002-03-27', '2002-03-28', '2002-03-29', '2002-03-30',
+               '2002-03-31', '2002-04-01'],
+              dtype='datetime64[ns]', length=366, freq='D')</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1463fa46-b5f7-45bc-9123-1f8d6187f5a0">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Create-with-bdate_range">Create with bdate_range<a class="anchor-link" href="#Create-with-bdate_range">¶</a></h4><ul>
+<li>generate a sequence of business dates and time spans</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7cf68739-4a53-4a50-9aa0-c0080a93a685">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">bdate_range</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="s1">'2001-04'</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s1">'2002-04'</span><span class="p">)</span> <span class="c1"># 261 days</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">bdate_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">'2001-04'</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">'B'</span><span class="p">)</span> <span class="c1"># business days</span>
+
+<span class="c1"># define week days and holidays</span>
+<span class="c1"># weekmask, specify week days</span>
+<span class="c1"># holidays, a list of holidays</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">bdate_range</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="s1">'2024-01'</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s1">'2024-10'</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">"C"</span><span class="p">,</span> <span class="n">weekmask</span><span class="o">=</span><span class="s2">"Mon Wed Fri"</span><span class="p">,</span> \
+               <span class="n">holidays</span><span class="o">=</span><span class="p">[</span><span class="s1">'2024-01-01'</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)])</span> <span class="c1"># 116 days</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2024-01-03', '2024-01-08', '2024-01-10', '2024-01-12',
+               '2024-01-15', '2024-01-17', '2024-01-19', '2024-01-22',
+               '2024-01-24', '2024-01-26',
+               ...
+               '2024-09-09', '2024-09-11', '2024-09-13', '2024-09-16',
+               '2024-09-18', '2024-09-20', '2024-09-23', '2024-09-25',
+               '2024-09-27', '2024-09-30'],
+              dtype='datetime64[ns]', length=116, freq='C')</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=67b44637-01ed-4a30-855e-0f277a465f25">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7628,25 +8135,1571 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># astype</span>
-<span class="c1"># assign/change type</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s1">'bool'</span><span class="p">)</span>
-<span class="n">s</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'int'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># attributes</span>
+<span class="n">dti</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">([</span><span class="s2">"2018-01-01"</span><span class="p">,</span> <span class="s2">"2018-01-03"</span><span class="p">,</span> <span class="s2">"2018-01-05"</span><span class="p">])</span>
+
+<span class="n">dti</span><span class="o">.</span><span class="n">resolution</span> <span class="c1"># resolution</span>
+
+<span class="n">dti</span><span class="o">.</span><span class="n">tz</span> <span class="c1"># time zone</span>
+
+<span class="n">dti</span><span class="o">.</span><span class="n">week</span> <span class="c1"># week</span>
+
+<span class="n">dti</span><span class="o">.</span><span class="n">weekday</span> <span class="c1"># week day</span>
+
+<span class="n">dti</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=spectacular-couple">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bf77e680-0e4f-4071-b515-d87b05a13388">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Reference">Reference<a class="anchor-link" href="#Reference">¶</a></h4><ul>
-<li><a href="https://pandas.pydata.org/docs/user_guide/">User Guide</a></li>
-<li><a href="https://pandas.pydata.org/docs/reference/series.html">API Reference</a></li>
+<h4 id="Offset">Offset<a class="anchor-link" href="#Offset">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b14ac764-24db-4494-b7ff-0a16071921cf">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [113]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">bdate_range</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="s1">'2001-04'</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s1">'2002-04'</span><span class="p">)</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">DateOffset</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[113]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2001-04-04', '2001-04-05', '2001-04-06', '2001-04-07',
+               '2001-04-08', '2001-04-11', '2001-04-12', '2001-04-13',
+               '2001-04-14', '2001-04-15',
+               ...
+               '2002-03-21', '2002-03-22', '2002-03-23', '2002-03-24',
+               '2002-03-27', '2002-03-28', '2002-03-29', '2002-03-30',
+               '2002-03-31', '2002-04-03'],
+              dtype='datetime64[ns]', length=261, freq=None)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f5d5289d-69e1-492c-90eb-bad146755857">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Operations">Operations<a class="anchor-link" href="#Operations">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7fe95009-6d61-49d9-8115-8ab4178a880b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [151]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">dti</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">([</span><span class="s2">"2018-01-01"</span><span class="p">,</span> <span class="s2">"2018-01-03"</span><span class="p">,</span> <span class="s2">"2018-01-05"</span><span class="p">])</span>
+<span class="n">dti</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[151]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2018-01-01', '2018-01-03', '2018-01-05'], dtype='datetime64[ns]', freq=None)</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=56b93203-b7f2-4e92-bf2a-693c746209db">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [138]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># shift</span>
+<span class="n">dti</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">"D"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[138]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2018-01-02', '2018-01-04', '2018-01-06'], dtype='datetime64[ns]', freq=None)</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8bc0ce4f-c048-4730-9286-df9837f3d48c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [153]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># to_pydatetime, convert to datetime</span>
+<span class="n">dti</span><span class="o">.</span><span class="n">to_pydatetime</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[153]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>array([datetime.datetime(2018, 1, 1, 0, 0),
+       datetime.datetime(2018, 1, 3, 0, 0),
+       datetime.datetime(2018, 1, 5, 0, 0)], dtype=object)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7605515d-b9ad-4969-b136-42f02002dbc4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Time-Zone"><font color="blue"><strong>Time Zone</strong></font><a class="anchor-link" href="#Time-Zone">¶</a></h4><ul>
+<li>support pytz time zones, dateutil time zones, and Olson time zones</li>
+<li>Olson time zone strings will return pytz time zone objects by default</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ac420fc6-2c4e-4d65-a740-24d13b2170e0">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Assign-a-time-zone">Assign a time zone<a class="anchor-link" href="#Assign-a-time-zone">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6ca6c50a-5e11-4066-966a-cd3de35a08bc">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [37]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">dti</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">"2023-04-20"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">"H"</span><span class="p">)</span>
+<span class="n">dti</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[37]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2023-04-20 00:00:00', '2023-04-20 01:00:00',
+               '2023-04-20 02:00:00'],
+              dtype='datetime64[ns]', freq='H')</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b2df278d-74b6-4d88-9294-71684f5b3d56">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [38]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># '2023-04-20 00:00:00-04:00'</span>
+<span class="c1"># '-04:00', timezone offset from Coordinated Universal Time (UTC)</span>
+<span class="n">dti</span> <span class="o">=</span> <span class="n">dti</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="s1">'US/Eastern'</span><span class="p">)</span>
+<span class="n">dti</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[38]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2023-04-20 00:00:00-04:00', '2023-04-20 01:00:00-04:00',
+               '2023-04-20 02:00:00-04:00'],
+              dtype='datetime64[ns, US/Eastern]', freq=None)</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=477bc2cf-5ee5-423b-8871-eb4415260c03">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [39]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 'raise', default, raises a pytz.AmbiguousTimeError</span>
+<span class="c1"># 'infer', attempt to determine the correct offset base on the monotonicity of the timestamps</span>
+<span class="c1">#'NaT', replaces ambiguous times with NaT</span>
+<span class="c1"># bool, True, a daylight savings time (DST) time; False, non-DST time</span>
+<span class="n">dti</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">"2023-04-20"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">"H"</span><span class="p">)</span> <span class="c1"># DatetimeIndex</span>
+<span class="n">dti</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="s1">'US/Eastern'</span><span class="p">,</span> <span class="n">ambiguous</span><span class="o">=</span><span class="s2">"infer"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[39]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2023-04-20 00:00:00-04:00', '2023-04-20 01:00:00-04:00',
+               '2023-04-20 02:00:00-04:00'],
+              dtype='datetime64[ns, US/Eastern]', freq=None)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a81fb7a5-643f-43bb-9d0d-8f9c977117f3">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Change-Time-Zone">Change Time Zone<a class="anchor-link" href="#Change-Time-Zone">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=faa47516-e318-4bfc-bf3a-4a06ec078b70">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [42]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">dti</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">"2023-04-20"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">"H"</span><span class="p">,</span> <span class="n">tz</span> <span class="o">=</span> <span class="s1">'US/Eastern'</span><span class="p">)</span>
+<span class="n">dti</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[42]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2023-04-20 00:00:00-04:00', '2023-04-20 01:00:00-04:00',
+               '2023-04-20 02:00:00-04:00'],
+              dtype='datetime64[ns, US/Eastern]', freq='H')</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=215e53d7-1a8a-4514-b88a-2d7e0507180d">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [44]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">dti</span> <span class="o">=</span> <span class="n">dti</span><span class="o">.</span><span class="n">tz_convert</span><span class="p">(</span><span class="s1">'CET'</span><span class="p">)</span> <span class="c1"># specify a time zone</span>
+<span class="n">dti</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[44]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2023-04-20 06:00:00+02:00', '2023-04-20 07:00:00+02:00',
+               '2023-04-20 08:00:00+02:00'],
+              dtype='datetime64[ns, CET]', freq='H')</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=eadfd19c-2d1d-4d82-9973-617ecae06ce1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Using-Other-Time-Zone-Packages">Using Other Time Zone Packages<a class="anchor-link" href="#Using-Other-Time-Zone-Packages">¶</a></h4>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=95a15413-b626-428d-ac8e-36abfe344481">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [267]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># pytz</span>
+<span class="kn">import</span> <span class="nn">pytz</span>
+<span class="n">pytz</span><span class="o">.</span><span class="n">all_timezones</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">"3/6/2012 00:00"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">"D"</span><span class="p">)</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="s1">'Zulu'</span><span class="p">)</span>
+<span class="n">rng</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[267]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2012-03-06 00:00:00+00:00', '2012-03-07 00:00:00+00:00',
+               '2012-03-08 00:00:00+00:00', '2012-03-09 00:00:00+00:00',
+               '2012-03-10 00:00:00+00:00', '2012-03-11 00:00:00+00:00',
+               '2012-03-12 00:00:00+00:00', '2012-03-13 00:00:00+00:00',
+               '2012-03-14 00:00:00+00:00', '2012-03-15 00:00:00+00:00',
+               '2012-03-16 00:00:00+00:00', '2012-03-17 00:00:00+00:00',
+               '2012-03-18 00:00:00+00:00', '2012-03-19 00:00:00+00:00',
+               '2012-03-20 00:00:00+00:00'],
+              dtype='datetime64[ns, Zulu]', freq=None)</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8d61f2fc-eb1b-474b-9981-0b81554bedac">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [268]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># dateutil</span>
+<span class="kn">from</span> <span class="nn">dateutil.zoneinfo</span> <span class="kn">import</span> <span class="n">get_zonefile_instance</span>
+<span class="n">get_zonefile_instance</span><span class="p">()</span><span class="o">.</span><span class="n">zones</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">tz_convert</span><span class="p">(</span><span class="s1">'dateutil/US/Eastern'</span><span class="p">)</span> <span class="c1"># convert time zone</span>
+<span class="n">rng</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[268]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2012-03-05 19:00:00-05:00', '2012-03-06 19:00:00-05:00',
+               '2012-03-07 19:00:00-05:00', '2012-03-08 19:00:00-05:00',
+               '2012-03-09 19:00:00-05:00', '2012-03-10 19:00:00-05:00',
+               '2012-03-11 20:00:00-04:00', '2012-03-12 20:00:00-04:00',
+               '2012-03-13 20:00:00-04:00', '2012-03-14 20:00:00-04:00',
+               '2012-03-15 20:00:00-04:00', '2012-03-16 20:00:00-04:00',
+               '2012-03-17 20:00:00-04:00', '2012-03-18 20:00:00-04:00',
+               '2012-03-19 20:00:00-04:00'],
+              dtype='datetime64[ns, tzfile('/usr/share/zoneinfo/US/Eastern')]', freq=None)</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=87aa9d3e-76bb-465d-8c1c-5758d401a83c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [269]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># datetime</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">tz_convert</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="c1"># convert time zone</span>
+<span class="n">rng</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[269]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2012-03-06 00:00:00+00:00', '2012-03-07 00:00:00+00:00',
+               '2012-03-08 00:00:00+00:00', '2012-03-09 00:00:00+00:00',
+               '2012-03-10 00:00:00+00:00', '2012-03-11 00:00:00+00:00',
+               '2012-03-12 00:00:00+00:00', '2012-03-13 00:00:00+00:00',
+               '2012-03-14 00:00:00+00:00', '2012-03-15 00:00:00+00:00',
+               '2012-03-16 00:00:00+00:00', '2012-03-17 00:00:00+00:00',
+               '2012-03-18 00:00:00+00:00', '2012-03-19 00:00:00+00:00',
+               '2012-03-20 00:00:00+00:00'],
+              dtype='datetime64[ns, UTC]', freq=None)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2f0bfafb-bede-47d1-969f-cca881ded23c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="DataFrame"><font color="blue"><strong>DataFrame</strong></font><a class="anchor-link" href="#DataFrame">¶</a></h4><ul>
+<li>An absolute time duration</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=84f7a620-d1f5-47f7-b71d-bf1afe1313e7">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [295]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'aapl.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'Date'</span><span class="p">],</span> <span class="n">index_col</span> <span class="o">=</span> <span class="s2">"Date"</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[295]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Open</th>
+<th>High</th>
+<th>Low</th>
+<th>Close</th>
+<th>Volume</th>
+<th>Adj Close</th>
+</tr>
+<tr>
+<th>Date</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2008-10-14</th>
+<td>116.26</td>
+<td>116.40</td>
+<td>103.14</td>
+<td>104.08</td>
+<td>70749800</td>
+<td>104.08</td>
+</tr>
+<tr>
+<th>2008-10-13</th>
+<td>104.55</td>
+<td>110.53</td>
+<td>101.02</td>
+<td>110.26</td>
+<td>54967000</td>
+<td>110.26</td>
+</tr>
+<tr>
+<th>2008-10-10</th>
+<td>85.70</td>
+<td>100.00</td>
+<td>85.00</td>
+<td>96.80</td>
+<td>79260700</td>
+<td>96.80</td>
+</tr>
+<tr>
+<th>2008-10-09</th>
+<td>93.35</td>
+<td>95.80</td>
+<td>86.60</td>
+<td>88.74</td>
+<td>57763700</td>
+<td>88.74</td>
+</tr>
+<tr>
+<th>2008-10-08</th>
+<td>85.91</td>
+<td>96.33</td>
+<td>85.68</td>
+<td>89.79</td>
+<td>78847900</td>
+<td>89.79</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c52d1485-58fc-406d-aa32-52a6382ab531">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [319]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># selection</span>
+<span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">10</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span> <span class="c1"># select by integer indices</span>
+<span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">'2008-10-14'</span><span class="p">,</span> <span class="s1">'2008-10-13'</span><span class="p">]]</span> <span class="c1"># select by indices</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s2">"2008-10-08"</span><span class="p">:</span><span class="s2">"2008-10-14"</span><span class="p">]</span> <span class="c1"># select by time range</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'2008'</span><span class="p">]</span> <span class="c1"># select by year</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'2008-10'</span><span class="p">]</span> <span class="c1"># select by year and month</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[319]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Open</th>
+<th>High</th>
+<th>Low</th>
+<th>Close</th>
+<th>Volume</th>
+<th>Adj Close</th>
+</tr>
+<tr>
+<th>Date</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2008-10-13</th>
+<td>104.55</td>
+<td>110.53</td>
+<td>101.02</td>
+<td>110.26</td>
+<td>54967000</td>
+<td>110.26</td>
+</tr>
+<tr>
+<th>2008-10-10</th>
+<td>85.70</td>
+<td>100.00</td>
+<td>85.00</td>
+<td>96.80</td>
+<td>79260700</td>
+<td>96.80</td>
+</tr>
+<tr>
+<th>2008-10-08</th>
+<td>85.91</td>
+<td>96.33</td>
+<td>85.68</td>
+<td>89.79</td>
+<td>78847900</td>
+<td>89.79</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b4577ee1-da38-4e4f-a382-f97b673d6c0e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># remove rows</span>
+<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="s1">'2008-10-14'</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'2008-10-14'</span><span class="p">,</span> <span class="s1">'2008-10-13'</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=830f97e5-a70f-4001-aee1-30481e4ebd27">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [302]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># insert rows</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s2">"2008-10-12"</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[302]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Open</th>
+<th>High</th>
+<th>Low</th>
+<th>Close</th>
+<th>Volume</th>
+<th>Adj Close</th>
+</tr>
+<tr>
+<th>Date</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2008-10-14</th>
+<td>116.26</td>
+<td>116.40</td>
+<td>103.14</td>
+<td>104.08</td>
+<td>70749800</td>
+<td>104.08</td>
+</tr>
+<tr>
+<th>2008-10-13</th>
+<td>104.55</td>
+<td>110.53</td>
+<td>101.02</td>
+<td>110.26</td>
+<td>54967000</td>
+<td>110.26</td>
+</tr>
+<tr>
+<th>2008-10-12</th>
+<td>10.00</td>
+<td>5.00</td>
+<td>7.00</td>
+<td>1.00</td>
+<td>2</td>
+<td>3.00</td>
+</tr>
+<tr>
+<th>2008-10-10</th>
+<td>85.70</td>
+<td>100.00</td>
+<td>85.00</td>
+<td>96.80</td>
+<td>79260700</td>
+<td>96.80</td>
+</tr>
+<tr>
+<th>2008-10-09</th>
+<td>93.35</td>
+<td>95.80</td>
+<td>86.60</td>
+<td>88.74</td>
+<td>57763700</td>
+<td>88.74</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=418ed969-dfa6-4bfb-a8ac-c13e05e44732">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [255]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># truncate</span>
+<span class="n">df</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="n">before</span><span class="o">=</span><span class="s2">"2008-09"</span><span class="p">,</span> <span class="n">after</span><span class="o">=</span><span class="s2">"2008-11"</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[255]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Open</th>
+<th>High</th>
+<th>Low</th>
+<th>Close</th>
+<th>Volume</th>
+<th>Adj Close</th>
+</tr>
+<tr>
+<th>Date</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2008-10-14</th>
+<td>116.26</td>
+<td>116.40</td>
+<td>103.14</td>
+<td>104.08</td>
+<td>70749800</td>
+<td>104.08</td>
+</tr>
+<tr>
+<th>2008-10-13</th>
+<td>104.55</td>
+<td>110.53</td>
+<td>101.02</td>
+<td>110.26</td>
+<td>54967000</td>
+<td>110.26</td>
+</tr>
+<tr>
+<th>2008-10-10</th>
+<td>85.70</td>
+<td>100.00</td>
+<td>85.00</td>
+<td>96.80</td>
+<td>79260700</td>
+<td>96.80</td>
+</tr>
+<tr>
+<th>2008-10-09</th>
+<td>93.35</td>
+<td>95.80</td>
+<td>86.60</td>
+<td>88.74</td>
+<td>57763700</td>
+<td>88.74</td>
+</tr>
+<tr>
+<th>2008-10-08</th>
+<td>85.91</td>
+<td>96.33</td>
+<td>85.68</td>
+<td>89.79</td>
+<td>78847900</td>
+<td>89.79</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=51bf4ca2-14df-4c20-ae76-1af3adb82a1c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [150]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># frequency conversion</span>
+<span class="n">temp</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">asfreq</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">BDay</span><span class="p">())</span>
+<span class="n">temp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[150]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Open</th>
+<th>High</th>
+<th>Low</th>
+<th>Close</th>
+<th>Volume</th>
+<th>Adj Close</th>
+</tr>
+<tr>
+<th>Date</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>1984-09-07</th>
+<td>26.50</td>
+<td>26.87</td>
+<td>26.25</td>
+<td>26.50</td>
+<td>2981600.0</td>
+<td>3.02</td>
+</tr>
+<tr>
+<th>1984-09-12</th>
+<td>26.87</td>
+<td>27.00</td>
+<td>26.12</td>
+<td>26.12</td>
+<td>4773600.0</td>
+<td>2.98</td>
+</tr>
+<tr>
+<th>1984-09-17</th>
+<td>28.62</td>
+<td>29.00</td>
+<td>28.62</td>
+<td>28.62</td>
+<td>6886400.0</td>
+<td>3.27</td>
+</tr>
+<tr>
+<th>1984-09-20</th>
+<td>27.12</td>
+<td>27.37</td>
+<td>27.12</td>
+<td>27.12</td>
+<td>2387200.0</td>
+<td>3.09</td>
+</tr>
+<tr>
+<th>1984-09-25</th>
+<td>26.50</td>
+<td>26.50</td>
+<td>26.12</td>
+<td>26.12</td>
+<td>5977600.0</td>
+<td>2.98</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8ed8ff76-3b5b-44a8-b7fa-e6b4845256ac">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [201]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># resample</span>
+<span class="c1"># sum, mean, std, sem, max, min, median, first, last, ohlc</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">100</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'2m'</span><span class="p">)</span> <span class="c1"># DatetimeIndexResampler</span>
+
+<span class="n">r</span><span class="p">[</span><span class="s1">'Open'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">r</span><span class="p">[[</span><span class="s1">'Open'</span><span class="p">,</span> <span class="s1">'High'</span><span class="p">,</span> <span class="s1">'Low'</span><span class="p">,</span> <span class="s1">'Close'</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">r</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[201]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Open</th>
+<th>High</th>
+<th>Low</th>
+<th>Close</th>
+<th>Volume</th>
+<th>Adj Close</th>
+</tr>
+<tr>
+<th>Date</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2008-05-31</th>
+<td>185.028</td>
+<td>186.822000</td>
+<td>183.248000</td>
+<td>186.010000</td>
+<td>2.641552e+07</td>
+<td>186.010000</td>
+</tr>
+<tr>
+<th>2008-07-31</th>
+<td>173.230</td>
+<td>176.073721</td>
+<td>169.634419</td>
+<td>172.992326</td>
+<td>3.257714e+07</td>
+<td>172.992326</td>
+</tr>
+<tr>
+<th>2008-09-30</th>
+<td>156.875</td>
+<td>159.764286</td>
+<td>153.139762</td>
+<td>156.156429</td>
+<td>3.158200e+07</td>
+<td>156.156429</td>
+</tr>
+<tr>
+<th>2008-11-30</th>
+<td>100.214</td>
+<td>104.699000</td>
+<td>93.997000</td>
+<td>98.326000</td>
+<td>6.696761e+07</td>
+<td>98.326000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=21303e46-154b-406d-9969-46703c37919a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [204]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># aggregation</span>
+<span class="n">r</span><span class="p">[</span><span class="s1">'Open'</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s2">"sum"</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">,</span> <span class="s2">"std"</span><span class="p">])</span>
+
+<span class="n">r</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">'Open'</span><span class="p">:</span> <span class="p">[</span><span class="s2">"sum"</span><span class="p">,</span> <span class="s2">"std"</span><span class="p">],</span> <span class="s1">'High'</span><span class="p">:</span> <span class="p">[</span><span class="s2">"mean"</span><span class="p">,</span> <span class="s2">"std"</span><span class="p">]})</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[204]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr>
+<th></th>
+<th colspan="2" halign="left">Open</th>
+<th colspan="2" halign="left">High</th>
+</tr>
+<tr>
+<th></th>
+<th>sum</th>
+<th>std</th>
+<th>mean</th>
+<th>std</th>
+</tr>
+<tr>
+<th>Date</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2008-05-31</th>
+<td>925.14</td>
+<td>3.076511</td>
+<td>186.822000</td>
+<td>2.918076</td>
+</tr>
+<tr>
+<th>2008-07-31</th>
+<td>7448.89</td>
+<td>9.274833</td>
+<td>176.073721</td>
+<td>8.438212</td>
+</tr>
+<tr>
+<th>2008-09-30</th>
+<td>6588.75</td>
+<td>19.120453</td>
+<td>159.764286</td>
+<td>18.451373</td>
+</tr>
+<tr>
+<th>2008-11-30</th>
+<td>1002.14</td>
+<td>10.640547</td>
+<td>104.699000</td>
+<td>7.196958</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=22243eac-4818-4a07-8402-6ac54e4ec599">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [186]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># upsampling</span>
+<span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'12h'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[186]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Open</th>
+<th>High</th>
+<th>Low</th>
+<th>Close</th>
+<th>Volume</th>
+<th>Adj Close</th>
+</tr>
+<tr>
+<th>Date</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2008-10-01 00:00:00</th>
+<td>111.92</td>
+<td>112.36</td>
+<td>107.39</td>
+<td>109.12</td>
+<td>46303000.0</td>
+<td>109.12</td>
+</tr>
+<tr>
+<th>2008-10-01 12:00:00</th>
+<td>111.92</td>
+<td>112.36</td>
+<td>107.39</td>
+<td>109.12</td>
+<td>46303000.0</td>
+<td>109.12</td>
+</tr>
+<tr>
+<th>2008-10-02 00:00:00</th>
+<td>108.01</td>
+<td>108.79</td>
+<td>100.00</td>
+<td>100.10</td>
+<td>57477300.0</td>
+<td>100.10</td>
+</tr>
+<tr>
+<th>2008-10-02 12:00:00</th>
+<td>108.01</td>
+<td>108.79</td>
+<td>100.00</td>
+<td>100.10</td>
+<td>57477300.0</td>
+<td>100.10</td>
+</tr>
+<tr>
+<th>2008-10-03 00:00:00</th>
+<td>104.00</td>
+<td>106.50</td>
+<td>94.65</td>
+<td>97.07</td>
+<td>81942800.0</td>
+<td>97.07</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3b747d81-213d-4ccc-a5d6-0a7583d100fa">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [195]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># group in resampling</span>
+<span class="n">groups</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'M'</span><span class="p">)</span> <span class="c1"># DatetimeIndexResampler</span>
+
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># DataFrame</span>
+    <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>             Open   High    Low  Close   Volume  Adj Close
+Date                                                      
+1984-09-07  26.50  26.87  26.25  26.50  2981600       3.02
+1984-09-10  26.50  26.62  25.87  26.37  2346400       3.01
+1984-09-11  26.62  27.37  26.62  26.87  5444000       3.07
+1984-09-12  26.87  27.00  26.12  26.12  4773600       2.98
+1984-09-13  27.50  27.62  27.50  27.50  7429600       3.14
+1984-09-14  27.62  28.50  27.62  27.87  8826400       3.18
+1984-09-17  28.62  29.00  28.62  28.62  6886400       3.27
+1984-09-18  28.62  28.87  27.62  27.62  3495200       3.15
+1984-09-19  27.62  27.87  27.00  27.00  3816000       3.08
+1984-09-20  27.12  27.37  27.12  27.12  2387200       3.09
+1984-09-21  27.12  27.87  26.50  26.87  3591200       3.07
+1984-09-24  26.87  27.00  26.62  26.62  2833600       3.04
+1984-09-25  26.50  26.50  26.12  26.12  5977600       2.98
+1984-09-26  26.12  27.25  25.75  25.75  3987200       2.94
+1984-09-27  25.75  25.87  25.75  25.75  3796000       2.94
+1984-09-28  25.75  25.75  24.62  25.12  8344800       2.87
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=350c70d7-8971-49f2-8a68-1ebf3afe097c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [209]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># adjust the start of the bins</span>
+
+<span class="c1"># origin</span>
+<span class="c1"># ‘epoch’: origin is 1970-01-01</span>
+<span class="c1"># ‘start’: origin is the first value of the timeseries</span>
+<span class="c1"># ‘start_day’: origin is the first day at midnight of the timeseries</span>
+<span class="c1"># ‘end’: origin is the last value of the timeseries</span>
+<span class="c1"># ‘end_day’: origin is the ceiling midnight of the last day</span>
+<span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s2">"2000-10-01 23:30:00"</span><span class="p">,</span> <span class="s2">"2000-10-02 00:30:00"</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">"7min"</span><span class="p">)</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rng</span><span class="p">))</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+
+<span class="n">group</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">"20min"</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"start_day"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'-'</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># offset</span>
+<span class="n">group</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">"20min"</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="s2">"23h30min"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>2000-10-01 23:30:00     0
+2000-10-01 23:37:00     3
+2000-10-01 23:44:00     6
+2000-10-01 23:51:00     9
+2000-10-01 23:58:00    12
+2000-10-02 00:05:00    15
+2000-10-02 00:12:00    18
+2000-10-02 00:19:00    21
+2000-10-02 00:26:00    24
+Freq: 7T, dtype: int64</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>2000-10-01 23:30:00    0
+2000-10-01 23:37:00    3
+Freq: 7T, dtype: int64
+2000-10-01 23:44:00     6
+2000-10-01 23:51:00     9
+2000-10-01 23:58:00    12
+Freq: 7T, dtype: int64
+2000-10-02 00:05:00    15
+2000-10-02 00:12:00    18
+2000-10-02 00:19:00    21
+Freq: 7T, dtype: int64
+2000-10-02 00:26:00    24
+Freq: 7T, dtype: int64
+----------
+2000-10-01 23:30:00    0
+2000-10-01 23:37:00    3
+2000-10-01 23:44:00    6
+Freq: 7T, dtype: int64
+2000-10-01 23:51:00     9
+2000-10-01 23:58:00    12
+2000-10-02 00:05:00    15
+Freq: 7T, dtype: int64
+2000-10-02 00:12:00    18
+2000-10-02 00:19:00    21
+2000-10-02 00:26:00    24
+Freq: 7T, dtype: int64
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=069609fd-3506-4622-b354-6574908d4b71">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [261]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">"2023-04-20"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">"H"</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span>
+
+<span class="c1"># shift</span>
+<span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rng</span><span class="p">)),</span> <span class="n">index</span> <span class="o">=</span> <span class="n">rng</span><span class="p">)</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">periods</span> <span class="o">=</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># lagging</span>
+<span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rng</span><span class="p">)),</span> <span class="n">index</span> <span class="o">=</span> <span class="n">rng</span><span class="p">)</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">periods</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>DatetimeIndex(['2023-04-20 00:00:00', '2023-04-20 01:00:00',
+               '2023-04-20 02:00:00'],
+              dtype='datetime64[ns]', freq='H')</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>2023-04-20 00:00:00    NaN
+2023-04-20 01:00:00    0.0
+2023-04-20 02:00:00    1.0
+Freq: H, dtype: float64</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>2023-04-20 00:00:00    1.0
+2023-04-20 01:00:00    2.0
+2023-04-20 02:00:00    NaN
+Freq: H, dtype: float64</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=df5f4545-f512-4a72-a708-b1b4189db9b9">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Reference"><font color="blue"><strong>Reference</strong></font><a class="anchor-link" href="#Reference">¶</a></h4><ul>
+<li><a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">Time Zone List</a></li>
+<li><a href="https://pandas.pydata.org/docs/user_guide/timeseries.html#timeseries-offset-aliases">Frequency</a></li>
+<li><a href="https://pandas.pydata.org/docs/user_guide/timeseries.html#">Documentation</a></li>
 </ul>
 </div>
 </div>
