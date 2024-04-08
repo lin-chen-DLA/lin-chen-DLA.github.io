@@ -7501,6 +7501,19 @@ a.anchor-link {
 </div>
 </div>
 </div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b9756e27-c496-47cc-a597-aac348c0ce29">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Data-Analysis"><font color="blue"><strong>Data Analysis</strong></font><a class="anchor-link" href="#Data-Analysis">¶</a></h4><ul>
+<li>Visualize and analyze data</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d8863af3-2b36-4be6-8517-7d29af94e49d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7520,35 +7533,25 @@ a.anchor-link {
 </ul>
 </li>
 <li>Data Transformation<ul>
+<li>Adjustments<ul>
+<li>Calendar adjustments</li>
+<li>Population adjustments</li>
+<li>Inflation adjustments</li>
+<li>Mathematical transformations</li>
+</ul>
+</li>
 <li>Scaling</li>
-<li>Detrending<ul>
-<li>Additive Model, $y_{t} = Trend_{t} + Seaonsonality_{t} + Error_{t}$<ul>
-<li>First Differencing, remove trend, $\Delta y_{t} = y_{t} - y_{t-1}$</li>
-<li>Seasonal Differencing, remove seasonality, $\Delta y_{t} = y_{t} - y_{t-12}$ for 12 months cycle</li>
 </ul>
 </li>
-<li>Multiplicative Model, $y_{t} = Trend_{t} * Seaonsonality_{t} * Error_{t}$<ul>
-<li>Transform multipliative model to additive model, $y^{'} = log(y_{t})$</li>
-<li>Apply the first differecing and seasonal differencing</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Or Decomposition<ul>
+<li>Decomposition<ul>
 <li>Separate the time series into trend, seasonal, and residual components</li>
 <li>Substrate or divide the trend and seasonal components from the original series<ul>
 <li>Additive Model, $y^{'} = y_{t} - Trend_{t}$, $y^{"} = y^{'} - Seasonality_{t}$</li>
 <li>Multiplicative Model, $y^{'} = y_{t} / Trend_{t}$, $y^{"} = y^{'} / Seasonality_{t}$</li>
 </ul>
 </li>
-</ul>
-</li>
 <li>Assess Stationarity<ul>
 <li>Augmented Dickey-Fuller (ADF) test</li>
-</ul>
-</li>
-<li>Log Transformation<ul>
-<li>Reduce the variance and stabilize the mean of the series over time</li>
 </ul>
 </li>
 </ul>
