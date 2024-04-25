@@ -66,6 +66,47 @@
     	<div class = "block">
 			<p style = "text-align:center;"><img src = "img/Qlik_2.png" width = "60%"></p>
 		</div>
+		<div class = "subtitle">Data Model</div>
+		<div class = "block">
+			<li>Refers to the structure and organization of data within the Qlik platform</li>
+			<li>Data is loaded into an in-memory data model which is similar to a relational database</li>
+			<li>Identifies <span style = "color:red">common fields</span> between tables and establishes associations between them</li>
+			<li>Associations are based on <span style = "color:red">shared values</span> within the fields. Bi-directional, selections made in one table can affect data in related tables and vice versa. Likes full outer joined tables</li>
+			<li>Option 1. Data Manager
+				<ul>
+					<li>1. Load data tables from local</li>
+					<li>2. Build associations</li>
+				</ul>
+			</li>
+			<li>Option 2. Data Load Editor
+				<ul>
+					<li>1. Create database connection or local file connection</li>
+					<li>2. Load tables with scripts</li>
+				<pre class = "prettyprint linenums">
+LIB CONNECT TO 'connection_name'
+
+Order: // table name
+LOAD OrderID,
+	CustomerID as ActiveCustomerID,
+	EmployeeID,
+	ShipperID,
+	FreightWeight;
+SELECT OrderID,
+	CustomerID,
+	EmployeeID,
+	ShipperID,
+	FreightWeight
+FROM "database_name".owner_name.table_name;
+				</pre>
+					<li>3. View data and association with Data Model Viewer</li>
+				</ul>
+			</li>
+</div>
+<div class = "block">
+	<li>Main define environment variables</li>
+	<li>Sections are implemented from top to down</li>
+			<p style = "text-align:center;"><img src = "img/Qlik_3.png" width = "35%"></p>
+		</div>
 		<div class = "subtitle">Visualizations</div>
 		<div class = "block">
 			<li>Filter Panes
@@ -302,6 +343,8 @@ Show me the sales in USA
 		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+			<li><a href = "https://community.qlik.com/t5/Official-Support-Articles/Qlik-Sense-Recommended-Product-Boundaries/ta-p/1760629">Boundary</a></li>
+			<li><a href = "https://help.qlik.com/en-US/sense/February2023/Subsystems/Hub/Content/Sense_Hub/Scripting/functions-in-scripts-chart-expressions.htm">Script</a></li>
 			<li><a href = "https://help.qlik.com/">Qlik Online Help</a></li>
 			<li><a href = "https://help.qlik.com/en-US/sense/August2023/Content/Sense_Helpsites/Tutorials.htm">Tutorial</a></li>
 			<li><a href = "https://www.youtube.com/watch?v=6KHs0xa-jgE">Qlik Sense Tutorial for Beginners - Qlik Sense Training</a></li>
