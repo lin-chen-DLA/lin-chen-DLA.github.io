@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+		<div class = "title">
+			dbutils.widgets
+		</div>
+
+        <div class = "subtitle">Components</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# text
+dbutils.widgets.text(name = 'text_name', defaultValue = 'Default_value', label = 'Label')
+
+# dropdown
+dbutils.widgets.dropdown(name = 'dropdown_name', defaultValue = 'CA', choices = ['CA', 'VA'], label = 'State')
+
+# combobox
+dbutils.widgets.combobox(name = 'combobox_name', defaultValue = 'banana', choices = ['apple', 'banana', 'coconut', 'dragon fruit'], 'label' = 'Label')
+
+# multiselect
+dbutils.widgets.multiselect(name = 'multiselect_name', defaultValue = 'Tuesday', choices = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], label = 'Wednesday')
+		</pre>
+        </div>
+        <div class = "subtitle">Get Component Value</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# get
+# get the current value of a widget with name
+value = dbutils.widgets.get('text_name')
+		</pre>
+		</div>
+		<div class = "subtitle">Remove Components</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# remove
+# remove a widget with name
+dbutils.widgets.remove('text_name')
+
+# removeAll
+# remove all widgets
+dbutils.widgets.removeAll()
+		</pre>
+		</div>
+		<div class = "subtitle">Events</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+1. Run Notebook
+	* When a widget changes value, run the whole notebook
+2. Run Accessed Commands
+	* When a widget changes value, run the cells getting the widget value
+3. Do Nothing
+	* When a widget changes value, do nothing
+		</pre>
+		</div>
+        <div class = "subtitle">Example</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# add a dropdown menu
+dbutils.widgets.dropdown(name = 'dropdown_name', defaultValue = 'setosa', choices = ['setosa', 'versicolor', 'virginica'], label = 'Iris Species')
+</pre>
+</div>
+
+<div class = "block">
+		<pre class = "prettyprint linenums">
+# load data
+import plotly.express as px
+data = px.data.iris()
+ 
+# reduce data dimension
+from sklearn.decomposition import PCA
+pca = PCA(n_components=2)
+pca.fit(data.iloc[:, :4])
+data_pca = pca.transform(data.iloc[:, :4])
+</pre>
+</div>
+
+<div class = "block">
+		<pre class = "prettyprint linenums">
+# plot data
+import plotly.graph_objects as go
+
+def get_plot(x, y):
+    fig = go.Figure()
+
+    if species == 'setosa':
+    	id = 1
+    	name = 'setosa'
+    elif species == 'versicolor':
+    	id = 2
+    	name = 'versicolor'
+    else:
+    	id = 3
+    	name = 'virginica'
+
+    trace = go.Scatter(x=data_pca[:, 0][data['species_id'] == id], y=data_pca[:, 1][data['species_id'] == id], mode='markers', name = name)
+    
+    fig.add_trace(trace)
+
+    return fig
+        </pre>
+        </div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+# get widget value, then plot
+value = dbutils.widgets.get('dropdown_name')
+get_plot(value)
+		</pre>
+	</div>
+	<div class = "block">
+		<pre class = "prettyprint linenums">
+# add the plot to a dashboard
+		</pre>
+	</div>
+	<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://docs.databricks.com/en/dev-tools/databricks-utils.html">API</a></li>
+			<li><a href = "https://docs.databricks.com/en/notebooks/widgets.html">Documentation</a></li>
+		</div>
+    </body>
+</html>
