@@ -1,16 +1,27 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Python</title>
-		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
-		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
-		<style>
-			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
-			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
 			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
 			span {color: red; font-weight: bold;}
-		</style>
-	</head>
+		</style>
+
+	</head>
+
 	<body>
 		<div class = "title">
 			Event
@@ -19,17 +30,39 @@
 		<div class = "subtitle">click_on</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+import ipywidgets as widgets
 from IPython.display import display
+
+# define layout
 button = widgets.Button(description="Click Me!")
 output = widgets.Output()
 
 display(button, output)
 
+# define callback
 def on_button_clicked(b):
     with output:
-        output.clear_output()
+        output.clear_output() # clear the previous content
         print("Button clicked.")
 
+# define event
+button.on_click(on_button_clicked)
+		</pre>
+		</div>
+		<div class = "subtitle">decorator</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+button = widgets.Button(description="Click Me!")
+output = widgets.Output(layout={'border': '1px solid silver'})
+ 
+display(button, output)
+ 
+# use decorator
+@output.capture(clear_output=True)
+def on_button_clicked(b):
+    with output:
+        print("Button clicked.")
+ 
 button.on_click(on_button_clicked)
 		</pre>
 		</div>
@@ -37,15 +70,15 @@ button.on_click(on_button_clicked)
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 int_range = widgets.IntSlider()
-output2 = widgets.Output()
-
-display(int_range, output2)
-
+output = widgets.Output()
+ 
+display(int_range, output)
+ 
+@output.capture(clear_output=True)
 def on_value_change(change):
-    with output2:
-        output2.clear_output()
+    with output:
         print(change['new'])
-
+ 
 # tigger callback when traits in the names are changed
 int_range.observe(on_value_change, names=['value'], type='change')
         </pre>
