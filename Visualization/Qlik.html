@@ -341,6 +341,32 @@ Show me the sales in USA
 </pre>
 			<li><span>Create an Analysis</span>, create charts from a range of possible analysis types</li>
 		</div>
+		<div class = "subtitle">Load a Data Multiple Times</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/Qlik_4.png" width = "60%"></p>
+		</div>
+		<div class = "block">
+			<li>QVD
+				<ul>
+					<li>Qlik data format, each table in Qlik is saved as a QVD file</li>
+				</ul>
+			</li>
+			<li>Support Incremental load</li>
+			<li>Store Data
+			<pre class = "prettyprint linenums">
+# Store table_name into 'lib://connect_name/table_name.type'(type)
+Store Customers into 'lib://connect_name/Customers.qvd'(qvd)
+Store Customers into 'lib://connect_name/Customers.csv'(txt)
+Store Customers into 'lib://connect_name/Customers.parquet'(parquet)
+			</pre>
+			</li>
+			<li>Load Data
+				<pre class = "prettyprint linenums">
+LOAD field_1, field_2
+FROM 'lib://connect_name/Customer.qvd'(qvd)
+				</pre>
+			</li>
+		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
 			<li><a href = "https://community.qlik.com/t5/Official-Support-Articles/Qlik-Sense-Recommended-Product-Boundaries/ta-p/1760629">Boundary</a></li>
