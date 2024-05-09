@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Sktime_22</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Sktime_24</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7857,62 +7857,6 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=43648e3c-e02e-4e30-b3c1-8a800d999530">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="4a.-Create-customized-transformer"><strong>4a. Create customized transformer</strong><a class="anchor-link" href="#4a.-Create-customized-transformer">¶</a></h4>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=8440e6a2-7843-4607-936a-1b3f7801a9a7">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sktime.transformations.series.func_transform</span> <span class="kn">import</span> <span class="n">FunctionTransformer</span>
-
-<span class="k">def</span> <span class="nf">forward_transform</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">y</span><span class="o">*</span><span class="mi">10</span>
-
-<span class="k">def</span> <span class="nf">backward_transform</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">y</span><span class="o">/</span><span class="mi">10</span>
-
-<span class="n">transformer</span> <span class="o">=</span> <span class="n">FunctionTransformer</span><span class="p">(</span><span class="n">func</span> <span class="o">=</span> <span class="n">forward_transform</span><span class="p">,</span> <span class="n">inverse_func</span> <span class="o">=</span> <span class="n">backward_transform</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=317cc280-3e36-4e37-bd04-2fa7caaf11d0">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="4b.-create-preprocessing-pipeline"><strong>4b. create preprocessing pipeline</strong><a class="anchor-link" href="#4b.-create-preprocessing-pipeline">¶</a></h4><ul>
-<li><p>Preprocessing steps can vary depending on data</p>
-</li>
-<li><p>Common Steps</p>
-<ol>
-<li>Imputation</li>
-<li>Deseasonalization</li>
-<li>Detrending</li>
-<li>Transformation</li>
-<li>Scaling</li>
-</ol>
-</li>
-</ul>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ceeeba57">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8030,148 +7974,6 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b3fd2a5f-20fd-4df9-9462-34866a22dd26">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># get forecaster tags</span>
-<span class="kn">from</span> <span class="nn">sktime.forecasting.var</span> <span class="kn">import</span> <span class="n">VAR</span>
-<span class="n">forecaster</span> <span class="o">=</span> <span class="n">VAR</span><span class="p">()</span>
-<span class="n">forecaster</span><span class="o">.</span><span class="n">get_class_tags</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>{'python_dependencies_alias': {'scikit-learn': 'sklearn'},
- 'authors': ['thayeylolu', 'aiwalter', 'lbventura'],
- 'maintainers': 'lbventura',
- 'python_version': None,
- 'python_dependencies': 'statsmodels',
- 'object_type': 'forecaster',
- 'scitype:y': 'multivariate',
- 'ignores-exogeneous-X': True,
- 'capability:insample': True,
- 'capability:pred_int': True,
- 'capability:pred_int:insample': False,
- 'handles-missing-data': False,
- 'y_inner_mtype': 'pd.DataFrame',
- 'X_inner_mtype': 'pd.DataFrame',
- 'requires-fh-in-fit': False,
- 'X-y-must-have-same-index': True,
- 'enforce_index_type': None,
- 'fit_is_empty': False,
- 'univariate-only': False}</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b8dd604b-053d-44d4-ac06-b2b94eefb503">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Forecaster-Tags"><strong>Forecaster Tags</strong><a class="anchor-link" href="#Forecaster-Tags">¶</a></h4><ul>
-<li>requires-fh-in-fit, whether or not the forecaster requires the forecasting horizon in fit</li>
-<li>scitype:y<ul>
-<li>univariate, fit one model per column</li>
-<li>multivariate, forecast feature will depend on values of other features</li>
-<li>both, input contains multiple features, and that one of those features is the target</li>
-</ul>
-</li>
-<li>capability:pred_int, whether the forecaster implements probabilistic predictions</li>
-<li>ignores-exogeneous-X<ul>
-<li>False, use exogeneous features</li>
-<li>True, not use exogeneous features, X is ignored</li>
-</ul>
-</li>
-<li>handles-missing-data, whether the forecaster can handle missing data in the inputs</li>
-<li>y_inner_mtype, X_inner_mtype, whether the forecast can handle panel or hierarchical data</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=155923f8-a53d-4a96-893e-869a0dffb4a6">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="5a.-select-forecasters"><strong>5a. select forecasters</strong><a class="anchor-link" href="#5a.-select-forecasters">¶</a></h4>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=26489fcf-32f9-4095-b2c9-80052df2f63a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sktime.registry</span> <span class="kn">import</span> <span class="n">all_estimators</span>
-
-<span class="c1"># get multivariate forecasters</span>
-<span class="n">all_estimators</span><span class="p">(</span><span class="n">filter_tags</span><span class="o">=</span><span class="p">{</span><span class="s2">"scitype:y"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"multivariate"</span><span class="p">]},</span> <span class="n">as_dataframe</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="c1"># get univariate forecasters</span>
-<span class="n">all_estimators</span><span class="p">(</span><span class="n">filter_tags</span><span class="o">=</span><span class="p">{</span><span class="s2">"scitype:y"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"univariate"</span><span class="p">]},</span> <span class="n">as_dataframe</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=47573a03-50c9-4d1c-8685-a30fa47e949a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="5b.-select-forecasters-supporting-probabilistic-forecasting"><strong>5b. select forecasters supporting probabilistic forecasting</strong><a class="anchor-link" href="#5b.-select-forecasters-supporting-probabilistic-forecasting">¶</a></h4>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=556ce662-8a07-49fd-a0bc-b546594ab612">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># list forecasters supporting probabilistic forecasting</span>
-<span class="n">all_estimators</span><span class="p">(</span><span class="n">filter_tags</span><span class="o">=</span><span class="p">{</span><span class="s2">"capability:pred_int"</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="n">as_dataframe</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1a880a97-4f2f-4183-9a58-f1ae47778784">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="5c.-evaluate-models-using-default-parameter-with-cross-validation"><strong>5c. evaluate models using default parameter with cross-validation</strong><a class="anchor-link" href="#5c.-evaluate-models-using-default-parameter-with-cross-validation">¶</a></h4>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=260b9bee">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8243,77 +8045,6 @@ a.anchor-link {
 <pre>VAR :  1.3518417095573132
 AutoETS :  1.5265940099212465
 </pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=140ad6ea">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># select model with MultiplexForecaster</span>
-<span class="kn">from</span> <span class="nn">sktime.forecasting.compose</span> <span class="kn">import</span> <span class="n">MultiplexForecaster</span>
-<span class="kn">from</span> <span class="nn">sktime.forecasting.model_selection</span> <span class="kn">import</span> <span class="n">ForecastingGridSearchCV</span>
-
-<span class="n">models</span> <span class="o">=</span> <span class="n">MultiplexForecaster</span><span class="p">(</span>
-    <span class="n">forecasters</span><span class="o">=</span><span class="p">[</span>
-        <span class="p">(</span><span class="s1">'VAR'</span><span class="p">,</span> <span class="n">VAR</span><span class="p">()),</span> 
-        <span class="p">(</span><span class="s1">'AutoETS'</span><span class="p">,</span> <span class="n">AutoETS</span><span class="p">(</span><span class="n">auto</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sp</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
-    <span class="p">])</span>
-
-<span class="n">fh</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-
-<span class="n">cv</span> <span class="o">=</span> <span class="n">ExpandingWindowSplitter</span><span class="p">(</span><span class="n">step_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="n">fh</span><span class="p">,</span> <span class="n">initial_window</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-                             
-<span class="n">forecaster_param_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"selected_forecaster"</span><span class="p">:</span> <span class="p">[</span><span class="s1">'VAR'</span><span class="p">,</span> <span class="s1">'AutoETS'</span><span class="p">]}</span>
-                             
-<span class="n">model_selection</span> <span class="o">=</span> <span class="n">ForecastingGridSearchCV</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="n">forecaster_param_grid</span><span class="p">)</span>
-
-<span class="n">model_selection</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">y_train_preprocessing</span><span class="p">)</span>
-
-<span class="n">model_selection</span><span class="o">.</span><span class="n">best_forecaster_</span><span class="p">,</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">best_score_</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>/Users/lchen/anaconda3/envs/time-series/lib/python3.11/site-packages/sktime/forecasting/base/adapters/_statsmodels.py:60: UserWarning: Warning: time series is not strictly positive, multiplicative components are omitted
-  self._fit_forecaster(y, X)
-/Users/lchen/anaconda3/envs/time-series/lib/python3.11/site-packages/sktime/utils/parallel.py:92: FitFailedWarning: 
-                In evaluate, fitting of forecaster MultiplexForecaster failed,
-                you can set error_score='raise' in evaluate to see
-                the exception message.
-                Fit failed for the 0-th data split, on training data y_train with
-                cutoff NaT, and len(y_train)=6.
-                The score will be set to nan.
-                Failed forecaster with parameters: MultiplexForecaster(forecasters=[('VAR', VAR()),
-                                 ('AutoETS',
-                                  AutoETS(auto=True, n_jobs=-1, sp=12))],
-                    selected_forecaster='AutoETS').
-                
-  ret = [fun(x, meta=meta) for x in iter]
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>(MultiplexForecaster(forecasters=[('VAR', VAR()),
-                                  ('AutoETS',
-                                   AutoETS(auto=True, n_jobs=-1, sp=12))],
-                     selected_forecaster='VAR'),
- 3.6509508530713495)</pre>
 </div>
 </div>
 </div>
@@ -8800,7 +8531,7 @@ AutoETS :  1.5265940099212465
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="10.-Deployment"><strong><font color="blue">10. Deployment</font></strong><a class="anchor-link" href="#10.-Deployment">¶</a></h4><center><img alt="No description has been provided for this image" src="img/Forecasting_8.png"/></center>
+<h4 id="10.-Deployment"><strong><font color="blue">10. Deployment</font></strong><a class="anchor-link" href="#10.-Deployment">¶</a></h4><center><img alt="No description has been provided for this image" src="../img/Forecasting_8.png"/></center>
 </div>
 </div>
 </div>
