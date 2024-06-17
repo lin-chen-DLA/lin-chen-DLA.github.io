@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class = "title">
+			pytest
+		</div>
+
+		<div class = "subtitle">Test Discovery</div>
+		<div class = "block">
+            <li>Recurse into directories to search for test_*.py or *_test.py</li>
+		</div>
+		<div class = "subtitle">Test a file</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# test_sample.py
+def inc(x):
+    return x + 1
+
+def test_answer():
+    assert inc(3) == 4
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+pytest test_sample.py
+            </pre>
+        </div>
+		<div class = "subtitle">Layout 1</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "./img/pytest_1.png" width = "30%"></p>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# __init__.py
+# empty
+			</pre>
+			<pre class = "prettyprint linenums">
+# m.py
+def inc(x):
+    return x + 1
+</pre>
+<pre class = "prettyprint linenums">
+# test_sample.py
+from p.m import inc
+
+def test_answer():
+    assert inc(3) == 4
+            </pre>
+        </div>
+        <div class = "block">
+			<pre class = "prettyprint linenums">
+pytest --pyargs p
+            </pre>
+        </div>
+        <div class = "subtitle">Layout 2</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "./img/pytest_2.png" width = "30%"></p>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# m.py
+def inc(x):
+    return x + 1
+			</pre>
+			<pre class = "prettyprint linenums">
+import sys
+sys.path.append("src") # search modules/packages from src
+
+from m import inc
+
+def test_answer():
+    assert inc(3) == 4
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.pytest.org/en/8.2.x/index.html">Documentation</a></li>
+        </div>
+    </body>
+</html>

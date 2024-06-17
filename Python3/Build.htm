@@ -234,18 +234,21 @@ pip uninstall linlangleyprime
 		</div>
 		<div class = "subtitle">setuptools</div>
 		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/setuptools_1.png" width = "60%"></p>
 		<pre class = "prettyprint linenums">
 python setup.py --help-commands # get help
 
-python setup.py bdist # build a tar.gz file in /dist and conduct a installation in /build folder
+python setup.py build # build installation files in build
+
+python setup.py sdist # create tar.gz file
+
+python setup.py bdist # build a tar.gz file in /dist and installation folders in /build
 
 python setup.py bdist_rpm # create rpm Linux distribution
-or
-python setup.py bdist --formats=rpm
 
 python setup.py bdist_wininst # create exe distribution for Windows
-or
-python setup.py bdist --formats=wininst
+
+python setup.py bdist_wheel # create whl file
 		</pre>
 		</div>
 		<div class = "subtitle">git repository</div>
@@ -479,6 +482,7 @@ python -O -m PyInstaller --onefile hello.py # -OO may not work
 			</li>
 			<li>setuptools
 				<ul>
+					<li><a href = "https://packaging.python.org/en/latest/guides/distributing-packages-using-setuptools/">Python Packaging User Guide</a></li>
 					<li><a href = "https://docs.python.org/3/distutils/builtdist.html">Built Distributions</a></li>
 					<li><a href = "https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html#lay-out-your-project">The Hitchhiker's Guide</a></li>
 					<li><a href = "https://wiki.python.org/moin/Distutils/Tutorial">Introduction to distutils</a></li>

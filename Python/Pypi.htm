@@ -38,8 +38,37 @@
 			<li>pip search [packagename], show available package from PyPI repository</li> 
 			<li>pip install
 				<ul>
-					<li>pip install [packagename], install a package</li>
-					<li>pip install --upgrade [packagename], upgrade a package</li>
+                    <pre class = "prettyprint linenums">
+# install package
+# pip install package_name
+# pip install package_name==version_number
+
+# upgrade package
+# pip install --upgrade packagename
+
+# install packages from requirements.txt
+pip install -r requirements.txt
+
+# install to a specific directory
+pip install --target=directory package_name
+
+# install without dependencies
+pip install --no-deps package_name
+
+# install in editable mode
+pip install -e directory
+
+# install from a local directory
+pip install /path/directory
+
+# install from Github
+pip install git+https://github.com/lin-chen-Langley/prime
+
+# install from a private repository
+# --index-url, define package repository
+# -extra-index-url, define dependency repository
+pip install --index-url=https://your.private.repo/simple/ --extra-index-url=https://pypi.org/simple package_name
+                    </pre>
 				</ul>
 			</li>
 			<li>pip uninstall [packagename], uninstall a package</li>
