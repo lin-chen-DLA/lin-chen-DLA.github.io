@@ -86,6 +86,7 @@ def inc(x):
     return x + 1
 			</pre>
 			<pre class = "prettyprint linenums">
+# test_sample.py
 import sys
 sys.path.append("src") # search modules/packages from src
 
@@ -95,8 +96,128 @@ def test_answer():
     assert inc(3) == 4
 			</pre>
 		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+pytest
+
+or
+
+python -m pytest
+			</pre>
+		</div>
+		<div class = "subtitle">Layout 3</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "./img/pytest_2.png" width = "30%"></p>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# m.py
+def inc(x):
+    return x + 1
+			</pre>
+			<pre class = "prettyprint linenums">
+# test_sample.py
+from m import inc
+
+def test_answer():
+    assert inc(3) == 4
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+python -m pytest
+			</pre>
+		</div>
+		<div class = "subtitle">Layout 4</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "./img/pytest_4.png" width = "30%"></p>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# m.py
+def inc(x):
+    return x + 1
+			</pre>
+			<pre class = "prettyprint linenums">
+# __init__.py
+# empty
+			</pre>
+			<pre class = "prettyprint linenums">
+# test_sample.py
+from src.m import inc
+
+def test_answer():
+    assert inc(3) == 4
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+pytest
+			</pre>
+		</div>
+		<div class = "subtitle">Layout 5</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "./img/pytest_3.png" width = "30%"></p>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# __init__.py
+# empty
+			</pre>
+			<pre class = "prettyprint linenums">
+# m.py
+def inc(x):
+    return x + 1
+			</pre>
+			<pre class = "prettyprint linenums">
+# test_sample.py
+import importlib
+
+def test_answer():
+    module = importlib.import_module("mypackage.m")
+    assert module.inc(3) == 4
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+python -m pytest
+			</pre>
+		</div>
+		<div class = "subtitle">Layout 6</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "./img/pytest_5.png" width = "30%"></p>
+        </div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# pytest.ini
+[pytest]  
+pythonpath = src
+			</pre>
+			<pre class = "prettyprint linenums">
+# m.py
+def inc(x):
+    return x + 1
+			</pre>
+			<pre class = "prettyprint linenums">
+# test_sample.py
+from m import inc
+
+def test_answer():
+    assert inc(3) == 4
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+pytest
+
+or 
+
+python -m pytest
+			</pre>
+		</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+			<li><a href = "https://pytest-with-eric.com/introduction/pytest-pythonpath/">4 Proven Ways To Define Pytest PythonPath and Avoid Module Import Errors</a></li>
             <li><a href = "https://docs.pytest.org/en/8.2.x/index.html">Documentation</a></li>
         </div>
     </body>
