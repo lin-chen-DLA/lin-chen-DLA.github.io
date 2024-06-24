@@ -7621,7 +7621,9 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="3.-Training/Test-Data-Preparation"><strong><font color="blue">3. Training/Test Data Preparation</font></strong><a class="anchor-link" href="#3.-Training/Test-Data-Preparation">¶</a></h4>
+<h4 id="3.-Training/Test-Data-Preparation"><strong><font color="blue">3. Training/Test Data Preparation</font></strong><a class="anchor-link" href="#3.-Training/Test-Data-Preparation">¶</a></h4><ul>
+<li>In time series analysis and forecasting, it is crucial that the training data comes before the test data</li>
+</ul>
 </div>
 </div>
 </div>
@@ -7630,7 +7632,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sktime.forecasting.model_selection</span> <span class="kn">import</span> <span class="n">temporal_train_test_split</span>
@@ -7646,7 +7648,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_series</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">"y_train"</span><span class="p">,</span> <span class="s2">"y_test"</span><span class="p">])</span>
@@ -7660,7 +7662,7 @@ a.anchor-link {
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>(&lt;Figure size 1600x400 with 1 Axes&gt;,
  &lt;Axes: ylabel='Number of airline passengers'&gt;)</pre>
@@ -7686,6 +7688,17 @@ a.anchor-link {
 </div>
 </div>
 </div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5128d48e-4333-4840-9526-0e9354f7b271">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<center><img alt="No description has been provided for this image" src="img/Forecasting_6.png"/></center>
+</div>
+</div>
+</div>
+</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b5f7c688-3eb6-4607-819a-fd7b821e7bcf">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7701,7 +7714,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sktime.transformations.series.func_transform</span> <span class="kn">import</span> <span class="n">FunctionTransformer</span>
@@ -7757,7 +7770,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sktime.transformations.series.detrend</span> <span class="kn">import</span> <span class="n">Deseasonalizer</span>
@@ -7787,7 +7800,7 @@ a.anchor-link {
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>(&lt;Figure size 1600x400 with 1 Axes&gt;,
  &lt;Axes: ylabel='Number of airline passengers'&gt;)</pre>
@@ -7916,7 +7929,10 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="5c.-evaluate-models-using-default-parameter-with-cross-validation">5c. evaluate models using default parameter with cross-validation<a class="anchor-link" href="#5c.-evaluate-models-using-default-parameter-with-cross-validation">¶</a></h4><center><img alt="No description has been provided for this image" src="img/Forecasting_1.png"/></center>
+<h4 id="5c.-evaluate-models-using-default-parameter-with-cross-validation">5c. evaluate models using default parameter with cross-validation<a class="anchor-link" href="#5c.-evaluate-models-using-default-parameter-with-cross-validation">¶</a></h4><ul>
+<li>Expanding Window Cross-Validation<center><img alt="No description has been provided for this image" src="img/Forecasting_1.png"/></center>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -7925,7 +7941,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># select model with a loop</span>
@@ -7934,6 +7950,7 @@ a.anchor-link {
 <span class="kn">from</span> <span class="nn">sktime.forecasting.arima</span> <span class="kn">import</span> <span class="n">AutoARIMA</span>
 <span class="kn">from</span> <span class="nn">sktime.forecasting.model_evaluation</span> <span class="kn">import</span> <span class="n">evaluate</span>
 <span class="kn">from</span> <span class="nn">sktime.forecasting.model_selection</span> <span class="kn">import</span> <span class="n">ExpandingWindowSplitter</span>
+<span class="kn">from</span> <span class="nn">sktime.performance_metrics.forecasting</span> <span class="kn">import</span> <span class="n">MeanSquaredError</span>
 
 <span class="n">models</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Naive'</span><span class="p">:</span> <span class="n">NaiveForecaster</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s2">"last"</span><span class="p">,</span> <span class="n">sp</span><span class="o">=</span><span class="mi">12</span><span class="p">),</span> 
           <span class="s1">'AutoETS'</span><span class="p">:</span> <span class="n">AutoETS</span><span class="p">(</span><span class="n">auto</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sp</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> 
@@ -7942,8 +7959,8 @@ a.anchor-link {
 <span class="n">cv</span> <span class="o">=</span> <span class="n">ExpandingWindowSplitter</span><span class="p">(</span><span class="n">step_length</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fh</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">initial_window</span><span class="o">=</span><span class="mi">72</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">forecaster</span><span class="o">=</span><span class="n">models</span><span class="p">[</span><span class="n">model</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">y_train_preprocessing</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s2">"refit"</span><span class="p">,</span> <span class="n">return_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">':'</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">'test_MeanAbsolutePercentageError'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">forecaster</span><span class="o">=</span><span class="n">models</span><span class="p">[</span><span class="n">model</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">y_train_preprocessing</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s2">"refit"</span><span class="p">,</span> <span class="n">return_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scoring</span> <span class="o">=</span> <span class="n">MeanSquaredError</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">':'</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">'test_MeanSquaredError'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -7956,9 +7973,9 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Naive : 6.929411831930932
-AutoETS : 2.661881863081615
-AutoARIMA : 1.477907684006735
+<pre>Naive : 126.9353297277532
+AutoETS : 77.00277856880916
+AutoARIMA : 46.24662100064044
 </pre>
 </div>
 </div>
@@ -8028,7 +8045,7 @@ AutoARIMA : 1.477907684006735
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">model_selected</span> <span class="o">=</span> <span class="n">AutoARIMA</span><span class="p">(</span><span class="n">suppress_warnings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -8043,7 +8060,7 @@ AutoARIMA : 1.477907684006735
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>{'D': None,
  'alpha': 0.05,
@@ -8103,7 +8120,10 @@ AutoARIMA : 1.477907684006735
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="6b.-fine-tune-hyper-parameters-with-cross-validation">6b. fine tune hyper-parameters with cross-validation<a class="anchor-link" href="#6b.-fine-tune-hyper-parameters-with-cross-validation">¶</a></h4><center><img alt="No description has been provided for this image" src="img/Forecasting_2.png"/></center>
+<h4 id="6b.-fine-tune-hyper-parameters-with-cross-validation">6b. fine tune hyper-parameters with cross-validation<a class="anchor-link" href="#6b.-fine-tune-hyper-parameters-with-cross-validation">¶</a></h4><ul>
+<li>Sliding Window Cross-Validation<center><img alt="No description has been provided for this image" src="img/Forecasting_2.png"/></center>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -8112,7 +8132,7 @@ AutoARIMA : 1.477907684006735
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sktime.forecasting.model_selection</span> <span class="kn">import</span> <span class="n">ForecastingGridSearchCV</span><span class="p">,</span> <span class="n">SlidingWindowSplitter</span>
@@ -8136,7 +8156,7 @@ AutoARIMA : 1.477907684006735
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># get the best model</span>
@@ -8152,7 +8172,7 @@ AutoARIMA : 1.477907684006735
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>{'alpha': 0.1, 'sp': 12}</pre>
 </div>
@@ -8175,7 +8195,7 @@ AutoARIMA : 1.477907684006735
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># build pipeline</span>
@@ -8193,15 +8213,15 @@ AutoARIMA : 1.477907684006735
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<style>#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c {color: black;background-color: white;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c pre{padding: 0;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-toggleable {background-color: white;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-estimator:hover {background-color: #d4ebff;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-item {z-index: 1;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-parallel::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-parallel-item:only-child::after {width: 0;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;position: relative;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-label-container {position: relative;z-index: 2;text-align: center;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c div.sk-text-repr-fallback {display: none;}</style><div class="sk-top-container" id="sk-a2ba2fb0-be54-4be9-b343-1223f1842d8c"><div class="sk-text-repr-fallback"><pre>TransformedTargetForecaster(steps=[Deseasonalizer(sp=12),
+<style>#sk-905bc088-02fa-4735-8590-76943baf8751 {color: black;background-color: white;}#sk-905bc088-02fa-4735-8590-76943baf8751 pre{padding: 0;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-toggleable {background-color: white;}#sk-905bc088-02fa-4735-8590-76943baf8751 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-905bc088-02fa-4735-8590-76943baf8751 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-905bc088-02fa-4735-8590-76943baf8751 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-905bc088-02fa-4735-8590-76943baf8751 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-905bc088-02fa-4735-8590-76943baf8751 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-905bc088-02fa-4735-8590-76943baf8751 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-estimator:hover {background-color: #d4ebff;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-item {z-index: 1;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-parallel::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-parallel-item:only-child::after {width: 0;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;position: relative;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-label-container {position: relative;z-index: 2;text-align: center;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-905bc088-02fa-4735-8590-76943baf8751 div.sk-text-repr-fallback {display: none;}</style><div class="sk-top-container" id="sk-905bc088-02fa-4735-8590-76943baf8751"><div class="sk-text-repr-fallback"><pre>TransformedTargetForecaster(steps=[Deseasonalizer(sp=12),
                                    Detrender(forecaster=PolynomialTrendForecaster()),
                                    AutoARIMA(alpha=0.1, sp=12,
-                                             suppress_warnings=True)])</pre><b>Please rerun this cell to show the HTML repr or trust the notebook.</b></div><div class="sk-container" hidden=""><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="UUID('91ce5623-883d-43a9-9037-1e88524f9e13')" type="checkbox"/><label class="sk-toggleable__label sk-toggleable__label-arrow" for="UUID('91ce5623-883d-43a9-9037-1e88524f9e13')">TransformedTargetForecaster</label><div class="sk-toggleable__content"><pre>TransformedTargetForecaster(steps=[Deseasonalizer(sp=12),
+                                             suppress_warnings=True)])</pre><b>Please rerun this cell to show the HTML repr or trust the notebook.</b></div><div class="sk-container" hidden=""><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="UUID('8a53b7ed-a045-42f5-9f91-e5f71c591978')" type="checkbox"/><label class="sk-toggleable__label sk-toggleable__label-arrow" for="UUID('8a53b7ed-a045-42f5-9f91-e5f71c591978')">TransformedTargetForecaster</label><div class="sk-toggleable__content"><pre>TransformedTargetForecaster(steps=[Deseasonalizer(sp=12),
                                    Detrender(forecaster=PolynomialTrendForecaster()),
                                    AutoARIMA(alpha=0.1, sp=12,
-                                             suppress_warnings=True)])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="UUID('93fbe61a-c40c-4f30-9f38-6df23a2275ac')" type="checkbox"/><label class="sk-toggleable__label sk-toggleable__label-arrow" for="UUID('93fbe61a-c40c-4f30-9f38-6df23a2275ac')">Deseasonalizer</label><div class="sk-toggleable__content"><pre>Deseasonalizer(sp=12)</pre></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="UUID('5df1a2fc-6c19-4a11-8373-5d4566dfaae5')" type="checkbox"/><label class="sk-toggleable__label sk-toggleable__label-arrow" for="UUID('5df1a2fc-6c19-4a11-8373-5d4566dfaae5')">PolynomialTrendForecaster</label><div class="sk-toggleable__content"><pre>PolynomialTrendForecaster()</pre></div></div></div></div></div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="UUID('691b3224-df9c-429b-b1af-a4d04c264e4f')" type="checkbox"/><label class="sk-toggleable__label sk-toggleable__label-arrow" for="UUID('691b3224-df9c-429b-b1af-a4d04c264e4f')">AutoARIMA</label><div class="sk-toggleable__content"><pre>AutoARIMA(alpha=0.1, sp=12, suppress_warnings=True)</pre></div></div></div></div></div></div></div></div></div></div>
+                                             suppress_warnings=True)])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="UUID('1a240bcf-d98a-428e-adea-89ad0bd7612a')" type="checkbox"/><label class="sk-toggleable__label sk-toggleable__label-arrow" for="UUID('1a240bcf-d98a-428e-adea-89ad0bd7612a')">Deseasonalizer</label><div class="sk-toggleable__content"><pre>Deseasonalizer(sp=12)</pre></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="UUID('5ccb76da-d7b1-4a0a-bdfa-5d9af7005d3c')" type="checkbox"/><label class="sk-toggleable__label sk-toggleable__label-arrow" for="UUID('5ccb76da-d7b1-4a0a-bdfa-5d9af7005d3c')">PolynomialTrendForecaster</label><div class="sk-toggleable__content"><pre>PolynomialTrendForecaster()</pre></div></div></div></div></div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="UUID('d3de052a-0c6f-479e-aba1-a9711cfdb7fa')" type="checkbox"/><label class="sk-toggleable__label sk-toggleable__label-arrow" for="UUID('d3de052a-0c6f-479e-aba1-a9711cfdb7fa')">AutoARIMA</label><div class="sk-toggleable__content"><pre>AutoARIMA(alpha=0.1, sp=12, suppress_warnings=True)</pre></div></div></div></div></div></div></div></div></div></div>
 </div>
 </div>
 </div>
@@ -8222,11 +8242,10 @@ AutoARIMA : 1.477907684006735
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sktime.performance_metrics.forecasting</span> <span class="kn">import</span> <span class="n">mean_absolute_percentage_error</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">fh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">37</span><span class="p">)</span>
 
@@ -8234,7 +8253,8 @@ AutoARIMA : 1.477907684006735
 <span class="n">y_pred</span> <span class="o">=</span> <span class="n">forecaster</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
 
 <span class="c1"># evaluation with metric</span>
-<span class="n">mean_absolute_percentage_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">symmetric</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">mse</span> <span class="o">=</span> <span class="n">MeanSquaredError</span><span class="p">()</span>
+<span class="n">mse</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8245,9 +8265,9 @@ AutoARIMA : 1.477907684006735
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>0.05491060094448437</pre>
+<pre>1245.2998995295457</pre>
 </div>
 </div>
 </div>
@@ -8257,7 +8277,7 @@ AutoARIMA : 1.477907684006735
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_series</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">"y_train"</span><span class="p">,</span> <span class="s2">"y_test"</span><span class="p">,</span> <span class="s2">"y_pred"</span><span class="p">])</span>
@@ -8271,7 +8291,7 @@ AutoARIMA : 1.477907684006735
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>(&lt;Figure size 1600x400 with 1 Axes&gt;,
  &lt;Axes: ylabel='Number of airline passengers'&gt;)</pre>
@@ -8301,7 +8321,7 @@ AutoARIMA : 1.477907684006735
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># retrain forecaster with the whole data</span>
@@ -8319,7 +8339,7 @@ AutoARIMA : 1.477907684006735
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># predict_interval</span>
@@ -8338,7 +8358,7 @@ AutoARIMA : 1.477907684006735
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[32]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>(&lt;Figure size 1600x400 with 1 Axes&gt;,
  &lt;Axes: ylabel='Number of airline passengers'&gt;)</pre>
@@ -8373,6 +8393,26 @@ AutoARIMA : 1.477907684006735
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <center><img alt="No description has been provided for this image" src="img/Forecasting_8.png"/></center>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2028ede0-36f3-48fd-8e39-47fae5b5d577">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">joblib</span>
+
+<span class="c1"># save forecaster</span>
+<span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">forecaster</span><span class="p">,</span> <span class="s1">'forecaster.pkl'</span><span class="p">)</span>
+
+<span class="c1"># load forecaster</span>
+<span class="n">forecaster</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'forecaster.pkl'</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
