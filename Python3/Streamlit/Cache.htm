@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Cache
+		</div>
+
+		<div class = "subtitle">Widget State</div>
+		<div class = "block">
+            <li>Widget state is persistent across reruns of the app script</li>
+            <li>st.button, st.checkbox, st.radio, st.selectbox, st.multiselect, st.slider, st.text_input, st.text_area, st.number_input, st.date_input, st.time_input, st.file_uploader, st.color_picker</li>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+
+def main():
+    options = ['red', 'blue', 'yellow']
+    selected_option = st.selectbox('Choose an option:', options)
+
+    st.write('Option: ', selected_option)
+
+    st.button('Refresh')
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "subtitle">st.session_state</div>
+		<div class = "block">
+            <li><span>Scope</span>
+                <ul>
+                    <li>Individual session across multiple script reruns</li>
+                    <li>Refreshing page will start a new session</li>
+                </ul>
+            </li>
+            <li><span>Location</span>
+                <ul>
+                    <li>Memory on server side</li>
+                    <li>Each user interacting with the Streamlit app has their own st.session_state that is isolated from other users</li>
+                </ul>
+            </li>
+            <li><span>Size</span>
+                <ul>
+                    <li>No specific size limit, but practical limitations arise from the memory capacity of the server</li>
+                    <li>Keep it small, avoid storing large datasets or complex objects</li>
+                </ul>
+            </li>
+            <li><span>Access</span>
+		<pre class = "prettyprint linenums">
+print(st.session_state)
+        </pre>
+            </li>
+            <li><span>Remove</span>
+		<pre class = "prettyprint linenums">
+del st.session_state.df
+        </pre>
+            </li>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+import numpy as np
+import time
+
+def get_data():
+    if "df" not in st.session_state:
+        time.sleep(2)
+        st.session_state.df = pd.DataFrame(np.random.randn(20, 2), columns=["x", "y"])
+
+def main():
+    get_data()
+
+    st.header("Choose a datapoint color")
+
+    options = ['red', 'blue', 'yellow']
+    selected_option = st.selectbox('Choose an option:', options)
+
+    scatter_plot = px.scatter(st.session_state.df, x='x', y='y', color_discrete_sequence=[selected_option])
+    st.plotly_chart(scatter_plot, use_container_width=True)
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://streamlit-emoji-shortcodes-streamlit-app-gwckff.streamlit.app">Emoji</a></li>
+            <li><a href = "https://streamlit.io/components">Custom components</a></li>
+            <li><a href = "https://docs.streamlit.io/develop/api-reference">API Reference</a></li>
+		</div>
+	</body>
+</html>

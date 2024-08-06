@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Layout
+		</div>
+
+		<div class = "subtitle">Code Layout</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Streamlit_1.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+
+def callback(option):
+    """update layout"""
+    if option == 'Email':
+        st.text('lin.chen@ieee.org')
+    elif option == 'Home phone':
+        st.text('757.123.000')
+    else:
+        st.text('By appointment')
+
+def main():
+    """define inital layout"""
+    option = st.selectbox(
+    "How would you like to be contacted?", ("Email", "Home phone", "Other"))
+
+    callback(option)
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">Component Layout</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Streamlit_2.png" width = "15%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+
+def get_content(option):
+    if option == 'Email':
+        st.text('lin.chen@ieee.org')
+    else:
+        st.text('By appointment')
+
+def get_option(display):
+    if display:
+        option = st.selectbox(
+        "How would you like to be contacted?", ("Email", "Phone"))
+        get_content(option)
+
+def main():
+    display = st.checkbox("Display")
+    get_option(display)
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "subtitle">Container Layout</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Streamlit_6.png" width = "25%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+
+def main():
+    container_1 = st.container()
+    with container_1:
+        st.write('Element in Container 1 ...')
+        st.write('Element in Container 1 ...')
+
+    container_2 = st.container()
+    with container_2:
+        st.write('Element in Container 2 ...')
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "subtitle">Column Layout</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Streamlit_4.png" width = "35%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+
+st.set_page_config(
+    page_title="My Streamlit App",  # Title of the browser tab
+    page_icon=":us:",  # Icon for the browser tab
+    layout="wide",  # Layout can be "centered" or "wide"
+    initial_sidebar_state="expanded",  # Sidebar state can be "auto", "expanded", "collapsed"
+)
+
+def main():
+    # sidebar
+    st.sidebar.write('Element 1 in sidebar')
+    st.sidebar.write('Element 2 in sidebar')
+
+    # main window
+    st.write('Element 1 in main window')
+    st.write('Element 2 in main window')
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Streamlit_3.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+
+def main():
+    # row 1
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.write('Row 1: Column 1')
+    with col2:
+        st.write('Row 1: Column 2')
+
+    # row 2
+    col3, col4, col5 = st.columns([2, 4, 3])
+    with col3:
+        st.write('Row 2: Column 1')
+    with col4:
+        st.write('Row 2: Column 2')
+    with col5:
+        st.write('Row 2: Column 3')
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">Page Layout</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Streamlit_5.png" width = "35%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# main_page.py
+import streamlit as st
+
+st.markdown("# Main page on main window 🎈")
+st.sidebar.markdown("# Main page on sidebar 🎈")
+		</pre>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# page_2.py
+import streamlit as st
+
+st.markdown("# Page 2 on main window ❄️")
+st.sidebar.markdown("# Page 2 on sidebar ... ❄️")
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# page_3.py
+import streamlit as st
+
+st.markdown("# Page 3 on main window 🎉")
+st.sidebar.markdown("# Page 3 on sidebar ... 🎉")
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.streamlit.io/develop/api-reference/configuration/st.set_page_config">st.set_page_config</a></li>
+		</div>
+	</body>
+</html>

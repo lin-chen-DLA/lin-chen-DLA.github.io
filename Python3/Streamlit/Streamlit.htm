@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			General
+		</div>
+
+		<div class = "subtitle">Install</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+pip install streamlit
+		</pre>
+		</div>
+		<div class = "subtitle">Local Server</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# start app
+streamlit run app.py
+# streamlit run app.py --server.port 8501
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# access app
+http://localhost:8501
+		</pre>
+		</div>
+		<div class = "subtitle">Architecture</div>
+		<div class = "block">
+            <li>Run a Streamlit script, executes the script from <span>top to bottom</span>, components like text, images, charts, and widgets are displayed in the order they appear in the script</li>
+            <li>Streamlit reruns the <span>entire</span> Python script from top to bottom
+                <ul>
+                    <li>Whenever modify app's source code</li>
+                    <li>Whenever a user interacts with widgets in the app</li>
+                </ul>
+            </li>
+            <li>Streamlit use <span>@st.cache_data</span>, <span>@st.cache_resource</span> to avoid redundant computations and resource loading <span>across sessions</span></li>
+            <li>Use <span>st.session_state</span>, and <span>widget states</span> to maintain state across reruns within the <span>same session</span></li>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+
+def main():
+    print('Start ...')
+
+    if st.checkbox("Display", key='checkbox'):
+        st.markdown('Content', unsafe_allow_html=True)
+    else:
+        st.markdown(f":smile:")
+
+    st.button('Click', key='button')
+
+    print('End ...')
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+		<div class = "subtitle">Commands</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# streamlit help, help message
+streamlit help
+
+# streamlit run, run a script
+streamlit run app.py
+
+# streamlit cache, clear st.cache_data, st.cache_resource
+streamlit cache clear
+
+# streamlit version, display version
+streamlit version
+
+# streamlit config, config settings
+# config.toml is at .streamlit/, by default the file does not exist
+streamlit config show
+
+# streamlit hello, run the demo script
+streamlit hello
+
+# streamlit docs, direct https://docs.streamlit.io
+streamlit docs
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://streamlit-emoji-shortcodes-streamlit-app-gwckff.streamlit.app">Emoji</a></li>
+            <li><a href = "https://streamlit.io/components">Custom components</a></li>
+            <li><a href = "https://docs.streamlit.io/develop/api-reference">API Reference</a></li>
+		</div>
+	</body>
+</html>
