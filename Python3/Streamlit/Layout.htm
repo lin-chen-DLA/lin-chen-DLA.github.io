@@ -25,7 +25,6 @@
 import streamlit as st
 
 def callback(option):
-    """update layout"""
     if option == 'Email':
         st.text('lin.chen@ieee.org')
     elif option == 'Home phone':
@@ -34,11 +33,10 @@ def callback(option):
         st.text('By appointment')
 
 def main():
-    """define inital layout"""
     option = st.selectbox(
     "How would you like to be contacted?", ("Email", "Home phone", "Other"))
 
-    callback(option)
+    st.button("Greet", on_click=callback, args=(option,))
 
 if __name__ == '__main__':
     main()
@@ -67,6 +65,32 @@ def get_option(display):
 def main():
     display = st.checkbox("Display")
     get_option(display)
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "subtitle">Dynamic Layout</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+
+# define layout with placeholders
+placeholder_1 = st.empty()
+placeholder_2 = st.empty()
+
+def callback(option):
+    if option == 'Email':
+        placeholder_2.text('lin.chen@ieee.org')
+    elif option == 'Home phone':
+        placeholder_2.text('757.123.000')
+    else:
+        placeholder_2.text('By appointment')
+
+def main():
+    option = placeholder_1.selectbox("How would you like to be contacted?", ("Email", "Home phone", "Other"))
+
+    callback(option)
 
 if __name__ == '__main__':
     main()

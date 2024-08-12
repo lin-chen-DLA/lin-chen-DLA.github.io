@@ -18,8 +18,35 @@
 
 		<div class = "subtitle">Widget State</div>
 		<div class = "block">
-            <li>Widget state is persistent across reruns of the app script</li>
-            <li>st.button, st.checkbox, st.radio, st.selectbox, st.multiselect, st.slider, st.text_input, st.text_area, st.number_input, st.date_input, st.time_input, st.file_uploader, st.color_picker</li>
+            <li><span>Scope</span>
+                <ul>
+                    <li>Widget state is persistent across reruns of the app script of an individual session</li>
+                </ul>
+            </li>
+            <li><span>Widgets</span>
+                <ul>
+                    <li>st.button, st.checkbox, st.radio, st.selectbox, st.multiselect, st.slider, st.text_input, st.text_area, st.number_input, st.date_input, st.time_input, st.file_uploader, st.color_picker</li>
+                </ul>
+            </li>
+            <li><span>Location</span>
+                <ul>
+                    <li>Memory on server side</li>
+                </ul>
+            </li>
+            <li><span>Access</span>
+                <ul>
+		<pre class = "prettyprint linenums">
+print(st.session_state)
+        </pre>
+                </ul>
+            </li>
+            <li><span>Remove</span>
+                <ul>
+		<pre class = "prettyprint linenums">
+del st.session_state.key_name
+        </pre>
+                </ul>
+            </li>
         </div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
@@ -27,11 +54,14 @@ import streamlit as st
 
 def main():
     options = ['red', 'blue', 'yellow']
-    selected_option = st.selectbox('Choose an option:', options)
+    selected_option = st.selectbox('Choose an option:', options, key='selection')
 
     st.write('Option: ', selected_option)
 
-    st.button('Refresh')
+    st.button('Refresh', key='button')
+
+    del st.session_state.button
+    print(st.session_state)
 
 if __name__ == '__main__':
     main()
@@ -71,36 +101,190 @@ del st.session_state.df
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 import streamlit as st
+
+if "counter" not in st.session_state:
+    st.session_state.counter = 0
+
+st.session_state.counter += 1
+st.header(f"This page has run {st.session_state.counter} times.")
+
+st.button("Run it again")
+		</pre>
+		</div>
+		<div class = "subtitle">st.cache_data</div>
+		<div class = "block">
+            <li><span>Scope</span>
+                <ul>
+                    <li>Persistent Across Sessions</li>
+                    <li>Persists as long as the app is running but is cleared when the server restarts or when the cache is invalidated</li>
+                </ul>
+            </li>
+            <li><span>Signature</span>
+                <ul>
+                    <li>function name + parameter values, when parameter values are changed, the function will rerun</li>
+                </ul>
+            </li>
+            <li><span>Size</span>
+                <ul>
+                    <li>Streamlit does not have a built-in size limit for the cache</li>
+                </ul>
+            </li>
+            <li><span>Parameters</span>
+		<pre class = "prettyprint linenums">
+@st.cache_data(
+# persist
+# False (default)
+#   The cache is stored in memory on server only, every time you restart the Streamlit app, the cache is cleared
+# True
+#   The cache is saved to .streamlit/cache on server, restart the Streamlit app, the cached data remains available
+    persist: bool = False,
+
+# show_spinner
+# False, not show spinner while running the function
+# True (default), show spinner while running the function
+    show_spinner: bool = True,
+
+# ttl, Time-To-Live
+# persist = False, specifies the maximum number of seconds the cache entry should be considered valid
+# persist = True, ignore
+# ttl: Optional[int] = None,
+
+# max_entries
+# persist = False, sets a limit on the number of cached entries for the specific function it decorates
+# persist = True, no effect, cache persists all entries to disk until cleared manually
+    max_entries: Optional[int] = None
+)
+        </pre>
+            </li>
+            <li><span>Remove</span>
+		<pre class = "prettyprint linenums">
+# remove all cached entries associated with st.cache_data
+st.cache_data.clear()
+
+# or
+streamlit cache clear
+        </pre>
+            </li>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
 import pandas as pd
-import plotly.express as px
-import numpy as np
 import time
 
-def get_data():
-    if "df" not in st.session_state:
-        time.sleep(2)
-        st.session_state.df = pd.DataFrame(np.random.randn(20, 2), columns=["x", "y"])
+@st.cache_data(
+    persist = False,
+    show_spinner = True,
+    ttl = 60,
+    max_entries = 2
+)
+def get_data(value):
+    time.sleep(10)
+    df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
+    return df
 
 def main():
-    get_data()
+    value = st.selectbox('Contact:', ('Email', 'Phone', 'By Appointment'))
 
-    st.header("Choose a datapoint color")
-
-    options = ['red', 'blue', 'yellow']
-    selected_option = st.selectbox('Choose an option:', options)
-
-    scatter_plot = px.scatter(st.session_state.df, x='x', y='y', color_discrete_sequence=[selected_option])
-    st.plotly_chart(scatter_plot, use_container_width=True)
+    s = get_data(value).shape
+    st.write(f'Size: {s}')
 
 if __name__ == '__main__':
     main()
-		</pre>
-		</div>
+        </pre>
+        </div>
+		<div class = "subtitle">st.cache_resource</div>
+		<div class = "block">
+            <li><span>Scope</span>
+                <ul>
+                    <li>Shared Across Sessions</li>
+                    <li>Persistent During App Runtime</li>
+                </ul>
+            </li>
+            <li><span>Signature</span>
+                <ul>
+                    <li>function name + parameter values, when parameter values are changed, the function will rerun</li>
+                </ul>
+            </li>
+            <li><span>Location</span>
+                <ul>
+                    <li>Stored in memory on server during the runtime of the application</li>
+                </ul>
+            </li>
+            <li><span>Size</span>
+                <ul>
+                    <li>Streamlit does not have a built-in size limit for the cache</li>
+                </ul>
+            </li>
+            <li><span>Remove</span>
+                <ul>
+		<pre class = "prettyprint linenums">
+# remove all cached entries associated with st.cache_resource
+st.cache_resource.clear()
+
+# or
+streamlit cache clear
+        </pre>
+                </ul>
+            </li>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+import pandas as pd
+import time
+
+@st.cache_resource
+def get_data(value):
+    time.sleep(10)
+    df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
+    return df
+
+def main():
+    value = st.selectbox('Contact:', ('Email', 'Phone', 'By Appointment'))
+
+    s = get_data(value).shape
+    st.write(f'Size: {s}')
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "subtitle">st.secrets</div>
+		<div class = "block">
+            <li>Store and access sensitive information, such as API keys, database credentials, or other confidential data, directly within your Streamlit app</li>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# .streamlit/secrets.toml
+[database]
+user = "your_username"
+password = "your_password"
+
+[api_keys]
+openai = "your_openai_api_key"
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+import pandas as pd
+import time
+
+def main():
+    database_var = st.secrets['database']
+    st.write(f'Database: {database_var}')
+
+    api_var = st.secrets['api_keys']
+    st.write(f'API: {api_var}')
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
-            <li><a href = "https://streamlit-emoji-shortcodes-streamlit-app-gwckff.streamlit.app">Emoji</a></li>
-            <li><a href = "https://streamlit.io/components">Custom components</a></li>
-            <li><a href = "https://docs.streamlit.io/develop/api-reference">API Reference</a></li>
+            <li><a href = "https://docs.streamlit.io/get-started/fundamentals/advanced-concepts">Advanced concepts of Streamlit</a></li>
 		</div>
 	</body>
 </html>
