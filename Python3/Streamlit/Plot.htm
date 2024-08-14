@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Plot
+		</div>
+
+		<div class = "subtitle">st.line_chart</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+import pandas as pd
+import numpy as np
+
+chart_data = pd.DataFrame(
+    {
+        "col1": np.random.randn(20),
+        "col2": np.random.randn(20),
+        "col3": np.random.randn(20),
+    }
+)
+
+def main():
+    st.line_chart(chart_data, x="col1", y=["col2", "col3"])
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "subtitle">st.area_chart</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+import pandas as pd
+import numpy as np
+
+chart_data = pd.DataFrame(
+    {
+        "col1": np.random.randn(20),
+        "col2": np.random.randn(20),
+        "col3": np.random.randn(20),
+    }
+)
+
+def main():
+    st.area_chart(chart_data, x="col1", y=["col2", "col3"])
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "subtitle">st.bar_chart</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+import pandas as pd
+import numpy as np
+
+chart_data = pd.DataFrame(
+    {
+        "col1": np.random.randn(20),
+        "col2": np.random.randn(20),
+        "col3": np.random.randn(20),
+    }
+)
+
+def main():
+    st.bar_chart(chart_data, x="col1", y=["col2", "col3"])
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "subtitle">st.map</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+import pandas as pd
+import numpy as np
+
+df = pd.DataFrame(
+    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
+    columns=['lat', 'lon'])
+
+def main():
+    st.map(df)
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "subtitle">st.pyplot</div>
+		<div class = "block">
+            <li>Display a <span>matplotlib.pyplot</span> figure</li>
+		<pre class = "prettyprint linenums">
+import streamlit as st
+import matplotlib.pyplot as plt
+import numpy as np
+
+def main():
+    t = np.arange(0.0, 2.0, 0.01)
+    s = 1 + np.sin(2 * np.pi * t)
+    u = 1 + np.cos(2*np.pi*t)
+
+    f, axs = plt.subplots(2, 2)
+
+    # Plot two lines
+    axs[0, 0].plot(t, s);
+    axs[0, 1].scatter(t, s);
+    axs[1, 0].plot(t, u, 'b--');
+    axs[1, 1].scatter(t, u);
+
+    st.pyplot(f)
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "subtitle">st.pyplot</div>
+		<div class = "block">
+            <li>Display <span>Plotly</span> figure</li>
+		<pre class = "prettyprint linenums">
+import streamlit as st
+import plotly.express as px
+import pandas as pd
+
+def main():
+    df = pd.read_csv('https://plotly.github.io/datasets/country_indicators.csv')
+    temp = df[df['Country Name'] == 'Canada']
+    temp = temp[temp['Indicator Name'] == 'CO2 emissions (metric tons per capita)']
+
+    fig = px.bar(temp, x='Year', y='Value')
+
+    st.plotly_chart(fig, use_container_width=True)
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "subtitle">st.pydeck_chart</div>
+		<div class = "block">
+            <li>Display <span>PyDeck</span> figure which supports 3D maps, point clouds</li>
+		<pre class = "prettyprint linenums">
+import streamlit as st
+import pandas as pd
+import numpy as np
+import pydeck as pdk
+
+chart_data = pd.DataFrame(
+   np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
+   columns=['lat', 'lon'])
+
+def main():
+    st.pydeck_chart(
+        pdk.Deck(
+        map_style='road',
+        initial_view_state=pdk.ViewState(
+            latitude=37.76,
+            longitude=-122.4,
+            zoom=11,
+            pitch=50,
+        ),
+        layers=[
+            pdk.Layer(
+            'HexagonLayer',
+            data=chart_data,
+            get_position='[lon, lat]',
+            radius=200,
+            elevation_scale=4,
+            elevation_range=[0, 1000],
+            pickable=True,
+            extruded=True,
+            ),
+        ],
+        ))
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.streamlit.io/develop/api-reference">API Reference</a></li>
+		</div>
+	</body>
+</html>
