@@ -13,72 +13,121 @@
 	</head>
 	<body>
 		<div class = "title">
-			General
+			CSS
 		</div>
 
-		<div class = "subtitle">Install</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-pip install streamlit
-		</pre>
-		</div>
-		<div class = "subtitle">Local Server</div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-# start app
-streamlit run app.py
-# streamlit run app.py --server.port 8501
-        </pre>
-        </div>
-		<div class = "block">
-		<pre class = "prettyprint linenums">
-# access app
-http://localhost:8501
-		</pre>
-		</div>
-		<div class = "subtitle">Architecture</div>
-		<div class = "block">
-            <li>Run a Streamlit script, executes the script from <span>top to bottom</span>, components like text, images, charts, and widgets are displayed in the order they appear in the script</li>
-            <li>Streamlit reruns the <span>entire</span> Python script from top to bottom
-                <ul>
-                    <li>Whenever modify app's source code</li>
-                    <li>Whenever a user interacts with widgets in the app</li>
-                </ul>
-            </li>
-            <li>Streamlit use <span>@st.cache_data</span>, <span>@st.cache_resource</span> to avoid redundant computations and resource loading <span>across sessions</span></li>
-            <li>Use <span>st.session_state</span>, and <span>widget states</span> to maintain state across reruns within the <span>same session</span></li>
-		</div>
+		<div class = "subtitle">HTML Component</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 import streamlit as st
 
+st.markdown(
+    '''
+    &lt;div style = "border: 1px solid blue"&gt;Hello World!
+        &lt;div style = "border: 1px solid red"&gt;Inside&lt;/div&gt;
+    &lt;/div&gt;
+    ''',
+    unsafe_allow_html=True,
+)
+
+st.write('Streamlit component ...')
+        </pre>
+        </div>
+		<div class = "subtitle">Streamlit Component</div>
+		<div class = "block">
+            <li>1. Create Streamlit Application</li>
+		<pre class = "prettyprint linenums">
+import streamlit as st
+
 def main():
-    print('Start ...')
+    container_1 = st.container()
+    with container_1:
+        st.write('Element in Container 1 ...')
+        st.write('Element in Container 1 ...')
 
-    if st.checkbox("Display", key='checkbox'):
-        st.markdown('Content', unsafe_allow_html=True)
-    else:
-        st.markdown(f":smile:")
+    container_2 = st.container()
+    with container_2:
+        st.write('Element in Container 2 ...')
 
-    st.button('Click', key='button')
-
-    print('End ...')
+    st.button('Click', key = 'button')
 
 if __name__ == '__main__':
     main()
-		</pre>
-		</div>
-		<div class = "subtitle">Commands</div>
+        </pre>
+        </div>
 		<div class = "block">
+            <li>2. Identify Components</li>
 		<pre class = "prettyprint linenums">
-# streamlit help
+# jupyter notebook
+from selenium import webdriver
+
+# Set up the WebDriver
+# Currently support Firefox, Chrome, IE and Remote
+driver = webdriver.Chrome()
+
+# Navigate to a page given by the URL
+driver.get('http://localhost:8501')
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+WebDriverWait(driver, 10).until(
+    EC.presence_of_element_located((By.TAG_NAME, 'body'))
+)
+
+# Retrieve the static HTML of the page
+static_html = driver.page_source
+
+from bs4 import BeautifulSoup
+soup = BeautifulSoup(static_html, 'lxml')
+
+pretty_html = soup.prettify()
+print(pretty_html)
+        </pre>
+        </div>
+		<div class = "block">
+            <li>3. Use CSS on Specific Components</li>
+		<pre class = "prettyprint linenums">
+import streamlit as st
+
+st.markdown(
+    """
+&lt;style&gt;
+    div[class = "stMarkdown"] div[data-testid="stMarkdownContainer"]{
+        border: 1px solid blue;
+        color: red;
+        background-color: silver;
+    }
+
+    div[class="stButton"]{
+        color: silver;
+        background-color: red;
+    }
+&lt;/style&gt;
+""",
+    unsafe_allow_html=True,
+)
+
+def main():
+    container_1 = st.container()
+    with container_1:
+        st.write('Element in Container 1 ...')
+        st.write('Element in Container 1 ...')
+
+    container_2 = st.container()
+    with container_2:
+        st.write('Element in Container 2 ...')
+
+    st.button('Click', key = 'button')
+
+if __name__ == '__main__':
+    main()
         </pre>
         </div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
-            <li><a href = "https://streamlit-emoji-shortcodes-streamlit-app-gwckff.streamlit.app">Emoji</a></li>
-            <li><a href = "https://streamlit.io/components">Custom components</a></li>
-            <li><a href = "https://docs.streamlit.io/develop/api-reference">API Reference</a></li>
+            <li><a href = "https://selenium-python.readthedocs.io">Selenium with Python</a></li>
 		</div>
 	</body>
 </html>
