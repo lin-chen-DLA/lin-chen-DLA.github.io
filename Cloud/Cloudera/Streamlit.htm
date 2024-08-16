@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Cloudera</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+		<div class = "title">
+			Applications with Streamlit
+		</div>
+
+        <div class = "subtitle">Development</div>
+        <div class = "block">
+            <ol>
+                <li>Start a Workbench under the project</li>
+                <li>Create application in app.py under /home/cdsw</li>
+                <li>Create launch.py under /home/cdsw</li>
+                <li>Select "launch.py" and click "Run"</li>
+                <li>Click the nine dots logo on the top-right, then select Streamlit app</li>
+            </ol>
+        </div>
+        <div class = "subtitle">Deployment</div>
+        <div class = "block">
+            <ol>
+                <li>Start a new Application under Applications</li>
+                <li>Add the app name, subdomain, select "launch.py", then click "Create Application"</li>
+                <li>Click the three-dot logo of the app and select "Application Details", select "Logs" to monitor the deployment</li>
+            </ol>
+        </div>
+        <div class = "subtitle">Source Code</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.py
+import streamlit as st
+
+def main():
+    st.markdown('Hello World!')
+
+if __name__ == '__main__':
+    main()
+		</pre>
+		</div>
+        <div class = "block">
+        <pre class = "prettyprint linenums">
+# launch.py
+import subprocess
+import os
+
+def run_streamlit():
+    command = ['streamlit', 'run', 'app.py', '--server.port', os.environ.get('CDSW_READONLY_PORT'), '--server.address', '127.0.0.1']
+    subprocess.run(command)
+
+if __name__ == '__main__':
+    run_streamlit()
+        </pre>
+        </div>
+        <div class = "block">
+        <pre class = "prettyprint linenums">
+# requirements.txt
+streamlit
+        </pre>
+        </div>  
+    </body>
+</html>
