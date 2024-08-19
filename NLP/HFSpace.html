@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+        <title>Python</title>
+        <link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+        <script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+        <style>
+            div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+            div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+            div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+        </style>
+    </head>
+
+	<body>
+		<div class = "title">
+			Hugging Face Spaces
+		</div>
+
+		<div class = "subtitle">0. Setup SSH</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create a key pair under .ssh
+# ssh-keygen -t [name] -C "your_email@example.com"
+ssh-keygen -t rsa -C "lin.chen@ieee.org" # create id_rsa and id_rsa.pub under .ssh directory
+        </pre>
+        </div>
+        <div class = "block">
+        <pre class = "prettyprint linenums">
+# add hugging face host to .ssh/config
+Host hf
+    HostName huggingface.co
+    User git
+    IdentityFile ~/.ssh/[private_key_file_name]
+    AddKeysToAgent yes
+    UseKeychain yes
+        </pre>
+    </div>
+    <div class = "block">
+        <pre class = "prettyprint linenums">
+# store passphrase in the keychain
+ssh-add -K ~/.ssh/[private_key_file_name]
+        </pre>
+    </div>
+    <div class = "block">
+        <pre class = "prettyprint linenums">
+# add public key to Hugging Face
+# 1. login Hugging Face
+# 2. Click Settings in Profile
+# 3. Click SSH and GPG Keys
+# 4. Add the public key and save
+        </pre>
+    </div>
+		<div class = "subtitle">1. Create a Space at Hugging Face Spaces</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 1. Login Hugging Face
+# 2. Click Spaces on top
+# 3. Create a new space by clicking "Create new Space"
+# 4. Clone the empty project to local with ssh clone
+
+git lfs install
+git clone git@hf.co:spaces/eagletiger1/dlagpt
+        </pre>
+		</div>
+		<div class = "subtitle">2. Create an Application on Local</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.py
+import streamlit as st
+ 
+def main():
+    print('Start ...')
+ 
+    if st.checkbox("Display", key='checkbox'):
+        st.markdown('Content', unsafe_allow_html=True)
+    else:
+        st.markdown(f":smile:")
+ 
+    st.button('Click', key='button')
+ 
+    print('End ...')
+ 
+if __name__ == '__main__':
+    main()
+        </pre>
+    </div>
+    <div class = "block">
+        <pre class = "prettyprint linenums">
+# requirements.txt
+streamlit
+        </pre>
+    </div>
+		<div class = "subtitle">3. Push to Hugging Face Spaces</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+git add .
+git commit -am "remark"
+git push
+        </pre>
+        </div>
+		<div class = "subtitle">4. Share URL</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Click the App tag and share the url on browser
+        </pre>
+        </div>
+	</body>
+</html>

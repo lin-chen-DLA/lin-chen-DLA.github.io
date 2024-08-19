@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+        <title>Python</title>
+        <link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+        <script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+        <style>
+            div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+            div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+            div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+        </style>
+    </head>
+
+	<body>
+		<div class = "title">
+			Inference API
+		</div>
+
+		<div class = "subtitle">Fill Mask</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# 1. Get Token
+# get a token in profile
+API_TOKEN = 'hf_your_token'
+
+# 2. Select Model
+headers = {"Authorization": f"Bearer {API_TOKEN}"}
+API_URL = "https://api-inference.huggingface.co/models/bert-base-uncased" # Hugging Face URL
+
+# 3. Create Query
+# inputs, string
+# use_cache, True/False, use cache layer on the inference API to speedup requests we have already seen
+# wait_for_model, True/False, if the model is not ready, wait for it instead of receiving 503
+data = {
+        "inputs": "The answer to the universe is [MASK].", # required
+        'use_cache': True, # optional
+        'wait_for_model': True} # optional
+
+# 4. Query
+def query(payload):
+    response = requests.post(API_URL, headers=headers, json=payload)
+    return response.json()
+
+response = query(data)
+        </pre>
+        </div>
+		<div class = "subtitle">Summarization</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+API_TOKEN = 'hf_your_token'
+ 
+headers = {"Authorization": f"Bearer {API_TOKEN}"}
+API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn" # Hugging Face URL
+ 
+data = {
+        "inputs": """The pressure for consolidation continued. In July 1955, the second Hoover Commission recommended centralizing management of common military logistics support and introducing uniform financial management practices. It also recommended that a separate and completely civilian-managed agency be created with the Defense Department to administer all military common supply and service activities. The military services feared that such an agency would be less responsive to military requirements and jeopardize the success of military operations. Congress, however, remained concerned about the Hoover Commission's indictment of waste and inefficiencies in the military services. To avoid having Congress take the matter away from the military entirely, DoD reversed its position. The solution proposed and approved by the Secretary of Defense was to appoint "single managers" for a selected group of common supply and service activities.
+
+Under a Defense directive approved by the Assistant Secretary of Defense for Supply and Logistics, the Secretary of Defense would formally appoint one of the three service secretaries as single manager for selected group of commodities or common service activities. The Army managed food and clothing; the Navy managed medical supplies, petroleum, and industrial parts; and the Air Force managed electronic items. In each category, the single manager was able to reduce his investment by centralizing wholesale stocks, and to simplify the supply process by persuading the services to adopt the same standard items. Over a six-year period, the single manager agencies reduced their item assignments by about 9,000, or 20 percent, and their inventories by about $800 million, or 30 percent. Proposals were soon made to extend this concept to other commodities. The single manager concept was the most significant advance toward integrated supply management within DoD or the military services since World War II.
+
+The Defense Cataloging and Standardization Act led to the creation of the first Federal Catalog, completed in 1956. The federal catalog system provided an organized and systematic approach for describing an item of supply, assigning and recording a unique identifying number, and providing information on the item to the system's users. The initial catalog, containing about 3.5 million items, was a rough draft, full of duplications and errors, but it effectively highlighted the areas where standardization was feasible and necessary.""",
+        "parameters": {"do_sample": False}, # model parameters
+        'use_cache': True,
+        'wait_for_model': True
+    }
+ 
+def query(payload):
+    response = requests.post(API_URL, headers=headers, json=payload)
+    return response.json()
+ 
+response = query(data)
+        </pre>
+        </div>
+		<div class = "subtitle">Text Generation</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+API_TOKEN = 'hf_your_token'
+ 
+headers = {"Authorization": f"Bearer {API_TOKEN}"}
+API_URL = "https://api-inference.huggingface.co/models/gpt2"
+ 
+data = {
+        "inputs": """Explain the strategies of Defense Logistics Agency"""
+    }
+ 
+def query(payload):
+    response = requests.post(API_URL, headers=headers, json=payload)
+    return response.json()
+ 
+response = query(data)
+        </pre>
+        </div>
+		<div class = "subtitle">Use Inference Client</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from huggingface_hub import InferenceClient
+
+# Initialize the InferenceClient with your Hugging Face API token
+client = InferenceClient(token="hf_your_token")
+
+# Select Model
+model_id = "gpt2"
+
+# Create Prompt
+prompt = "Explain the strategies of Defense Logistics Agency"
+
+# Send Prompt
+client.text_generation(prompt, model = model_id)
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li><a href = "https://huggingface.co/docs/huggingface_hub/main/en/package_reference/inference_client">Inference Client</a></li>
+            <li><a href = "https://huggingface.co/docs/api-inference/en/index">Documentation</a></li>
+        </div>
+    </body>
+</html>
