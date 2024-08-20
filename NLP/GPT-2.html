@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+        <title>Python</title>
+        <link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+        <script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+        <style>
+            div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+            div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+            div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+        </style>
+    </head>
+
+	<body>
+		<div class = "title">
+			GPT-2
+		</div>
+
+		<div class = "subtitle">Create App</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.py
+import base64
+import streamlit as st
+from transformers import pipeline
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+def get_bot_response(prompt):
+    pipe = pipeline("text-generation", model="gpt2") # download model in .cache/huggingface/hub
+
+    output = pipe(prompt, max_length=100)
+
+    return output[0]['generated_text']
+
+def display_history():
+    # Chat interface
+    st.markdown("&lt;div class='chat-container' style = 'color: #9999b2; font-weight:bold; font-style: italic;'&gt;Here is the answer", unsafe_allow_html=True)
+
+    for message in st.session_state.messages[:10]:
+        st.markdown(f"&lt;div class = 'qa-container'&gt;&lt;div class='message user-message'&gt;&lt;b&gt;You&lt;/b&gt;: {message[0]}&lt;/div&gt;&lt;div class='message bot-message'&gt;&lt;b&gt;Bot&lt;/b&gt;: {message[1]}&lt;/div&gt;&lt;/div&gt;", unsafe_allow_html=True)
+
+    st.markdown("&lt;/div&gt;", unsafe_allow_html=True)
+
+def main():
+    user_input = st.text_input(" ", "")
+
+    if user_input:
+        bot_response = get_bot_response(user_input)
+        message_pair = (user_input, bot_response)
+        st.session_state.messages.insert(0, message_pair)
+
+        display_history()
+
+if __name__ == '__main__':
+    main()
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# requirements.txt
+streamlit
+transformers
+torch
+        </pre>
+        </div>
+		<div class = "subtitle">Run App</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+streamlit run app.py
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li><a href = "https://huggingface.co/openai-community/gpt2">GPT-2</a></li>
+        </div>
+    </body>
+</html>

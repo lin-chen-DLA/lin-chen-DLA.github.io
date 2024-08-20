@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+        <title>Python</title>
+        <link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+        <script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+        <style>
+            div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+            div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+            div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+        </style>
+    </head>
+
+	<body>
+		<div class = "title">
+			Llama
+		</div>
+
+		<div class = "subtitle">1. Create Token</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# User Profile -&gt; Settings
+# Access Tokens, create a toke with read permission
+        </pre>
+        </div>
+		<div class = "subtitle">2. Request Model Access</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Request model access at https://huggingface.co/meta-llama/Meta-Llama-3.1-8B
+# User Profile -&gt; Settings
+# Gated Repos Status, Request Status is ACCEPTED when receive approval for model access
+        </pre>
+        </div>
+		<div class = "subtitle">3. Create Space</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Create a space at Hugging Face Spaces
+# Click Setting in the space, create a secret
+Name, HUGGINGFACE_API_TOKEN
+Value, your_token
+        </pre>
+        </div>
+		<div class = "subtitle">4. Create App</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# git clone the project to local
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.py
+import streamlit as st
+from transformers import pipeline
+
+# Load the Hugging Face API token from st.secrets
+hf_api_token = st.secrets["HUGGINGFACE_API_TOKEN"]
+
+# Load the model and tokenizer using the API token
+model_name = "meta-llama/Meta-Llama-3.1-8B"
+
+# Create a text generation pipeline
+generator = pipeline("text-generation", model=model_name, token=hf_api_token)
+
+# Streamlit UI
+st.title("LLaMA 3.1-405B Model Text Generation")
+
+# Input prompt
+prompt = st.text_input("Enter your prompt:", value="Explain the significance of the theory of relativity.")
+
+# Generate text on button click
+if st.button("Generate Text"):
+    # Generate text using the pipeline
+    output = generator(prompt, max_length=100, num_return_sequences=1)
+    # Display the generated text
+    st.write(output[0]['generated_text'])
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# requirements.txt
+streamlit
+transformers
+torch
+        </pre>
+        </div>
+		<div class = "subtitle">5. Deploy App</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+git add .
+git commit -am "comment"
+git push
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li><a href = "https://huggingface.co/docs/transformers.js/en/guides/private">Accessing Private/Gated Models</a></li>
+            <li><a href = "https://huggingface.co/meta-llama/Meta-Llama-3.1-8B">meta-llama/Meta-Llama-3.1-8B</a></li>
+        </div>
+    </body>
+</html>
