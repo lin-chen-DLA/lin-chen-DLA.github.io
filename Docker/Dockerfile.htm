@@ -15,24 +15,72 @@
 		<div class = "title">
 			Dockerfile
 		</div>
-        <div class = "subtitle">Create a Dockerfile</div>
+        <div class = "subtitle">What a Dockerfile is doing?</div>
 		<div class = "block">
             <li>1. Start from a Linux image</li>
 		<pre class = "prettyprint linenums">
-docker run -it ubuntu bash
-or
-docker run -it alpine sh
+# Host
+docker run -p 8000:8080 -it python sh
         </pre>
         <li>2. Copy the code to the running Linux container</li>
 		<pre class = "prettyprint linenums">
-docker cp
+# Host
+docker cp local_code_dir [containerID|containerName]:/home
         </pre>
         <li>3. Install packages</li>
 		<pre class = "prettyprint linenums">
+# Container
+cd /home/code_dir
 pip install --no-cache-dir -r requirements.txt
         </pre>
-        <li>4. Run and test the app in the container, may need to map port in step 1</li>
-        <li>5. Create a Dockerfile using the commonds conducted in step 1-4</li>
+        <li>4. Run and test the app in the container, may need to map port in step 1
+		<pre class = "prettyprint linenums">
+# Container
+python app.py
+
+# Host
+localhost:8000
+        </pre>
+        </li>
+        <li>5. Create a Dockerfile to automatically implement the commonds in step 1-4</li>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# app.py
+import dash
+from dash import html
+from dash.dependencies import Input, Output
+
+app = dash.Dash(__name__)
+server = app.server
+
+num_click = 0
+
+app.layout = html.Div([
+    html.Button('Click', id = 'click'),
+    html.Div('0', id = 'content')
+        ])
+
+@app.callback(
+    Output('content', 'children'),
+    Input('click', 'n_clicks'))
+def display_hover_data(c):
+    if c:
+        global num_click
+        num_click += 1
+        return num_click
+    else:
+        return 0
+
+if __name__ == "__main__":
+    app.run_server(host="0.0.0.0", port=8080, debug=True)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# requirements.txt
+dash
+        </pre>
         </div>
         <div class = "subtitle">Dockerfile Format</div>
 		<div class = "block">
@@ -85,6 +133,22 @@ WORKDIR [dirName]
 ONBUILD [DockerKey] [command]
 		</pre>
 		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Dockerfile
+FROM python:3
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+EXPOSE 8080
+
+CMD ["python", "./app.py"]
+        </pre>
+        </div>
         <div class = "subtitle">.dockerignore</div>
 		<div class = "block">
             <li>Avoid unnecessarily sending large or sensitive files and directories to the daemon with ADD and COPY</li>
