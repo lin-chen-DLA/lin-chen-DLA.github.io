@@ -17,25 +17,19 @@
 		</div>
         <div class = "block">
             <li>Public registry, <a href = "https://hub.docker.com/">docker hub</a></li>
-            <li>Private registry, ECR (AWS), ACR (Azure), GCR (Google)</li>
+            <li>Private registry, GitLab Registry, ECR (AWS), ACR (Azure), GCR (Google)</li>
             <li>Local registry</li>
         </div>
-        <div class = "subtitle">Image Naming</div>
+        <div class = "subtitle">Public Registry Image Naming</div>
         <div class = "block">
 		<pre class = "prettyprint linenums">
-registryDomain/imageName:Tag
+# Docker Hub
+# https://hub.docker.com/r/registryDomain/imageName:Tag
+https://hub.docker.com/r/lchenlangley/cat:latest
 
-Docker Hub
-docker.io/library/imageName:Tag
-or
-imageName:Tag
-        </pre>
-        </div>
-        <div class = "subtitle">Login Registry</div>
-        <div class = "block">
-		<pre class = "prettyprint linenums">
-docker login # login Docker Hub
-docker login [domainName] # login a private registry
+# or
+# registryDomain/imageName:Tag
+lchenlangley/cat:latest
         </pre>
         </div>
         <div class = "subtitle">Private Registry</div>
@@ -46,6 +40,13 @@ docker login [domainName] # login a private registry
                     <li>Different versions of the same app are deposited in the same registry</li>
                 </ul>
             </li>
+        </div>
+        <div class = "subtitle">Login Registry</div>
+        <div class = "block">
+		<pre class = "prettyprint linenums">
+docker login # login Docker Hub
+docker login [domainName] # login a private registry
+        </pre>
         </div>
         <div class = "subtitle">Local Registry</div>
         <div class = "block">
