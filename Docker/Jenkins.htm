@@ -24,7 +24,7 @@ docker pull jenkins:2.60.3
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# 2. Run the Image
+# 2. Run the Image with bind mount
 # host
 docker run -p 8080:8080 -p 50000:50000 -v /your/local/directory:/var/jenkins_home jenkins:2.60.3
 		</pre>
@@ -50,6 +50,10 @@ http://localhost:8080/
 # Create a file within /var/jenkins_home in container
 
 # Will see the file on /your/local/directory on host
+
+# Stop and remove the container
+
+# Restart a Jenkin container, the created file is persistent
         </pre>
         </div>
 	</body>

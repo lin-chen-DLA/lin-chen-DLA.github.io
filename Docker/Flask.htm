@@ -15,40 +15,48 @@
 		<div class = "title">
 			Flask App
 		</div>
-		<div class = "subtitle">Dockerfile</div>
+		<div class = "subtitle">Workflow</div>
+         <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_18.png" width = "60%"></p>
+		</div>
+		<div class = "subtitle">Development - Source Code</div>
+         <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_19.png" width = "30%"></p>
+		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-FROM python:3 # specify the base image
+# Dockerfile
+FROM python:3
 
-WORKDIR /usr/src/app # set a directory for the app
+WORKDIR /usr/src/app
 
-COPY . . # copy all the files to the container
+COPY . .
 
-RUN pip install --no-cache-dir -r requirements.txt # install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 8000 # specify is the port number that needs to be exposed
+EXPOSE 8000
 
-CMD ["python", "./app.py"] # command for running the application
+CMD ["python", "./app.py"]
 		</pre>
 		</div>
-		<div class = "subtitle">.dockerignore</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# .dockerignore
 .git
 .gitignore
 README.md
 LICENSE
 		</pre>
 		</div>
-		<div class = "subtitle">requirements.txt</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# requirements.txt
 Flask==1.0
         </pre>
         </div>
-		<div class = "subtitle">app.py</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# app.py
 from flask import Flask, render_template
 import os
 import random
@@ -81,33 +89,80 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
 		</pre>
 		</div>
-		<div class = "subtitle">Create Image</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# templates/index.html
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type="text/css"&gt;
+      body {
+        background: black;
+        color: white;
+      }
+      div.container {
+        max-width: 500px;
+        margin: 100px auto;
+        border: 20px solid white;
+        padding: 10px;
+        text-align: center;
+      }
+      h4 {
+        text-transform: uppercase;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div class="container"&gt;
+      &lt;h4&gt;Cat Gif of the day&lt;/h4&gt;
+      &lt;img src="{{url}}" /&gt;
+      &lt;p&gt;&lt;small&gt;Courtesy: &lt;a href="http://www.buzzfeed.com/copyranter/the-best-cat-gif-post-in-the-history-of-cat-gifs"&gt;Buzzfeed&lt;/a&gt;&lt;/small&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+        </pre>
+        </div>
+		<div class = "subtitle">Development - Create Image</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # create image
+# lchenlangy is username/domainname on https://hub.docker.com
 docker build -t lchenlangley/cat .
 		</pre>
 		</div>
-		<div class = "subtitle">Push Image to Registry</div>
+		<div class = "subtitle">Development - Test Image</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# push the image to Docker Hub
+# load image to container on local docker
+docker run -p 8080:8000 lchenlangley/cat
+
+# access
+http://localhost:8080
+        </pre>
+        </div>
+		<div class = "subtitle">Development - Push Image to Registry</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# login docker hub
 docker login
+
+# push the image to Docker Hub
 docker push lchenlangley/cat
 		</pre>
 		</div>
-		<div class = "subtitle">Deployment</div>
+		<div class = "subtitle">Deployment - Run Image</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-# run image
 docker pull lchenlangley/cat
+
 docker run -p 8080:8000 lchenlangley/cat # map container port 8000 to host port 8080
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # open on web browser
-http://0.0.0.0:8080/ # host_ip:host_port
+
+# host_ip:host_port
+http://localhost:8080
 		</pre>
 		</div>
 		<div class = "subtitle">Push Image with Tag</div>

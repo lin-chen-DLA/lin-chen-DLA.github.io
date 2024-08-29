@@ -15,9 +15,14 @@
 		<div class = "title">
 			Dash App
 		</div>
-		<div class = "subtitle">Dockerfile</div>
+        <div class = "subtitle">Workflow</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/Docker_17.png" width = "60%"></p>
+		</div>
+		<div class = "subtitle">Create Project</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# Dockerfile
 FROM python:3
 WORKDIR /usr/src/app
 COPY . .
@@ -26,15 +31,15 @@ EXPOSE 8080
 CMD ["python", "./app.py"]
 		</pre>
 		</div>
-		<div class = "subtitle">requirements.txt</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# requirements.txt
 dash
 		</pre>
 		</div>
-		<div class = "subtitle">app.py</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# app.py
 import dash
 from dash import html
 from dash.dependencies import Input, Output
@@ -63,10 +68,6 @@ def display_hover_data(c):
 if __name__ == "__main__":
     app.run_server(host="0.0.0.0", port=8080, debug=True)
 		</pre>
-		</div>
-        <div class = "subtitle">Workflow</div>
-        <div class = "block">
-            <p style = "text-align:center;"><img src = "img/Docker_17.png" width = "60%"></p>
 		</div>
         <div class = "subtitle">Create Image</div>
 		<div class = "block">
@@ -104,7 +105,8 @@ docker run -p 8080:8080 lchenlangley/click
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # open on web browser
-http://0.0.0.0:8080/ # host_ip:host_port
+# host_ip:host_port
+http://localhost:8080
 		</pre>
 		</div>
 		<div class = "subtitle">Reference</div>
