@@ -18,26 +18,39 @@
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # 1. Pull an Image
+# host
 docker pull jenkins:2.60.3
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # 2. Run the Image
-docker run -p 8080:8080 -p 50000:50000 -v /your/home:/var/jenkins_home jenkins:2.60.3
+# host
+docker run -p 8080:8080 -p 50000:50000 -v /your/local/directory:/var/jenkins_home jenkins:2.60.3
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
 # 3. Check the Initial Password
+# host
 docker exec -it [containerID/containerName] bash
+# container
 cat /var/jenkins_home/secrets/initialAdminPassword
 		</pre>
 		</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+# 4. Access Jenkins
+# host
 http://localhost:8080/
 		</pre>
 		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# Create a file within /var/jenkins_home in container
+
+# Will see the file on /your/local/directory on host
+        </pre>
+        </div>
 	</body>
 </html>
