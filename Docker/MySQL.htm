@@ -28,7 +28,7 @@ docker network create asgard
 docker volume create sandbox-home # ensure volume is empty
 
 # 3. Create the MySQL container
-docker run -d -v sandbox-home:/var/lib/mysql  --name mysqlserver -e MYSQL_ROOT_PASSWORD=root mysql:8.0.12
+docker run -d -v sandbox-home:/var/lib/mysqld  --name mysqlserver -e MYSQL_ROOT_PASSWORD=root mysql:8.0.12
 
 # 4. Create the phpMyAdmin container
 docker run -d --name myphpmyadmin -e PMA_HOST=mysqlserver -p 8080:80 phpmyadmin/phpmyadmin
@@ -52,7 +52,7 @@ docker network create asgard
 docker volume create sandbox-home # ensure volume is empty
 
 # 3. Create the MySQL container
-docker run -d -v sandbox-home:/var/lib/mysql  --name mysqlserver --network asgard -e MYSQL_ROOT_PASSWORD=root mysql:8.0.12
+docker run -d -v sandbox-home:/var/lib/mysqld  --name mysqlserver --network asgard -e MYSQL_ROOT_PASSWORD=root mysql:8.0.12
 
 # 4. Create the phpMyAdmin container
 docker run -d --network asgard -e PMA_HOST=mysqlserver -p 8080:80 phpmyadmin/phpmyadmin
