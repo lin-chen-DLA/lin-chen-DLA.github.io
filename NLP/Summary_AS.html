@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+        <title>Python</title>
+        <link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+        <script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+        <style>
+            div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+            div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+            div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+        </style>
+    </head>
+
+	<body>
+		<div class = "title">
+			Abstractive summarization
+		</div>
+
+		<div class = "block">
+            Generates summaries by understanding and rephrasing the content, rather than directly extracting sentences or phrases from the original text.
+            <p style = "text-align:center;"><img src = "img/Summary_AS.png" width = "60%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# document
+document = """Banff National Park is Canada's oldest national park, established in 1885 as Rocky Mountains Park.
+Located in Alberta's Rocky Mountains, 110–180 kilometres (68–112 mi) west of Calgary, Banff encompasses 6,641
+square kilometres (2,564 sq mi)[3] of mountainous terrain, with many glaciers and ice fields, dense coniferous forest,
+and alpine landscapes. Provincial forests and Yoho National Park are neighbours to the west, while Kootenay National Park
+is located to the south and Kananaskis Country to the southeast. The main commercial centre of the park is the town of Banff,
+in the Bow River valley.
+
+The Canadian Pacific Railway was instrumental in Banff's early years, building the Banff Springs Hotel and Chateau Lake Louise,
+and attracting tourists through extensive advertising. In the early 20th century, roads were built in Banff,
+at times by war internees from World War I, and through Great Depression-era public works projects.
+The Icefields Parkway extends from Lake Louise, connecting to Jasper National Park in the north."""
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from transformers import pipeline
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+
+# tokenize document to ids
+inputs = tokenizer(document, return_tensors="pt", max_length=512, truncation=True)
+
+# generate summary
+summary_ids = model.generate(inputs["input_ids"], max_length=150, min_length = 100, num_beams=4, length_penalty=2.0, early_stopping=True)
+
+# decode summary ids to summary
+summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# use pipeline
+summary = summarizer(document,max_length = 200, min_length=100)
+summary['summary_text']
+        </pre>
+        </div>
+    </body>
+</html>

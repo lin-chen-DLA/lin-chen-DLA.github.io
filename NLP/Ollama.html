@@ -42,8 +42,11 @@ ollama rm phi3
 # ollama list, list models on local server
 ollama list
 
-# ollama cp [model_1] [model_2]
+# ollama cp [model_1] [model_2], copy a model
 ollama cp phi3 my_model
+
+# ollama show [model], show model information
+ollama show phi3
         </pre>
         </div>
 		<div class = "subtitle">Ollama Server</div>
@@ -51,6 +54,9 @@ ollama cp phi3 my_model
 		<pre class = "prettyprint linenums">
 # display the process of Ollama server
 ps aux | grep ollama
+
+# displary the port of Ollama server
+lsof -i -P -n | grep ollama # by default, 11434
         </pre>
         </div>
 		<div class = "subtitle">API</div>
@@ -61,6 +67,13 @@ ps aux | grep ollama
 		<div class = "subtitle">Python API</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+from ollama import Client
+client = Client(host='http://localhost:11434')
+
+# Generate a response (single turn interaction)
+client.generate(model='my_model', prompt='What is the capital of France?') # The capital of France is Paris
+
+# Chat with a model (Multi-Turn Interaction)
         </pre>
         </div>
 		<div class = "subtitle">Web-based GUI</div>
