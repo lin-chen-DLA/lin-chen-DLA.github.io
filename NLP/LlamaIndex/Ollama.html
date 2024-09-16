@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+        <title>Python</title>
+        <link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+        <script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+        <style>
+            div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+            div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+            div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+        </style>
+    </head>
+
+	<body>
+		<div class = "title">
+			LlamaIndex with Ollama
+		</div>
+
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.llms.ollama import Ollama
+from llama_index.core import PromptTemplate
+        </pre>
+        </div>
+		<div class = "subtitle">Chat</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# load documents
+documents = SimpleDirectoryReader("Paul_Graham/").load_data()
+
+# bge-base embedding model
+Settings.embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-base-en-v1.5")
+
+# index documents
+index = VectorStoreIndex.from_documents(documents)
+
+# set model
+llm = Ollama(model="phi3", request_timeout=360.0)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+system_prompt = """
+Please answer the user's queries in a conversational manner, using the relevant documents provided. 
+Do not use external knowledge. If no relevant documents are found, respond with 'No relevant documents found.'
+"""
+
+chat_engine = index.as_chat_engine(
+    system_prompt=system_prompt, # system prompt
+    llm=llm,  # pass the Ollama model
+    chat_mode = "best", # 
+    use_query_context = True, # memory, include the query context in the conversation
+    context_window_size = 5, # the number of previous turns or messages from the conversation to be included
+    response_template = "Assistant: {response}" # response template
+)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+user_query_1 = "My name is Lin. What is your name?"
+print("User:", user_query_1)
+response_1 = chat_engine.chat(user_query_1)
+print("Assistant:", response_1)
+
+user_query_2 = "Nice to meet you. Do you know my name?"
+print("User:", user_query_2)
+response_2 = chat_engine.chat(user_query_2)
+print("Assistant:", response_2)
+        </pre>
+        </div>
+		<div class = "subtitle">Query</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# load documents
+documents = SimpleDirectoryReader("Paul_Graham/").load_data() # 1 node
+
+# bge-base embedding model
+Settings.embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-base-en-v1.5")
+
+# index documents
+index = VectorStoreIndex.from_documents(documents)
+
+# set model
+llm = Ollama(model="phi3", request_timeout=360.0, temperature=0.7, max_tokens=150,)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+query_engine = index.as_query_engine(
+    llm = llm, # use Ollama model
+    similarity_top_k=3, # retrieve the top 3 most relevant documents
+    use_async = True,
+)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+response = query_engine.query("What is the date of the writting?")
+print(response)
+        </pre>
+        </div>
+		<div class = "subtitle">System Prompt in Query</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# load document
+documents = SimpleDirectoryReader("Paul_Graham/").load_data()
+
+# indexing
+Settings.embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-base-en-v1.5")
+index = VectorStoreIndex.from_documents(documents)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+prompt_template = PromptTemplate(template="""
+System Prompt:
+{system_prompt}
+
+Relevant Documents:
+{context_str}
+
+Query:
+{query_str}
+""")
+
+system_prompt = """
+Please answer the following query based on the relevant documents provided below. 
+Only use the information from these documents, and do not speculate or use external knowledge.
+If no relevant documents are found, respond with 'No relevant documents found.' and model generated response
+"""
+
+query = "What are the benefits of AI in education?"
+
+query_engine = index.as_query_engine()
+document_retrieve = query_engine.retrieve(query)
+relevant_documents = "\n".join([doc.text for doc in document_retrieve])
+
+final_prompt = prompt_template.format(
+    system_prompt=system_prompt, 
+    context_str=relevant_documents, 
+    query_str=query
+)
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+llm = Ollama(model="phi3", request_timeout=360.0)
+
+response = llm.complete(prompt=final_prompt)
+print(response.text)
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li><a href = "https://docs.llamaindex.ai/en/stable/getting_started/starter_example_local/">Starter Example</a></li>
+        </div>
+    </body>
+</html>
