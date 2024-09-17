@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+        <title>Python</title>
+        <link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+        <script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+        <style>
+            div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+            div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+            div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+        </style>
+    </head>
+
+	<body>
+		<div class = "title">
+			LlamaIndex with HuggingFace
+		</div>
+
+		<div class = "subtitle">Loading, Indexing, and Storing</div>
+		<div class = "block">
+            <li>Run when first use, document store and vector store will be saved under ./storage</li>
+		<pre class = "prettyprint linenums">
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+from llama_index.core import Settings
+from llama_index.vector_stores.faiss import FaissVectorStore
+from llama_index.core import StorageContext
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+import faiss
+
+# load documents
+reader = SimpleDirectoryReader(input_dir="Paul_Graham/")
+documents = reader.load_data()
+
+# setup chunk size and overlap size of indexing
+Settings.chunk_size = 256
+Settings.chunk_overlap = 4
+
+embed_model = HuggingFaceEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
+
+# setup vector store
+faiss_index = faiss.IndexFlatL2(384)
+vector_store = FaissVectorStore(faiss_index=faiss_index)
+ 
+storage_context = StorageContext.from_defaults(vector_store=vector_store)
+
+# create index
+index = VectorStoreIndex.from_documents(documents, storage_context=storage_context, embed_model=embed_model)
+
+# save document store, vector store, and any other components associated with the index
+index.storage_context.persist()
+        </pre>
+        </div>
+		<div class = "subtitle">Load Document Store and Vector Store</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from llama_index.vector_stores.faiss import FaissVectorStore
+from llama_index.core import StorageContext
+from llama_index.core import load_index_from_storage
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+
+embed_model = HuggingFaceEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
+ 
+# load vector store from local
+vector_store = FaissVectorStore.from_persist_dir("./storage")
+ 
+# load document store from local
+storage_context = StorageContext.from_defaults(
+    vector_store=vector_store, persist_dir="./storage"
+)
+ 
+# create index
+index = load_index_from_storage(storage_context=storage_context, embed_model=embed_model)
+        </pre>
+        </div>
+		<div class = "subtitle">Setup HuggingFace Model</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from llama_index.llms.huggingface import HuggingFaceLLM
+from llama_index.core import PromptTemplate
+import torch
+
+llm = HuggingFaceLLM(
+    context_window=800,
+    max_new_tokens=100,
+    generate_kwargs={"temperature": 0.25, "do_sample": False, "repetition_penalty":1.2},
+    # query_wrapper_prompt=custom_prompt,
+    tokenizer_name="gpt2",
+    model_name="gpt2",
+    device_map="auto",
+    tokenizer_kwargs={"max_length": 800},
+    # uncomment this if using CUDA to reduce memory usage
+    # model_kwargs={"torch_dtype": torch.float16}
+)
+        </pre>
+        </div>
+		<div class = "subtitle">Query</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+query_engine = index.as_query_engine(llm = llm)
+
+query = "What did the author do growing up?"
+response = query_engine.query(query)
+        </pre>
+        </div>
+		<div class = "subtitle">Response Synthesizer</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from llama_index.core.response_synthesizers import TreeSummarize
+summarizer = TreeSummarize(llm=llm, verbose=True)
+
+query = "What did the author do growing up?"
+retriever = index.as_retriever()
+response = retriever.retrieve(query)
+ 
+summarizer.get_response(query, [record.text for record in response])
+        </pre>
+        </div>
+		<div class = "subtitle">Manual Query Process</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from llama_index.core.retrievers import VectorIndexRetriever
+
+prompt_template = PromptTemplate(template="""
+System Prompt:
+{system_prompt}
+ 
+Relevant Documents:
+{context_str}
+ 
+Query:
+{query_str}
+""")
+ 
+system_prompt = """
+Please answer the following query based on the relevant documents provided below. 
+Only use the information from these documents, and do not speculate or use external knowledge.
+If no relevant documents are found, respond with 'No relevant documents found.' and model generated response
+"""
+ 
+query = "What did the author do growing up?"
+ 
+retriever = VectorIndexRetriever(index=index, similarity_top_k = 2)
+document_retrieve = retriever.retrieve(query)
+
+relevant_documents = "\n".join([doc.text for doc in document_retrieve])
+ 
+final_prompt = prompt_template.format(
+    system_prompt=system_prompt, 
+    context_str=relevant_documents, 
+    query_str=query
+)
+
+response = llm.complete(final_prompt)
+        </pre>
+        </div>
+    </body>
+</html>
