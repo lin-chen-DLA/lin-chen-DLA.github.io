@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+        <title>Python</title>
+        <link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+        <script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+        <style>
+            div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+            div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+            div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+        </style>
+    </head>
+
+	<body>
+		<div class = "title">
+			GPT-2 with RAG
+		</div>
+
+		<div class = "subtitle">Load Data</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from langchain_community.document_loaders import TextLoader, DirectoryLoader
+
+loader = DirectoryLoader("./Paul_Graham/", glob="./*.txt",   loader_cls=TextLoader)
+docs = loader.load()
+        </pre>
+        </div>
+		<div class = "subtitle">Embedding</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain.embeddings.huggingface import HuggingFaceEmbeddings
+from sentence_transformers import SentenceTransformer
+from langchain_chroma import Chroma
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+splits = text_splitter.split_documents(docs)
+
+model_name = "sentence-transformers/all-MiniLM-L6-v2"  # You can replace this with other models
+hf_model = SentenceTransformer(model_name)
+
+texts = [doc.page_content for doc in splits]  # Extract text content from the documents
+embeddings = hf_model.encode(texts, convert_to_numpy=True)
+        </pre>
+        </div>
+		<div class = "subtitle">Indexing and Storing</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import chromadb
+chroma_client = chromadb.Client()
+collection = chroma_client.create_collection(name="my_collection")
+
+ids = []
+
+for index,embedding in enumerate(embeddings):
+    ids.append('id_'+str(index))
+
+collection.add(
+    documents=texts,
+    embeddings=embeddings,
+    ids = ids
+)
+        </pre>
+        </div>
+		<div class = "subtitle">Model Loading</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from transformers import pipeline
+
+pipe = pipeline("text-generation", model="gpt2")
+        </pre>
+        </div>
+		<div class = "subtitle">Retrieving</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from llama_index.core import PromptTemplate
+
+prompt_template = PromptTemplate(template="""
+System Prompt:
+{system_prompt}
+ 
+Relevant Documents:
+{context_str}
+ 
+Query:
+{query_str}
+
+Answer:
+""")
+ 
+system_prompt = """
+Please answer the following query based on the relevant documents provided below. 
+Only use the information from these documents, and do not speculate or use external knowledge.
+If no relevant documents are found, respond with 'No relevant documents found.' and model generated response
+"""
+ 
+query = "What did the author do growing up?"
+query_embedding = hf_model.encode([query], convert_to_numpy=True)
+
+results = collection.query(
+    query_embeddings=query_embedding,
+    n_results=2  # Return top 3 similar documents
+)
+
+document_retrieve = results['documents'][0]
+relevant_documents = "\n".join([doc for doc in document_retrieve])
+ 
+final_prompt = prompt_template.format(
+    system_prompt=system_prompt, 
+    context_str=relevant_documents, 
+    query_str=query
+)
+        </pre>
+        </div>
+		<div class = "subtitle">Querying</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+output = pipe(final_prompt, max_length = 1024)
+        </pre>
+        </div>
+		<div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li><a href = "https://huggingface.co/openai-community/gpt2">GPT-2</a></li>
+        </div>
+    </body>
+</html>
