@@ -91,7 +91,11 @@ outputs = embedding_pipeline(text) # 1*768
         </div>
         <div class = "subtitle">Embedding with GPT</div>
 		<div class = "block">
+            <li><span>Use specific tokenizer and model</span>
+                <ul>
             <li>The last hidden layer of decoder in a GPT model is an embedding matrix representing the context meaning of input text</li>
+                </ul>
+            </li>
 		<pre class = "prettyprint linenums">
 import torch
 from transformers import GPT2Tokenizer, GPT2Model
@@ -115,6 +119,26 @@ embedding_matrix = outputs.last_hidden_state # 1*14*768, 1 document, 14 tokens, 
         </pre>
         </div>
 		<div class = "block">
+            <li><span>Use AutoTokenizer and AutoModel</span></li>
+		<pre class = "prettyprint linenums">
+from transformers import AutoTokenizer, AutoModel
+import torch
+
+tokenizer = AutoTokenizer.from_pretrained('openai-community/gpt2')
+model = AutoModel.from_pretrained('openai-community/gpt2')
+
+text = "I've been waiting for a HuggingFace course my whole life."
+
+inputs = tokenizer(text, return_tensors='pt')
+
+with torch.no_grad():
+    outputs = model(**inputs)
+
+embedding_matrix = outputs.last_hidden_state # 1*14*768, 1 document, 14 tokens, 1*768 vector for each token
+        </pre>
+        </div>
+		<div class = "block">
+            <li><span>Use pipeline</span></li>
 		<pre class = "prettyprint linenums">
 from transformers import GPT2Tokenizer, GPT2Model
 from transformers import pipeline

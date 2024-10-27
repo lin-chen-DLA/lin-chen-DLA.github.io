@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+        <title>Python</title>
+        <link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+        <script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+        <style>
+            div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+            div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+            div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color:red; font-weight: bold;}
+        </style>
+    </head>
+
+	<body>
+		<div class = "title">
+			Translation
+		</div>
+
+        <div class = "subtitle">Use T5</div>
+		<div class = "block">
+            <li><span>Use specific tokenizer class and model class</span></li>
+		<pre class = "prettyprint linenums">
+from transformers import T5TokenizerFast, T5ForConditionalGeneration
+
+model_name = "t5-base" 
+tokenizer = T5TokenizerFast.from_pretrained(model_name)
+model = T5ForConditionalGeneration.from_pretrained(model_name)
+
+text = "Hello, how are you?"
+prompt = f"translate English to French: {text}"
+    
+inputs = tokenizer(prompt, return_tensors="pt")
+outputs = model.generate(inputs.input_ids, max_length=40)
+    
+translated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li><span>Use AutoTokenizer and AutoModel</span></li>
+		<pre class = "prettyprint linenums">
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+
+model_name = "t5-base" 
+model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+text = "Hello, how are you?"
+prompt = f"translate English to French: {text}"
+    
+inputs = tokenizer(prompt, return_tensors="pt")
+outputs = model.generate(inputs.input_ids, max_length=40)
+    
+translated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        </pre>
+        </div>
+		<div class = "block">
+            <li><span>Use pipeline</span>
+            </li>
+		<pre class = "prettyprint linenums">
+from transformers import pipeline
+
+qa_pipeline = pipeline("translation", model="t5-base")
+
+text = "Hello, how are you?"
+prompt = f"translate English to French: {text}"
+
+translated_text = qa_pipeline(prompt)
+        </pre>
+        </div>
+    </body>
+</html>

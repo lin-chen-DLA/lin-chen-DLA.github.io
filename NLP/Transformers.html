@@ -10,6 +10,7 @@
             div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
             div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
             div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color: red; font-weight: bold;}
         </style>
     </head>
 
@@ -21,8 +22,81 @@
         <div class = "subtitle">Pipeline Class Workflow</div>
 		<div class = "block">
             <p style = "text-align:center;"><img src = "img/NLP_2.png" width = "80%"></p>
+        </div>
+        <div class = "subtitle">Model Types</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "img/NLP_5.png" width = "60%"></p>
+        </div>
+        <div class = "subtitle">BERT-Like Models</div>
+		<div class = "block">
+            <li><span>BERT (Bidirectional Encoder Representations from Transformers)</span> can understand context more effectively than unidirectional models by examining both left and right contexts in a sentence</li>
+            <li><span>Head</span>, refers to an output layer or component added to the base model architecture, designed to adapt the model for a specific NLP task, usually is a fully connected neural network, each model backbone may have multiple heads for different tasks</li>
+            <li>AutoModel, embedding</li>
+            <li>AutoModelForSequenceClassification, text classification/sentiment analysis or semantic textual similarity</li>
+            <li>AutoModelForTokenClassification, name entity recognization</li>
+            <li>AutoModelForQuestionAnswering, question answering</li>
+            <li>AutoModelForMaskedLM, fill mask</li>
+            <p style = "text-align:center;"><img src = "img/NLP_6.png" width = "60%"></p>
+        </div>
+        <div class = "subtitle">T5-Like Models</div>
+		<div class = "block">
+            <li><span>T5 (Text-To-Text Transfer Transformer)</span> and similar models are designed to convert text sequence to text sequence</li>
+            <li>AutoModelForSeq2SeqLM, translation, summarization, and question answering</li>
+            <p style = "text-align:center;"><img src = "img/NLP_7.png" width = "60%"></p>
+        </div>
+        <div class = "subtitle">GPT-Like Models</div>
+		<div class = "block">
+            <li><span>GPT (Generative Pre-trained Transformer)</span> models are decoder-only transformers that specialize to generate coherent and contextually relevant text</li>
+            <li>AutoModelForCausalLM, text generation</li>
+            <p style = "text-align:center;"><img src = "img/NLP_4.png" width = "70%"></p>
+        </div>
+        <div class = "subtitle">Text &amp; Tokens &amp; Ids</div>
+		<div class = "block">
 		<pre class = "prettyprint linenums">
+from transformers import AutoTokenizer
+
+model_name = "bert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+text = "I've been waiting for a HuggingFace course my whole life."
+
+# convert text to ids
+ids = tokenizer(text, return_tensors='pt')
+
+# convert ids to text
+text = tokenizer.decode(ids.input_ids[0])
+
+# convert ids to tokens
+tokens = tokenizer.convert_ids_to_tokens(ids.input_ids[0])
+
+# convert text to tokens
+tokens = tokenizer.tokenize(text)
+
+# convert tokens to ids
+ids = tokenizer.convert_tokens_to_ids(tokens)
+
+# convert tokens to text
+text = tokenizer.convert_tokens_to_string(tokens)
         </pre>
+        </div>
+        <div class = "subtitle">Embedding Libraries</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from transformers import AutoModel
+
+model_name = "bert-base-uncased"
+model = AutoModel.from_pretrained(model_name)
+
+# embedding library
+model.embeddings.word_embeddings.weight.data # 30522*768, library contains 30522 tokens, 1*768 vector for each token
+
+# position embedding library
+model.embeddings.position_embeddings.weight.data # 512*768, take 512 tokens, 1*512 vector for each token
+        </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://huggingface.co/docs/transformers/en/main_classes/pipelines">Transformers pipeline</a></li>
         </div>
     </body>
 </html>

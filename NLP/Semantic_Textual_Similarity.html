@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+        <title>Python</title>
+        <link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+        <script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+        <style>
+            div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+            div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+            div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color:red; font-weight: bold;}
+        </style>
+    </head>
+
+	<body>
+		<div class = "title">
+			Semantic Textual Similarity
+		</div>
+
+        <div class = "subtitle">Binary Classification</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+
+# Load a pre-trained model and tokenizer
+model_name = "bert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2)  # For regression, set `num_labels=1`
+
+# Define two sentences for similarity comparison
+sentence_1 = "A cat is sitting on the mat."
+sentence_2 = "There is a cat on the mat."
+
+# Tokenize the sentence pairs
+inputs = tokenizer(sentence_1, sentence_2, return_tensors="pt", padding=True)
+
+# Get similarity score prediction
+with torch.no_grad():
+    outputs = model(**inputs)
+    #similarity_score = torch.sigmoid(outputs.logits).item()
+
+import torch.nn.functional as F
+probabilities = F.softmax(outputs.logits[0], dim=0)
+
+paraphrase_prob = probabilities[1].item() # probability of being similar
+non_paraphrase_prob = probabilities[0].item() # probability of not similar
+
+print("Similar" if paraphrase_prob > non_paraphrase_prob else "Not Similar")
+        </pre>
+        </div>
+        <div class = "subtitle">Regression</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+
+# Load a pre-trained model and tokenizer
+model_name = "bert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+# num_labels=1, regression, sigmoid can convert the output logit to a value between 0 and 1
+# num_labels=5
+model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=1)  # For regression, set `num_labels=1`
+
+# Define two sentences for similarity comparison
+sentence_1 = "A cat is sitting on the mat."
+sentence_2 = "There is a cat on the mat."
+
+# Tokenize the sentence pairs
+inputs = tokenizer(sentence_1, sentence_2, return_tensors="pt", padding=True)
+
+# Get similarity score prediction
+with torch.no_grad():
+    outputs = model(**inputs)
+
+similarity_score = torch.sigmoid(outputs.logits).item()
+        </pre>
+        </div>
+    </body>
+</html>

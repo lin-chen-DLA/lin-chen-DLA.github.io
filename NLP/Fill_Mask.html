@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+        <title>Python</title>
+        <link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+        <script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+        <style>
+            div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+            div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+            div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color:red; font-weight: bold;}
+        </style>
+    </head>
+
+	<body>
+		<div class = "title">
+			Fill Mask
+		</div>
+
+        <div class = "subtitle">Use BERT</div>
+		<div class = "block">
+            <li><span>Use specific tokenizer class and model class</span></li>
+		<pre class = "prettyprint linenums">
+from transformers import BertTokenizerFast, BertForMaskedLM
+import torch
+
+model_name="bert-base-uncased"
+
+tokenizer = BertTokenizerFast.from_pretrained(model_name)
+model = BertForMaskedLM.from_pretrained(model_name)
+
+text = "The quick brown fox jumps over the [MASK] dog."
+
+inputs = tokenizer(text, return_tensors='pt') # 12 tokens
+
+with torch.no_grad():
+    outputs = model(**inputs) # 12*30522
+
+mask_token_index = torch.where(inputs['input_ids'] == tokenizer.mask_token_id)[1] # index of [MASK] in input ids 
+
+mask_predictions = outputs.logits[0, mask_token_index].topk(5) # for the [MASK] token, get the top 5 relevant tokens from token library
+
+predicted_ids = mask_predictions.indices[0].tolist()
+
+predicted_tokens = [tokenizer.decode([pred_id]) for pred_id in predicted_ids]
+        </pre>
+        </div>
+		<div class = "block">
+            <li><span>Use AutoTokenizer and AutoModel</span></li>
+		<pre class = "prettyprint linenums">
+from transformers import AutoTokenizer, AutoModelForMaskedLM
+import torch
+
+model_name="bert-base-uncased"
+
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForMaskedLM.from_pretrained(model_name)
+
+text = "The quick brown fox jumps over the [MASK] dog."
+
+inputs = tokenizer(text, return_tensors='pt') # 12 tokens
+
+with torch.no_grad():
+    outputs = model(**inputs) # 12*30522
+
+mask_token_index = torch.where(inputs['input_ids'] == tokenizer.mask_token_id)[1] # index of [MASK] in input ids 
+
+mask_predictions = outputs.logits[0, mask_token_index].topk(5) # for the [MASK] token, get the top 5 relevant tokens from token library
+
+predicted_ids = mask_predictions.indices[0].tolist()
+
+predicted_tokens = [tokenizer.decode([pred_id]) for pred_id in predicted_ids]
+
+predicted_tokens
+        </pre>
+        </div>
+		<div class = "block">
+            <li><span>Use pipeline</span>
+            </li>
+		<pre class = "prettyprint linenums">
+from transformers import pipeline
+
+fill_mask = pipeline("fill-mask", model="bert-base-uncased")
+
+text = "The quick brown fox jumps over the [MASK] dog."
+
+fill_mask(text)
+        </pre>
+        </div>
+    </body>
+</html>

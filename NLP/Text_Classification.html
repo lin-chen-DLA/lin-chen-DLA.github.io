@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+        <title>Python</title>
+        <link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+        <script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+        <style>
+            div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+            div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+            div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+            span {color:red; font-weight: bold;}
+        </style>
+    </head>
+
+	<body>
+		<div class = "title">
+			Text Classification
+		</div>
+
+        <div class = "subtitle">Use BERT</div>
+		<div class = "block">
+            <li><span>Use specific tokenizer class and model class</span></li>
+		<pre class = "prettyprint linenums">
+from transformers import BertTokenizerFast, BertForSequenceClassification
+import torch
+
+model_name = "bert-base-uncased"
+tokenizer = BertTokenizerFast.from_pretrained(model_name)
+
+# num_labels=5 for 5 classes, 0-5, from very negative to very positive
+model = BertForSequenceClassification.from_pretrained(model_name, num_labels=5)
+
+text = "Today is a beautiful day!"
+
+inputs = tokenizer(text, return_tensors="pt", padding=True)
+
+with torch.no_grad():
+    outputs = model(**inputs)
+
+import torch.nn.functional as F
+probabilities = F.softmax(outputs.logits[0], dim=0)
+        </pre>
+        </div>
+		<div class = "block">
+            <li><span>Use AutoTokenizer and AutoModel</span></li>
+		<pre class = "prettyprint linenums">
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+
+# Load a pre-trained model and tokenizer
+model_name = "bert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+# num_labels=5 for 5 classes, 0-5, from very negative to very positive
+model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=5)  # For regression, set `num_labels=1`
+
+text = "Today is a beautiful day!"
+
+inputs = tokenizer(text, return_tensors="pt", padding=True)
+
+with torch.no_grad():
+    outputs = model(**inputs)
+
+import torch.nn.functional as F
+probabilities = F.softmax(outputs.logits[0], dim=0)
+        </pre>
+        </div>
+		<div class = "block">
+            <li><span>Use pipeline</span>
+            </li>
+		<pre class = "prettyprint linenums">
+from transformers import pipeline
+
+classifier = pipeline("text-classification", model="bert-base-uncased")
+
+text = "Today is a beautiful day!"
+
+result = classifier(text)
+print(result)
+        </pre>
+        </div>
+        <div class = "subtitle">Use T5</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from transformers import pipeline
+
+classifier = pipeline("text-classification", model="google-t5/t5-base")
+
+text = "Today is a beautiful day!"
+input_text = f"classify sentiment: {text}"
+
+result = classifier(input_text)
+        </pre>
+        </div>
+        <div class = "subtitle">Use GPT</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from transformers import pipeline
+
+classifier = pipeline("text-classification", model="openai-community/gpt2")
+
+text = "Today is a beautiful day!"
+input_text = f"classify sentiment: {text}"
+
+result = classifier(input_text)
+        </pre>
+        </div>
+    </body>
+</html>
