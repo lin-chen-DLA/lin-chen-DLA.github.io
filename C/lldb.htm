@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Python</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			lldb
+		</div>
+
+		<div class = "subtitle">Debug with LLDB</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+// s.cpp
+// code with segmentation fault
+#include &lt;iostream&gt;
+using namespace std;
+
+void my_subroutine() {
+    cout &lt;&lt; "Hello world" &lt;&lt; endl;
+}
+
+int main() {
+    int x = 4;
+    int *p = NULL;
+    my_subroutine();
+    *p = 3;
+    cout &lt;&lt; x &lt;&lt; ", " &lt;&lt; *p &lt;&lt; endl;
+    return 0;
+}
+        </pre>
+		<pre class = "prettyprint linenums">
+# compile, display c++ source code
+g++ s.cpp -Wall -g # output an executable file, a.out
+
+# compile, display assemble code
+g++ s.cpp -Wall
+        </pre>
+		<pre class = "prettyprint linenums">
+# start lldb
+lldb a.out
+        </pre>
+		<pre class = "prettyprint linenums">
+# quit lldb
+quit
+        </pre>
+        </div>
+		<div class = "subtitle">Breakpoint</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# executable file compiled with -g, display C++ source code
+
+# set a break point by function name
+breakpoint set --name my_subroutine
+br s -n my_subroutine
+b my_subroutine
+
+# set a break point by memory address
+breakpoint set --address 0x0000000100003044
+br s -a 0x0000000100003044
+b 0x0000000100003044
+
+# set a break point by line number
+breakpoint set --line 10
+br s -l 10
+b 10
+
+# set a break point by memory address
+breakpoint set --address 0x0000000100003044
+br s -a 0x0000000100003044
+b 0x0000000100003044
+
+# list break points
+breakpoint list
+br l
+b
+
+# delete break point by id
+breakpoint delete 4
+br del 4
+
+# disable break point by id
+breakpoint disable # disable all break points
+breakpoint disable 4
+br dis 4
+
+# enable break point by id
+breakpoint enable # enable all break points
+breakpoint enable 4
+br en 4
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# executable file compiled without -g, display assemble code
+
+# set a break point by function name
+breakpoint set --name my_subroutine
+br s -n my_subroutine
+b my_subroutine
+
+# list break points
+breakpoint list
+br l
+b
+
+# delete break point by id
+breakpoint delete 4
+br del 4
+
+# disable break point by id
+breakpoint disable # disable all break points
+breakpoint disable 4
+br dis 4
+
+# enable break point by id
+breakpoint enable # enable all break points
+breakpoint enable 4
+br en 4
+        </pre>
+        </div>
+		<div class = "subtitle">Execute Program</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# run, start program until hit a breakpoint, encounters an error, or completes
+run
+        </pre>
+		<pre class = "prettyprint linenums">
+# step
+        </pre>
+		<pre class = "prettyprint linenums">
+# next
+        </pre>
+		<pre class = "prettyprint linenums">
+# continue
+        </pre>
+        </div>
+		<div class = "subtitle">Other Commands</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# help
+help # show commands
+help stepi # display details of a specific command
+        </pre>
+		<pre class = "prettyprint linenums">
+# quit
+quit # quit lldb
+q # abbreviation of quit
+exit # alternative
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://aaronbloomfield.github.io/pdr/tutorials/02-lldb/index.html">Tutorial</a></li>
+            		<li><a href = "https://lldb.llvm.org/">Documentation</a></li>
+        	</div>
+    </body>
+</html>
