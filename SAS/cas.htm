@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SAS</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			CAS
+		</div>
+		<div class = "subtitle">Intro</div>
+		<div class = "block">
+			<li><span>CAS</span>
+				<ul>
+					<li>An in-memory analytic runtime environment for the SAS Viya architecture</li>
+					<li>Do work in a parallel fashion</li>
+					<li>Retain data in memory</li>
+					<li>Can scale to data of any size</li>
+					<li>Support node-to-node communication</li>
+					<li>Fault tolerant</li>
+				</ul>
+			</li>
+			<li><span>CASL</span>
+				<ul>
+					<li>The command to CAS</li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">CAS Session</div>
+		<div class = "block">
+			<li>Refers to a temporary environment established by a user or application to interact with the CAS server</li>
+			<p style = "text-align:center;"><img src = "img/sas_2.png" width = "60%"></p>
+		</div>
+		<div class = "block">
+			<li><span>Start a Session</span></li>
+		<pre class = "prettyprint linenums">
+/* cas [sessionName] */
+cas mysession;
+		</pre>
+		<pre class = "prettyprint linenums">
+cas mysession sessopts=(
+		caslib="casuser" /* specify default cas library, which is one of the exist temporary library */
+		timeout=7200 /* session stays active for 7200 seconds, default is 60 seconds*/
+		locale="en_US" /* locale is set to U.S. English */
+);
+		</pre>
+			<li><span>List Sessions</span></li>
+		<pre class = "prettyprint linenums">
+proc cas;
+	session.listSessions;
+quit;
+		</pre>
+			<li><span>Display Session Status</span></li>
+		<pre class = "prettyprint linenums">
+proc cas;
+	session.sessionStatus;
+quit;
+		</pre>
+		<li><span>Terminate Session</span></li>
+		<pre class = "prettyprint linenums">
+/* cas [sessionName] terminate */
+cas mysession terminate;
+		</pre>
+	</div>
+		<div class = "subtitle">Data Workflow</div>
+		<div class = "block">
+			<li><span>CAS temporary library (caslib)</span>
+				<ul>
+					<li>Store temporary tables in CAS memory for multiple steps and multiple users</li>
+					<li>Deleted automatically when session ends</li>
+					<li>Distributed in memory to multiple worker nodes</li>
+					<li>Processed in parallel across the worker nodes</li>
+					<li>Visible to everyone across CAS sessions</li>
+				</ul>
+			</li>
+			<li><span>SASHDAT Space</span>
+				<ul>
+					<li>Distributed disk space to store data in CAS</li>
+					<li>SASHDAT is a file format used in SASHDAT Space</li>
+					<li>Can be accessed via Remote Drive -&gt; Home -&gt; casuser</li>
+				</ul>
+			</li>
+			<p style = "text-align:center;"><img src = "img/sas_1.png" width = "40%"></p>
+		</div>
+		<div class = "block">
+		<li><span>Map a CAS Library to SAS Library</span></li>
+		<pre class = "prettyprint linenums">
+/* libname [sasLibraryName] cas caslib=[casLibraryName] */
+libname mycaslib cas caslib=Samples;
+		</pre>
+		<li><span>Map All CAS Libraries to SAS Environment</span></li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+caslib _all_ assign;
+		</pre>
+	</div>
+		<div class = "subtitle">Option 1. pytest</div>
+		<div class = "block">
+			<span>developer</span>
+		<pre class = "prettyprint linenums">
+		</pre>
+			<span>users</span>
+		<pre class = "prettyprint linenums">
+		</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+		</div>
+	</body>
+</html>
