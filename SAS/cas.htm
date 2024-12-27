@@ -49,6 +49,7 @@ cas mysession sessopts=(
 		caslib="casuser" /* specify default cas library, which is one of the exist temporary library */
 		timeout=7200 /* session stays active for 7200 seconds, default is 60 seconds*/
 		locale="en_US" /* locale is set to U.S. English */
+		metrics=true /* displays timing and performance information for the actions executed within the session */
 );
 		</pre>
 			<li><span>List Sessions</span></li>
@@ -73,18 +74,28 @@ cas mysession terminate;
 		<div class = "block">
 			<li><span>CAS temporary library (caslib)</span>
 				<ul>
+					<li>Each user has a default library, <span>casuser</span></li>
 					<li>Store temporary tables in CAS memory for multiple steps and multiple users</li>
 					<li>Deleted automatically when session ends</li>
 					<li>Distributed in memory to multiple worker nodes</li>
 					<li>Processed in parallel across the worker nodes</li>
-					<li>Visible to everyone across CAS sessions</li>
 				</ul>
 			</li>
 			<li><span>SASHDAT Space</span>
 				<ul>
 					<li>Distributed disk space to store data in CAS</li>
 					<li>SASHDAT is a file format used in SASHDAT Space</li>
-					<li>Can be accessed via Remote Drive -&gt; Home -&gt; casuser</li>
+					<li>Can be accessed via <span>Remote Drive -&gt; Home -&gt; casuser</span></li>
+				</ul>
+			</li>
+			<li><span>Local Table</span>
+				<ul>
+					<li>Stored in CAS memory, exists only within the current session</li>
+				</ul>
+			</li>
+			<li><span>Global Table</span>
+				<ul>
+					<li>Stored in CAS memory and shared across sessions, cleared when CAS server is retarted</li>
 				</ul>
 			</li>
 			<p style = "text-align:center;"><img src = "img/sas_1.png" width = "40%"></p>
@@ -101,17 +112,567 @@ cas mysession;
 caslib _all_ assign;
 		</pre>
 	</div>
-		<div class = "subtitle">Option 1. pytest</div>
 		<div class = "block">
-			<span>developer</span>
+		<li><span>List CAS Libraries</span></li>
 		<pre class = "prettyprint linenums">
+cas mysession;
+
+proc cas;
+	table.caslibInfo;
+quit;
 		</pre>
-			<span>users</span>
+		<li><span>List Tables in a CAS Library</span></li>
 		<pre class = "prettyprint linenums">
+cas mysession;
+
+proc cas;
+	list tables incaslib="casuser";
+quit;
+		</pre>
+		<li><span>List Files in a folder on SASHDAT</span></li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+
+proc casutil;
+	list files incaslib="casuser";
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+		<li><span>Copy Data from SAS Library to CAS Library</span></li>
+		<pre class = "prettyprint linenums">
+libname mycaslib cas caslib=Samples;
+
+data mycaslib.cars;
+	set sashelp.cars;
+run;
+		</pre>
+		<li><span>Copy Data from CAS Library to SAS Library</span></li>
+		<pre class = "prettyprint linenums">
+libname mycaslib cas caslib=Samples;
+
+data work.water;
+	set mycaslib.water_cluster;
+run;
+		</pre>
+		<li><span>Copy Data from CAS Library to CAS Library</span></li>
+		<pre class = "prettyprint linenums">
+libname mys cas caslib=Samples;
+libname myc cas caslib=casuser;
+
+data myc.water;
+	set mys.water_cluster;
+run;
+		</pre>
+		<li><span>Save Data in CAS Library to SASHDAT Space</span></li>
+		<pre class = "prettyprint linenums">
+/* save the table cars in library samples in CAS to cars.sasdata in casuser folder on SASHDAT space */
+cas mysession;
+
+proc casutil;
+	save casdata="cars" incaslib="samples" outcaslib="casuser" casout="cars" replace;
+quit;
+		</pre>
+		<li><span>Save Data in CAS Library to SASHDAT Space in Compressed Format</span></li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+
+proc cas;
+	table.save /
+		caslib="casuser" /* target library on SASHDAT */
+		name="cars_compressed" /* target file name on SASHDAT */
+		table={caslib="casuser", name="cars"} /* source table on CAS */
+		compress=true; /* save as compressed data */
+quit;
+		</pre>
+		<li><span>Load Data in SASHDAT Space to CAS Library</span></li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+
+proc cas;
+	table.loadTable /
+		path="cars.sashdat" /* source file name on SASHDAT */
+		caslib="casuser" /* source library on SASHDAT */
+		casout={caslib="casuser", name="cars2", promote=false}; /* target library and table on CAS */
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+		<li><span>Load a Table as a Local Table</span></li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+
+proc cas;
+	table.loadTable /
+		path="cars.sashdat"
+		caslib="casuser"
+		casout={caslib="casuser", name="cars", promote=false};
+quit;
+		</pre>
+		<li><span>Load a Table as a Global Table</span></li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+
+proc cas;
+	table.loadTable /
+		path="cars.sashdat"
+		caslib="casuser"
+		casout={caslib="casuser", name="cars", promote=true};
+quit;
+		</pre>
+		<li><span>Promote Local Table to Global Table</span></li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+
+proc cas;
+	table.promote /
+		caslib="casuser" /* source library */
+		name="cars" /* source table */
+		target="cars2" /* target table */
+		targetcaslib="casuser"; /* target library */
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+		<li><span>Delete Table in CAS Library</span></li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+
+proc casutil;
+	dropTable casdata="cars2" incaslib="casuser";
+quit;
+		</pre>
+		<li><span>Delete Table in SASHDAT Space</span></li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+
+proc cas;
+	table.deleteSource / caslib="casuser" source="cars.sashdat"
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">Actions</div>
+		<div class = "block">
+			<li>Core building blocks for interacting with CAS, and they allow users to manipulate data, perform computations, and run advanced analytics on distributed datasets</li>
+		</div>
+		<div class = "block">
+			<span>Syntax</span>
+		<pre class = "prettyprint linenums">
+proc cas;
+   [action-set].[action-name] /
+      [parameters];
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<span><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/caspg/p0joqt87rsqmn1n1wupl399q28u8.htm">Working with Results</a></span>
+			<li>Result is saved a dictionary, which has a key and a table as the value</li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+
+proc cas;
+	/* fetch a subset of data */
+	table.fetch result=r /
+		table={name="cars", caslib="casuser"}
+		from=10
+		to=20;
+
+	/* describe result */
+	describe r;
+
+	/* print result */
+	print r;
+
+	/* select rows and columns */
+	print r.fetch[1:10, {"Model", "MSRP"}]; /* fetch is the key of the result dictionary */
+
+	/* save result to a table on SAS server */
+	saveresult findtable(r) dataout="work.temp";
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<span><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/caspg/cas-builtins-TblOfActions.htm">Builtins</a></span>
+		<pre class = "prettyprint linenums">
+/* shows the parameters for an action */
+cas mysession;
+
+proc cas;
+	builtins.help /
+		action="fetch"
+		actionSet="table";
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* display user information */
+cas mysession;
+
+proc cas;
+	builtins.userInfo;
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* shows the host names used by the server */
+cas mysession;
+
+proc cas;
+	builtins.listnodes;
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* shows the actions that were run in this session */
+cas mysession;
+
+proc cas;
+	builtins.history;
+quit;
 		</pre>
 		</div>
+		<div class = "block">
+			<span><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/caspg/cas-datastep-TblOfActions.htm">Datastep</a></span>
+		<pre class = "prettyprint linenums">
+/* run a SAS DATA step on CAS */
+cas mysession;
+
+proc cas;
+	datastep.runCode /
+		code='
+			data causer.temp;
+				setp causer.cars;
+				discount=MSRP-Invoice;
+			run;';
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<span><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/caspg/cas-fedsql-TblOfActions.htm">Fedsql</a></span>
+		<pre class = "prettyprint linenums">
+/* submit SQL statements */
+cas mysession;
+
+proc cas;
+	fedsql.execdirect /
+		query = "
+				create table causer.temp2 as
+				select * from causer.cars
+		";
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<span><a href = "https://documentation.sas.com/doc/en/vdmmlcdc/8.1/casanpg/p0sjqltfvadyxon1r3euv8qhj62l.htm">Analytics Actions</a></span>
+		<pre class = "prettyprint linenums">
+/* generates a frequency distribution for one or more variables */
+cas mysession;
+
+proc cas;
+	simple.freq result=r /
+		table={caslib="casuser", name="cars"}
+		inputs={"Cylinders", "Type"};
+
+	print r;
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* generates descriptive statistics of numeric variables */
+cas mysession;
+
+proc cas;
+	simple.summary result=r /
+		table={caslib="casuser", name="cars"}
+		subset={"max", "mean", "n", "NMiss", "std"};
+
+	print r;
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<span><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/caspg/cas-table-TblOfActions.htm">Table</a></span>
+		<pre class = "prettyprint linenums">
+/* column infomraiton in a table on cas */
+cas mysession;
+
+proc cas;
+	table.columnInfo
+		table={name="cars", caslib="casuser"};
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* list libraries on cas */
+cas mysession;
+
+proc cas;
+	table.caslibinfo;
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* list tables in a library on cas and show information */
+cas mysession;
+
+proc cas;
+	table.tableinfo /
+		caslib="casuser";
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* update a table on cas */
+cas mysession;
+
+proc cas;
+	table.update result=r /
+		table={name="cars", caslib="casuser"}
+		set={{var="Make", value="Unknown"}};
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* load a table to cas */
+cas mysession;
+
+proc cas;
+	table.upload /
+		path = '/path/cars.sashdat'
+		casout={name="temp", caslib="casuser"};
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* fetch data from a table on cas */
+cas mysession;
+
+proc cas;
+	table.fetch result=r /
+		table={name="cars", caslib="casuser"}
+		from=10
+		to=20;
+
+	print r;
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* promote a local table to global table on cas */
+cas mysession;
+ 
+proc cas;
+	table.promote /
+		caslib="casuser"
+		name="cars"
+		target="cars2"
+		targetcaslib="casuser";
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* save a table to sashdat space */
+cas mysession;
+ 
+proc cas;
+	table.save /
+		caslib="casuser" /* target lib */
+		name="cars_compressed" /* target file name */
+		table={caslib="casuser", name="cars"} /* source table */
+		compress=true; /* save as compressed data */
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* load a table from sashdat space */
+cas mysession;
+ 
+proc cas;
+	table.loadTable /
+		path="cars_compressed.sashdat"
+		caslib="casuser"
+		casout={caslib="casuser", name="cars_compressed", promote=false};
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* remove a table on cas */
+cas mysession;
+ 
+proc cas;
+	table.dropTable /
+		table="cars"
+		caslib="casuser"
+		quiet=true;
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">Procedures Available on CAS</div>
+		<div class = "block">
+			<span>proc cas</span>
+			<li>Allows users to interact programmatically with the CAS server and perform actions such as loading data, managing CAS tables, performing analytics</li>
+		<pre class = "prettyprint linenums">
+proc cas;
+   /* CAS actions or other statements go here */
+quit; /* end with quit */
+		</pre>
+	</div>
+	<div class = "block">
+			<span>proc fedsql</span>
+			<li>Implement sql on tables on cas</li>
+		<pre class = "prettyprint linenums">
+proc fedsql;
+	create table casuser.temp as
+	select * from casuser.cars;
+quit;
+		</pre>
+	</div>
+	<div class = "block">
+			<span>data</span>
+		<pre class = "prettyprint linenums">
+data casuser.temp;
+	set casuser.cars;
+	where Type = "SUV";
+run;
+		</pre>
+	</div>
+	<div class = "block">
+			<span>proc contents</span>
+		<pre class = "prettyprint linenums">
+proc contents data=causer.cars;
+run;
+		</pre>
+	</div>
+		<div class = "block">
+			<span>proc casutil</span>
+			<li>Manage CAS datasets</li>
+		<pre class = "prettyprint linenums">
+/* list files on SASHDAT in a library */
+proc casutil;
+	list files incaslib="casuser";
+run;
+
+/* list tables in a library on CAS */
+proc casutil;
+	list tables incaslib="casuser";
+run;
+		</pre>
+	</div>
+	<div class = "block">
+			<span>proc copy</span>
+			<li>Copy datasets on cas</li>
+		<pre class = "prettyprint linenums">
+proc copy in=casuser out=samples;
+	select cars summary; /* copy multiple datasets */
+run;
+		</pre>
+	</div>
+		<div class = "block">
+			<span>proc delete</span>
+			<li>Delete dataset on cas</li>
+		<pre class = "prettyprint linenums">
+proc delete data=casuser.temp;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Functions</div>
+		<div class = "block">
+			<span><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/proccas/n04cgm5s8rx4zun1eb0vyd07npbr.htm">CAS Built-in Functions</a></span>
+				<pre class = "prettyprint linenums">
+/* findtable */
+cas mysession;
+
+proc cas;
+	table.fetch result=r /
+		table={name="cars", caslib="casuser"}
+		from=10
+		to=20;
+
+	print findtable(r);
+quit;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* sort */
+cas mysession;
+
+proc cas;
+	l = {98, 74, 54, 18, 101, 67, 80, 90, 62};
+	s = sort(l);
+
+	print s;
+run;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* sleep */
+cas mysession;
+
+proc cas;
+	print "Start"
+	sleep(4)
+	print "End"
+run;
+		</pre>
+	</div>
+		<div class = "block">
+			<span><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/lefunctionsref/n01f5qrjoh9h4hn1olbdpb5pr2td.htm">CAS-Enabled SAS Functions</a></span>
+			<li>Functions defined in SAS and support CAS</li>
+			<li>Has CAS in category</li>
+		<pre class = "prettyprint linenums">
+/* list function categories */
+proc cas;
+	fnc cate;
+run;
+
+/* list functions in a category */
+proc cas;
+	fnc statistics;
+run;
+		</pre>
+	</div>
+	<div class = "block">
+			<span>Data Types in CASL</span>
+			<li>boolean, double, int32, int64, string, varchar, table, array, dictionary, date, datetime, time</li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+
+proc cas;
+	a = 10; /* int64_t */
+
+	b = "Lin"; /* string */
+
+	c = {1, 2, 3, "Lin"}; /* array, index starts from 1 */
+	print c[4];
+
+	do value over c;
+		print value;
+	end;
+
+	d = {Lin=45, Yanhua=44}; /* dictionary */
+	print dictionary(d, "Lin");
+run;
+		</pre>
+		<span><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/proccas/n1nej11e54yxngn1lxngtfzwwonm.htm">CASL Statements</a></span>
+		<pre class = "prettyprint linenums">
+proc cas;
+	d = {Lin=45, Yanhua=44}; /* dictionary */
+	describe d;
+quit;
+		</pre>
+		<span>Define Function</span>
+		<pre class = "prettyprint linenums">
+/* define in /path/casfunc.sas */
+proc cas;
+	function fact(x);
+		if (x < 1.0) then return x;
+		else do;
+			return x*fact(x-1);
+		end;
+run;
+		</pre>
+		<span>Use Function</span>
+		<pre class = "prettyprint linenums">
+%include "/path/casfunc.sas";
+proc cas;
+	do i = 1 to 9 by 1;
+		x = fact(i);
+		print "Factorial of " i ": " x;
+run;
+		</pre>
+	</div>
+	</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
+			<li><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/pgmsaswlcm/home.htm">Document</a></li>
+			<li><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/lefunctionsref/n01f5qrjoh9h4hn1olbdpb5pr2td.htm">Dictionary of Functions and CALL Routines</a></li>
+			<li><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/allprodsactions/actionSetsByName.htm">Actions by Name</a></li>
+			<li><a href = "https://www.youtube.com/watch?app=desktop&v=8pKqrUQjfZs&t=0s">SAS Tutorial | Introduction to CAS and Coding in CASL in SAS Viya</a></li>
 		</div>
 	</body>
 </html>
