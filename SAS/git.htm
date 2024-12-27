@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SAS</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Github
+		</div>
+		<div class = "subtitle">Create Profile</div>
+		<div class = "block">
+			<li>Allows the access to Github from SAS Viya</li>
+			<p style = "text-align:center;"><img src = "img/sas_3.png" width = "40%"></p>
+	</div>
+		<div class = "block">
+			<li><span style="color:blue">Github Side</span>
+				<ul>
+					<li><span>Username</span>
+						<ul>
+							<li>Click the Avatar on the top-right, click <span>Your profile</span></li>
+							<li>On the profile page, your <span>email</span> and <span>username</span> is under the Avatar</li>
+						</ul>
+					</li>
+					<li><span>Token</span>
+						<ul>
+							<li>Click the Avatar on the top-right, click <span>Settings</span></li>
+							<li>Click <span>Developer settings</span> on the bottom-left</li>
+							<li>Click <span>Personal access tokens</span>, then choose <span>Tokens (classic)</span></li>
+							<li>Generate a token and save it</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li><span style="color:blue">SAS Viya Side</span>
+				<ul>
+					<li>Click <span>Options</span>, then choose <span>Manage Git Connection</span>, select <span>Profiles</span></li>
+					<li>Click <span>&#10010;</span> to add a git profile
+						<ul>
+							<li>Choose <span>HTTPS</span> on the top-right of the popup window</li>
+							<li>Profile name, a user-defined functional name</li>
+							<li>User name, the username on Github</li>
+							<li>Email, the email on Github</li>
+							<li>Password, the token created on Github</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+	</div>
+	<div class = "subtitle">Start Project with Git Enabled</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/sas_4.png" width = "40%"></p>
+			<li><span style="color:blue">Option 1</span>
+				<ul>
+					<li><span>Github Side</span>
+						<ul>
+							<li>Create an empty repo or locate an existing repo</li>
+							<li>On the Code page, click the green <span>Code</span> button, copy the <span>HTTPS URL</span> of the repo</li>
+						</ul>
+					</li>
+					<li><span>SAS Viya</span>
+						<ul>
+							<li>Create a folder on SAS to store the project code</li>
+							<li>Open <span>Clone a Repository</span> window
+								<ul>
+									<li>Click <span>Git Repositories</span>, then click <span>Clone</span></li>
+									<li><span style="color:blue">Or</span> click Options, choose Manage Git Connections, select Repositories, click <span>&#10010;</span></li>
+								</ul>
+							</li>
+							<li>Use the <span>HTTPS URL</span> of the repo, specify the created project <span>folder</span> on SAS, choose the created <span>profile</span>, click <span>Clone</span></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+	</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/sas_5.png" width = "40%"></p>
+			<li><span style="color:blue">Option 2</span>
+				<ul>
+					<li><span>Github Side</span>
+						<ul>
+							<li>Create an empty repo and copy the <span>HTTPS URL</span> of the repo</li>
+						</ul>
+					</li>
+					<li><span>SAS Viya</span>
+						<ul>
+							<li>Create a <span>folder</span> on SAS and create project code</li>
+							<li>Right-click the <span>project folder</span>, then choose <span>Git initialize</span></li>
+							<li>On the <span>Git Repositories</span> page, choose the project, click <span>Push</span> on the right window to add the Github repo url</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+	</div>
+	<div class = "subtitle">Commit</div>
+		<div class = "block">
+			<li>Edit and save code files to the project folder</li>
+			<li>In the <span>Unstaged Changes</span> window of the <span>Git Repositories</span> page, use <span>&#10010;</span> to move files which need to commit to staged status</li>
+			<li>In the <span>Staged Changes</span> window of the <span>Git Repositories</span> page, type in commit comment and click Commit</li>
+			<li>Click <span>Push</span> to push project to the repo on Github</li>
+		</div>
+		<div class = "subtitle">Branch</div>
+		<div class = "block">
+			<li><span>Create a branch</span>
+				<ul>
+					<li>On the <span>Git Repositories</span> page, open <span>commit history</span></li>
+					<li>Navigate to a commit you would create a branch, right-click and select <span>Create new branch</span></li>
+				</ul>
+			</li>
+			<li><span>Checkout a branch</span>
+				<ul>
+					<li>Select the target branch on the right window of the <span>Git Repositories</span> page</li>
+					<li><span style="color:blue">Or</span> on the left window of the <span>Git Repositories</span> page, right-click a branch of a project, then choose <span>Checkout branch_name</span></li>
+				</ul>
+			</li>
+			<li><span>Merge branches</span>
+				<ul>
+					<li>Checkout to the target branch you want to merge into</li>
+					<li>On the <span>Git Repositories</span> page, open commit history, right-click the branch you want to merge to the target, choose <span>Merge into target_branch_name</span></li>
+				</ul>
+			</li>
+		</div>
+		<div class = "subtitle">Push to Github</div>
+		<div class = "block">
+			<li>On the <span>Git Repositories</span> page, select the branch you would push to the remote repo</li>
+			<li>Click <span>Push</span> to push project to the repo on Github
+				<ul>
+					<li>First time push will ask adding the HTTPS url of the remote repo</li>
+				</ul>
+			</li>
+		</div>
+	</body>
+</html>
