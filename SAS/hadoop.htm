@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SAS</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Hadoop
+		</div>
+		
+		<div class = "subtitle">Map Database on Hadoop to SAS</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+libname myhadoop ODBC PRESERVE_TAB_NAMES=YES PRESERVE_COL_NAMES=YES
+	DSN="hadoop_server_name" schema="database_name_on_hadoop";
+		</pre>
+	</div>
+		<div class = "subtitle">Remove Mapped Database</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+libname myhadoop clear;
+		</pre>
+	</div>
+		<div class = "subtitle">List Databases on Hadoop</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to odbc (dsn=hadoop_server_name);
+	select * from connection to odbc
+	(
+		show databases;
+	)
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">List Tables in a Database on Hadoop</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+%let db_name = database_name;
+
+proc sql;
+	connect to odbc (dsn=hadoop_server_name);
+	select * from connection to odbc
+	(
+		show tables in &db_name.;
+	)
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">List Views in a Database on Hadoop</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+%let db_name = database_name;
+
+proc sql;
+	connect to odbc (dsn=hadoop_server_name);
+	select * from connection to odbc
+	(
+		show views in &db_name.;
+	)
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Describe Table on Hadoop</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+%let db_name = database_name;
+%let tab_name = table_name;
+
+proc sql;
+	connect to odbc (dsn=hadoop_server_name);
+	select * from connection to odbc
+	(
+		describe &db_name..&tab_name.;
+	)
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Query and Print</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+%let db_name = database_name;
+%let tab_name = table_name;
+
+proc sql;
+	connect to odbc (dsn=hadoop_server_name);
+	select * from connection to odbc
+	(
+		select *
+		from &db_name..&tab_name.;
+	)
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Query and Save on SAS</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+%let db_name = database_name;
+%let tab_name = table_name;
+
+proc sql;
+	connect to odbc (dsn=hadoop_server_name);
+	create table work.&tab_name. as
+	select * from connection to odbc
+	(
+		select *
+		from &db_name..&tab_name.;
+	)
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Create Table on Hadoop</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+%let db_name = database_name;
+%let tab_name = table_name;
+
+proc sql;
+	connect to odbc (dsn=hadoop_server_name);
+	execute
+	(
+		create table &db_name..&tab_name.
+		(
+			id int,
+			name string,
+			age int
+		)
+	) by odbc;
+	disconnect from odbc;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Insert Records into Table on Hadoop</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+%let db_name = database_name;
+%let tab_name = table_name;
+
+proc sql;
+	connect to odbc (dsn=hadoop_server_name);
+	execute
+	(
+		insert into &db_name..&tab_name. (id, name, age)
+		values (2, 'Lin', 45)
+		       (3, 'Hannah', 18)
+	) by odbc;
+	disconnect from odbc;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Update Table on Hadoop</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+%let db_name = database_name;
+%let tab_name = table_name;
+
+proc sql;
+	connect to odbc (dsn=hadoop_server_name);
+	execute
+	(
+		update &db_name..&tab_name.
+		set age=46
+		where id=2
+	) by odbc;
+	disconnect from odbc;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Copy Table on SAS to Hadoop</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+libname myhadoop ODBC PRESERVE_TAB_NAMES=YES PRESERVE_COL_NAMES=YES
+	DSN="hadoop_server_name" schema="library_name_on_hadoop";
+
+%let tab_name = table_name;
+
+data myhadoop.&tab_name.;
+	set sashelp.cars;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Remove Table on Hadoop</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+%let db_name = database_name;
+%let tab_name = table_name;
+
+proc sql;
+	connect to odbc (dsn=hadoop_server_name);
+	execute
+	(
+		drop table &db_name..&tab_name.
+	) by odbc;
+	disconnect from odbc;
+run;
+		</pre>
+	</div>
+	</body>
+</html>
