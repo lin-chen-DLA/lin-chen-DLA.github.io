@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SAS</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Visualization
+		</div>
+		
+		<div class = "subtitle">ODS Graphics</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+/* Histogram Plot */
+ods graphics / reset /* clear any previous graphical attribute settings */
+		width=4in height=3in /* set up size */
+		imagemap=on; /* turn on interactive mode */
+
+proc sgplot data=sashelp.cars;
+	histogram MSRP /;
+	yaxis grid;
+run;
+
+ods graphics / reset;
+		</pre>
+	</div>
+		<div class = "subtitle">PROC SGPLOT</div>
+		<div class = "block">
+			<li>VBar, HBar</li>
+			<li>Scatter</li>
+			<li>Series</li>
+			<li>Histogram</li>
+			<li>Boxplot</li>
+			<li>Heatmap</li>
+		<pre class = "prettyprint linenums">
+/* Scatter Plot */
+ods graphics / reset
+		width=4in height=3in
+		imagemap=on;
+
+proc sgplot data=sashelp.cars;
+	scatter x=weight y=MSRP /;
+	xaxis grid;
+	yaxis grid;
+run;
+
+ods graphics / reset;
+		</pre>
+	</div>
+		<div class = "subtitle">PROC SGPANEL</div>
+		<div class = "block">
+			<li>Multiple plots displayed together in a panel based on grouping variables</li>
+		<pre class = "prettyprint linenums">
+/* Panel Scatter Plots */
+ods graphics / reset
+		width=4in height=3in
+		imagemap=on;
+
+proc sgpanel data=sashelp.cars;
+	panelby Type; /* Grouping by the variable 'Type' */
+	scatter x=weight y=MSRP;
+run;
+
+ods graphics / reset;
+		</pre>
+	</div>
+		<div class = "subtitle">PROC GCHART</div>
+		<div class = "block">
+			<li>Block chart</li>
+			<li>Bar chart</li>
+			<li>Pie chart, donut charts</li>
+			<li>Start chart</li>
+		<pre class = "prettyprint linenums">
+/* VBar Chart */
+ods graphics / reset
+		width=4in height=3in
+		imagemap=on;
+
+proc gchart data=sashelp.cars;
+	vbar Type / sumvar=MSRP;
+run;
+
+ods graphics / reset;
+		</pre>
+	</div>
+		<div class = "subtitle">PROC GPLOT</div>
+		<div class = "block">
+			<li>Scatter</li>
+			<li>Series</li>
+			<li>Plot</li>
+		<pre class = "prettyprint linenums">
+/* Scatter Plot */
+ods graphics / reset
+		width=4in height=3in
+		imagemap=on;
+
+proc gplot data=sashelp.cars;
+	plot MPG_City*Horsepower;
+run;
+
+ods graphics / reset;
+		</pre>
+	</div>
+		<div class = "subtitle">PROC G3D</div>
+		<div class = "block">
+			<li>3D Surface Plot</li>
+			<li>3D Scatter Plot</li>
+		<pre class = "prettyprint linenums">
+ods graphics / reset
+		width=4in height=3in
+		imagemap=on;
+
+proc gplot data=sashelp.lake;
+	plot lenght*width=depth;
+run;
+
+ods graphics / reset;
+		</pre>
+	</div>
+		<div class = "subtitle">PROC GCONTOUR</div>
+		<div class = "block">
+			<li>2D contour plot</li>
+		<pre class = "prettyprint linenums">
+/* Scatter Plot */
+ods graphics / reset
+		width=4in height=3in
+		imagemap=on;
+
+proc gplot data=sashelp.lake;
+	plot lenght*width=depth;
+run;
+
+ods graphics / reset;
+		</pre>
+	</div>
+		<div class = "subtitle">PROC UNIVARIATE</div>
+		<div class = "block">
+			<li>Create statistical plots like histograms, box plots, and QQ plots</li>
+		<pre class = "prettyprint linenums">
+/* Scatter Plot */
+ods graphics / reset
+		width=4in height=3in
+		imagemap=on;
+
+proc gplot data=sashelp.cars noprint;
+	histogram horsepower /
+		normal (mu=est sigma=est color=blue w=2.5)
+		barlabel = percent
+		midpoints = 70 to 550 by 50;
+run;
+
+ods graphics / reset;
+		</pre>
+	</div>
+		<div class = "subtitle">PROC KDE</div>
+		<div class = "block">
+			<li>Kernel density estimate plots</li>
+		<pre class = "prettyprint linenums">
+/* Scatter Plot */
+ods graphics / reset
+		width=4in height=3in
+		imagemap=on;
+
+proc kde data=sashelp.cars;
+	univar MSRP / plots=density;
+run;
+
+ods graphics / reset;
+		</pre>
+	</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/grmapref/titlepage.htm">SAS Document</a></li>
+		</div>
+	</body>
+</html>
