@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SAS</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			SAP HANA
+		</div>
+		
+		<div class = "subtitle">Map Schema on SAP HANA to SAS</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+libname myhana sasiohna server="server_name" port=port_number user=user_name password="user_password" schema="schema_name";
+		</pre>
+	</div>
+		<div class = "subtitle">Remove Mapped Schema</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+libname myhana clear;
+		</pre>
+	</div>
+		<div class = "subtitle">List Schemas</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+libname myhana sasiohna server="server_name" port=port_number user=user_name password="user_password";
+
+proc sql;
+	select *
+	from myhana.schemas;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">List Tables in a Schema</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+libname myhana sasiohna server="server_name" port=port_number user=user_name password="user_password";
+
+proc sql;
+	select *
+	from myhana.tables
+	where schema_name = "scheme_name" and table_name like 'AA%';
+run;
+		</pre>
+	</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	select * from connection to saphana
+	(
+		select *
+		from tables
+		where schema_name = "scheme_name" and table_name like 'AA%'
+	);
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">List Views in a Schema</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+libname myhana sasiohna server="server_name" port=port_number user=user_name password="user_password";
+
+proc sql;
+	select *
+	from myhana.views
+	where schema_name = "scheme_name";
+run;
+		</pre>
+	</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	select * from connection to saphana
+	(
+		select *
+		from views
+		where schema_name = "scheme_name"
+	);
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">Describe Table</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+libname myhana sasiohna server="server_name" port=port_number user=user_name password="user_password" schema="schema_name";
+
+proc contents data=myhana.table_name;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">List First n Rows of a Table in a Schema</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+/* load the first n rows and save as a table in library work */
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	create table work.table_name as
+	select * from connection to saphana
+	(
+		select *
+		from "schema_name"."table_name" limit 10
+	);
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">Create Table on SAP HANA</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute (
+		create table "schema_name"."table_name"
+		(
+			Name varchar(50),
+			Age int,
+			Birth_Date date
+		)
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">Insert Table</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute (
+		insert into "schema_name"."table_name" (Name, Age, Birth_Date)
+		values ('Lin', 45, '2024-12-17')
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">Update Table</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute (
+		update "schema_name"."table_name"
+		set Age = 46
+		where Name = 'Lin'
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">Delete Table</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute (
+		drop table "schema_name"."table_name"
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">Write Table to SAP HANA</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+libname myhana sasiohna server="server_name" port=port_number user=user_name password="user_password" schema="schema_name";
+
+data myhana.cars_temp;
+	set sashelp.cars;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">List Privileges of a User</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	select * from connection to saphana
+	(
+		select *
+		from granted_privileges
+		where GRANTEE = 'user_name'
+	);
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">Grant Privileges</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute
+	(
+		Grant SELECT, INSERT, UPDATE on "schema_name"."table_name" to user_name
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">Revoke Privileges</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute
+	(
+		revoke UPDATE on "schema_name"."table_name" from user_name
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">Change Password</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute
+	(
+		ALTER USER user_name PASSWORD "new_password"
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+	</body>
+</html>
