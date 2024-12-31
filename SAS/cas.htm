@@ -667,6 +667,22 @@ run;
 		</pre>
 	</div>
 	</div>
+	<div class = "subtitle">Profiler</div>
+		<div class = "block">
+				<pre class = "prettyprint linenums">
+%let start_time = %sysfunc(datetime());
+
+proc fedsql sessref=mysession;
+	select * from casuser.cars;
+quit;
+
+%let end_time = %sysfunc(datetime())
+
+%let elapsed_time = %sysevalf(&end_time. - &start_time.);
+
+%put Time, &elapsed_time. second.
+				</pre>
+			</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
 			<li><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/pgmsaswlcm/home.htm">Document</a></li>
