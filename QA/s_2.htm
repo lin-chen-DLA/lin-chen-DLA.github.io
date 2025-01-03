@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
+			span {color:red; font-weight:bold;}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class = "title">
+			Homework 2
+		</div>
+
+		<div class = "subtitle">Pet Class</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+class Pet(object):
+    def __init__(self, name, animal_type, age):
+        self.__name = name
+        self.__animal_type = animal_type
+        self.__age = age
+
+    def set_name(self, name):
+        self.__name = name
+
+    def get_name(self):
+        return self.__name
+
+    def set_animal_type(self, animal_type):
+        self.__animal_type = animal_type
+
+    def get_animal_type(self):
+        return self.__animal_type
+
+    def set_age(self, age):
+        self.__age = age
+
+    def get_age(self):
+        return self.__age
+
+def main():
+    p = Pet('Benny', 'Cat', 12)
+
+    print('Name: ', p.get_name())
+    print('Animal Type: ', p.get_animal_type())
+    print('Age: ', p.get_age())
+
+    p.set_age(13)
+
+    print('Age: ', p.get_age())
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+		<div class = "subtitle">Student Class</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Faculty.py
+class Faculty(object):
+    def __init__(self, name, title):
+        self.__name = name
+        self.__title = title
+
+    def set_name(self, name):
+        self.__name = name
+
+    def get_name(self):
+        return self.__name
+
+    def set_title(self, title):
+        self.__title = title
+
+    def get_title(self):
+        return self.__title
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Course.py
+class Course(object):
+    def __init__(self, name, id):
+        self.__course_name = name
+        self.__course_id = id
+
+    def set_course_name(self, name):
+        self.__course_name = name
+
+    def get_course_name(self):
+        return self.__course_name
+
+    def set_course_id(self, id):
+        self.__course_id = id
+
+    def get_course_id(self):
+        return self.__course_id
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# Student.py
+from Faculty import Faculty
+from Course import Course
+
+class Student(object):
+    def __init__(self):
+        self.__name = 'Unknown'
+        self.__advisor = None
+        self.__courses = []
+
+    def set_name(self, name):
+        self.__name = name
+
+    def get_name(self):
+        return self.__name
+
+    def set_advisor(self, faculty):
+        self.__advisor = faculty
+
+    def get_advisor(self):
+        return self.__advisor
+
+    def add_course(self, course):
+        self.__courses.append(course)
+
+    def get_courses(self):
+        return self.__courses
+
+    def display(self):
+        print('Name: ', self.__name)
+        print('Advisor: ', self.__advisor.get_name(), self.__advisor.get_title())
+        for c in self.__courses:
+            print('Course: ', c.get_course_name(), c.get_course_id())
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+# main.py
+from Faculty import Faculty
+from Course import Course
+from Student import Student
+
+def main():
+    student_1 = Student()
+    student_1.set_name('Hannah Chen')
+
+    faculty = Faculty('Lin Chen', 'AP')
+    student_1.set_advisor(faculty)
+
+    course_1 = Course('CS Introduction', 101)
+    student_1.add_course(course_1)
+    student_1.add_course(Course('Architecture', 201))
+
+    student_1.display()
+
+if __name__ == '__main__':
+    main()
+			</pre>
+		</div>
+	</body>
+</html>
