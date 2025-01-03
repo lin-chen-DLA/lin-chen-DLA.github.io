@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
+			span {color:red; font-weight:bold;}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class = "title">
+			Solution 3
+		</div>
+
+		<div class = "subtitle">util.py</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+class Person(object):
+    def __init__(self, name):
+        self.name = name
+
+    def set_name(self, name):
+        self.name = name
+
+    def get_name(self):
+        return self.name
+
+class Faculty(Person):
+    def __init__(self, name, title, department):
+        super().__init__(name)
+        self.title = title
+        self.department = department
+
+    def get_title(self):
+        return self.title
+
+    def set_title(self, title):
+        self.title = title
+
+    def get_department(self):
+        return self.department
+
+    def set_department(self, department):
+        self.department = department
+
+    def display(self):
+        print('\n-----Faculty-----')
+        print('Name: ', super(Faculty, self).get_name())
+        print('Title: ', self.get_title())
+        print('Department: ', self.get_department())
+
+class Student(Person):
+    def __init__(self, name, majors, courses):
+        super().__init__(name)
+        self.majors = majors
+        self.courses = courses
+
+    def get_majors(self):
+        return self.majors
+
+    def set_majors(self, majors):
+        self.majors = majors
+
+    def get_courses(self):
+        return self.courses
+
+    def set_courses(self, courses):
+        self.courses = courses
+
+    def display(self):
+        print('\n-------Student-------')
+        print('Name: ', super(Student, self).get_name())
+        for m in self.majors:
+            print('Major: ', m)
+        for c in self.courses:
+            print('Course: ', c)
+            </pre>
+        </div>
+		<div class = "subtitle">main.py</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+from util import *
+
+def main():
+    faculties = [Faculty('Lin', 'AP', 'CS'), Faculty('Yanhua', 'AP', 'CHEM')]
+
+    for faculty in faculties:
+        faculty.display()
+
+    s = Student('Hannah', ['CS', 'SE'], ['CS2301', 'CS2201'])
+    students = []
+    students.append(s)
+    students.append(Student('Hadley', ['Math'], ['Math 101', 'CHEM 101']))
+
+    for student in students:
+        student.display()
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+    </body>
+</html>
