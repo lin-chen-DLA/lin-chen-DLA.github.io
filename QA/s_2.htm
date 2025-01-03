@@ -32,6 +32,58 @@
 
 		<div class = "subtitle">Pet Class</div>
 		<div class = "block">
+            Naive Solution
+			<pre class = "prettyprint linenums">
+class Pet(object):
+    def __init__(self, n, t, age):
+        self.name = n
+        self.animal_type = t
+        self.age = age
+
+    def get_name(self):
+        return self.name
+
+    def get_animal_type(self):
+        return self.animal_type
+
+    def get_age(self):
+        return self.age
+
+    def set_name(self, name):
+        self.name = name
+
+    def set_animal_type(self, t):
+        self.animal_type = t
+
+    def set_age(self, age):
+        self.age = age
+
+    def display(self):
+        print('\n-----------------------')
+        print('Name: ', self.get_name())
+        print('Animal Type: ', self.get_animal_type())
+        print('Age: ', self.get_age())
+        print('------------------------')
+
+
+def main():
+    p = Pet('Benny', 'Cat', 12)
+    p.display()
+
+    p.set_age(13)
+    p.display()
+
+    # violate encapsulation rule
+    p.name = 'Lin'
+    p.age = 45
+    p.display()
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+		<div class = "block">
+            Use private attributes
 			<pre class = "prettyprint linenums">
 class Pet(object):
     def __init__(self, name, animal_type, age):
@@ -57,21 +109,85 @@ class Pet(object):
     def get_age(self):
         return self.__age
 
+    def display(self):
+        print('\n-----------------------')
+        print('Name: ', self.get_name())
+        print('Animal Type: ', self.get_animal_type())
+        print('Age: ', self.get_age())
+        print('------------------------')
+
 def main():
     p = Pet('Benny', 'Cat', 12)
-
-    print('Name: ', p.get_name())
-    print('Animal Type: ', p.get_animal_type())
-    print('Age: ', p.get_age())
+    p.display()
 
     p.set_age(13)
+    p.display()
 
-    print('Age: ', p.get_age())
+    # not able to access attributes
+    p.__name = 'Lin'
+    p.__age = 45
+    p.display()
 
 if __name__ == '__main__':
     main()
 			</pre>
 		</div>
+		<div class = "block">
+            Use getter and setter in Python
+			<pre class = "prettyprint linenums">
+class Pet(object):
+    def __init__(self, name, animal_type, age):
+        self.__name = name
+        self.__animal_type = animal_type
+        self.__age = age
+
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, name):
+        self.__name = name
+
+    @property
+    def animal_type(self):
+        return self.__animal_type
+
+    @animal_type.setter
+    def animal_type(self, animal_type):
+        self.__animal_type = animal_type
+
+    @property
+    def age(self):
+        return self.__age
+
+    @age.setter
+    def age(self, age):
+        self.__age = age
+
+
+    def display(self):
+        print('\n-----------------------')
+        print('Name: ', self.name)
+        print('Animal Type: ', self.animal_type)
+        print('Age: ', self.age)
+        print('------------------------')
+
+def main():
+    p = Pet('Benny', 'Cat', 12)
+    p.display()
+
+    p.age = 13
+    p.display()
+
+    p.name = 'Lin'
+    p.age = 45
+    p.display()
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
 		<div class = "subtitle">Student Class</div>
 		<div class = "block">
 			<pre class = "prettyprint linenums">
