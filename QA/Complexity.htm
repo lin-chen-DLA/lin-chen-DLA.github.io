@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
+			span {color:red; font-weight:bold;}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class = "title">
+			Algorithm Complexity
+		</div>
+
+		<div class = "subtitle">Algorithm</div>
+		<div class = "block">
+            <li><span>Data </span> a way to store and organize data in order to facilitate access and modifications</li>
+            <li><span>Algorithm</span> is any well-defined computational procedure that takes some value, or set of values, as <span>input</span> and produces some value, or set of values, as <span>output</span></li>   
+        </div>
+        <div class = "subtitle">Case Analysis 1</div>
+        <div class = "block">
+            <pre class = "prettyprint linenums">
+def func(n):                 # cost    times
+    n = n*2                  # c1      1
+
+    s = 0                    # c2      1
+    for i in range(n):
+        for j in range(n-1):
+            s = s + i*j      # c3      n*(n-1)
+
+    return s                 # c4      1
+
+
+# T(n) = c1*1 + c2*1 + c3*n*(n-1) + c4*1
+#      = c3*n^2 - c3*n + (c1 + c2 + c4)
+#      = n^2                               # keep the highest order and ignore constant coefficient
+            </pre>
+        </div>
+        <div class = "subtitle">Asymptotic Notation</div>
+        <div class = "block">
+            <li>O-notation, describe the upper bound of an algorithm's running time or space complexity</li>
+            <li>The running time or space function <i>f(n)</i> is said to be O(g(n)) if <span><i>f(n)</i></span> &le; <span><i>c * g(n)</i></span> for all <span><i>n &gt; n<sub>0</sub></i></span></li>
+            <li>The complexity of Case Analysis 1 can be written as <span>O(n<sup>2</sup>)</span></li>
+        </div>
+        <div class = "subtitle">Big-O Cheatsheet</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/QA_2.png" width = "60%"></p>
+        </div>
+        <div class = "subtitle">Case Analysis 2</div>
+        <div class = "block">
+            <a href = "https://en.wikipedia.org/wiki/Bubble_sort">Bubble Sort</a>
+            <pre class = "prettyprint linenums">
+import random
+
+def get_array(n):
+    l = []
+    for i in range(n):
+        l.append(random.randint(0, 10))
+    return l
+
+def bubble_sort(l):
+    size = len(l)
+    for i in range(size-1):
+        for j in range(size-i-1):
+            if l[j] > l[j+1]:
+                temp = l[j]
+                l[j] = l[j+1]
+                l[j+1] = temp
+
+def main():
+    l = get_array(20)
+    print(l)
+
+    bubble_sort(l)
+    print(l)
+
+if __name__ == '__main__':
+    main()
+
+# i = 0
+#        j = [0, n-1) # n-1 times
+# i = 1
+#        j = [0, n-2) # n-2 times
+# i = 2
+#        j = [0, n-3) # n-3 times
+# ...
+# i = n-2
+#        j = [0, 1)   # 1 times
+#
+# T(n) = 1 + 2 + 3 + ... + (n-1) = (1 + (n-1)) * (n-1)/2 = n(n-1)/2 = O(n^2)
+            </pre>
+        </div>
+        <div class = "subtitle">Case Analysis 3</div>
+        <div class = "block">
+            <a href = "https://en.wikipedia.org/wiki/Factorial">Factorial</a>
+            <pre class = "prettyprint linenums">
+def fact_re(n):
+    # recursive method
+    # Time Complexity, O(n)
+    # Space Complexity, O(n)
+    # base step
+    if n == 0 or n == 1:
+        return 1
+    # recursive step
+    else:
+        return n*fact_re(n-1)
+
+def fact_it(n):
+    # iterative method
+    # Time Complexity, O(n)
+    # Space Complexity, O(1)
+    r = 1
+    for i in range(1, n+1):
+        r *= i
+
+    return r
+
+def main():
+    print(fact_re(10))
+    print(fact_it(10))
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+        <div class = "subtitle">Case Analysis 4</div>
+        <div class = "block">
+            <a href = "https://en.wikipedia.org/wiki/Fibonacci_sequence">Fibonacci Sequence</a>
+            <pre class = "prettyprint linenums">
+def fib_1(n):
+    # Naive Approach
+    # Time Complexity, O(2^n)
+    # Space Complexity, O(n)
+    if n <= 1:
+        return n
+    return fib_1(n-1) + fib_1(n-2)
+
+def fib_2(n):
+    # Recursive with Memoization
+    # Time Complexity, O(n)
+    # Space Complexity, O(n)
+    l = [-1]*(n+1)
+    return fib_memo(n, l)
+
+def fib_memo(n, l):
+    if l[n] > -1:
+        return l[n]
+    if n <= 1:
+        l[n] = n
+        return l[n]
+    l[n] = fib_memo(n-1, l) + fib_memo(n-2, l)
+    return l[n]
+
+def fib_3(n):
+    # Iterative Approach
+    # Time Complexity, O(n)
+    # Space Complexity, O(1)
+    if n <= 1:
+        return n
+    fn2 = 0
+    fn1 = 1
+
+    for i in range(2, n+1):
+        current = fn1 + fn2
+        fn2 = fn1
+        fn1 = current
+
+    return current
+
+def fib_4(n):
+    # Matrix Exponentiation
+    # Time Complexity, O(logn)
+    # Space Complexity, O(logn)
+    import numpy as np
+    from scipy.sparse.linalg import matrix_power
+
+    A = np.array([[1, 1], [1, 0]])
+    result = matrix_power(A, n)
+
+    return result[0][1]
+
+def fib_5(n):
+    # Closed-Form Formula (Binet's Formula)
+    # Time Complexity, O(1)
+    # Space Complexity, O(1)
+    import math
+    theta = (1+math.sqrt(5))/2
+    phi = (1-math.sqrt(5))/2
+
+    return (pow(theta, n) - pow(phi, n))/math.sqrt(5)
+
+
+def main():
+    print(fib_1(10))
+    print(fib_2(10))
+    print(fib_3(10))
+    print(fib_4(10))
+    print(round(fib_5(10)))
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+        <div class = "subtitle">Master Theorem</div>
+        <div class = "block">
+            T(n) = a * T(n/b) + n<sup>d</sup>
+            <ul>
+                <li>a/(b<sup>d</sup>) < 1, T(n) = &Theta;(n<sup>d</sup>)</li>
+                <li>a/(b<sup>d</sup>) = 1, T(n) = &Theta;(n<sup>d</sup>logn)</li>
+                <li>a/(b<sup>d</sup>) > 1, T(n) = &Theta;(n<sup>log<sub>b</sub>a</sup>)</li>
+            </ul>
+        </div>
+        <div class = "block">
+            <li>T(n) = 9 * T(n/3) + n, &Theta;(n<sup>2</sup>)</li>
+            <li>T(n) = T(2n/3) + n, &Theta;(logn)</li>
+        </div>
+        <div class = "block">
+            <a href = "https://en.wikipedia.org/wiki/Binary_search">Binary Search</a>
+            <pre class = "prettyprint linenums">
+import random
+
+def get_array(n):
+    l = []
+    for i in range(n):
+        l.append(random.randint(0, 100))
+    return l
+
+def bubble_sort(l):
+    size = len(l)
+    for i in range(size-1):
+        for j in range(size-i-1):
+            if l[j] > l[j+1]:
+                temp = l[j]
+                l[j] = l[j+1]
+                l[j+1] = temp
+
+def search(array, v):
+    # T(n) = T(n/2) + O(1)
+    # a = 1, b = 2, d = 0
+    # O(logn)
+    import math
+    l = 0
+    r = len(array)-1
+    while l <= r:
+        m = math.floor((l+r)/2)
+        if array[m] == v:
+            return m
+        if array[m] < v:
+            l = m + 1
+        else:
+            r = m - 1
+
+    return None
+
+def main():
+    l = get_array(100)
+    bubble_sort(l)
+
+    print('Index of ', 40, 'is ', search(l, 40))
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li><a href = "https://www.bigocheatsheet.com/pdf/big-o-cheatsheet.pdf">Big-O Cheatsheet</a></li>
+            <li>CLRS</li>
+        </div>
+	</body>
+</html>
