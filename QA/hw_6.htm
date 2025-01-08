@@ -27,40 +27,27 @@
 	<body>
 
 		<div class = "title">
-			Solution 4
+			Homework 6
 		</div>
 
+		<div class = "subtitle">Postfix Evaluation</div>
 		<div class = "block">
-			<pre class = "prettyprint linenums">
-class Rag(object):
-    def __init__(self, l, w):
-        self.length = l
-        self.width = w
-
-    def get_area(self):
-        return self.length * self.width
-
-    def __str__(self):
-        s = ''
-        s = s+'Length: '+str(self.length)+'\n'
-        s = s+'Width: '+str(self.width)+'\n'
-        s = s+'Area: '+str(self.get_area())+'\n'
-
-        return s
-
-    def __gt__(self, other):
-        return self.get_area() &gt; other.get_area()
-
-def main():
-    r1 = Rag(10, 20)
-    r2 = Rag(5, 40)
-
-    print(r1, r2)
-    print(r1 &gt; r2)
-
-if __name__ == '__main__':
-    main()
-            </pre>
-        </div>
-    </body>
+			<li>Create a program to evaluate postfix expression using stack</li>
+		</div>
+		<div class = "block">
+			<li>Initialize an empty stack</li>
+			<li>Traverse the postfix expression from left to right
+				<ul>
+<li>Operand: Push it onto the stack</li>
+<li>Operator: Pop the top two elements from the stack, apply the operator, and push the result back onto the stack</li>
+				</ul>
+			</li>
+			<li>Repeat until the end of the expression</li>
+			<li>Result
+				<ul>
+					<li>The final value on the stack is the result of the postfix expression</li>
+				</ul>
+			</li>
+		</div>
+	</body>
 </html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
+			span {color:red; font-weight:bold;}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class = "title">
+			Homework 5
+		</div>
+
+		<div class = "subtitle">Infix to Postfix</div>
+		<div class = "block">
+			<li>Create a program to convert infix expression to postfix using stack</li>
+		</div>
+		<div class = "block">
+			<li>Initial Steps
+				<ul>
+					<li>Create a stack for operators</li>
+					<li>Create a string for postfix expression</li>
+				</ul>
+			</li>
+			<li>Traverse Infix
+				<ul>
+					<li>Operand, append it to the postfix expression</li>
+					<li>Operator, push onto the stack, pop operators from stack to the postfix expression if they have higher or equal precedence compared to the current operator</li>
+					<li>Left parenthesis, push onto the stack</li>
+					<li>Right parenthesis, opo operators from the stack to the postfix expression until a left parenthesis is encountered, the left parenthesis is discarded</li>
+				</ul>
+			</li>
+			<li>Pop Remainnig Operators
+				<ul>
+					<li>Pop all operators remaining in the stack and append them to the postfix expression</li>
+				</ul>
+			</li>
+			<li>Operator Precedence
+				<ul>
+					<li>(), 4</li>
+					<li>^, 3</li>
+					<li>*/%, 2</li>
+					<li>+-, 1</li>
+				</ul>
+			</li>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
+			span {color:red; font-weight:bold;}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class = "title">
+			Solution 6
+		</div>
+
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+def is_operator(c):
+    if c in ['^', '*', '/', '%', '+', '-']:
+        return True
+    return False
+
+def is_operand(c):
+    if c in '0123456789':
+        return True
+    return False
+
+def operate(v1, v2, o):
+    if o == '*':
+        return v1*v2
+    elif o == '/':
+        return v1/v2
+    elif o == '%':
+        return v1%v2
+    elif o == '+':
+        return v1+v2
+    elif o == '-':
+        return v1-v2
+    elif o == '^':
+        return pow(v1, v2)
+    return 0
+
+def eval_postfix(postfix):
+    stack = []
+
+    for c in postfix:
+        if is_operand(c):
+            stack.append(c)
+        if is_operator(c):
+            v1 = stack.pop()
+            v2 = stack.pop()
+            r = operate(int(v1), int(v2), c)
+            stack.append(r)
+
+    return stack.pop()
+
+def main():
+    print(eval_postfix('23+'))
+    print(eval_postfix('234*+'))
+    print(eval_postfix('234*+5-'))
+    print(eval_postfix('23+4*5-'))
+    print(eval_postfix('2345*+*'))
+    print(eval_postfix('23+45-*6/'))
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+
+			span {color:red; font-weight:bold;}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class = "title">
+			Solution 5
+		</div>
+
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+def get_precedence(c):
+    if c in ['^']:
+        return 3
+    if c in ['*', '/', '%']:
+        return 2
+    if c in ['+', '-']:
+        return 1
+    return 0
+
+def is_operator(c):
+    if c in ['^', '*', '/', '%', '+', '-']:
+        return True
+    return False
+
+def is_operand(c):
+    if c in '0123456789':
+        return True
+    return False
+
+def pop_until_lp(s):
+    size = len(s)
+    cs = ''
+    for i in range(size):
+        value = s.pop()
+        if value == '(':
+            return cs
+        else:
+            cs += value
+    return cs
+
+def pop_higher_equal_c(s, c):
+    cs = ''
+    while True:
+        size = len(s)
+        if size == 0:
+            return cs
+        value = s[size-1]
+        if get_precedence(value) >= get_precedence(c):
+            cs += s.pop()
+        else:
+            return cs
+
+def get_postfix(infix):
+    stack = []
+    postfix = ''
+
+    for c in infix:
+        if c == '(':
+            stack.append(c)
+            continue
+        if c == ')':
+            cs = pop_until_lp(stack)
+            postfix += cs
+            continue
+        if is_operand(c):
+            postfix += c
+            continue
+        if is_operator(c):
+            cs = pop_higher_equal_c(stack, c)
+            postfix += cs
+            stack.append(c)
+
+    while len(stack):
+        postfix += stack.pop()
+
+    return postfix
+
+def main():
+    print(get_postfix('2+3')) # 23+
+    print(get_postfix('2+3*4')) # 234*+
+    print(get_postfix('2+3*4-5')) # 234*+5-
+    print(get_postfix('(2+3)*4-5')) # 23+4*5-
+    print(get_postfix('2*(3+4*5)')) # 2345*+*
+    print(get_postfix('(2+3)*(4-5)/6')) # 23+45-*6/
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+    </body>
+</html>
