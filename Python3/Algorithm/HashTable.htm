@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+			th, td { border-bottom: 1px solid #ddd;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Hash Table</div>
+
+		<div class = "block">
+			<li>Stores data as key-value pairs</li>
+		</div>
+		<div class = "block">
+            <p style = "text-align:center;"><img src = "img/Hash.png" width = "40%"></p>
+        </div>
+        <div class = "subtitle">Operations</div>
+		<div class = "block">
+			<li style = "font-size: 20px"><span class = "red">put()</span>, insert a key-value pair into hash table if the key does not exist, update the value if the key exists</li>
+			<li style = "font-size: 20px"><span class = "red">get()</span>, get a value with key from hash table</li>
+			<li style = "font-size: 20px"><span class = "red">keys()</span>, get the keys in hash table</li>
+			<li style = "font-size: 20px"><span class = "red">values()</span>, get the values in hash table</li>
+		</div>
+		<div class = "subtitle">Implementation with list</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+class HashTable(object):
+    def __init__(self, size):
+        self.bucket_size = size
+        self.array = [None]*size
+
+    def put(self, key, value):
+        if not self.has_key(key):
+            slot = hash(key)%self.bucket_size
+            if self.array[slot] is None:
+                self.array[slot] = [[key, value]]
+            else:
+                self.array[slot].append([key, value])
+        else:
+            slot = hash(key)%self.bucket_size
+            for pair in self.array[slot]:
+                if pair[0] == key:
+                    pair[1] = value
+
+    def get(self, key):
+        slot = hash(key)%self.bucket_size
+        if self.array[slot] is None:
+            return None
+        else:
+            for pair in self.array[slot]:
+                if pair[0] == key:
+                    return pair[1]
+            return None
+
+    def has_key(self, key):
+        slot = hash(key)%self.bucket_size
+        if self.array[slot] is None:
+            return False
+        else:
+            for pair in self.array[slot]:
+                if pair[0] == key:
+                    return True
+            return False
+
+    def keys(self):
+        keys = []
+        for slot in self.array:
+            if slot is not None:
+                for pair in slot:
+                    keys.append(pair[0])
+
+        return keys
+
+    def values(self):
+        values = []
+        for slot in self.array:
+            if slot is not None:
+                for pair in slot:
+                    values.append(pair[1])
+
+        return values
+
+def main():
+    h = HashTable(10)
+
+    h.put('Lin', 45)
+    h.put('Yanhua', 44)
+
+    print(h.get('Lin'))
+
+    h.put('Yanhua', 45)
+    print(h.get('Yanhua'))
+
+    print(h.keys())
+    print(h.values())
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+	</body>
+</html>
