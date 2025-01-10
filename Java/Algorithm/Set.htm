@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Set</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+class Set{
+	//data members
+	private int [] array;//will contain the elements of our set
+	private int size;    //logical size of the array
+
+	//constructor
+	Set(){
+	//Allocates an array of 1000 positions and sets its logical size to zero.
+	     array = new int[1000];
+	     size = 0;
+	}
+
+	//inspectors
+	public int cardinality(){
+	//Returns the numbers in our set
+	     return size;
+	}
+
+	public boolean belongs(int element){
+	//Returns true if element belongs to our set. Returns false otherwise.
+	     for(int i = 0; i < size; i++)
+	     {
+		     if(array[i] == element)
+		     {
+			     return true;
+		     }
+	     }
+	     return false;
+	}
+
+	public void print(){
+	//Prints each of the elements of our set like this: [ 100 200 300 ]
+	//Prints the elements in increasing order
+	//Hint: use auxiliary function insertionSort()
+             insertionSort(array, size);
+	     System.out.print("[ ");
+	     for(int i = 0; i < size; i++)
+		     System.out.print(array[i]+" ");
+	     System.out.println("]");
+	}
+
+	public boolean isSubset(Set S){
+	//Returns true if all the elements of our set belong to set S. Returns false otherwise.
+	//HINT: use function belongs()
+	     for(int i = 0; i < size; i++)
+		     if(!S.belongs(array[i])) return false;
+	     return true;
+	}
+
+	public boolean isProperSubset(Set S){
+	//Returns true if all the elements of our set belong to set S AND our set is different from set S. Returns false otherwise.
+	//HINT: use functions isSubset() and equal().
+	     return isSubset(S) && !equal(S);
+	}
+
+	public boolean equal(Set S){
+	//Returns true if our set and set S have the same cardinality and the same elements.
+	//Returns false otherwise.
+	//Hint: use functions cardinality() and isSubset().
+	     return (cardinality() == S.cardinality()) && isSubset(S);
+	}
+
+	//modifiers
+	public void addElement(int element){
+	//Adds element to our set only if it is not already there.
+	    if(!belongs(element))
+	    {
+		    array[size] = element;
+		    size++;
+	    }
+	    /*else
+	    {
+		    System.out.println("This number has in the set.");
+	    }*/
+	}
+
+	public void deleteElement(int element){
+	//Deletes element from our set
+	      if(belongs(element))
+	      {
+		      for(int i = 0; i < size; i++)
+			      if(array[i] == element)
+			      {
+				      array[i] = array[size-1];
+				      size--;
+				      insertionSort(array, size);
+				      return;
+			      }
+	      }
+	      /*else
+	      {
+		      System.out.println("This number is not in the set.");
+	      }*/
+	}
+
+	public Set copy(){
+	//Retruns a new  set with all the elements of our set
+	//Hint: use function addElement()
+	     Set cp = new Set();
+
+	     for(int i = 0; i < size; i++)
+		     cp.addElement(array[i]);
+
+	     return cp;
+	}
+
+	public Set union(Set S){
+	//Returns a new set with all elements of our set plus the elements of set S.
+	//There should not be any repetitions in the union set.
+	//Hint: use functions copy() and addElement().
+	     Set temp = new Set();
+	     temp = S.copy();
+	     for(int i = 0; i < size; i++)
+		     temp.addElement(array[i]);
+
+	     return temp;
+	}
+
+	public Set intersection(Set S){
+	//Returns a new set with all the elements that our set and set S have in common.
+	//HINT: use funcitons beongs() and addElement().
+	     Set temp = new Set();
+	     for(int i = 0; i < size; i++)
+		     if(S.belongs(array[i]))
+			     temp.addElement(array[i]);
+
+	     return temp;
+	}
+
+	public Set difference(Set S){
+	//Returns a new set with all the elements that are in our set but are not in set S.
+	//HINT: use functions belongs() and addElement().
+	     Set temp = new Set();
+	     for(int i = 0; i < size; i++)
+		     if(!S.belongs(array[i]))
+				     temp.addElement(array[i]);
+
+	     return temp;
+	}
+
+	public void empty(){
+	//Sets our set to an empty set
+	     for(int i = 0; i < size; i++)
+		     array[i] = 0;
+	     size = 0;
+	}
+}
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+class Lab4{
+	public static void main(String[] args)
+	{
+		//Create set S1
+		Set S1 = new Set();
+
+		//Add elements 1, 2, 3,...,10 to set S1
+		for(int i = 1; i <= 10; i++)
+		{
+			S1.addElement(i);
+		}
+
+		//Print set S1
+		System.out.print("S1 is ");
+		S1.print();
+		System.out.println();
+
+		//Print the cardinality of S1
+		System.out.println("The cardinality of S1 is "+S1.cardinality()+"\n");
+
+		//Make a copy of set S1 and call it set S2
+		Set S2 = new Set();
+		S2 = S1.copy();
+
+		//Print set S2;
+		System.out.print("S2 is ");
+		S2.print();
+		System.out.println();
+
+		//Print the cardinality of S2
+		System.out.println("The cardinality of S2 is "+S2.cardinality()+"\n");
+
+		//Check whether S1 and S2 are equal and print an appropriate mesage
+		if(S1.equal(S2))
+			System.out.println("S1 and S2 are equal");
+		else
+			System.out.println("S1 and S2 are not equal");
+
+		//Delete elements 1, 5, and 10 from S2
+		S2.deleteElement(1);
+		S2.deleteElement(5);
+		S2.deleteElement(10);
+
+		//Print set S2
+		System.out.print("\n"+"After deleting elements 1, 5 and 10 from S2, S2 is ");
+		S2.print();
+		System.out.println();
+
+		//Print the cardinality of S2
+		System.out.println("The cardinality of S2 is "+S2.cardinality()+"\n");
+
+		//Check whether S1 and S2 are equal and print an appropriate message
+		if(S1.equal(S2))
+			System.out.println("S1 and S2 are equal");
+		else
+			System.out.println("S1 and S2 are not equal");
+
+		//Check whether S2 is a proper subset of S1
+		if(S2.isProperSubset(S1))
+			System.out.println("\nS2 is a proper subset of S1");
+		else
+			System.out.println("\nS2 is not a proper subset of S2");
+
+		//Add elements 0, 12 and 14 to S2
+		S2.addElement(0);
+		S2.addElement(12);
+		S2.addElement(14);
+
+		//Print set S2
+		System.out.print("\nAfter adding elements 0, 12 and 14 to S2, S2 is ");
+		S2.print();
+		System.out.println();
+
+		//Print the cardinality of S2
+		System.out.println("The cardinality of S2 is "+S2.cardinality()+"\n");
+
+		//Compute the union of S1 and S2 and call it set S3
+		Set S3 = new Set();
+		S3 = S1.union(S2);
+
+		//Print set S3
+		System.out.print("The union of sets S1 and S2 is set S3 which is ");
+		S3.print();
+		System.out.println();
+
+		//Print the cardinality of S3
+		System.out.println("The cardinality of S3 is "+S3.cardinality());
+
+		//Delete elements 3, 7, and 9 from S2
+		S2.deleteElement(3);
+		S2.deleteElement(7);
+		S2.deleteElement(9);
+
+		//Print set S2
+		System.out.print("\nAfter deleting elements 3, 7 and 9 from S2, S2 is ");
+		S2.print();
+		System.out.println();
+
+		//Print the cardinality of S2
+		System.out.println("The cardinality of S2 is "+S2.cardinality()+"\n");
+
+		//Compute the intersection of S1 and S2 and cal it set S4
+		Set S4 = new Set();
+		S4 = S1.intersection(S2);
+
+		//Print set S4
+		System.out.print("The intersection of sets S1 and S2 is set S4 which is ");
+		S4.print();
+		System.out.println();
+
+		//Print the cardinality of S4
+		System.out.println("The cardinality of S4 is "+S4.cardinality()+"\n");
+
+		//Compute the difference S2-S1 and call it set S5
+		Set S5 = new Set();
+		S5 = S2.difference(S1);
+
+		//Print set S5;
+		System.out.print("The difference of sets S2-S1 is set S5 which is ");
+		S5.print();
+		System.out.println();
+
+		//Print the cardinality of S5
+		System.out.println("The cardinality of S5 is "+S5.cardinality()+"\n");
+
+		//Compute the difference S1-S4 and call it set S6
+		Set S6 = new Set();
+		S6 = S1.difference(S4);
+
+		//Print set S6
+		System.out.print("The difference of sets S1-S4 is set S6 which is ");
+		S6.print();
+		System.out.println();
+
+		//Print the cardinality of S6
+		System.out.println("The cardinality of S6 is "+S6.cardinality()+"\n");
+
+		//Empty set S5
+		S5.empty();
+
+		//Print set S5
+		System.out.print("After empting set S5, S5 is ");
+		S5.print();
+		System.out.println();
+
+		//Print the cardinality of S5
+		System.out.println("The cardinality of S5 is "+S5.cardinality());
+	}
+}
+			</pre>
+		</div>
+	</body>
+</html>
