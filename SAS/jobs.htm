@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SAS</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Jobs
+		</div>
+		
+		<div class = "subtitle">Session</div>
+		<div class = "block">
+			<li>A session maintains a connection with the SAS Viya environment, enabling users to submit code and receive results interactively</li>
+			<li>Sessions provide a convenient way to maintain state across multiple stored process requests</li>
+			<li>A session is the <span>data</span> that is saved from one stored process execution to the next</li>
+			<li>Each session has its own macro variables and library members</li>
+	</div>
+				<div class = "subtitle">Interactive Mode</div>
+		<div class = "block">
+			<li>Be able to execute SAS code in real-time and allow immediate feedback</li>
+		<pre class = "prettyprint linenums">
+proc print data=sashelp.class(obs=5);
+run;
+		</pre>
+	</div>
+			<div class = "subtitle">Backend Jobs</div>
+		<div class = "block">
+			<li>Edit, create code</li>
+			<li>Submit, right-click code file and click <span>Background submit</span></li>
+			<li>Submission Status, <span>View</span> -&gt; <span>Submission Status</span></li>
+			<li>Results, save log as <span>code_file_name.log</span> and save results as <span>code_file_name.html</span></li>
+			<li>Backend sessions in SAS Viya <span>do not</span> automatically share libraries with interactive sessions</li>
+		<pre class = "prettyprint linenums">
+# use the default libraries
+data work.temp
+	set sashelp.cars;
+run;
+
+proc print data=work.temp;
+run;
+		</pre>
+		<pre class = "prettyprint linenums">
+# use user-defined libraries
+libname myhana sasiohna server="server_name" port=port_number user=user_name password="user_password"
+
+proc sql;
+	select *
+	from myhana.schemas;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Scheduled Jobs</div>
+		<div class = "block">
+			<li>Edit, create code</li>
+			<li>Submit, right-click code file and click <span>Schedule as a job</span></li>
+			<li>Job Information, <span>View</span> -&gt; <span>Scheduled Jobs</span></li>
+			<li>Result, right-click a scheduled job, choose <span>Get last results</span></li>
+			<li>Remove a scheduled job, right-click a scheduled job, choose <span>Delete job</span></li>
+		<pre class = "prettyprint linenums">
+/* copy data from SAS space to CAS space */
+libname mycaslib cas caslib=casuser;
+
+data mycaslib.temp;
+	set sashelp.cars;
+run;
+
+/* promote the local table to a global table to enable persistent */
+cas mysession;
+
+proc cas;
+	table.promote /
+		caslib="casuser"
+		name="temp"
+		target="temp2"
+		targetcaslib="casuser";
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://support.sas.com/rnd/itech/doc9/dev_guide/stprocess/sessions.html#:~:text=Sessions%20provide%20a%20convenient%20way,stored%20process%20has%20explicitly%20saved.">SAS Session</a></li>
+		</div>
+	</body>
+</html>

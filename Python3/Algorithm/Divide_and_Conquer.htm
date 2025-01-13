@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+			th, td { border-bottom: 1px solid #ddd;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Divde and Conquer</div>
+
+		<div class = "block">
+            <li><span>Divide</span>, divide the problem into a number of subproblems</li>
+            <li><span>Conquer</span>, conquer the subproblems by solving them recursively</li>
+            <li><span>Combine</span>, combine the solutions to the subproblems into the solution for the original problem</li>
+		</div>
+		<div class = "subtitle">Merge Sort</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+import math
+import random
+
+def get_array(n):
+    l = []
+    for i in range(n):
+        l.append(random.randint(0, 100))
+    return l
+
+def merge_sort(array, p, r):
+    # T(n) = 2T(n/2) + n
+    # a = 2, b = 2, d = 1
+    # O(nlogn)
+    if p < r:
+        q = math.floor((p+r)/2)
+        merge_sort(array, p, q)
+        merge_sort(array, q+1, r)
+        merge(array, p, q, r)
+
+def merge(array, p, q, r):
+    # O(n)
+    temp = []
+    i = p
+    j = q+1
+
+    while i <= q and j <= r:
+        if array[i] < array[j]:
+            temp.append(array[i])
+            i += 1
+        else:
+            temp.append(array[j])
+            j += 1
+
+    if i <= q:
+        while i <= q:
+            temp.append(array[i])
+            i += 1
+
+    if j <= r:
+        while j <= r:
+            temp.append(array[j])
+            j += 1
+
+    k = p
+    for e in temp:
+        array[k] = e
+        k += 1
+
+def main():
+    array = get_array(20)
+
+    merge_sort(array, 0, len(array)-1)
+
+    print(array)
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+        <div class = "subtitle">Maximum-Subarray Problem</div>
+        <div class = "block">
+            <pre class = "prettyprint linenums">
+# Brute force solution
+# O(n^2)
+def brute_force(prices):
+    day_i = -1
+    day_j = -1
+    c = float('-inf')
+    for i in range(len(prices)-1):
+        for j in range(i+1, len(prices)):
+            change = prices[j] - prices[i]
+            if change > c:
+                day_i = i
+                day_j = j
+                c = change
+
+    return (day_i, day_j, prices[day_i], prices[day_j], c)
+
+def main():
+    prices = [100, 113, 110, 85, 105, 102, 86, 63, 81, 101, 94, 106, 101, 79, 94, 90, 97]
+
+    print(brute_force(prices))
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+        <div class = "block">
+            <pre class = "prettyprint linenums">
+# divide and conquer solution
+# T(n) = 2T(n/2) + n
+# a = 2, b = 2, d = 1
+# O(nlogn)
+import math
+
+def get_changes(prices):
+    changes = []
+    for i in range(len(prices)-1):
+        changes.append(prices[i+1] - prices[i])
+
+    return changes
+
+def find_max_crossing_subarray(array, low, mid, high):
+    left_sum = float('-inf')
+    s = 0
+    for i in range(mid, low-1, -1):
+        s += array[i]
+        if s > left_sum:
+            left_sum = s
+            max_left = i
+
+    right_sum = float('-inf')
+    s = 0
+    for j in range(mid+1, high+1):
+        s += array[j]
+        if s > right_sum:
+            right_sum = s
+            max_right = j
+
+    return (max_left, max_right, left_sum + right_sum)
+
+def find_maximum_subarray(array, low, high):
+    if low == high:
+        return (low, high, array[low])
+    else:
+        mid = math.floor((low+high)/2)
+        left_low, left_high, left_sum = find_maximum_subarray(array, low, mid)
+        right_low, right_high, right_sum = find_maximum_subarray(array, mid+1, high)
+        cross_low, cross_high, cross_sum  = find_max_crossing_subarray(array, low, mid, high)
+        if left_sum > right_sum and left_sum > cross_sum:
+            return (left_low, left_high, left_sum)
+        if right_sum > left_sum and right_sum > cross_sum:
+            return (right_low, right_high, right_sum)
+        if cross_sum > left_sum and cross_sum > right_sum:
+            return (cross_low, cross_high, cross_sum)
+
+def main():
+    prices = [100, 113, 110, 85, 105, 102, 86, 63, 81, 101, 94, 106, 101, 79, 94, 90, 97]
+    print('Prices: ', prices)
+
+    changes = get_changes(prices)
+    print('Changes: ', changes)
+
+    low, high, s = find_maximum_subarray(changes, 0, len(changes)-1)
+    print('Buy: Day ', low, ' with price of ', prices[low])
+    print('Sell: Day ', high+1, ' with price of ', prices[high+1])
+    print('Make: ', s)
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li>CLRS</li>
+        </div>
+	</body>
+</html>

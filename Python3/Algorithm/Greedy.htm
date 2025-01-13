@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+			th, td { border-bottom: 1px solid #ddd;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Greedy Algorithm</div>
+
+		<div class = "block">
+            <li>At each decision point, makes choice that seems best at the moment</li>
+            <li>Greedy algorithms <span>do not</span> always yield optimal solution, but for many problems they <span>do</span></li>
+            <li>Steps
+                <ol>
+                <li>Determine the optimal substructure of the problem</li>
+                <li>Develop a recursive solution, using dynamic programming</li>
+                <li>Show that is we make the greedy choice, then only one subproblem remains</li>
+                <li>Prove that it is always safe to make the greedy choice</li>
+                <li>Develop a recursive algorithm that implements the greedy strategy</li>
+                <li>Convert the recursive algorithm to an iterative algorithm</li>
+                </ol>
+            </li>
+		</div>
+		<div class = "subtitle">Activity Selection - Dynamic Programming</div>
+        <div class = "block">
+			<pre class = "prettyprint linenums">
+# top-down
+def get_left_k(activities, start, k):
+    if start >= k:
+        return start-1
+
+    for i in range(k-1, start-1, -1):
+        if activities[i][1] <= activities[k][0]:
+            return i
+
+    return start-1
+
+def get_right_k(activities, k, end):
+    if k >= end:
+        return end+1
+
+    for i in range(k, end+1):
+        if activities[i][0] >= activities[k][1]:
+            return i
+
+    return end+1
+
+def activity_selection(activities, i, j):
+    if i > j:
+        return 0
+
+    m = float('-inf')
+
+    for k in range(i, j+1):
+        left_k = get_left_k(activities, i, k)
+        right_k = get_right_k(activities, k, j)
+        m = max(m, activity_selection(activities, i, left_k) + activity_selection(activities, right_k, j) + 1)
+
+    return m
+
+def main():
+    activities = [(1, 4), # start time and finish time of an acitivity
+                  (3, 5),
+                  (0, 6),
+                  (5, 7),
+                  (3, 9),
+                  (5, 9),
+                  (6, 10),
+                  (8, 11),
+                  (8, 12),
+                  (2, 14),
+                  (12, 16)]
+
+    m = activity_selection(activities, 0, len(activities)-1)
+
+    print(m)
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+        <div class = "block">
+            <pre class = "prettyprint linenums">
+# Top-Down with Memorization
+def get_left_k(activities, start, k):
+    if start >= k:
+        return start-1
+
+    for i in range(k-1, start-1, -1):
+        if activities[i][1] <= activities[k][0]:
+            return i
+
+    return start-1
+
+def get_right_k(activities, k, end):
+    if k >= end:
+        return end+1
+
+    for i in range(k, end+1):
+        if activities[i][0] >= activities[k][1]:
+            return i
+
+    return end+1
+
+def activity_selection(activities, i, j, c):
+    if i > j:
+        return 0
+
+    if c[i][j] > 0:
+        return c[i][j]
+
+    m = float('-inf')
+
+    for k in range(i, j+1):
+        left_k = get_left_k(activities, i, k)
+        right_k = get_right_k(activities, k, j)
+        m = max(m, activity_selection(activities, i, left_k, c) + activity_selection(activities, right_k, j, c) + 1)
+
+    c[i][j] = m
+
+    return m
+
+def main():
+    activities = [(1, 4), # start time and finish time of an acitivity
+                  (3, 5),
+                  (0, 6),
+                  (5, 7),
+                  (3, 9),
+                  (5, 9),
+                  (6, 10),
+                  (8, 11),
+                  (8, 12),
+                  (2, 14),
+                  (12, 16)]
+
+    rows, cols = len(activities), len(activities)
+    c = [[0] * cols for _ in range(rows)]
+
+    m = activity_selection(activities, 0, len(activities)-1, c)
+
+    print(m)
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li>CLRS</li>
+        </div>
+	</body>
+</html>

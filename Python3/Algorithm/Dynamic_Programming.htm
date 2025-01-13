@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Algorithm</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span.red {color: red; font-weight: bold;}
+			span.blue {color: blue; font-weight: bold;}
+			th, td { border-bottom: 1px solid #ddd;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">Dynamic Programming</div>
+
+		<div class = "block">
+            <li>Typically apply dynamic programming to optimization problems</li>
+            <li>Steps
+                <ol>
+                    <li>Characterize the structure of an optimal solution</li>
+                    <li>Recursively define the value of an optimal solution</li>
+                    <li>Compute the value of an optimal solution, typically in a buttom-up fashion</li>
+                    <li>Construct an optimal solution from computed information</li>
+                </ol>
+            </li>
+		</div>
+		<div class = "subtitle">Rod Cutting</div>
+		<div class = "block">
+            <li>Cut up a rold of length n in 2<sup>n-1</sup> ways</li>
+            <li>Cut rod into k pieces, n = i<sub>1</sub> + i<sub>2</sub> + ... + i<sub>k</sub></li>
+<li>Maximum revenue, r<sub>n</sub> = p[i<sub>1</sub>] + p[i<sub>2</sub>] + ... p[i<sub>n</sub>]</li>
+<li>Cut a rod into i (left-hand end) and n-i (right-hand end), only the right-hand end is divided
+r<sub>n</sub> = max(p[i] + r<sub>n-i</sub>)</li>
+        </div>
+        <div class = "block">
+            <li>T(n) = 2T(n-1), O(2^n)</li>
+			<pre class = "prettyprint linenums">
+def cut_rod(p, n):
+    if n == 0:
+        return p[n]
+    q = float('-inf')
+    for i in range(1, n+1):
+        q = max(q, p[i]+cut_rod(p, n-i))
+
+    return q
+
+def main():
+    l = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    p = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30]
+
+    r = cut_rod(p, 7)
+
+    print(r)
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+        <div class = "block">
+            <li>Top-Down with memorization, O(n^2)</li>
+            <pre class = "prettyprint linenums">
+def memorized_cut_rod(p, n, r):
+    if r[n] >= 0:
+        return r[n]
+    if n == 0:
+        return p[n]
+    q = float('-inf')
+    for i in range(1, n+1):
+        q = max(q, p[i]+memorized_cut_rod(p, n-i, r))
+
+    r[n] = q
+
+    return q
+
+def main():
+    l = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    p = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30]
+    r = [-1]*len(l)
+
+    value = memorized_cut_rod(p, 7, r)
+
+    print(value)
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+        <div class = "block">
+            <li>Bottom-Up with memorization, O(n^2)</li>
+            <pre class = "prettyprint linenums">
+def memorized_cut_rod(p, n):
+    r = [-1]*(n+1)
+    r[0] = 0
+    for j in range(1, n+1):
+        q = float('-inf')
+        for i in range(1, j+1):
+            q = max(q, p[i]+r[j-i])
+        r[j] = q
+
+    return r[n]
+
+def main():
+    l = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    p = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30]
+
+    value = memorized_cut_rod(p, 7)
+
+    print(value)
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+        <div class = "block">
+            <li>Construct Solution, O(n^2)</li>
+            <pre class = "prettyprint linenums">
+def extended_memorized_cut_rod(p, n):
+    r = [-1]*(n+1) # define revenue
+    s = [-1]*(n+1) # define first cut
+
+    r[0] = 0
+
+    for j in range(1, n+1):
+        q = float('-inf')
+        for i in range(1, j+1):
+            if q < p[i] + r[j-i]:
+                q = p[i]+r[j-i]
+                s[j] = i
+        r[j] = q
+
+    return r, s
+
+def main():
+    l = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    p = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30]
+
+    r, s = extended_memorized_cut_rod(p, 10)
+
+    print('Length: ', l)
+    print('Price:  ', p)
+    print('Revenue:', r)
+    print('Cut:    ', s)
+
+if __name__ == '__main__':
+    main()
+            </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+        <div class = "block">
+            <li>CLRS</li>
+        </div>
+	</body>
+</html>
