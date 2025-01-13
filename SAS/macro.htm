@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SAS</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Macro
+		</div>
+		
+		<div class = "subtitle">Macro Variables</div>
+		<div class = "block">
+					<li><span>Global Macro Variables</span>
+						<ul>
+							<li>Created by user or through system process during a SAS session</li>
+							<li>Scope, entire SAS session, spans all macros and code</li>
+						</ul>
+					</li>
+					<li><span>Local Macro Variables</span>
+						<ul>
+							<li>Defined within a macro</li>
+							<li>Scope, is available only within the macro that defined the macro variables</li>
+						</ul>
+					</li>
+				</div>
+		<div class = "block">
+			Global variables and local variables
+		<pre class = "prettyprint linenums">
+%let myVar = OldValue; /* global variable */
+
+%macro change_var();
+	%let myVar = NewValue; /* access the global variable */
+
+	%global globalVar; /* define global variable */
+	%let globalVar = Global_value; /* access global variable */
+
+	%local localVar; /* define local variable */
+	%let localVar = Local_value; /* access local variable */
+
+	%let localVar2 = Local_value_2; /* define local variable */
+%mend change_var;
+
+%change_var();
+
+%put Value, &myVar.; /* NewValue */
+%put Global, &globalVar.; /* Global_value */
+%put Local, &localVar.; /* not exist */
+		</pre>
+	</div>
+	<div class = "block">
+		local variable <span>shadow</span> global variable
+		<pre class = "prettyprint linenums">
+%let var = Global_value;
+
+%macro shadow_func;
+	%local var;
+	%let var = Local_value;
+	%put Inside macr: &var.; /* Inside macr: Local_value */
+%mend shadow_func;
+
+%shadow_func;
+%put Outside macro: &var.; /* Outside macro: Global_value */
+		</pre>
+	</div>
+	<div class = "block">
+		<li>Display <span>Global</span> macro variables and <span>Automatic</span> macro variables</li>
+		<li><span>Automatic Macro Variables</span>
+			<ul>
+				<li>System-defined macro variables created by SAS at the start of a session</li>
+				<li>Scope, entire SAS session, spanning all macros and code</li>
+			</ul>
+		</li>
+		<pre class = "prettyprint linenums">
+%put _ALL_;
+		</pre>
+		<pre class = "prettyprint linenums">
+proc SQL;
+	select *
+	from dictionary.macros;
+quit;
+		</pre>
+	</div>
+	<div class = "block">
+		delete macro variables
+		<pre class = "prettyprint linenums">
+%SYMDEL var_global;
+		</pre>
+	</div>
+	<div class = "subtitle">Macro Statements</div>
+	<div class = "block">
+		<li>Are used to controll the flow of macro programs</li>
+		<li>%IF - %THEN, %DO, %LET, %PUT, %GLOBAL, %LOCAL</li>
+	</div>
+	<div class = "block">
+		decision
+		<pre class = "prettyprint linenums">
+%macro is_pass(grade);
+	%if &grade. > 90 %then
+		%do;
+			%put A;
+		%end;
+	%else %if &grade. > 80 %then
+		%do;
+			%put B;
+		%end;
+	%else
+		%do;
+			%put Work harder ...;
+		%end;
+%mend is_pass;
+
+%is_pass(95);
+		</pre>
+	</div>
+	<div class = "block">
+		loop
+		<pre class = "prettyprint linenums">
+%macro print_numbers(start_value, end_value);
+	%do i = &start_value. %to &end_value.;
+		%put Value: &i.;
+	%end;
+%mend print_numbers;
+
+%print_numbers(1, 5);
+		</pre>
+	</div>
+	<div class = "subtitle">Macro Functions</div>
+	<div class = "block">
+		<li>Are built-in functions provided by SAS to perform operations within the macro environment</li>
+		<li>Built-in Macro Functions
+			<ul>
+				<li>Arithmetic, abs, min, max, sqrt</li>
+				<li>Array, dim</li>
+				<li>Character, left, right, substr, reverse, length</li>
+				<li>Date and time, tody, juldate, mdy, intck, timepart</li>
+				<li>Financial, mort, npv, saving</li>
+				<li>Mathematical, log, exp</li>
+				<li>Probability, poisson, probchi</li>
+				<li>Random number, normal, uniform</li>
+				<li>Statistics, mean, min, max, std, nmiss</li>
+				<li>Special functions, lag, put, input</li>
+				<li>Truncation, round, ceil, floor</li>
+			</ul>
+		</li>
+	</div>
+	<div class = "subtitle">Macro Programs</div>
+	<div class = "block">
+		integer arithmetic
+		<pre class = "prettyprint linenums">
+%let a = 10;
+%let b = 5;
+
+%let sum = %eval(&a + &b);
+%let diff = %eval(&a - &b);
+%let product = %eval(&a * &b);
+%let quotient = %eval(&a / &b);
+%let mod = %sysfunc(mod(&a., &b.));
+
+%put &sum. &diff. &product. &quotient. &mod.;
+		</pre>
+	</div>
+	<div class = "block">
+		float arithmetic
+		<pre class = "prettyprint linenums">
+%let a = 10.5;
+%let b = 2.3;
+
+%let sum = %eval(&a + &b);
+%let diff = %eval(&a - &b);
+%let product = %eval(&a * &b);
+%let quotient = %eval(&a / &b);
+%let mod = %sysfunc(mod(&a., &b.));
+
+%put &sum. &diff. &product. &quotient. &mod.;
+		</pre>
+	</div>
+	<div class = "block">
+		arguments with default values
+		<pre class = "prettyprint linenums">
+%macro greet(message=Hello, name=Lin);
+	%put &message., &name.!;
+%mend greet;
+
+%greet(); /* Hello, Lin! */
+%greet(name=Yanhua); /* Hello, Yanhua! */
+%greet(message=Happy New Year); /* Happy New Year, Lin! */
+%greet(message=Happy New Year, name=Yanhua); /* Happy New Year, Yanhua! */
+		</pre>
+	</div>
+	<div class = "block">
+		pass by reference
+		<pre class = "prettyprint linenums">
+%macro get_result(var);
+	%let &var = New;
+%mend get_result;
+
+%let input='';
+%put Before: &input.; /* '' */
+
+%get_result(input);
+%put After: &input.; /* New */
+		</pre>
+	</div>
+	<div class = "block">
+		call another macro
+		<pre class = "prettyprint linenums">
+%macro print_world();
+	%put World!;
+%mend print_world;
+
+%macro print_hello();
+	%put Hello ;
+	%print_world();
+%mend print_hello;
+
+%print_hello();
+		</pre>
+	</div>
+	<div class = "block">
+		recursion
+		<pre class = "prettyprint linenums">
+%macro fact(n);
+	%if &n = 0 %then 1;
+	%else %eval(&n. * fact(%eval(&n.-1)));
+%mend fact;
+
+%put Factorial of 4 is %fact(4);
+		</pre>
+	</div>
+	<div class = "block">
+		return value via global variable
+		<pre class = "prettyprint linenums">
+%let result = 0;
+
+%macro calculate_sum(a, b);
+	%let result = %eval(&a. + &b.);
+%mend calculate_sum;
+
+%calculate_sum(10, 20);
+%put Sum, &result.;
+		</pre>
+	</div>
+	<div class = "block">
+		return value explicitly
+		<pre class = "prettyprint linenums">
+%macro calculate_sum(a, b);
+	%eval(&a. + &b.);
+%mend calculate_sum;
+
+%put Sum, %calculate_sum(10, 20);
+		</pre>
+	</div>
+	<div class = "subtitle">Macro Package</div>
+	<div class = "block">
+		<p style = "text-align:center;"><img src = "img/sas_6.png" width = "60%"></p>
+	</div>
+	<div class = "block">
+		<pre class = "prettyprint linenums">
+/* m1.sas */
+%let age = 10;
+%let fname = Lin;
+%let lname = Chen;
+		</pre>
+	</div>
+	<div class = "block">
+		<pre class = "prettyprint linenums">
+/* m2.sas */
+%macro world;
+	%put Hello World!;
+%mend world;
+		</pre>
+	</div>
+	<div class = "block">
+		<pre class = "prettyprint linenums">
+/* m3.sas */
+/* Header Section
+ * Macro Package: package name
+ * Purpose: package introduction
+ * Author: Lin Chen
+ * Version: 0.1
+ * Date: modification date
+*/
+
+/* Initialization Section
+ * Define global macro variables and paths
+ * %include statements to bring in macros
+*/
+%include '/path/m1.sas';
+%include '/path/m2.sas';
+%let hobbies = Swim;
+
+/* Individual Macros
+ * Each macro is self_contained and documented
+*/
+%macro hello;
+	%put ----------------;
+	%world;
+	%put ----------------;
+	%put Hello, &fname. &lname. !;
+	%put Hobbies, &hobbies.;
+	%put ----------------;
+%mend hello;
+		</pre>
+	</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+/* m4.sas */
+%include '/path/m3.sas';
+
+%hello;
+		</pre>
+	</div>
+	<div class = "block">
+		Macro Package on Github
+		<pre class = "prettyprint linenums">
+filename myurl url "https://github_raw_code.sas";
+%include myurl;
+
+%hello;
+		</pre>
+	</div>
+		<div class = "subtitle">Use Cases</div>
+	<div class = "block">
+		Parametrizing code
+		<pre class = "prettyprint linenums">
+%macro get_report(dataset, maker, price);
+	proc print data=&dataset.;
+	where Make = &maker. & MSRP > &price.;
+	run;
+%mend get_report;
+
+%get_report(sashelp.cars, 'Acura', 30000);
+		</pre>
+	</div>
+	<div class = "block">
+		Data processing
+		<pre class = "prettyprint linenums">
+%macro data_process(dataset, maker, output);
+	data &output.;
+		set &dataset.;
+		where Make = &maker.;
+	run;
+%macro data_process;
+
+%data_process(sashelp.cars, 'Acura', work.cars_temp);
+		</pre>
+	</div>
+	<div class = "block">
+		Data setion
+		<pre class = "prettyprint linenums">
+%macro filter_condition(var, value);
+	if &var. = &value.;
+%mend filter_condition;
+
+data temp;
+	set sashelp.cars;
+	%filter_condition(Make, 'Acura');
+run;
+		</pre>
+	</div>
+	</body>
+</html>
