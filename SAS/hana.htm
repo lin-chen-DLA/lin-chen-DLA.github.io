@@ -106,10 +106,27 @@ proc contents data=myhana.table_name;
 run;
 		</pre>
 	</div>
-		<div class = "subtitle">List First n Rows of a Table in a Schema</div>
+		<div class = "subtitle">Query</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
-/* load the first n rows and save as a table in library work */
+/* implement query on SAP HANA and output the result in SAS */
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	select * from connection to saphana
+	(
+		select *
+		from "schema_name"."table_name" limit 10
+	);
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+/* implement query on SAP HANA and save as a table in SAS */
 proc sql;
 	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
 
@@ -128,6 +145,7 @@ quit;
 		<div class = "subtitle">Create Table on SAP HANA</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+/* create a table from scratch on SAP HANA */
 proc sql;
 	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
 
@@ -138,6 +156,25 @@ proc sql;
 			Age int,
 			Birth_Date date
 		)
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+/* create a table on SAP HANA from select operation on SAP HANA */
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute (
+		create table "new_schema_name"."new_table_name" as
+		(
+			select *
+			from "old_schema_name"."old_table_name" limit 10
+		);
 	) by saphana;
 
 	disconnect from saphana;
