@@ -21,7 +21,265 @@
 	</div>
 		<div class = "subtitle">Temporary Library in SAS</div>
 		<div class = "block">
+			<li>The <span>WORK</span> library is automatically created at the beginning of each SAS session and is used to store temporary datasets and other SAS objects</li>
+			<li>Exist only for the duration of the session and are deleted when the session ends</li>
+			<li>A <span>session</span> in SAS Viya refers to the time period during which a user actively using SAS Viya</li>
+			<li>A session <span>begins</span> when users start SAS Viya or refresh SAS Viya page and <span>ends</span> when you exit SAS Viya or refresh SAS Viya</li>
+			<li>Databases, SAS storages, and CAS libraries can be <span>mapped</span> to SAS as temporary libraries. These temporary libraries will be demapped when the current session ends</li>
+			<pre class = "prettyprint linenums">
+/* remove a mapped library */
+libname mylib clear;
+
+/* remove all mapped libraries */
+libname _all_ clear;
+			</pre>
+	</div>
+	<div class = "subtitle">SAS Storage and SAS Library</div>
+		<div class = "block">
+			<li>Map a SAS storage path as a SAS library</li>
 		<pre class = "prettyprint linenums">
+libname mylib 'path_of_SAS_storage';
 		</pre>
 	</div>
+		<div class = "block">
+			<li>Copy table from SAS storage to <span>work</span> library</li>
+		<pre class = "prettyprint linenums">
+data work.table_name;
+	set mylib.table_name;
+run;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Copy table from <span>work</span> library to SAS storage
+				<ul>
+					<li>The table will be saved in <span>sas7bdata</span> format in SAS storage</li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+data mylib.table_name;
+	set work.table_name;
+run;
+		</pre>
+	</div>
+	<div class = "subtitle">SAP HANA and SAS Library</div>
+	<div class = "block">
+			<li>Map a SPA HANA schema as a SAS library</li>
+		<pre class = "prettyprint linenums">
+libname myhana sasiohna server="server_name" port=port_number user=user_name password="user_password" schema="schema_name";
+		</pre>
+	</div>
+	<div class = "block">
+			<li>Copy data from SAP HANA to SAS library</li>
+		<pre class = "prettyprint linenums">
+/* copy with data section */
+proc work.table_name;
+	set myhana.table_name;
+run;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* copy data with proc sql */
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+ 
+	create table work.table_name as
+	select * from connection to saphana
+	(
+		select *
+		from "schema_name"."table_name" limit 10
+	);
+ 
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+	<div class = "block">
+			<li>Copy data from SAS library to SAP HANA</li>
+		<pre class = "prettyprint linenums">
+/* copy with data section */
+proc myhana.table_name;
+	set work.table_name;
+run;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* copy with proc sql */
+proc sql;
+    create table myhana.table_name as
+    select * from work.table_name;
+quit;
+		</pre>
+	</div>
+	<div class = "subtitle">Hadoop and SAS Library</div>
+	<div class = "block">
+			<li>Map a Hadoop library as a SAS library</li>
+		<pre class = "prettyprint linenums">
+libname myhadoop ODBC PRESERVE_TAB_NAMES=YES PRESERVE_COL_NAMES=YES
+	DSN="hadoop_server_name" schema="database_name_on_hadoop";
+		</pre>
+	</div>
+	<div class = "block">
+			<li>Copy data from Hadoop to SAS library</li>
+		<pre class = "prettyprint linenums">
+/* copy with data section */
+proc work.table_name;
+	set myhadoop.table_name;
+run;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* copy with proc sql */
+proc sql;
+	connect to odbc (dsn=hadoop_server_name);
+	create table work.table_name as
+	select * from connection to odbc
+	(
+		select *
+		from db_name.table_name;
+	)
+run;
+		</pre>
+	</div>
+	<div class = "block">
+			<li>Copy data from SAS library to Hadoop</li>
+		<pre class = "prettyprint linenums">
+/* copy with data section */
+data myhadoop.table_name (storageformat=parquet);
+	set work.table_name;
+run;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* copy with proc sql */
+proc sql;
+    create table myhadoop.table_name as
+    select * from work.table_name;
+quit;
+		</pre>
+	</div>
+	<div class = "subtitle">CAS and SAS Library</div>
+	<div class = "block">
+			<li>Map a CAS library as a SAS library</li>
+		<pre class = "prettyprint linenums">
+libname mycaslib cas caslib=casuser;
+		</pre>
+	</div>
+	<div class = "block">
+			<li>Map all CAS libraries as SAS libraries</li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+caslib _all_ assign;
+		</pre>
+	</div>
+	<div class = "block">
+			<li>Copy data from SAS to CAS library</li>
+		<pre class = "prettyprint linenums">
+data mycaslib.cars;
+	set sashelp.cars;
+run;
+		</pre>
+	</div>
+	<div class = "block">
+			<li>Copy data from CAS to SAS library</li>
+		<pre class = "prettyprint linenums">
+data work.water;
+	set mycaslib.water_cluster;
+run;
+		</pre>
+	</div>
+	<div class = "subtitle">CAS and SASHDAT</div>
+	<div class = "block">
+			<li>Save table in CAS library to SASHDAT</li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+ 
+proc cas;
+	table.save /
+		caslib="casuser" /* target library on SASHDAT */
+		name="cars_compressed" /* target file name on SASHDAT */
+		table={caslib="casuser", name="cars"} /* source table on CAS */
+		compress=true; /* save as compressed data */
+quit;
+		</pre>
+	</div>
+	<div class = "block">
+			<li>Load table on SASHDAT to CAS library</li>
+		<pre class = "prettyprint linenums">
+cas mysession;
+ 
+proc cas;
+	table.loadTable /
+		path="cars.sashdat" /* source file name on SASHDAT */
+		caslib="casuser" /* source library on SASHDAT */
+		casout={caslib="casuser", name="cars2", promote=false}; /* target library and table on CAS */
+quit;
+		</pre>
+	</div>
+	<div class = "subtitle">Data File and SAS Library</div>
+	<div class = "block">
+			<li>Load data from file to <span>work</span> library
+				<ul>
+					<li>Click <span>New</span> on top-left corner, choose <span>Import data</span>, drag and drop data from local computer to SAS Viya window</li>
+					<li>Drag and drop a data file to a SAS storage space on SAS Viya, right-click the data file, choose <span>Import data</span></li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+filename reffile disk 'path_of_data_file';
+
+proc import datafile=reffile
+	DBMS = csv
+	OUT = work.table_name;
+	GETNAMES = yes; /* reads the first row of the input file as column names */
+run;
+		</pre>
+	</div>
+	<div class = "block">
+			<li>Export data from SAS library to SAS storage
+				<ul>
+					<li>Right-click a data table in a SAS library, click <span>Export</span></li>
+				</ul>
+			</li>
+		<pre class = "prettyprint linenums">
+proc export data=work.table_name
+    outfile="path\output_file.csv"
+    dbms=csv
+    replace;
+run;
+		</pre>
+	</div>
+	<div class = "subtitle">Create SAS Table from Scratch</div>
+	<div class = "block">
+		<li>Create table with single record</li>
+		<pre class = "prettyprint linenums">
+data work.table_name;
+	name = 'Lin';
+	age = 45;
+run;
+		</pre>
+	</div>
+	<div class = "block">
+		<li>Create table with multiple records using loop</li>
+		<pre class = "prettyprint linenums">
+data work.table_name;
+	do id = 1 to 5;
+		name = cats('Person_', id);
+		age = 20 + id;
+		if id > 2 then output; /* output observation to table when id > 2 */
+	end;
+run;
+		</pre>
+	</div>
+	<div class = "block">
+		<li>Create table with multiple records</li>
+		<pre class = "prettyprint linenums">
+data work.table_name;
+	length name $ 10 department $ 20; /* define length for string variables */
+	input id name salary department; /* list variables */
+	inc = salary * 0.25; /* create new variable */
+	label id = 'Employee ID' inc = 'COMMISION'; /* create labels for variables */
+	datalines
+1 Rich 623.3 IT
+2 Dan 515.2 Operations
+;
+run;
+		</pre>
+	</div>
+</body>
 </html>
