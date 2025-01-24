@@ -667,22 +667,83 @@ run;
 		</pre>
 	</div>
 	</div>
-	<div class = "subtitle">Profiler</div>
+		<div class = "subtitle">Copy from SAP HANA to CAS</div>
 		<div class = "block">
-				<pre class = "prettyprint linenums">
-%let start_time = %sysfunc(datetime());
+			<li>Use data section, non-paralleled</li>
+		<pre class = "prettyprint linenums">
+/* Both only used to clean up from other sessions that may still be open */
+libname _all_ clear;
+cas _all_ terminate;
 
-proc fedsql sessref=mysession;
-	select * from casuser.cars;
+/* Map SAP HANA schema and CAS libraries to SAS */
+libname myhana sasiohna server="server_name" port=port_number user=user_name password="user_password" schema="schema_name";
+
+cas mySession;
+caslib _all_ assign;
+
+/* Copy data from SAP HANA to CAS */
+data casuser.table_name;
+	set myhana.table_name;
+run;
+
+/* Data copied to CAS is not persistent */
+
+/* Option 1: save data to SASHDAT */
+proc casutil sessref=mySession;
+	save casdata="table_name"
+	incaslib="casuser"
+	outcaslib="casuser"
+	casout="table_name" replace;
 quit;
 
-%let end_time = %sysfunc(datetime())
+/* Option 2: promote data to global */
+proc casutil sessref=mySession;
+	promote casdata="table_name" incaslib="casuser" outcaslib="casuser";
+quit;
+		</pre>
+		</div>
+		<div class = "block">
+			<li>Use fedsql, paralleled</li>
+		<pre class = "prettyprint linenums">
+/* Both only used to clean up from other sessions that may still be open */
+libname _all_ clear;
+cas _all_ terminate;
 
-%let elapsed_time = %sysevalf(&end_time. - &start_time.);
+/* Create session */
+cas mySession sessopts=(caslib=casuser timeout=1800 locale="en_US");
 
-%put Time, &elapsed_time. second.
-				</pre>
-			</div>
+/* Map SAP HANA schema to CAS library */
+caslib mycaslib datasource=(srctype="hana", server="server_name", port=port_number,
+	user=user_name, password="user_password", schema="schema_name", tableType="column", instance="00");
+
+/* Copy data from SAP HANA to CAS */
+proc fedsql sessref=mySession;
+
+	create table casuser.table_name {options replace=true} as
+	select * from connection to mycaslib
+	(select *
+	 from schema_name.table_name
+	)
+	;
+
+quit;
+
+/* Data copied to CAS is not persistent */
+
+/* Option 1: save data to SASHDAT */
+proc casutil sessref=mySession;
+	save casdata="table_name"
+	incaslib="casuser"
+	outcaslib="casuser"
+	casout="table_name" replace;
+quit;
+
+/* Option 2: promote data to global */
+proc casutil sessref=mySession;
+	promote casdata="table_name" incaslib="casuser" outcaslib="casuser";
+quit;
+		</pre>
+	</div>
 		<div class = "subtitle">Reference</div>
 		<div class = "block">
 			<li><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/pgmsaswlcm/home.htm">Document</a></li>

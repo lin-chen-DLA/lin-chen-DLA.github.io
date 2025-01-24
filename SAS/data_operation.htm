@@ -16,13 +16,345 @@
 			Data Operation
 		</div>
 		
-		<div class = "subtitle">ODS Graphics</div>
+		<div class = "subtitle">Display Table Information</div>
 		<div class = "block">
 		<pre class = "prettyprint linenums">
+proc contents data = sashelp.cars;
+run;
 		</pre>
 	</div>
-		<div class = "subtitle">Reference</div>
+		<div class = "subtitle">Select Table</div>
 		<div class = "block">
-		</div>
-	</body>
+		<pre class = "prettyprint linenums">
+data work.temp;
+	set sashelp.cars;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Merge Tables</div>
+		<div class = "block">
+			<li>Merge datasets vertically, align tables by column names</li>
+		<pre class = "prettyprint linenums">
+data work.temp1;
+	set sashelp.cars;
+run;
+
+data work.temp2;
+	set sashelp.cars;
+run;
+
+data work.temp3;
+	set work.temp1 work.temp2;
+run;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Merge tables horizontally by key</li>
+		<pre class = "prettyprint linenums">
+data work.salary;
+	input emid name $ salary;
+	datalines;
+1 Rick 623.3
+2 Dan 515.2
+;
+run;
+
+data work.dept;
+	input emid dept $;
+	datalines;
+1 IT
+2 OPS
+;
+run;
+
+data work.details;
+	merge work.salary work.dept;
+	by empid;
+run;
+		</pre>
+		<pre class = "prettyprint linenums">
+data work.details;
+	merge work.salary (In=a) work.dept (IN=b);
+	by empid;
+	if a; /* left join */
+	/* if b; right join */
+	/* if a and b; inner join */
+	/* if a or b; full outer join */
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Sort Table</div>
+		<div class = "block">
+			<li>Sort in ascending order</li>
+		<pre class = "prettyprint linenums">
+proc sort data=sashelp.cars out=work.temp;
+	by MSRP;
+run;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Sort in descending order</li>
+		<pre class = "prettyprint linenums">
+proc sort data=sashelp.cars out=work.temp;
+	by DESCENDING MSRP;
+run;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Sort by multiple variables</li>
+		<pre class = "prettyprint linenums">
+proc sort data=sashelp.cars out=work.temp;
+	by MSRP Invoice;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Remove Table</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+proc datasets library=work nolist;
+	delete temp;
+quit;
+		</pre>
+	</div>
+		<div class = "subtitle">Select Rows</div>
+		<div class = "block">
+			<li>Select rows with conditions</li>
+		<pre class = "prettyprint linenums">
+data work.temp;
+	set sashelp.cars;
+	where Make = 'Acura' & Type = 'SUV';
+run;
+		</pre>
+		<pre class = "prettyprint linenums">
+data work.temp;
+	set sashelp.cars;
+	if Make = 'Acura' & Type = 'SUV';
+run;
+		</pre>
+		<pre class = "prettyprint linenums">
+proc sql;
+	create table work.temp as
+	select *
+	from sashelp.cars
+	where Make = 'Acura' & Type = 'SUV';
+run;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Select rows with indices</li>
+		<pre class = "prettyprint linenums">
+/* select first n rows
+ * index starts from 1 in SAS
+ */
+data work.temp;
+	set sashelp.cars (obs=5);
+run;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* select rows from 5th row to 10th row
+ * 6 rows are selected
+ */
+data work.temp;
+	set sashelp.cars (firstobs=5 obs=10);
+run;
+		</pre>
+		<pre class = "prettyprint linenums">
+/* _N_, a special automatic variable that holds row index
+ */
+data work.temp;
+	set sashelp.cars;
+	if _N_ in (2, 4, 6, 8);
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Update Row</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+data work.temp;
+	set sashelp.cars;
+
+	if _N_ = 5 then
+		do;
+			Make = 'Honda';
+			Model = 'Accord';
+			output;
+		end;
+	else
+		do;
+			output; /* output current row to result dataset */
+		end;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Insert Row</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+/* insert row after 5th row */
+data work.temp;
+	set sashelp.cars;
+
+	if _N_ = 5 then
+		do;
+			output; /* output 5th row to dataset */
+			Make = 'Honda';
+			Model = 'Accord';
+			output; /* insert new row to dataset */
+		end;
+	else
+		do;
+			output; /* output current row to result dataset */
+		end;
+run;
+		</pre>
+	</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+/* Append row to dataset */
+proc sql;
+	insert into work.temp
+	values ('Buick', 'Accord', ...);
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Remove Row</div>
+		<div class = "block">
+			<li>Remove rows by condition</li>
+		<pre class = "prettyprint linenums">
+data work.temp;
+	set sashelp.cars;
+	if _N_ in (2, 4, 6) then delete;
+run;
+		</pre>
+		<pre class = "prettyprint linenums">
+data work.temp;
+	set sashelp.cars;
+	if mod(_N_, 2) = 0 then delete;
+run;
+		</pre>
+		<pre class = "prettyprint linenums">
+data work.temp;
+	set sashelp.cars;
+	if Make = 'Audi' then delete;
+run;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Remove redundant rows</li>
+		<pre class = "prettyprint linenums">
+/* create a table with redundant rows */
+data work.temp;
+	set sashelp.cars (keep = Make);
+run;
+
+proc sort data=work.temp out=work.temp2 nodup;
+	by Make;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Select Columns</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+data work.temp;
+	set sashelp.cars (keep = EngineSize Model);
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Add Column</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+data work.temp;
+	set sashelp.cars;
+	MonthPay = MSRP/60;
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Rename Columns</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+data work.temp;
+	set sashelp.cars (rename=(EngineSize=ES Model=M));
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">Remove Column</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+data work.temp;
+	set sashelp.cars(drp=EngineSize Model);
+run;
+		</pre>
+	</div>
+		<div class = "subtitle">SQL</div>
+		<div class = "block">
+			<li>Syntax</li>
+		<pre class = "prettyprint linenums">
+proc sql;
+	select columns
+	from table
+	where tables
+	group by columns
+	;
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Select</li>
+		<pre class = "prettyprint linenums">
+proc sql;
+	select distinct Make, Model
+	from sashelp.cars
+	where Make = 'Acura';
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Join</li>
+		<pre class = "prettyprint linenums">
+proc sql;
+	select *
+	from work.t1 inner join work.t2 on t1.column = t2.column;
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Group By</li>
+		<pre class = "prettyprint linenums">
+proc sql;
+	select Make, avg(MSRP)
+	from sashelp.cars
+	group by Make
+	having avg(MSRP) > 40000;
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Remove Row</li>
+		<pre class = "prettyprint linenums">
+proc sql;
+	delete from work.temp
+	where Make = 'Acura';
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Create Table</li>
+		<pre class = "prettyprint linenums">
+proc sql;
+	create table work.temp as
+	select Make, avg(MSRP) as MSRP_avg
+	from sashelp.cars
+	group by Make
+	having avg(MSRP) > 40000;
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Update Table</li>
+		<pre class = "prettyprint linenums">
+proc sql;
+	update work.temp
+		set MSRP_avg = MSRP_avg*1.25;
+quit;
+		</pre>
+	</div>
 </html>
