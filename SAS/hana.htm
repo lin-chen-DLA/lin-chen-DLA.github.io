@@ -186,6 +186,7 @@ quit;
 	</div>
 		<div class = "subtitle">Insert Table</div>
 		<div class = "block">
+			<li>Insert a single record on SAP HANA</li>
 		<pre class = "prettyprint linenums">
 proc sql;
 	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
@@ -200,8 +201,50 @@ proc sql;
 quit;
 		</pre>
 	</div>
+		<div class = "block">
+			<li>Insert multiple records on SAP HANA</li>
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute (
+		insert into "schema_name"."table_name" (Name, Age, Birth_Date)
+		values ('Lin', 45, '2024-12-17')
+	) by saphana;
+
+	execute (
+		insert into "schema_name"."table_name" (Name, Age, Birth_Date)
+		values ('Hannah', 18, '2024-12-17')
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Insert multiple records with query on SAP HANA</li>
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute (
+		insert into "schema_name_new"."table_name_new"
+			(LONGITUDE, LATITUDE, TOTAL_ROOMS, OCEAN_PROXIMITY)
+
+		select LONGITUDE, LATITUDE, TOTAL_ROOMS, OCEAN_PROXIMITY
+		from "schema_name_old"."table_name_old" h
+		where h.MEDIAN_INCOME > 5.0
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
 		<div class = "subtitle">Update Table</div>
 		<div class = "block">
+			<li>Update records by condition</li>
 		<pre class = "prettyprint linenums">
 proc sql;
 	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
@@ -217,8 +260,79 @@ proc sql;
 quit;
 		</pre>
 	</div>
+		<div class = "block">
+			<li>Add a column</li>
+		<pre class = "prettyprint linenums">
+/* create a new column */
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute (
+		alter table "schema_name"."table_name"
+		add (new_column MVARCHAR(10))
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+
+/* add values to the column with update operation */
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute (
+		update "schema_name"."table_name" h
+		set
+			h.new_column = 
+			case when h.TOTAL_ROOMS > 6000
+						then 'High'
+				 when h.TOTAL_ROOMS > 3000
+				 		then 'Medium'
+				 else
+				 		'Low'
+			end
+		from "schema_name"."table_name" h
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
 		<div class = "subtitle">Delete Table</div>
 		<div class = "block">
+			<li>Remove records by condition</li>
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute (
+		delete from "schema_name"."table_name" h
+		where h.DENSITY = 'Low'
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Remove all records without removing table</li>
+		<pre class = "prettyprint linenums">
+proc sql;
+	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
+
+	execute (
+		truncate table "schema_name"."table_name"
+	) by saphana;
+
+	disconnect from saphana;
+	
+quit;
+		</pre>
+	</div>
+		<div class = "block">
+			<li>Remove a table</li>
 		<pre class = "prettyprint linenums">
 proc sql;
 	connect to saphana (server="server_name" port=port_number user=user_name password="user_password");
