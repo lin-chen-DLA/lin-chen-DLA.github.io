@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SAS</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Function and Routine
+		</div>
+
+		<div class = "block">
+			<li>A <span>function</span> in SAS is a pre-defined routine which is applied to each observation in data. Accept arguments, perform a computation or other operation, and return a value</li>
+			<li>A <span>routine</span> modify one or more arguments directly or perform an action, and do <span>not</span> return a value. It is applied to each observation in a dataset</li>
+		</div>
+		<div class = "subtitle">Built-in Functions</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+data work.cars;
+	set sashelp.cars;
+	temp = cats(Make, '-', Model);
+run;
+			</pre>
+		</div>
+		<div class = "subtitle">User-Defined Functions</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/sas_8.png" width = "40%"></p>
+	</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/* define functions */
+proc fcmp outlib=work.catalog_1.entry_1;
+	function square(x);
+		return (x*x);
+	endsub;
+
+	function time10(x);
+		return (10*x);
+	endsub;
+run;
+
+proc fcmp outlib=work.catalog_2.entry_2;
+	function time100(x);
+		return (100*x);
+	endsub;
+run;
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/* use functions */
+options cmplib=(work.catalog_1 work.catalog_2);
+
+data work.temp;
+	set sashelp.cars;
+	temp = square(MSRP);
+	temp2 = time100(MSRP);
+run;
+			</pre>
+		</div>
+		<div class = "subtitle">Built-in Routines</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+data work.cars;
+	set sashelp.cars;
+	length temp $ 100;
+	call cats(temp, Make, '-', Model);
+run;
+			</pre>
+		</div>
+		<div class = "subtitle">User-Defined Routines</div>
+		<div class = "block">
+			<p style = "text-align:center;"><img src = "img/sas_9.png" width = "40%"></p>
+	</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/* define routines */
+proc fcmp outlib=work.catalog_1.entry_1;
+	subroutine square(result, x);
+		outargs result;
+		result = x*x;
+	endsub;
+run;
+
+proc fcmp outlib=work.catalog_2.entry_2;
+	subroutine time100(result, x);
+		outargs result;
+		result = 100*x;
+	endsub;
+run;
+			</pre>
+		</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/* use functions */
+options cmplib=(work.catalog_1 work.catalog_2);
+ 
+data work.temp;
+	set sashelp.cars;
+	square(temp, MSRP);
+run;
+			</pre>
+		</div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/lefunctionsref/n01f5qrjoh9h4hn1olbdpb5pr2td.htm">SAS Functions and CALL Routines by Category</a></li>
+		</div>
+	</body>
+	</html>
+</body>
+</html>
