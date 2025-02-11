@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SAS</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Data Types
+		</div>
+
+		<div class = "subtitle">Date</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/* date in data section */
+data work.temp;
+	today_num = today(); /* date in SAS is saved an integer number, representing dates after January 1, 1960 */
+run;
+			</pre>
+			<pre class = "prettyprint linenums">
+/* date macro variable with data section */
+%global report_date;
+
+data _null_;
+	call symputx('report_date', today());
+run;
+
+%put &report_date., %datatyp(&report_date.); /* 23775, NUMERIC */
+			</pre>
+			<pre class = "prettyprint linenums">
+/* date macro variable with macro call */
+%let today_date = %sysfunc(today());
+%put &today_date., %datatyp(&today_date.); /* 23775, NUMERIC */
+			</pre>
+		</div>
+		<div class = "subtitle">Display Data Attributes</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+data work.temp;
+	input id name $5. salary doj date9.;
+	label id = 'Employee ID'; /* add label for column */
+	len_name = length(name); /* variable length */
+	vlen_name = vlength(name); /* allocated space */
+	datalines;
+1 Rick 623.3 02APR2001
+2 Dan  515.2 11JUL2012
+;
+run;
+
+proc contents data=work.temp;
+run;
+			</pre>
+		</div>
+		<div class = "subtitle">Format and Informat</div>
+		<div class = "block">
+			<li><span>Format</span>, define data format for output</li>
+			<li><span>Informat</span>, defines data format for input</li>
+		</div>
+		<div class = "block">
+			<li><span>Numeric</span></li>
+			<pre class = "prettyprint linenums">
+/* read integer */
+data work.temp;
+	length num 4; /* define the number of bytes to store the variable, default length is 8 */
+	informat num 10.; /* seems no matter what the value is, SAS Viya reads all digits */
+	input num; /* read value to variable */
+	format num 20.; /* display up to 20 characters, the rest positions will be filled with 0 */
+	datalines;
+1234
+;
+run;
+			</pre>
+			<pre class = "prettyprint linenums">
+/* read float */
+data work.temp;
+	informat num f2.2.; /* seems no matter what the value is, SAS Viya reads all digits */
+	input num; /* read value to variable */
+	format num f20.6; /* display up to 20 characters, the rest positions will be filled with 0 */
+	datalines;
+1234.1234
+;
+run;
+			</pre>
+			<pre class = "prettyprint linenums">
+/* read any numeric format, integer|decimal|scientific */
+data work.temp;
+	informat num best8.2.; /* seems no matter what the value is, SAS Viya reads all digits */
+	input num; /* read value to variable */
+	format num best10.6; /* display up to 20 characters, the rest positions will be filled with 0 */
+	datalines;
+1234.5678
+;
+run;
+			</pre>
+			<pre class = "prettyprint linenums">
+/* read percentage */
+data work.temp;
+	informat num percent8.2.; /* read up to 8 characters with 2 digits after decimal point */
+	input num; /* read value to variable */
+	format num percent10.6; /* display up to 10 characters, the rest positions will be filled with 0 */
+	datalines;
+%45.5
+;
+run;
+			</pre>
+			<pre class = "prettyprint linenums">
+/* read decimal number containing commas */
+data work.temp;
+	informat num comma12.2.; /* read up to 12 characters with 2 digits after decimal point */
+	input num; /* read value to variable */
+	format num comma20.6; /* display up to 20 characters, the rest positions will be filled with 0 */
+	datalines;
+123,456.789
+;
+run;
+			</pre>
+			<pre class = "prettyprint linenums">
+/* read dollars */
+data work.temp;
+	informat num dollar12.2.; /* read up to 12 characters with 2 digits after decimal point */
+	input num; /* read value to variable */
+	format num dollar20.6; /* display up to 20 characters, the rest positions will be filled with 0 */
+	datalines;
+$123,456.789
+;
+run;
+			</pre>
+			<pre class = "prettyprint linenums">
+/* read euros */
+data work.temp;
+	informat num eurox12.2.; /* read up to 12 characters with 2 digits after decimal point */
+	input num; /* read value to variable */
+	format num eurox20.6; /* display up to 20 characters, the rest positions will be filled with 0 */
+	datalines;
+123,456.789
+;
+run;
+			</pre>
+			<pre class = "prettyprint linenums">
+/* read date */
+data work.temp;
+	informat hire_date mmddyy10.; /* read MM/DD/YYYY */
+	format hire_date date9.; /* output 15NOV2020 */
+	input hire_date;
+	year = year(hire_date);
+	month = month(hire_date);
+	day = day(hire_date);
+	datalines;
+11/15/2020
+;
+run;
+			</pre>
+		</div>
+		<div class = "block">
+			<li><span>Character</span></li>
+			<pre class = "prettyprint linenums">
+/* read character variable
+ * $w., specifies the maximum number of characters to read
+ * if w. is too small, SAS truncates the value
+ */
+data work.temp;
+	length title $20.; /* allocate 20 characters before reading */
+	informat title $20.; /* read up to 20 characters */
+	input title &$; /* multiple words separated by spaces until it finds two consecutive spaces */
+	datalines;
+Data Scientist
+;
+run;
+			</pre>
+		</div>
+
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+		</div>
+	</body>
+	</html>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<title>Python</title>
+
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+
+		<style>
+
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+
+	</head>
+
+	<body>
+		<div class = "title">
+			file_uploader
+		</div>
+
+		<div class = "subtitle">Data Flow</div>
+        <div class = "block">
+            <li>UploadedFile is a subclass of io.BytesIO</li>
+            <p style = "text-align:center;"><img src = "img/Streamlit_7.png" width = "60%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+import streamlit as st
+import pandas as pd
+import io
+
+uploaded_file = st.file_uploader("Choose a file")
+if uploaded_file is not None:
+
+    print(type(uploaded_file)) # UploadedFile
+
+    # file information
+    print(uploaded_file.name)
+    print(uploaded_file.type)
+    print(uploaded_file.size)
+    print(uploaded_file.file_id)
+
+    # output
+    dataframe = pd.read_csv(uploaded_file) # dataframe
+    st.write(dataframe)
+
+    print(uploaded_file.getvalue().decode("utf-8")) # string
+
+    with open("copy.csv", "wb") as f:
+        f.write(uploaded_file.getbuffer()) # csv file
+        </pre>
+    </div>
+		<div class = "subtitle">Reference</div>
+		<div class = "block">
+            <li><a href = "https://docs.streamlit.io/develop/api-reference/widgets/st.file_uploader">st.file_uploader</a></li>
+		</div>
+	</body>
+</html>
