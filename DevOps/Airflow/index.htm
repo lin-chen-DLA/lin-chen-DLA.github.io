@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Docker</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Airflow
+		</div>
+        <div class = "subtitle">Start Airflow</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/airflow_1.png" width = "25%"></p>
+		</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# docker-compose.yaml
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  airflow-webserver:
+    image: apache/airflow:2.7.2
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@postgres/airflow
+      - AIRFLOW__CORE__LOAD_EXAMPLES=false
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+    command: webserver
+
+  airflow-scheduler:
+    image: apache/airflow:2.7.2
+    depends_on:
+      - airflow-webserver
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@postgres/airflow
+      - AIRFLOW__CORE__LOAD_EXAMPLES=false
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+    command: scheduler
+
+  airflow-worker:
+    image: apache/airflow:2.7.2
+    depends_on:
+      - airflow-webserver
+      - airflow-scheduler
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@postgres/airflow
+      - AIRFLOW__CORE__LOAD_EXAMPLES=false
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+    command: celery worker
+
+volumes:
+  postgres_data:
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# initialize database
+docker-compose run airflow-webserver airflow db init
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# create user
+docker-compose run airflow-webserver airflow users create \
+    --username admin \
+    --password admin \
+    --firstname Admin \
+    --lastname User \
+    --role Admin \
+    --email admin@example.com
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# start airflow
+docker-compose up -d
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# access airflow
+http://localhost:8080, admin, admin
+        </pre>
+        </div>
+        <div class = "subtitle">Workflow</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/airflow_2.png" width = "25%"></p>
+		</div>
+        <div class = "block">
+            <li>Each task runs in an individual container and cannot share data directly</li>
+            <li>Use the mounted volume to share data</li>
+            <p style = "text-align:center;"><img src = "img/airflow_3.png" width = "25%"></p>
+		</div>
+		<div class = "block">
+            <li>Trigger DAG, manual execution outside of the schedule</li>
+            <li>Pause/Unpause, use scheduler for scheduling tasks</li>
+		<pre class = "prettyprint linenums">
+# my_dag.py
+from datetime import datetime
+
+from airflow import DAG
+from airflow.decorators import task
+from airflow.operators.bash import BashOperator
+
+# A DAG represents a workflow, a collection of tasks
+with DAG(dag_id="demo6", start_date=datetime(2025, 3, 1), schedule="0/1 * * * *", catchup=False) as dag:
+
+    t1 = BashOperator(task_id="task_1", bash_command="echo hello &gt; /opt/airflow/dags/hello.txt")
+    t2 = BashOperator(task_id="task_2", bash_command="cat /opt/airflow/dags/hello.txt &gt; /opt/airflow/dags/hello2.txt")
+    t3 = BashOperator(task_id="task_3", bash_command="cat /opt/airflow/dags/hello.txt &gt; /opt/airflow/dags/hello3.txt")
+    t4 = BashOperator(task_id="task_4", bash_command="cat /opt/airflow/dags/hello2.txt &gt; /opt/airflow/dags/hello4.txt")
+
+    # Set dependencies between tasks
+    t1 &gt;&gt; [t2, t3]
+    t2 &gt;&gt; t4
+        </pre>
+        </div>
+        <div class = "subtitle">Python Dependencies</div>
+        <div class = "block">
+            <p style = "text-align:center;"><img src = "img/airflow_4.png" width = "25%"></p>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+from datetime import datetime
+
+from airflow import DAG
+from airflow.decorators import task
+from airflow.operators.python import PythonOperator
+
+import shutil
+import pandas as pd
+
+def get_data():
+    shutil.copyfile("/opt/airflow/dags/housing.csv", "/opt/airflow/dags/housing_2.csv")
+
+def get_info():
+    df = pd.read_csv('/opt/airflow/dags/housing_2.csv')
+    return df.shape
+
+# A DAG represents a workflow, a collection of tasks
+with DAG(dag_id="demo8", start_date=datetime(2025, 3, 1), schedule="0/1 * * * *", catchup=False) as dag:
+
+    t1 = PythonOperator(task_id="task_1", python_callable=get_data)
+    t2 = PythonOperator(task_id="task_2", python_callable=get_info)
+
+    # Set dependencies between tasks
+    t1 &gt;&gt; t2
+        </pre>
+        </div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+docker ps # get the name of airflow server container
+
+docker exec -it [airflow-webserver-container-name] bash # access airflow server container
+
+pip install pandas # install dependencies
+        </pre>
+        </div>
+    </body>
+</html>
