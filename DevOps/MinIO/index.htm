@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MinIO</title>
+		<link rel="stylesheet" href="../../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			MinIO
+		</div>
+    <div class = "block">
+      <li>Bucket
+        <ul>
+          <li>A namespace for storing objects, like a folder or domain</li>
+        </ul>
+      </li>
+      <li>Flat storage
+        <ul>
+          <li>No actual folder hierarchy in traditional file systems</li>
+          <li>All objects are stored in a single, flat namespace inside a bucket, folders is simulated using prefixes in object names</li>
+        </ul>
+      </li>
+  </div>
+  <div class = "subtitle">Storage</div>
+  <div class = "block">
+    <li>MinIO does not replicate chunks like Hadoop, S3, and Blob</li>
+    <li>Object is broken into data and parity</li>
+    <li>MinIO uses parity to reconstruct missing data when nodes crash</li>
+            <p style = "text-align:center;"><img src = "img/minio_1.png" width = "40%"></p>
+    </div>
+        <div class = "subtitle">Start MinIO</div>
+    <div class = "block">
+		<pre class = "prettyprint linenums">
+docker run -d -p 9000:9000 -p 9001:9001 \
+  --name minio \
+  -e "MINIO_ROOT_USER=minioadmin" \
+  -e "MINIO_ROOT_PASSWORD=minioadmin123" \
+  -v ~/minio/data:/data \
+  quay.io/minio/minio server /data --console-address ":9001"
+        </pre>
+        </div>
+        <div class = "subtitle">Console Access</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+http://localhost:9001, minioadmin, minioadmin123
+        </pre>
+        </div>
+    <div class = "subtitle">API Access</div>
+		<div class = "block">
+		<pre class = "prettyprint linenums">
+# install boto3
+pip install boto3
+
+# create access keys
+    </pre>
+  </div>
+  <div class = "block">
+    <pre class = "prettyprint linenums">
+# create client
+import boto3
+from botocore.config import Config
+
+client = boto3.client(
+    's3',
+    endpoint_url='http://localhost:9000',  # MinIO server
+    aws_access_key_id='rVUSsTlDkUKzv9WbPnyc',        # Your MinIO Access Key
+    aws_secret_access_key='09SbwmXJMpK3Z9mG8IWntafCiRNZCckITUJKB7Ps', # Your MinIO Secret Key
+    config = Config(signature_version='s3v4')
+)
+
+# list buckets
+response = s3.list_buckets()
+for bucket in response['Buckets']:
+    print(f"  - {bucket['Name']}")
+
+# list objects in a bucket
+response = client.list_objects_v2(Bucket='mybucket')
+
+if 'Contents' in response:
+    for obj in response['Contents']:
+        print(f" - {obj['Key']} (Size: {obj['Size']} bytes)")
+
+# create bucket
+bucket_name = 'mybucket2'
+
+client.create_bucket(Bucket=bucket_name)
+print(f"✅ Bucket '{bucket_name}' created successfully.")
+    </pre>
+  </div>
+  <div class = "block">
+    <pre class = "prettyprint linenums">
+# upload file
+from botocore.config import Config
+
+client = boto3.client(
+    's3',
+    endpoint_url='http://localhost:9000',  # MinIO server
+    aws_access_key_id='rVUSsTlDkUKzv9WbPnyc',        # Your MinIO Access Key
+    aws_secret_access_key='09SbwmXJMpK3Z9mG8IWntafCiRNZCckITUJKB7Ps', # Your MinIO Secret Key
+    config = Config(signature_version='s3v4')
+)
+
+bucket_name = 'mybucket'
+file_path = 'localfile.txt'         # Path to your local file
+object_key = 'uploads/localfile.txt'  # Target path/key in the bucket
+
+try:
+    client.upload_file(file_path, bucket_name, object_key)
+    print(f"✅ Uploaded '{file_path}' as '{object_key}' to bucket '{bucket_name}'.")
+except Exception as e:
+    print(f"❌ Upload failed: {e}")
+    </pre>
+  </div>
+  <div class = "block">
+    <pre class = "prettyprint linenums">
+# upload folder
+import os
+import boto3
+from botocore.config import Config
+
+client = boto3.client(
+    's3',
+    endpoint_url='http://localhost:9000',  # MinIO server
+    aws_access_key_id='rVUSsTlDkUKzv9WbPnyc',        # Your MinIO Access Key
+    aws_secret_access_key='09SbwmXJMpK3Z9mG8IWntafCiRNZCckITUJKB7Ps', # Your MinIO Secret Key
+    config = Config(signature_version='s3v4')
+)
+
+local_folder = 'myfolder'  # Your local folder path
+bucket_name = 'mybucket' # bucket name
+object_prefix = 'uploads/'       # Optional prefix in the bucket
+
+for root, dirs, files in os.walk(local_folder):
+    for file in files:
+        file_path = os.path.join(root, file)
+        relative_path = os.path.relpath(file_path, local_folder)
+        object_key = os.path.join(object_prefix, local_folder, relative_path)
+
+        print(f"Uploading {file_path} to s3://{bucket_name}/{object_key}")
+        client.upload_file(file_path, bucket_name, object_key)
+    </pre>
+  </div>
+  <div class = "block">
+    <pre class = "prettyprint linenums">
+# download file
+import os
+import boto3
+from botocore.config import Config
+
+client = boto3.client(
+    's3',
+    endpoint_url='http://localhost:9000',  # MinIO server
+    aws_access_key_id='rVUSsTlDkUKzv9WbPnyc',        # Your MinIO Access Key
+    aws_secret_access_key='09SbwmXJMpK3Z9mG8IWntafCiRNZCckITUJKB7Ps', # Your MinIO Secret Key
+    config = Config(signature_version='s3v4')
+)
+
+bucket_name = 'mybucket'
+object_key = 'uploads/localfile.txt'   # S3 key in the bucket
+destination_file = 'downloaded_example.txt'  # Local file path to save
+
+client.download_file(bucket_name, object_key, destination_file)
+print(f"✅ File downloaded to '{destination_file}'")
+    </pre>
+  </div>
+  <div class = "block">
+    <pre class = "prettyprint linenums">
+# delete file
+import os
+import boto3
+from botocore.config import Config
+
+client = boto3.client(
+    's3',
+    endpoint_url='http://localhost:9000',  # MinIO server
+    aws_access_key_id='rVUSsTlDkUKzv9WbPnyc',        # Your MinIO Access Key
+    aws_secret_access_key='09SbwmXJMpK3Z9mG8IWntafCiRNZCckITUJKB7Ps', # Your MinIO Secret Key
+    config = Config(signature_version='s3v4')
+)
+
+bucket_name = 'mybucket'
+object_key = 'housing.csv'
+
+client.delete_object(Bucket=bucket_name, Key=object_key)
+    </pre>
+  </div>
+    </body>
+</html>
