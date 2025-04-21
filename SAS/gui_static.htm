@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SAS</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Static GUI
+		</div>
+		
+		<div class = "subtitle">Workflow</div>
+		<div class = "block">
+			<ol>
+				<li>Create a Job Definition and add code as the back-end</li>
+				<li>Create an associated HTML form as the front-end</li>
+				<li>Save</li>
+				<li>Run</li>
+			</ol>
+			<p style = "text-align:center;"><img src = "img/SAS_GUI_1.png" width = "35%"></p>
+	</div>
+		<div class = "subtitle">HTML form</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="end"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+&lt;/head&gt;
+&lt;script src="/SASJobExecution/resources/sap/ui/thirdparty/jquery.js"&gt;&lt;/script&gt;
+
+&lt;body&gt;
+	&lt;form action="/SASJobExecution/" target="_tab"&gt;
+		&lt;input type="hidden" name="_program" value="$PROGRAM$"&gt; &lt;! -- specifies job definition to run, $PROGRAM$ is the path of the currently executing job --&gt;
+		&lt;input type="hidden" name="_action" value="execute"&gt; &lt;! -- executes the job --&gt;
+		&lt;input name="var_sex" value="M"&gt;
+		&lt;input type="submit" value="Submit"&gt;
+		&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+			</pre>
+	</div>
+		<div class = "subtitle">Job Definition Code</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/* get parameter value from GUI */
+%let sex = &var_sex;
+
+proc print data=sashelp.class(obs=3);
+	where sex = "&sex";
+run;
+            </pre>
+        </div>
+		<div class = "subtitle">Access Applications</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+https://url:port/SASJobExecution/
+            </pre>
+        </div>
+        <div class = "subtitle">Reference</div>
+		<div class = "block">
+			<li><a href = "https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.4/jobexecug/titlepage.htm">SAS® Job Execution Web Application 2.1: User’s Guide</a></li>
+			<li><a href = "https://github.com/sascommunities/sas-global-forum-2020/tree/master/papers/4185-2020-Anderson">Creating Custom Web Applications with SAS® Viya® Jobs</a></li>
+			<li><a href = "https://communities.sas.com/t5/SAS-Communities-Library/Create-a-SAS-Viya-Job-with-a-prompt-using-HTML-Prompts/ta-p/805091">Create a SAS Viya Job with a prompt using HTML Prompts</a></li>
+		</div>
+</body>
+</html>

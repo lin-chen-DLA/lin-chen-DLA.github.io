@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SAS</title>
+		<link rel="stylesheet" href="../css/atelier-sulphurpool-light.css" type="text/css">
+		<script src="../js/google-code-prettify/run_prettify.js?autoload=true&amp;lang=css"></script>
+		<style>
+			div.title {color: navy; font-weight: bold; width: 80%; font-size: 32px; text-align: center; position: relative; margin: auto;}
+			div.subtitle {color: navy; font-weight: bold; width: 80%; font-size: 24px; text-align: position: relative; margin: auto;}
+			div.block {color: navy; font-weight: bold; width: 80%; border-style: solid; padding: 5px; position: relative; margin: 10px auto; border-radius: 5px;}
+			span {color: red; font-weight: bold;}
+		</style>
+	</head>
+	<body>
+		<div class = "title">
+			Output Format
+		</div>
+
+		<div class = "subtitle">HTML form</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="end"&gt;
+&lt;head&gt;
+	&lt;meta charset="UTF-8"&gt;
+&lt;/head&gt;
+&lt;style&gt;
+	#title {color:blue}
+	#content {height:500px;}
+	#foot {color:silver; font-style:italic}
+&lt;/style&gt;
+&lt;body&gt;
+		&lt;div id = "title"&gt;Title&lt;/div&gt;
+		&lt;div id = "content"&gt;
+			&lt;form action="/SASJobExecution/" target="_tab"&gt;
+				&lt;input type="hidden" name = "_output_type" value="html"&gt; &lt;! -- allows output html --, default only output SAS standard output&gt;
+				&lt;input type="hidden" name="_program" value="$PROGRAM$"&gt; &lt;! -- specifies job definition to run, $PROGRAM$ is the path of the currently executing job --&gt;
+                &lt;input type="hidden" name="_action" value="execute"&gt; &lt;! -- executes the job --&gt;
+				&lt;input name="var_sex" value="M"&gt;
+				&lt;input type="submit" value="Submit"&gt;
+			&lt;/form&gt;
+		&lt;/div&gt;
+		&lt;div id = "foot"&gt;@copyright 2025&lt;br&gt;By Lin Chen&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+			</pre>
+	</div>
+		<div class = "subtitle">Job Definition Code</div>
+		<div class = "block">
+			<pre class = "prettyprint linenums">
+/* get parameter value from GUI */
+%let sex = &var_sex;
+
+/* output html content */
+data _null;
+	format infile $char256.;
+	input;
+	infile = resolve(_infile_);
+	file _webout;
+	put infile;
+	cards4;
+&lt;html&gt;
+&lt;body&gt;
+	&lt;center&gt;
+		&lt;br&gt;&lt;br&gt;
+		&lt;h1&gt;SAS PROC PRINT OF SASHELP.CLASS&lt;/h1&gt;
+		&lt;h4&gt;Sex = &sex&lt;/h4&gt;
+	&lt;/center&gt;
+	&lt;br&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+;;;;
+run;
+
+/* output SAS output as html */
+ods html file=_webout;
+
+proc print data=sashelp.class(obs=3);
+	where sex = "&sex";
+run;
+
+ods html close;
+            </pre>
+        </div>
+</body>
+</html>
